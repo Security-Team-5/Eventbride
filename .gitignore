@@ -2,8 +2,6 @@
 HELP.md
 pom.xml.bak
 target/
-.mvn/
-!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -45,4 +43,3 @@ logs/
 
 # CSS y archivos estáticos (actualizado)
 _site/
-*.css
