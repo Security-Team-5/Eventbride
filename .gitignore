@@ -43,3 +43,6 @@ logs/
 
 # CSS y archivos estáticos (actualizado)
 _site/
+
+#MariaDB password
+src/main/resources/application-mysql.properties
