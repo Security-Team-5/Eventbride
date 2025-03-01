@@ -18,7 +18,7 @@ Como configurar el proyecto.
 7. Duplicar el archivo *application-mysql.properties.example* y cambiarle el nombre a *application-mysql.properties*
 8. Cambiar en el nuevo *application-mysql.properties* el usuario y la contraseña que pusieras en la instalación de MariaDB:
 ```
-    spring.datasource.username=${MYSQL_USER:root}
+    spring.datasource.username=${MYSQL_USER:TUUSUARIO}
     spring.datasource.password=${MYSQL_PASS:TUCONTRASEÑA}
 ```
 
