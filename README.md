@@ -14,8 +14,8 @@ Como configurar el proyecto.
 
 5. Cambiar el usuario y la contraseña que pusieras en la instalación de MariaDB:
 ```
-    spring.datasource.username=${MYSQL_USER:*root*}
-    spring.datasource.password=${MYSQL_PASS:*TUCONTRASEÑA*}
+    spring.datasource.username=${MYSQL_USER:root}
+    spring.datasource.password=${MYSQL_PASS:TUCONTRASEÑA}
 ```
 
 El username habitual suele ser *root*.
