@@ -10,9 +10,11 @@ Como configurar el proyecto.
     3. show tables; (para ver si se han creado. De primeras saldrá vacio)
 
 
-4. En el proyecto buscar el archivo *application-mysql.properties* (ruta: src\main\resources\application-mysql.properties).
+4. En el proyecto buscar el archivo *application-mysql.properties.example* (ruta: src\main\resources\application-mysql.properties.example).
 
-5. Cambiar el usuario y la contraseña que pusieras en la instalación de MariaDB:
+5. Duplicar ese archivo y renombrar la copia a *application-mysql.properties*
+
+6. Cambiar en *application-mysql.properties* el usuario y la contraseña que pusieras en la instalación de MariaDB:
 ```
     spring.datasource.username=${MYSQL_USER:root}
     spring.datasource.password=${MYSQL_PASS:TUCONTRASEÑA}
@@ -21,7 +23,7 @@ Como configurar el proyecto.
 El username habitual suele ser *root*.
 
 
-6. Realizar los siguientes comandos:
+7. Realizar los siguientes comandos:
 
 *Backend*
 ```
@@ -34,8 +36,8 @@ El username habitual suele ser *root*.
     npm install
     npm run dev
 ```
-7. User y pass para probar en el navegador:
+8. User y pass para probar en el navegador:
     - user: alice123
     - pass: 1234
 
-8. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
+9. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
