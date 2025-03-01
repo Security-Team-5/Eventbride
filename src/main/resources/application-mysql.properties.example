@@ -3,8 +3,8 @@ database=mysql
 
 # Configuración de MySQL con valores predeterminados
 spring.datasource.url=${MYSQL_URL:jdbc:mysql://localhost/eventbride?useSSL=false&serverTimezone=UTC}
-spring.datasource.username=${MYSQL_USER:root}
-spring.datasource.password=${MYSQL_PASS:root}
+spring.datasource.username=${MYSQL_USER:TUUSUARIO}
+spring.datasource.password=${MYSQL_PASS:TUCONTRASEÑA}
 
 # Habilitar la inicialización de la base de datos
 spring.sql.init.mode=always
