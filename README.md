@@ -14,7 +14,8 @@ Como configurar el proyecto.
 
 5. Duplicar ese archivo y renombrar la copia a *application-mysql.properties*
 
-6. Cambiar en *application-mysql.properties* el usuario y la contraseña que pusieras en la instalación de MariaDB:
+6. Duplicar el archivo *application-mysql.properties.example* y cambiarle el nombre a *application-mysql.properties*
+7. Cambiar en el nuevo *application-mysql.properties* el usuario y la contraseña que pusieras en la instalación de MariaDB:
 ```
     spring.datasource.username=${MYSQL_USER:root}
     spring.datasource.password=${MYSQL_PASS:TUCONTRASEÑA}
@@ -23,7 +24,7 @@ Como configurar el proyecto.
 El username habitual suele ser *root*.
 
 
-7. Realizar los siguientes comandos:
+8. Realizar los siguientes comandos:
 
 *Backend*
 ```
@@ -36,8 +37,8 @@ El username habitual suele ser *root*.
     npm install
     npm run dev
 ```
-8. User y pass para probar en el navegador:
+9. User y pass para probar en el navegador:
     - user: alice123
     - pass: 1234
 
-9. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
+10. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
