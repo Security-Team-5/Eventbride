@@ -3,8 +3,9 @@
 Como configurar el proyecto.
 
 1. Instalar MariaDB (https://mariadb.org/).
-2. Abrir MYSQL Client y configurar la contraseña que se desee.
-3. Poner los siguientes comandos:
+2. Instalar Java 17.
+3. Abrir MYSQL Client y configurar la contraseña que se desee.
+4. Poner los siguientes comandos:
 ```
     create database eventbride; (para crear la database)
     use Eventbride; (para meterte en la database)
@@ -25,7 +26,7 @@ Como configurar el proyecto.
 El username habitual suele ser *root*.
 
 
-8. Realizar los siguientes comandos:
+9. Realizar los siguientes comandos:
 
 *Backend*
 ```
@@ -38,8 +39,8 @@ El username habitual suele ser *root*.
     npm install
     npm run dev
 ```
-9. User y pass para probar en el navegador:
+10. User y pass para probar en el navegador:
     - user: alice123
     - pass: 1234
 
-10. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
+11. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
