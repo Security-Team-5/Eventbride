@@ -11,6 +11,9 @@ Como configurar el proyecto.
     use Eventbride; (para meterte en la database)
     show tables; (para ver si se han creado. De primeras saldrá vacio)
 ```
+Una vez con tood hecho, deberías ver algo así:
+
+![image](https://github.com/user-attachments/assets/b9c11486-8b60-4856-b040-c45649d071f0)
 
 5. En el proyecto buscar el archivo *application-mysql.properties.example* (ruta: src\main\resources\application-mysql.properties.example).
 
@@ -21,7 +24,11 @@ Como configurar el proyecto.
     spring.datasource.username=${MYSQL_USER:TUUSUARIO}
     spring.datasource.password=${MYSQL_PASS:TUCONTRASEÑA}
 ```
-
+IMPORTANTE, no pongas el user y contraseña entre comillas, sigue la estructura literal, por ejemplo:
+```
+    spring.datasource.username=${MYSQL_USER:federico}
+    spring.datasource.password=${MYSQL_PASS:lalaland}
+```
 
 8. Realizar los siguientes comandos:
 
@@ -36,8 +43,13 @@ Como configurar el proyecto.
     npm install
     npm run dev
 ```
+Con todo activo te debería salir una pantalla tal que así:
+
+![image](https://github.com/user-attachments/assets/24b833aa-99ee-4176-a1f0-557f567a8c50)
+
 9. User y pass para probar en el navegador:
     - user: alice123
     - pass: 1234
 
 10. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
+
