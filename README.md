@@ -11,7 +11,7 @@ Como configurar el proyecto.
     use Eventbride; (para meterte en la database)
     show tables; (para ver si se han creado. De primeras saldrá vacio)
 ```
-Una vez con tood hecho, deberías ver algo así:
+Una vez con todo hecho, deberías ver algo así:
 
 ![image](https://github.com/user-attachments/assets/b9c11486-8b60-4856-b040-c45649d071f0)
 
@@ -26,7 +26,7 @@ Una vez con tood hecho, deberías ver algo así:
 ```
 IMPORTANTE, no pongas el user y contraseña entre comillas, sigue la estructura literal, por ejemplo:
 ```
-    spring.datasource.username=${MYSQL_USER:federico}
+    spring.datasource.username=${MYSQL_USER:RyanGosling}
     spring.datasource.password=${MYSQL_PASS:lalaland}
 ```
 
