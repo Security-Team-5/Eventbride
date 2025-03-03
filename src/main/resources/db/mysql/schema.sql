@@ -1,12 +1,12 @@
 -- Superclase usuarios
 CREATE TABLE IF NOT EXISTS users (
-  userId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(30) NOT NULL UNIQUE,
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
   email VARCHAR(100) NOT NULL UNIQUE,
-  first_name VARCHAR(30) NOT NULL,
-  last_name VARCHAR(30) NOT NULL,
-  telephone VARCHAR(20) NOT NULL,
-  dni VARCHAR(9) NOT NULL,
+  first_name VARCHAR(40) NOT NULL,
+  last_name VARCHAR(40) NOT NULL,
+  telephone VARCHAR(9) NOT NULL,
+  dni VARCHAR(9) NOT NULL UNIQUE,
   profile_picture VARCHAR(500) NOT NULL,
   password VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
@@ -14,14 +14,14 @@ CREATE TABLE IF NOT EXISTS users (
 -- Clases hijo: cliente y proveedor
 CREATE TABLE IF NOT EXISTS clients (
   clientId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  userId INT UNSIGNED NOT NULL UNIQUE,  -- Evita que un usuario sea cliente y proveedor a la vez
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+  id INT UNSIGNED NOT NULL UNIQUE,  -- Evita que un usuario sea cliente y proveedor a la vez
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS suppliers (
   supplierId INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  userId INT UNSIGNED NOT NULL UNIQUE,
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+  id INT UNSIGNED NOT NULL UNIQUE,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- Clase evento
