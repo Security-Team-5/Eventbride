@@ -1,6 +1,6 @@
-INSERT IGNORE INTO users (userId, username, email, first_name, last_name, telephone, password) VALUES 
-(1, 'alice123', 'alice@example.com', 'Alice', 'Johnson', '123456789', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(2, 'bob456', 'bob@example.com', 'Bob', 'Smith', '987654321', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(3, 'charlie789', 'charlie@example.com', 'Charlie', 'Brown', '567123890', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(4, 'diana001', 'diana@example.com', 'Diana', 'Prince', '654321987', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(5, 'edward_dev', 'edward@example.com', 'Edward', 'Snowden', '321789654', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK');
+INSERT IGNORE INTO users (userId, username, email, first_name, last_name, telephone, dni, profile_picture, password) VALUES 
+(1, 'alice123', 'alice@example.com', 'Alice', 'Johnson', '123456789', '12345678A', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Alice_in_wonderland_1951.jpg/1200px-Alice_in_wonderland_1951.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
+(2, 'bob456', 'bob@example.com', 'Bob', 'Smith', '987654321', '12345678A', 'https://i.pinimg.com/originals/47/bb/a8/47bba82b29762df82f7b5c72ab16393c.gif', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
+(3, 'charlie789', 'charlie@example.com', 'Charlie', 'Brown', '567123890', '12345678A', 'https://lavozdetarija.com/wp-content/uploads/2022/11/Charlie-Brown-y-Snoopy.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
+(4, 'diana001', 'diana@example.com', 'Diana', 'Prince', '654321987', '12345678A', 'https://avatarfiles.alphacoders.com/823/82348.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
+(5, 'edward_dev', 'edward@example.com', 'Edward', 'Snowden', '321789654', '12345678A', 'https://proassets.planetadelibros.com/usuaris/seudonimos/fotos/53/original/000052233_1_King_AuthorPhoto_c_Lindsay_Mills_2018.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK');

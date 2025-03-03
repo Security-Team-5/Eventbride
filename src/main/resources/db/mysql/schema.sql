@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS users (
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   telephone VARCHAR(20) NOT NULL,
+  dni VARCHAR(9) NOT NULL,
+  profile_picture VARCHAR(500) NOT NULL,
   password VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
 
