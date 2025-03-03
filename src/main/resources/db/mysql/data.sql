@@ -16,75 +16,10 @@ INSERT IGNORE INTO users (id, username, email, first_name, last_name, telephone,
 (13, 'ARCOS 3 CATERING', 'mariatrigueros16.maccga@gmail.com', 'Maria', 'Trigueros', '123456789', '22222222B', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvhC6mgSHclnNr2RPV1gDcZl7F0sC-ND4pcw&s', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
 (14, 'Mongo mango', 'mongomango@example.com', 'Mongo', 'Mango', '932649056', '33333333B', 'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK');
 
-INSERT IGNORE INTO clients (clientId, id) VALUES 
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5);
 
-INSERT IGNORE INTO suppliers (supplierId, id) VALUES 
-(1, 6),
-(2, 7),
-(3, 8),
-(4, 9),
-(5, 10),
-(6, 11),
-(7, 12),
-(8, 13),
-(9, 14);
+INSERT IGNORE INTO venues (id, postal_code, coordinates, address, max_guests, surface, name, available, city_available, service_price, picture, description) VALUES 
+(1, '41001', '37.388630, -5.982430', 'Calle Sierpes, 1', 110, 100.00, 'Prueba1' ,TRUE, 'Sevilla', 1000.00, 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '¿Sabías que entre nuestros servicios se encuentra la posibilidad de disfrutar de un castillo hinchable? ¡Los más pequeños se lo pasarán en grande!'),
+(9, '41002', '37.388630, -5.982430', 'Calle Sierpes, 2', 200, 180.00, 'Prueba9' ,TRUE, 'Sevilla', 400.00, 'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', 'Proporcionamos un lugar apegado a la naturaleza para que puedas disfrutar de un evento inolvidable.');
 
-INSERT IGNORE INTO events (eventId, eventType, guests, budget, date, clientId) VALUES 
-(1, 'WEDDING', 100, 10000.00, '2023-06-30', 1),
-(2, 'CHRISTENING', 50, 5000.00, '2023-07-30', 2),
-(3, 'COMMUNION', 30, 3000.00, '2023-08-30', 3),
-(4, 'WEDDING', 200, 20000.00, '2023-09-30', 4),
-(5, 'CHRISTENING', 100, 11000.00, '2023-10-30', 5);
-
-INSERT IGNORE INTO services (serviceId, available, cityAvailable, servicePrice, picture, description, supplierId) VALUES 
-(1, TRUE, 'Sevilla', 1000.00, 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '¿Sabías que entre nuestros servicios se encuentra la posibilidad de disfrutar de un castillo hinchable? ¡Los más pequeños se lo pasarán en grande!', 1),
-(2, TRUE, 'Sevilla', 500.00, 'https://scontent.fsvq2-1.fna.fbcdn.net/v/t39.30808-6/290011138_447969930669386_9159143717868862291_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=T1p9q0sk0y0Q7kNvgEF3K__&_nc_oc=AdilDvDQ1V4pXorh78Fh0B784FQTl9Qpr33KK4Mml2qvkAV9L80X0ks7V0Kv9omBkWs&_nc_zt=23&_nc_ht=scontent.fsvq2-1.fna&_nc_gid=A9eedOJ07WIUB4Mn065w5VH&oh=00_AYBvtPG3AkWjWyLPHKkXMhBIDuubPS9BzWDWy59FVvluKw&oe=67CB913C', 'Soy Juan Luis, fotógrafo de bodas con más de 20 años de experiencia, y el encargado de daros un álbum de fotos con el que podáis revivir el día de vuestra boda, una y otra vez, con todo lujo de detalles.', 2),
-(3, TRUE, 'Sevilla', 300.00, 'https://www.corteganaiberico.com/wp-content/uploads/2021/10/pata-negra-y-jamon-iberico-1.png', 'Eleva la experiencia gastronómica con cortes precisos y elegantes. Especializado en el arte del jamón, combina destreza, técnica y conocimiento del producto para resaltar su sabor y textura. Ideal para eventos, restaurantes o amantes del jamón que buscan un servicio de calidad y presentación impecable.', 3),
-(4, TRUE, 'Sevilla', 400.00, 'https://www.jamonibericomatas.com/wp-content/uploads/2022/01/Consejos-sobre-como-cortar-jamon-iberico-de-bellota.jpg', 'Más que un oficio, un arte. Con habilidad y precisión, transforma cada pieza de jamón en finas lonchas que realzan su sabor y aroma. Un equilibrio perfecto entre técnica, tradición y pasión, ofreciendo una experiencia gastronómica única en eventos, celebraciones o catas especializadas', 4),
-(5, TRUE, 'Sevilla', 200.00, 'https://www.shutterstock.com/image-photo/woman-cutting-cheese-kitchen-slicing-600nw-2441834571.jpg', 'En un rincón, cortando queso… Con paciencia y precisión, el maestro cortador transforma cada pieza en porciones perfectas, resaltando su textura y sabor. Entre aromas intensos y tablas bien dispuestas, su oficio convierte cada corte en una experiencia gastronómica única.', 5),
-(6, TRUE, 'Sevilla', 1000.00, 'https://www.davidlaradecor.es/wp-content/uploads/2018/01/logo-portada.png', 'David Lara Decor es una empresa ubicada en Carmona (Sevilla) que está especializada en el diseño y la organización de las decoraciones florales y demás elementos para bodas y otros eventos. Su amplia experiencia y su estilo propio os garantizarán la creación de un ambiente único y especial para el día de vuestro enlace.', 6),
-(7, TRUE, 'Sevilla', 500.00, 'https://scontent.fsvq2-2.fna.fbcdn.net/v/t39.30808-6/362215902_1714969262352914_6618147487731709894_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=8FMz_wolYrMQ7kNvgGNwSK5&_nc_oc=AdiIIcUPAoH_UqWyaDIdw2cb0WPREpTUFc5DmWjOCKzMD5kZjT2JpyU8y7naUK67Hhk&_nc_zt=23&_nc_ht=scontent.fsvq2-2.fna&_nc_gid=AAjj9XxIRPa0kkXRysufzjn&oh=00_AYAKmsRLHiYkWxtMZgned_gKZjg0oVc1QXA-f18IrkBuAA&oe=67CB861C', 'El arquitecto del ritmo y la energía. Con una mezcla perfecta de beats, efectos y transiciones, crea ambientes únicos que mantienen a todos en la pista de baile.', 7),
-(8, TRUE, 'Sevilla', 300.00, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvhC6mgSHclnNr2RPV1gDcZl7F0sC-ND4pcw&s', 'Nos ponemos a tu servicio con nuestro equipo de profesionales preocupados por que todo salga perfecto en cualquier tipo de evento o celebración que realicen.', 8),
-(9, TRUE, 'Sevilla', 400.00, 'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', 'Proporcionamos un lugar apegado a la naturaleza para que puedas disfrutar de un evento inolvidable.', 9);
-
-INSERT IGNORE INTO booking_services (eventId, serviceId) VALUES 
-(1, 1),
-(1, 2),
-(2, 3),
-(2, 4),
-(3, 5),
-(3, 6),
-(4, 7),
-(4, 8),
-(5, 2),
-(5, 9);
-
-INSERT IGNORE INTO venues (venueId, postalCode, coordinates, address, maxGuests, surface, serviceId) VALUES 
-(1, '41001', '37.388630, -5.982430', 'Calle Sierpes, 1', 110, 100.00, 1),
-(2, '41002', '37.388630, -5.982430', 'Calle Sierpes, 2', 200, 180.00, 9);
-
-INSERT IGNORE INTO other_services (otherServiceId, otherServiceType, extraInformation, serviceId) VALUES
-(1, 'ENTERTAINMENT', 'Servicio de fotografía', 2),
-(2, 'CATERING', 'Cortador de jamon', 3),
-(3, 'CATERING', 'Cortador de jamon', 4),
-(4, 'CATERING', 'Cortador de queso', 5),
-(5, 'DECORATION', 'Decorador de eventos', 6),
-(6, 'ENTERTAINMENT', 'DJ y sonido', 7),
-(7, 'CATERING', 'Catering para eventos', 7);
-
-INSERT IGNORE INTO ratings (ratingId, stars, comment, clientId, serviceId) VALUES
-(1, 5, '¡Todo perfecto! ¡Gracias!', 1, 1),
-(2, 4, '¡Muy buen servicio!', 2, 3),
-(3, 3, '¡Bien!', 3, 5),
-(4, 2, '¡Regular!', 4, 7),
-(5, 4, '¡Muy buen servicio!', 5, 2),
-(6, 5, '¡Todo perfecto! ¡Gracias!', 1, 2),
-(7, 4, '¡Muy buen servicio!', 2, 4),
-(8, 3, '¡Bien!', 3, 6),
-(9, 2, '¡Regular!', 4, 8),
-(10, 1, '¡Mal!', 5, 9);
+INSERT IGNORE INTO other_services (id, other_service_type, extra_information, name, available, city_available, service_price, picture, description) VALUES
+(2, 'ENTERTAINMENT', 'Servicio de fotografía',  'Prueba2' ,TRUE, 'Sevilla', 500.00, 'https://scontent.fsvq2-1.fna.fbcdn.net/v/t39.30808-6/290011138_447969930669386_9159143717868862291_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=T1p9q0sk0y0Q7kNvgEF3K__&_nc_oc=AdilDvDQ1V4pXorh78Fh0B784FQTl9Qpr33KK4Mml2qvkAV9L80X0ks7V0Kv9omBkWs&_nc_zt=23&_nc_ht=scontent.fsvq2-1.fna&_nc_gid=A9eedOJ07WIUB4Mn065w5VH&oh=00_AYBvtPG3AkWjWyLPHKkXMhBIDuubPS9BzWDWy59FVvluKw&oe=67CB913C', 'Soy Juan Luis, fotógrafo de bodas con más de 20 años de experiencia, y el encargado de daros un álbum de fotos con el que podáis revivir el día de vuestra boda, una y otra vez, con todo lujo de detalles.');
