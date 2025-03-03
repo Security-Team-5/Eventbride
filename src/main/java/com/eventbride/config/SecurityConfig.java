@@ -13,7 +13,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF para facilitar pruebas
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/api/users/register").permitAll() // Permite el acceso a estas rutas
+                .requestMatchers("/api/auth/**", "/api/users/register", "/api/venues/**").permitAll() // Permite el acceso a estas rutas
                 .anyRequest().authenticated()
             )
             .formLogin(login -> login.disable()) // Desactiva el formulario de login por defecto
