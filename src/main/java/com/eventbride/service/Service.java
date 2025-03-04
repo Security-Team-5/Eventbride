@@ -32,8 +32,8 @@ public class Service extends BaseEntity {
     @Size(min = 1, max = 30)
     private String cityAvailable;
 
-    @Column(name = "service_price", precision = 10, scale = 3, nullable = false)
-    @Digits(integer = 7, fraction = 3)
+    @Column(name = "service_price", precision = 9, scale = 2, nullable = false)
+    @Digits(integer = 7, fraction = 2)
     @NotNull
     @DecimalMin("0.0")
     private BigDecimal servicePrice;
@@ -52,4 +52,5 @@ public class Service extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier; */
+
 }
