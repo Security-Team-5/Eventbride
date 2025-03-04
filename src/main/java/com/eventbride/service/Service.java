@@ -48,9 +48,4 @@ public class Service extends BaseEntity {
     @Size(min = 1, max = 250)
     private String description;
 
-    /* COMENTADO HASTA TENER LA CLASE SUPPLIER 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "supplier_id", nullable = false)
-    private Supplier supplier; */
-
 }
