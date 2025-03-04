@@ -6,15 +6,18 @@ import java.util.List;
 
 import com.eventbride.invitation.Invitation;
 import com.eventbride.model.BaseEntity;
+import com.eventbride.otherService.OtherService;
 import com.eventbride.user.User;
+import com.eventbride.venue.Venue;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -46,11 +49,11 @@ public class Event extends BaseEntity{
     @Column(name = "event_date", nullable = false)
     private LocalDate eventDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "event")
     private List<Invitation> invitations;
 
     public enum EventType {
@@ -58,5 +61,18 @@ public class Event extends BaseEntity{
         CHRISTENING, 
         COMMUNION
     }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "event_venue", 
+      joinColumns = @JoinColumn(name = "venue_id", referencedColumnName = "id"), 
+      inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
+    private List<Venue> venues;
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "event_other_service", 
+      joinColumns = @JoinColumn(name = "other_service_id", referencedColumnName = "id"), 
+      inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
+    private List<OtherService> otherServices;
 
 }
