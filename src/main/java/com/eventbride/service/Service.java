@@ -1,17 +1,11 @@
 package com.eventbride.service;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import com.eventbride.model.BaseEntity;
-import com.eventbride.rating.Rating;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
