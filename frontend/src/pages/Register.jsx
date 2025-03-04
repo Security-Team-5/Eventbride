@@ -42,6 +42,7 @@ const Register = () => {
     }
   };
 
+  // TODO: Añadir al formulario el campo para el tipo de usuario: cliente o proveedor
   return (
     <div className="login-container">
       <div className="login-box">
