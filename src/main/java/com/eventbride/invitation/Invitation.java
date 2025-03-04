@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "invitation")
+@Table(name = "invitations")
 @Getter
 @Setter
 public class Invitation extends BaseEntity{
