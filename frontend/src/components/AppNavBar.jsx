@@ -1,8 +1,7 @@
-import React from "react";
 import "../components/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
-import carta from "../Static/resources/images/carta.png";
-import usuario from "../Static/resources/images/user.png";
+import carta from "../static/resources/images/carta.png";
+import usuario from "../static/resources/images/user.png";
 
 function Navbar() {
   return (
@@ -12,7 +11,6 @@ function Navbar() {
         <span className="navbar-title">Eventbride</span>
       </div>
       <ul className="navbar-list">
-        <li><a href="/">Inicio</a></li>
         <li><a href="/miseventos">Mis eventos</a></li>
         <li><a href="/lugares">Lugares</a></li>
         <li><a href="/proveedores">Proveedores</a></li>
