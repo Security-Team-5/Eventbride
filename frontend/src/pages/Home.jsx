@@ -29,10 +29,28 @@ function Home({ user }) {
 
   useEffect(() => {
     if (!user) {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
-      }
+      const fetchCurrentUser = async () => {
+        try {
+          const response = await fetch("http://localhost:8080/api/auth/current-user", {
+            method: "GET",
+            credentials: "include",
+          });
+          if (response.ok) {
+            const user = await response.json();
+            setCurrentUser(user);
+            localStorage.setItem("user", JSON.stringify(user));
+          } else {
+            setCurrentUser(null);
+            localStorage.removeItem("user");
+          }
+        } catch (error) {
+          console.error("Error fetching current user:", error);
+          setCurrentUser(null);
+          localStorage.removeItem("user");
+        }
+      };
+  
+      fetchCurrentUser();
     }
     getVenues(); // Llamar a la API al cargar el componente
   }, [user]);
