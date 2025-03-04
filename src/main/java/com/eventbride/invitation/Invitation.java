@@ -6,7 +6,6 @@ import com.eventbride.model.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -49,8 +48,8 @@ public class Invitation extends BaseEntity{
 	@Email
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "event_id")
     private Event event;
 
 }

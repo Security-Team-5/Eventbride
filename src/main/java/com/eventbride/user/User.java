@@ -3,15 +3,15 @@ package com.eventbride.user;
 import java.util.List;
 
 import com.eventbride.event.Event;
-import com.eventbride.invitation.Invitation;
 import com.eventbride.model.Person;
+import com.eventbride.otherService.OtherService;
+import com.eventbride.rating.Rating;
+import com.eventbride.venue.Venue;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -38,11 +38,20 @@ public class User extends Person{
     @Column(name = "user_type", nullable = false)
     private UserType userType;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<Event> events;
 
     public enum UserType {
         CLIENT, 
         SUPPLIER 
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
+
+    @OneToMany(mappedBy = "user")
+    private List<OtherService> otherServices;
+
+    @OneToMany(mappedBy = "user")
+    private List<Venue> venues;
 }
