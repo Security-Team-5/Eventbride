@@ -1,7 +1,9 @@
 package com.eventbride.rating;
 
 import com.eventbride.model.BaseEntity;
+import com.eventbride.otherService.OtherService;
 import com.eventbride.service.Service;
+import com.eventbride.venue.Venue;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +33,10 @@ public class Rating extends BaseEntity{
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id", nullable = false)
-    private Service service;
-    
+    @JoinColumn(name = "other_service", nullable = false)
+    private OtherService otherService;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venue", nullable = false)
+    private Venue venue;
 }

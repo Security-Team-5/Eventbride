@@ -1,5 +1,6 @@
 package com.eventbride.event;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
@@ -37,7 +38,7 @@ public class Event extends BaseEntity{
     @Column(name = "budget", precision = 9, scale = 2, nullable = false)
     @Digits(integer = 7, fraction = 2)
     @DecimalMin("0.0")
-    private Double budget;
+    private BigDecimal budget;
 
     @Column(name = "event_date", nullable = false)
     private LocalDate eventDate;

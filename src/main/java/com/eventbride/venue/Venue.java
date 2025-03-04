@@ -1,9 +1,15 @@
 package com.eventbride.venue;
 
+import java.util.List;
+
+import com.eventbride.rating.Rating;
 import com.eventbride.service.Service;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -41,5 +47,8 @@ public class Venue extends Service {
     @Column(name = "surface", nullable = false)
     @DecimalMin("0.0")
     private double surface;
+    
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rating> ratings;
 
 }

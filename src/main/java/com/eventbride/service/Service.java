@@ -20,12 +20,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.persistence.InheritanceType;
 
-@Entity
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 public class Service extends BaseEntity {
 
     @Column(name = "name", nullable = false)
@@ -62,6 +60,4 @@ public class Service extends BaseEntity {
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier; */
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Rating> ratings;
 }
