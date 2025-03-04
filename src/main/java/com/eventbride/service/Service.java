@@ -1,11 +1,18 @@
 package com.eventbride.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.eventbride.model.BaseEntity;
+import com.eventbride.rating.Rating;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Inheritance;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
@@ -13,10 +20,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.persistence.InheritanceType;
 
+@Entity
 @Getter
 @Setter
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Service extends BaseEntity {
 
     @Column(name = "name", nullable = false)
@@ -52,4 +61,7 @@ public class Service extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier; */
+
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rating> ratings;
 }

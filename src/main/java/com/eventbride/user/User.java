@@ -4,7 +4,8 @@ import com.eventbride.model.Person;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,4 +26,13 @@ public class User extends Person{
     @NotBlank
     @Size(min = 1, max = 500)
     private String profilePicture;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type", nullable = false)
+    private UserType userType;
+
+    public enum UserType {
+        CLIENT, 
+        SUPPLIER 
+    }
 }
