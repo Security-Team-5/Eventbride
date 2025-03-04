@@ -2,11 +2,13 @@ package com.eventbride.event;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
-
+import com.eventbride.invitation.Invitation;
 import com.eventbride.model.BaseEntity;
 import com.eventbride.user.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +16,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
@@ -22,7 +25,7 @@ import lombok.Setter;
 import lombok.Getter;
 
 @Entity
-@Table(name = "event")
+@Table(name = "events")
 @Getter
 @Setter
 public class Event extends BaseEntity{
@@ -46,6 +49,9 @@ public class Event extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invitation> invitations;
 
     public enum EventType {
         WEDDING, 
