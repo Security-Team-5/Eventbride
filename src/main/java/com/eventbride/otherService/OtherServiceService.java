@@ -53,6 +53,10 @@ public class OtherServiceService {
         return otherServiceRepo.findByAvailable(available);
     }
 
+    public List<OtherService> getFilteredOtherServices(String name, String city, OtherServiceType type) {
+        return otherServiceRepo.findByFilters(name, city, type);
+    }
+
 
     @Transactional
     public OtherService createOtherService(OtherService otherService) {
