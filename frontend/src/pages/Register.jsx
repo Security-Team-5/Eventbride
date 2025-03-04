@@ -35,7 +35,7 @@ const Register = () => {
       });
 
       console.log("Usuario registrado:", response.data);
-      navigate("/"); 
+      navigate("/login"); 
     } catch (error) {
       console.error("Error en el registro:", error.response?.data || error.message);
       setError("Error al registrarse. Inténtalo de nuevo.");
@@ -56,7 +56,7 @@ const Register = () => {
           <input type="password" name="password" placeholder="Contraseña" value={form.password} onChange={handleChange} required />
           <button type="submit">Registrarse</button>
         </form>
-        <p>¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link></p>
+        <p>¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link></p>
       </div>
     </div>
   );
