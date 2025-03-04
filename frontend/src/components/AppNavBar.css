@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 60px;
-    background-color: #333;
+    background-color: #F9EBE1;
     padding: 10px 20px;
     display: flex;
     align-items: center;
@@ -19,14 +19,14 @@
 }
 
 .navbar-logo {
-    width: 50px;
+    width: 40px;
     height: auto;
     margin-right: 10px;
 }
 
 .navbar-title {
-    color: white;
-    font-size: 22px;
+    color: black; /* Ajustado para mejor contraste */
+    font-size: 20px;
     font-weight: bold;
 }
 
@@ -45,14 +45,49 @@
 
 .navbar-list a {
     text-decoration: none;
-    color: white;
+    color: black; /* Ajustado para mejor visibilidad en fondo claro */
     font-size: 18px;
     font-weight: bold;
     transition: color 0.3s;
 }
 
 .navbar-list a:hover {
-    color: #ffcc00;
+    color: #ff9900;
+}
+
+.navbar-card {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding-right: 10px;
+}
+
+.carta {
+    width: 60px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carta:hover {
+    transform: scale(1.1);
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.usuario {
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.usuario:hover {
+    transform: scale(1.1);
 }
 
 .home-container {
