@@ -36,7 +36,7 @@ function Navbar() {
     if (!currentUser) {
       return (
         <ul className="navbar-list">
-          <li><a href="/terminos">Términos y Condiciones</a></li>
+          <li><a href="/terminos-y-condiciones">Términos y Condiciones</a></li>
         </ul>
       );
     }
@@ -48,7 +48,7 @@ function Navbar() {
           <li><a href="/lugares">Lugares</a></li>
           <li><a href="/proveedores">Proveedores</a></li>
           <li><a href="/invitaciones">Invitaciones</a></li>
-          <li><a href="/terminos">Términos y Condiciones</a></li>
+          <li><a href="/terminos-y-condiciones">Términos y Condiciones</a></li>
         </ul>
       );
     }
@@ -57,7 +57,7 @@ function Navbar() {
       return (
         <ul className="navbar-list">
           <li><a href="/misservicios">Mis servicios</a></li>
-          <li><a href="/terminos">Términos y Condiciones</a></li>
+          <li><a href="/terminos-y-condiciones">Términos y Condiciones</a></li>
         </ul>
       );
     }
