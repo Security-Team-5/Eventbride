@@ -10,14 +10,11 @@ import com.eventbride.otherService.OtherService;
 import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -62,17 +59,10 @@ public class Event extends BaseEntity{
         COMMUNION
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "event_venue", 
-      joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"), 
-      inverseJoinColumns = @JoinColumn(name = "venue_id", referencedColumnName = "id"))
+    @OneToMany(mappedBy = "event")
     private List<Venue> venues;
 
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "event_other_service", 
-      joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"), 
-      inverseJoinColumns = @JoinColumn(name = "other_service_id", referencedColumnName = "id"))
+    @OneToMany(mappedBy = "event")
     private List<OtherService> otherServices;
 
 }
