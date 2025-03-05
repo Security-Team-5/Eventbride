@@ -41,7 +41,7 @@ function Navbar() {
       );
     }
 
-    if (currentUser.userType === "cliente") {
+    if (currentUser.userType === "CLIENT") {
       return (
         <ul className="navbar-list">
           <li><a href="/miseventos">Mis eventos</a></li>
@@ -53,7 +53,7 @@ function Navbar() {
       );
     }
 
-    if (currentUser.userType === "proveedor") {
+    if (currentUser.userType === "SUPPLIER") {
       return (
         <ul className="navbar-list">
           <li><a href="/misservicios">Mis servicios</a></li>
