@@ -1,7 +1,6 @@
 package com.eventbride.service;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
 
 import com.eventbride.model.BaseEntity;
 
@@ -58,7 +57,7 @@ public class Service extends BaseEntity {
     private String description;
 
     @Column(name = "hours", nullable = false)
-    private LocalTime hours;    
+    private Integer hours;    
 
     @Column(name = "limited_by_price_per_guest", nullable = false)
     private Boolean limitedByPricePerGuest;
