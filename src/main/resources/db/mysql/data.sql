@@ -17,18 +17,18 @@ INSERT IGNORE INTO users (id, username, user_type, email, first_name, last_name,
 (14, 'Mongo mango', 'SUPPLIER', 'mongomango@example.com', 'Mongo', 'Mango', '932649056', '33333333B', 'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK');
 
 
-INSERT IGNORE INTO venues (id, postal_code, coordinates, address, max_guests, surface, name, available, city_available, service_price, picture, description, user_id) VALUES 
-(1, '41001', '37.388630, -5.982430', 'Calle Sierpes, 1', 110, 100.00, 'Prueba1' ,TRUE, 'Sevilla', 1000.00, 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '¿Sabías que entre nuestros servicios se encuentra la posibilidad de disfrutar de un castillo hinchable? ¡Los más pequeños se lo pasarán en grande!', 6),
-(2, '41002', '37.388630, -5.982430', 'Calle Sierpes, 2', 200, 180.00, 'Prueba9' ,TRUE, 'Sevilla', 400.00, 'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', 'Proporcionamos un lugar apegado a la naturaleza para que puedas disfrutar de un evento inolvidable.', 9);
+INSERT IGNORE INTO venues (id, postal_code, coordinates, address, max_guests, surface, name, available, city_available, service_price_guest, service_price_hour, picture, description, user_id, hours, limited_by_price_per_guest, limited_by_price_per_hour, fixed_price) VALUES 
+(1, '41001', '37.388630, -5.982430', 'Calle Sierpes, 1', 110, 100.00, 'Prueba1' ,TRUE, 'Sevilla', 1000.00, null, 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '¿Sabías que entre nuestros servicios se encuentra la posibilidad de disfrutar de un castillo hinchable? ¡Los más pequeños se lo pasarán en grande!', 6, 0, TRUE, FALSE, null),
+(2, '41002', '37.388630, -5.982430', 'Calle Sierpes, 2', 200, 180.00, 'Prueba9' ,TRUE, 'Sevilla', null, 400.00,'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', 'Proporcionamos un lugar apegado a la naturaleza para que puedas disfrutar de un evento inolvidable.', 9, 6, FALSE, TRUE, null);
 
-INSERT IGNORE INTO other_services (id, other_service_type, extra_information, name, available, city_available, service_price, picture, description, user_id) VALUES
-(1, 'ENTERTAINMENT', 'Servicio de fotografía',  'Fotografías J. L. Morilla' ,TRUE, 'Sevilla', 500.00, 'https://scontent.fsvq2-1.fna.fbcdn.net/v/t39.30808-6/290011138_447969930669386_9159143717868862291_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=T1p9q0sk0y0Q7kNvgEF3K__&_nc_oc=AdilDvDQ1V4pXorh78Fh0B784FQTl9Qpr33KK4Mml2qvkAV9L80X0ks7V0Kv9omBkWs&_nc_zt=23&_nc_ht=scontent.fsvq2-1.fna&_nc_gid=A9eedOJ07WIUB4Mn065w5VH&oh=00_AYBvtPG3AkWjWyLPHKkXMhBIDuubPS9BzWDWy59FVvluKw&oe=67CB913C', 'Soy Juan Luis, fotógrafo de bodas con más de 20 años de experiencia, y el encargado de daros un álbum de fotos con el que podáis revivir el día de vuestra boda, una y otra vez, con todo lujo de detalles.', 7),
-(2, 'CATERING', 'Cortador de jamon',  'Cortador de jamón J. M. Gomez' ,TRUE, 'Sevilla', 300.00, 'https://www.corteganaiberico.com/wp-content/uploads/2021/10/pata-negra-y-jamon-iberico-1.png', 'Eleva la experiencia gastronómica con cortes precisos y elegantes. Especializado en el arte del jamón, combina destreza, técnica y conocimiento del producto para resaltar su sabor y textura. Ideal para eventos, restaurantes o amantes del jamón que buscan un servicio de calidad y presentación impecable.', 8),
-(3, 'CATERING', 'Cortador de jamon',  'Cortador de jamón J. M. Gonzalez' ,TRUE, 'Sevilla', 400.00, 'https://www.jamonibericomatas.com/wp-content/uploads/2022/01/Consejos-sobre-como-cortar-jamon-iberico-de-bellota.jpg', 'Más que un oficio, un arte. Con habilidad y precisión, transforma cada pieza de jamón en finas lonchas que realzan su sabor y aroma. Un equilibrio perfecto entre técnica, tradición y pasión, ofreciendo una experiencia gastronómica única en eventos, celebraciones o catas especializadas', 9),
-(4, 'CATERING', 'Cortador de queso',  'Cortador de queso FelipeGN' ,TRUE, 'Sevilla', 200.00, 'https://cdn.shopify.com/s/files/1/0399/9901/3016/files/CORTAR_EL_QUESO-2.png?v=1740041498', 'En un rincón, cortando queso… Con paciencia y precisión, el maestro cortador transforma cada pieza en porciones perfectas, resaltando su textura y sabor. Entre aromas intensos y tablas bien dispuestas, su oficio convierte cada corte.', 10),
-(5, 'DECORATION', 'Decorador de eventos',  'Decorador de eventos DLDecor' ,TRUE, 'Sevilla', 200.00, 'https://www.davidlaradecor.es/wp-content/uploads/2018/01/logo-portada.png', 'Convierte tus eventos en experiencias inolvidables. Con un estilo único y creativo, el decorador de eventos transforma espacios en escenarios de ensueño, llenos de color, texturas y detalles que reflejan tu personalidad y estilo.', 11),
-(6, 'ENTERTAINMENT', 'Sonido para eventos',  'Master Sound' ,TRUE, 'Sevilla', 200.00, 'https://scontent.fsvq2-2.fna.fbcdn.net/v/t39.30808-6/362215902_1714969262352914_6618147487731709894_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=8FMz_wolYrMQ7kNvgGNwSK5&_nc_oc=AdiIIcUPAoH_UqWyaDIdw2cb0WPREpTUFc5DmWjOCKzMD5kZjT2JpyU8y7naUK67Hhk&_nc_zt=23&_nc_ht=scontent.fsvq2-2.fna&_nc_gid=AAjj9XxIRPa0kkXRysufzjn&oh=00_AYAKmsRLHiYkWxtMZgned_gKZjg0oVc1QXA-f18IrkBuAA&oe=67CB861C', 'Convierte tus eventos en experiencias inolvidables. Con un estilo único y creativo, el decorador de eventos transforma espacios en escenarios de ensueño, llenos de color, texturas y detalles que reflejan tu personalidad y estilo.', 12),
-(7, 'CATERING', 'Catering para eventos',  'ARCOS 3 CATERING' ,TRUE, 'Sevilla', 200.00, 'https://cdn0.bodas.net/vendor/16070/3_2/960/jpeg/whatsapp-image-2022-11-17-at-1-15-18-pm_1_16070-166868815185642.jpeg', 'Nos ponemos a tu servicio con nuestro equipo de profesionales preocupados por que todo salga perfecto en cualquier tipo de evento o celebración que realicen.', 13);
+INSERT IGNORE INTO other_services (id, other_service_type, extra_information, name, available, city_available, service_price_guest, service_price_hour, picture, description, user_id, hours, limited_by_price_per_guest, limited_by_price_per_hour, fixed_price) VALUES
+(1, 'ENTERTAINMENT', 'Servicio de fotografía',  'Fotografías J. L. Morilla' ,TRUE, 'Sevilla', 500.00, null, 'https://scontent.fsvq2-1.fna.fbcdn.net/v/t39.30808-6/290011138_447969930669386_9159143717868862291_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=T1p9q0sk0y0Q7kNvgEF3K__&_nc_oc=AdilDvDQ1V4pXorh78Fh0B784FQTl9Qpr33KK4Mml2qvkAV9L80X0ks7V0Kv9omBkWs&_nc_zt=23&_nc_ht=scontent.fsvq2-1.fna&_nc_gid=A9eedOJ07WIUB4Mn065w5VH&oh=00_AYBvtPG3AkWjWyLPHKkXMhBIDuubPS9BzWDWy59FVvluKw&oe=67CB913C', 'Soy Juan Luis, fotógrafo de bodas con más de 20 años de experiencia, y el encargado de daros un álbum de fotos con el que podáis revivir el día de vuestra boda, una y otra vez, con todo lujo de detalles.', 7, null, TRUE, FALSE, null),
+(2, 'CATERING', 'Cortador de jamon',  'Cortador de jamón J. M. Gomez' ,TRUE, 'Sevilla', null, 300.00, 'https://www.corteganaiberico.com/wp-content/uploads/2021/10/pata-negra-y-jamon-iberico-1.png', 'Eleva la experiencia gastronómica con cortes precisos y elegantes. Especializado en el arte del jamón, combina destreza, técnica y conocimiento del producto para resaltar su sabor y textura. Ideal para eventos, restaurantes o amantes del jamón que buscan un servicio de calidad y presentación impecable.', 1, 8, FALSE, TRUE, null),
+(3, 'CATERING', 'Cortador de jamon',  'Cortador de jamón J. M. Gonzalez' ,TRUE, 'Sevilla', null, 400.00, 'https://www.jamonibericomatas.com/wp-content/uploads/2022/01/Consejos-sobre-como-cortar-jamon-iberico-de-bellota.jpg', 'Más que un oficio, un arte. Con habilidad y precisión, transforma cada pieza de jamón en finas lonchas que realzan su sabor y aroma. Un equilibrio perfecto entre técnica, tradición y pasión, ofreciendo una experiencia gastronómica única en eventos, celebraciones o catas especializadas', 1, 9, FALSE, TRUE, null),
+(4, 'CATERING', 'Cortador de queso',  'Cortador de queso FelipeGN' ,TRUE, 'Sevilla', null, 200.00, 'https://cdn.shopify.com/s/files/1/0399/9901/3016/files/CORTAR_EL_QUESO-2.png?v=1740041498', 'En un rincón, cortando queso… Con paciencia y precisión, el maestro cortador transforma cada pieza en porciones perfectas, resaltando su textura y sabor. Entre aromas intensos y tablas bien dispuestas, su oficio convierte cada corte.', 2, 10, FALSE, TRUE, null),
+(5, 'DECORATION', 'Decorador de eventos',  'Decorador de eventos DLDecor' ,TRUE, 'Sevilla', null, null, 'https://www.davidlaradecor.es/wp-content/uploads/2018/01/logo-portada.png', 'Convierte tus eventos en experiencias inolvidables. Con un estilo único y creativo, el decorador de eventos transforma espacios en escenarios de ensueño, llenos de color, texturas y detalles que reflejan tu personalidad y estilo.', null, 11, FALSE, FALSE, 200.00),
+(6, 'ENTERTAINMENT', 'Sonido para eventos',  'Master Sound' ,TRUE, 'Sevilla', null, 200.00, 'https://scontent.fsvq2-2.fna.fbcdn.net/v/t39.30808-6/362215902_1714969262352914_6618147487731709894_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=8FMz_wolYrMQ7kNvgGNwSK5&_nc_oc=AdiIIcUPAoH_UqWyaDIdw2cb0WPREpTUFc5DmWjOCKzMD5kZjT2JpyU8y7naUK67Hhk&_nc_zt=23&_nc_ht=scontent.fsvq2-2.fna&_nc_gid=AAjj9XxIRPa0kkXRysufzjn&oh=00_AYAKmsRLHiYkWxtMZgned_gKZjg0oVc1QXA-f18IrkBuAA&oe=67CB861C', 'Convierte tus eventos en experiencias inolvidables. Con un estilo único y creativo, el decorador de eventos transforma espacios en escenarios de ensueño, llenos de color, texturas y detalles que reflejan tu personalidad y estilo.', 5, 12, FALSE, TRUE, null),
+(7, 'CATERING', 'Catering para eventos',  'ARCOS 3 CATERING' ,TRUE, 'Sevilla', 200.00, null, 'https://cdn0.bodas.net/vendor/16070/3_2/960/jpeg/whatsapp-image-2022-11-17-at-1-15-18-pm_1_16070-166868815185642.jpeg', 'Nos ponemos a tu servicio con nuestro equipo de profesionales preocupados por que todo salga perfecto en cualquier tipo de evento o celebración que realicen.', 13, null, TRUE, FALSE, null);
 
 INSERT IGNORE INTO events (id, event_type, guests, budget, event_date, user_id) VALUES
 (1, 'WEDDING', 120, 1100.00, '2023-12-31', 1),
@@ -41,52 +41,6 @@ INSERT IGNORE INTO events (id, event_type, guests, budget, event_date, user_id) 
 (8, 'COMMUNION', 30, 3000.00, '2023-08-30', 3),
 (9, 'WEDDING', 200, 20000.00, '2023-09-30', 4),
 (10, 'CHRISTENING', 100, 11000.00, '2023-10-30', 5);
-
-INSERT IGNORE INTO event_venue (venue_id, event_id) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 6),
-(1, 7),
-(1, 8),
-
-(2, 4),
-(2, 5),
-(2, 9),
-(2, 10);
-
-INSERT IGNORE INTO event_other_service (other_service_id, event_id) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 6),
-(1, 7),
-
-(2, 1),
-(2, 5),
-(2, 6),
-
-(3, 2),
-(3, 7),
-(3, 10),
-
-(4, 3),
-(4, 8),
-
-(5, 4),
-(5, 5),
-(5, 8),
-(5, 9),
-(5, 10),
-
-(6, 2),
-(6, 3),
-(6, 4),
-(6, 5),
-
-(7, 4),
-(7, 9);
-
 
 INSERT IGNORE INTO invitations (id, first_name, last_name, telephone, address, email, event_id) VALUES
 (1, 'Antonio', 'Martinez Ares', '654000111', 'Calle Sierpes, 1', 'oveja@example.com', 1),
@@ -128,3 +82,11 @@ INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comm
 (19, 1, 3, null, 4, 'Great service, would recommend!'),
 (20, 1, 5, null, 4, 'Great service, would recommend!'),
 (21, 1, 6, null, 4, 'Great service, would recommend!');
+
+INSERT INTO event_properties (event_id, other_service_id, venue_id, approved, request_date)
+VALUES
+(1, 1, 1, TRUE, '2023-12-01'),
+(2, 2, 2, TRUE, '2023-12-02'),
+(3, 3, 1, TRUE, '2023-12-03'),
+(4, 4, 2, TRUE, '2023-12-04');
+
