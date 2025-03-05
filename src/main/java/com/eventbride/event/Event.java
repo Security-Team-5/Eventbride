@@ -24,8 +24,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "events")
@@ -64,15 +64,15 @@ public class Event extends BaseEntity{
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "event_venue", 
-      joinColumns = @JoinColumn(name = "venue_id", referencedColumnName = "id"), 
-      inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
+      joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"), 
+      inverseJoinColumns = @JoinColumn(name = "venue_id", referencedColumnName = "id"))
     private List<Venue> venues;
 
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "event_other_service", 
-      joinColumns = @JoinColumn(name = "other_service_id", referencedColumnName = "id"), 
-      inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
+      joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"), 
+      inverseJoinColumns = @JoinColumn(name = "other_service_id", referencedColumnName = "id"))
     private List<OtherService> otherServices;
 
 }
