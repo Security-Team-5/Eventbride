@@ -18,7 +18,7 @@ public class OtherServiceController {
 
     @Autowired
     private OtherServiceService otherServiceService;
-
+    
     @GetMapping("/filter")
     public List<OtherService> getFilteredOtherServices(
             @RequestParam(required = false) String name,

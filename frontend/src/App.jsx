@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import OtherServiceScreen from "./pages/OtherServiceScreen";
 import "./App.css"; 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/other-services" element={<OtherServiceScreen />} />
           </Routes>
         </div>
       </Router>
