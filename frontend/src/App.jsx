@@ -8,37 +8,42 @@ import NavBar from "./components/AppNavBar";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Nuevo estado para saber si está cargando
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
         const token = window.localStorage.getItem("jwt");
-          console.log("Token JWT:", token);
-          
-          // Verificar si el token existe antes de hacer la solicitud
-          if (token) {
-            const response = await fetch("http://localhost:8080/api/users/auth/current-user", {
-              method: "GET",
-              headers: {
-                "Authorization": `Bearer ${token}`,  // Incluir el token JWT en el encabezado
-                "Content-Type": "application/json",
-              },
-              credentials: "include", // Si usas cookies, de lo contrario puedes eliminar esto
-            });
-            const data = await response.json(); 
-            console.log("Data:", data);
-            setCurrentUser(data.user);
-            localStorage.setItem("user", JSON.stringify(data.user));  // Almacenar datos del usuario
-          }
+        console.log("Token JWT:", token);
+        
+        if (token) {
+          const response = await fetch("http://localhost:8080/api/users/auth/current-user", {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          });
+          const data = await response.json();
+          setCurrentUser(data.user);
+          localStorage.setItem("user", JSON.stringify(data.user)); 
+        }
       } catch (error) {
         console.error("Error fetching current user:", error);
         setCurrentUser(null);
         localStorage.removeItem("user");
+      } finally {
+        setLoading(false); // Después de cargar los datos, setea el estado de loading a false
       }
     };
 
-     fetchCurrentUser();
+    fetchCurrentUser();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Muestra algo mientras se carga el usuario
+  }
 
   return (
     <div className="app-container"> 
