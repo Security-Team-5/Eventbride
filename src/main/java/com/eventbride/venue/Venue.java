@@ -2,11 +2,12 @@ package com.eventbride.venue;
 
 import java.util.List;
 
-import com.eventbride.event.Event;
+import com.eventbride.event_properties.EventProperties;
 import com.eventbride.rating.Rating;
 import com.eventbride.service.Service;
 import com.eventbride.user.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -58,8 +59,7 @@ public class Venue extends Service {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
+    private List<EventProperties> eventProperties;
 
 }

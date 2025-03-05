@@ -82,3 +82,11 @@ INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comm
 (19, 1, 3, null, 4, 'Great service, would recommend!'),
 (20, 1, 5, null, 4, 'Great service, would recommend!'),
 (21, 1, 6, null, 4, 'Great service, would recommend!');
+
+INSERT INTO event_properties (event_id, other_service_id, venue_id, approved, request_date)
+VALUES
+(1, 1, 1, TRUE, '2023-12-01'),
+(2, 2, 2, TRUE, '2023-12-02'),
+(3, 3, 1, TRUE, '2023-12-03'),
+(4, 4, 2, TRUE, '2023-12-04');
+
