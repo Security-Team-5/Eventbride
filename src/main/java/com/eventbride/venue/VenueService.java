@@ -17,4 +17,9 @@ public class VenueService {
         return venueRepository.findAll();
     }
 
+    @Transactional
+    public Venue save(Venue venue) {
+        return venueRepository.save(venue);
+    }
+
 }
