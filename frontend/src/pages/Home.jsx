@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import "../static/resources/css/Home.css";
-import "../components/AppNavBar.css";
 
 // eslint-disable-next-line react/prop-types
 function Home({ user }) {
