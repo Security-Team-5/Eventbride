@@ -115,13 +115,111 @@ const RegistrarServicio = () => {
                             </div>
                             {serviceType === "venue" && (
                                 <div>
-                                    <p>Campos específicos para recintos de eventos</p>
+                                    <p>Campos específicos para recintos de eventos:</p>
+
+                                    <div>
+                                        <label htmlFor="postalCode">Código postal:</label>
+                                        <input
+                                            type="text"
+                                            id="postalCode"
+                                            name="postalCode"
+                                            value={formData.postalCode}
+                                            onChange={handleChange}
+                                            required
+                                            minLength="1"
+                                            maxLength="5"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="coordinates">Coordenadas:</label>
+                                        <input
+                                            type="text"
+                                            id="coordinates"
+                                            name="coordinates"
+                                            value={formData.coordinates}
+                                            onChange={handleChange}
+                                            required
+                                            minLength="1"
+                                            maxLength="30"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="address">Dirección:</label>
+                                        <input
+                                            type="text"
+                                            id="address"
+                                            name="address"
+                                            value={formData.address}
+                                            onChange={handleChange}
+                                            required
+                                            minLength="1"
+                                            maxLength="50"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="maxGuests">Máximo de invitados:</label>
+                                        <input
+                                            type="number"
+                                            id="maxGuests"
+                                            name="maxGuests"
+                                            value={formData.maxGuests}
+                                            onChange={handleChange}
+                                            required
+                                            min="1"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="surface">Superficie (m²):</label>
+                                        <input
+                                            type="number"
+                                            id="surface"
+                                            name="surface"
+                                            value={formData.surface}
+                                            onChange={handleChange}
+                                            required
+                                            min="1"
+                                        />
+                                    </div>
+
                                     <button type="submit">Registrar recinto</button>
                                 </div>
                             )}
                             {serviceType === "other" && (
                                 <div>
-                                    <p>Campos específicos para otro tipo de servicio</p>
+                                    <p>Campos específicos para otro tipo de servicio:</p>
+                                    
+                                    <div>
+                                        <label htmlFor="otherServiceType">Tipo de servicio:</label>
+                                        <select
+                                            id="otherServiceType"
+                                            name="otherServiceType"
+                                            value={formData.otherServiceType}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="CATERING">Catering</option>
+                                            <option value="ENTERTAINMENT">Entretenimiento</option>
+                                            <option value="DECORATION">Decoración</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label htmlFor="extraInformation">Información extra:</label>
+                                        <input
+                                            type="text"
+                                            id="extraInformation"
+                                            name="extraInformation"
+                                            value={formData.extraInformation}
+                                            onChange={handleChange}
+                                            required
+                                            minLength="1"
+                                            maxLength="250"
+                                        />
+                                    </div>
+
                                     <button type="submit">Registrar otro servicio</button>
                                 </div>
                             )}
