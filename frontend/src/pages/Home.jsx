@@ -13,7 +13,7 @@ function Home({ user }) {
   function getVenues() {
     fetch("/api/venues", {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       method: "GET",
     })

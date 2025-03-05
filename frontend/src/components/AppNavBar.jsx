@@ -19,18 +19,21 @@ function Navbar() {
           setCurrentUser(user);
           localStorage.setItem("user", JSON.stringify(user));
         } else {
-          setCurrentUser(null);
+//          setCurrentUser(null);
           localStorage.removeItem("user");
         }
       } catch (error) {
         console.error("Error fetching current user:", error);
-        setCurrentUser(null);
+//        setCurrentUser(null);
         localStorage.removeItem("user");
       }
     };
 
     fetchCurrentUser();
-  }, []);
+    console.log("currentUser", currentUser);
+    setCurrentUser({userType: "SUPPLIER"});
+    console.log("currentUser", currentUser);
+  }, currentUser);
 
   const renderNavList = () => {
     if (!currentUser) {
