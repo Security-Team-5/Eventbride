@@ -25,7 +25,7 @@ const Register = () => {
     console.log("Formulario enviado:", form); 
 
     try {
-      const response = await axios.post("http://localhost:8080/api/users/register", {
+      const response = await axios.post("http://localhost:8080/api/users/auth/register", {
         firstName: form.firstName,
         lastName: form.lastName,
         username: form.username,

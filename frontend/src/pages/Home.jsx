@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import "../static/resources/css/Home.css";
+import "../components/AppNavBar.css";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 // eslint-disable-next-line react/prop-types
 function Home({ user }) {
-  const [currentUser, setCurrentUser] = useState(user);
+  const {currentUser, loading} = useCurrentUser({user})
   const [venues, setVenues] = useState([]); // Estado para almacenar los venues
-
 
   // Obtener venues desde la API
   function getVenues() {
@@ -25,32 +26,9 @@ function Home({ user }) {
   }
 
   useEffect(() => {
-    if (!user) {
-      const fetchCurrentUser = async () => {
-        try {
-          const response = await fetch("http://localhost:8080/api/auth/current-user", {
-            method: "GET",
-            credentials: "include",
-          });
-          if (response.ok) {
-            const user = await response.json();
-            setCurrentUser(user);
-            localStorage.setItem("user", JSON.stringify(user));
-          } else {
-            setCurrentUser(null);
-            localStorage.removeItem("user");
-          }
-        } catch (error) {
-          console.error("Error fetching current user:", error);
-          setCurrentUser(null);
-          localStorage.removeItem("user");
-        }
-      };
-  
-      fetchCurrentUser();
-    }
-    getVenues(); // Llamar a la API al cargar el componente
+    getVenues(); // Llamar a la API de venues al cargar el componente
   }, [user]);
+
 
   return (
     <div className="home-container">
