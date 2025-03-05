@@ -1,4 +1,5 @@
-import "../components/AppNavBar.css";
+import { useState, useEffect } from "react";
+import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
 import usuario from "../static/resources/images/user.png";
@@ -10,30 +11,32 @@ function Navbar() {
   const renderNavList = () => {
     if (!currentUser) {
       return (
-        <ul className="navbar-list">
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
+        <p className="navbar-list">
+          <a href="/terminos-y-condiciones">
+          Términos y Condiciones
+          </a>
+        </p>
       );
     }
     // TODO cambiar este tipo de implicaciones por el role correcto
     if (currentUser.userType === "CLIENT") {
       return (
-        <ul className="navbar-list">
-          <li><a href="/miseventos">Mis eventos</a></li>
-          <li><a href="/lugares">Lugares</a></li>
-          <li><a href="/proveedores">Proveedores</a></li>
-          <li><a href="/invitaciones">Invitaciones</a></li>
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
+        <div>
+          <p className="navbar-list"><a href="/miseventos">Mis eventos</a></p>
+          <p className="navbar-list"><a href="/lugares">Lugares</a></p>
+          <p className="navbar-list"><a href="/proveedores">Proveedores</a></p>
+          <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
+          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
+        </div>
       );
     }
 
     if (currentUser.userType === "SUPPLIER") {
       return (
-        <ul className="navbar-list">
-          <li><a href="/misservicios">Mis servicios</a></li>
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
+        <div>
+          <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
+          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
+        </div>
       );
     }
 
