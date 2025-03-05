@@ -53,6 +53,7 @@ public class OtherServiceService {
         return otherServiceRepo.findByAvailable(available);
     }
 
+    @Transactional
     public List<OtherService> getFilteredOtherServices(String name, String city, OtherServiceType type) {
         return otherServiceRepo.findByFilters(name, city, type);
     }
@@ -60,13 +61,6 @@ public class OtherServiceService {
 
     @Transactional
     public OtherService createOtherService(OtherService otherService) {
-        if (otherService.getId() != null) {
-            throw new RuntimeException("No se puede registrar un servicio con Id ya existente");
-        }
-
-        if(otherServiceRepo.existsByName(otherService.getName())) {
-            throw new RuntimeException("Ya existe un servicio con ese nombre, introduce otro");
-        }
         return otherServiceRepo.save(otherService);
     }
 

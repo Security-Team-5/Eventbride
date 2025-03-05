@@ -25,7 +25,7 @@ public class VenueController {
     }
 
     @PostMapping
-    public ResponseEntity<Venue> saveVenue(@Valid @RequestBody Venue venue) {
+    public ResponseEntity<Venue> createVenue(@Valid @RequestBody Venue venue) {
         try {
             Venue newVenue = venueService.save(venue);
             return ResponseEntity.ok(newVenue);
