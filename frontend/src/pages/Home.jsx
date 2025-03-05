@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from "react";
 import "../static/resources/css/Home.css";
 import "../components/AppNavBar.css";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 // eslint-disable-next-line react/prop-types
 function Home({ user }) {
-  const [currentUser, setCurrentUser] = useState(user);
+  const {currentUser, loading} = useCurrentUser({user})
   const [venues, setVenues] = useState([]); // Estado para almacenar los venues
 
   // Obtener venues desde la API
@@ -25,46 +26,9 @@ function Home({ user }) {
   }
 
   useEffect(() => {
-    if (!user) {
-      const fetchCurrentUser = async () => {
-        try {
-          // Obtener el token almacenado en localStorage
-          const token = window.localStorage.getItem("jwt");
-          console.log("Token JWT:", token);
-          
-          // Verificar si el token existe antes de hacer la solicitud
-          if (token) {
-            const response = await fetch("http://localhost:8080/api/users/auth/current-user", {
-              method: "GET",
-              headers: {
-                "Authorization": `Bearer ${token}`,  // Incluir el token JWT en el encabezado
-                "Content-Type": "application/json",
-              },
-              credentials: "include", // Si usas cookies, de lo contrario puedes eliminar esto
-            });
-
-            if (response.ok) {
-              const user = await response.json();
-              setCurrentUser(user);
-              localStorage.setItem("user", JSON.stringify(user));  // Almacenar datos del usuario
-            } else {
-              setCurrentUser(null);
-              localStorage.removeItem("user");
-            }
-          } else {
-            setCurrentUser(null); // Si no hay token, no hay usuario autenticado
-          }
-        } catch (error) {
-          console.error("Error fetching current user:", error);
-          setCurrentUser(null);
-          localStorage.removeItem("user");
-        }
-      };
-
-      fetchCurrentUser();
-    }
     getVenues(); // Llamar a la API de venues al cargar el componente
   }, [user]);
+
 
   return (
     <div className="home-container">
