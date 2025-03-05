@@ -1,36 +1,11 @@
-import { useState, useEffect } from "react";
 import "../components/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
 import usuario from "../static/resources/images/user.png";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 function Navbar() {
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/auth/current-user", {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const user = await response.json();
-          setCurrentUser(user);
-          localStorage.setItem("user", JSON.stringify(user));
-        } else {
-          setCurrentUser(null);
-          localStorage.removeItem("user");
-        }
-      } catch (error) {
-        console.error("Error fetching current user:", error);
-        setCurrentUser(null);
-        localStorage.removeItem("user");
-      }
-    };
-
-    fetchCurrentUser();
-  }, []);
+  const {currentUser, loading} = useCurrentUser(null)
 
   const renderNavList = () => {
     if (!currentUser) {
@@ -40,7 +15,7 @@ function Navbar() {
         </ul>
       );
     }
-
+    // TODO cambiar este tipo de implicaciones por el role correcto
     if (currentUser.userType === "CLIENT") {
       return (
         <ul className="navbar-list">
@@ -83,6 +58,18 @@ function Navbar() {
             <a href="/perfil">
               <img src={usuario} alt="Usuario" className="usuario" />
             </a>
+          </div>
+          <div className="navbar-user">
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("jwt");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+              }}
+            >
+              Logout
+            </button>
           </div>
         </>
       )}
