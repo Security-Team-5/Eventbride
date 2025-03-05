@@ -8,8 +8,7 @@ import NavBar from "./components/AppNavBar";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const {currentUser, loading} = useCurrentUser({user})
+  const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
 
   if (loading) {
     return <div>Loading...</div>; // Muestra algo mientras se carga el usuario
@@ -23,7 +22,7 @@ function App() {
           <Routes>
             <Route path="/user"  />
             <Route path="/" element={currentUser ? <Home user={currentUser} /> : <Navigate to="/login" />} />
-            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route path="/login" element={<Login setUser={setCurrentUser} />} />
             <Route path="/register" element={<Register />} />
           </Routes>
         </div>

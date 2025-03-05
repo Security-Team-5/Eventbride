@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { getCurrentUser } from "../utils/api";
 
 export const useCurrentUser = () => {
 
@@ -15,16 +16,7 @@ export const useCurrentUser = () => {
             
             // Verificar si el token existe antes de hacer la solicitud
             if (token) {
-            const response = await fetch("http://localhost:8080/api/users/auth/current-user", {
-                method: "GET",
-                headers: {
-                "Authorization": `Bearer ${token}`,  // Incluir el token JWT en el encabezado
-                "Content-Type": "application/json",
-                },
-                credentials: "include", // Si usas cookies, de lo contrario puedes eliminar esto
-            });
-
-                const data = await response.json();
+                const data = getCurrentUser({token});
                 setCurrentUser(data.user);
                 localStorage.setItem("user", JSON.stringify(data.user));  // Almacenar datos del usuario
                 
@@ -52,6 +44,6 @@ export const useCurrentUser = () => {
         //}
       }, []);
     
-    return {currentUser, loading}
+    return {currentUser, loading, setCurrentUser}
     
 }

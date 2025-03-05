@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import "../components/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
@@ -59,6 +58,18 @@ function Navbar() {
             <a href="/perfil">
               <img src={usuario} alt="Usuario" className="usuario" />
             </a>
+          </div>
+          <div className="navbar-user">
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("jwt");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+              }}
+            >
+              Logout
+            </button>
           </div>
         </>
       )}
