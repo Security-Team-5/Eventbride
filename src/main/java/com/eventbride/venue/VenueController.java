@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import jakarta.validation.Valid;;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -33,6 +34,16 @@ public class VenueController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(venues);
+    }
+
+    @PostMapping
+    public ResponseEntity<Venue> saveVenue(@Valid @RequestBody Venue venue) {
+        try {
+            Venue newVenue = venueService.save(venue);
+            return ResponseEntity.ok(newVenue);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

@@ -21,5 +21,9 @@ public class VenueService {
     public List<Venue> getFilteredVenues(String city, Integer maxGuests, Double surface) {
         return venueRepository.findByFilters(city, maxGuests, surface);
     }
+    
+    public Venue save(Venue venue) {
+        return venueRepository.save(venue);
+    }
 
 }
