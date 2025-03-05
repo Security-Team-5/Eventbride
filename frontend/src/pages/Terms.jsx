@@ -62,11 +62,11 @@ function Terms() {
           siempre en línea con nuestras políticas generales.
           </p>
         </div>
-        <ul>
+        
           <li>Bodas: la cancelación gratuita debe realizarse al menos 5 meses antes de la fecha del evento.</li>
           <li>Bautizos: la cancelación gratuita debe realizarse al menos 2 meses antes del evento.</li>
           <li>Comuniones: la cancelación gratuita debe realizarse al menos 3 meses antes del evento.</li>
-        </ul>
+        
         
         <div className="term-paragraph">
           <p className="term">
