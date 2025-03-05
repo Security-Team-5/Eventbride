@@ -40,7 +40,7 @@ function Navbar() {
         </ul>
       );
     }
-
+    // TODO cambiar este tipo de implicaciones por el role correcto
     if (currentUser.userType === "CLIENT") {
       return (
         <ul className="navbar-list">

@@ -17,8 +17,9 @@ function Login({ setUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/auth/login", form);
+      const response = await axios.post("http://localhost:8080/api/users/auth/login", form);
       setUser(response.data);
+      window.localStorage.setItem("jwt", response.data.token);
       navigate("/");
     } catch (err) {
       setError("Credenciales incorrectas");
@@ -35,7 +36,7 @@ function Login({ setUser }) {
           <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
           <button type="submit">Login</button>
         </form>
-        <p>¿No tienes una cuenta? <a href="/register">Regístrate</a></p>
+        <p>¿No tienes una cuenta? <a href="/auth/register">Regístrate</a></p>
       </div>
     </div>
   );

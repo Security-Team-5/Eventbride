@@ -1,4 +1,4 @@
-INSERT IGNORE INTO users (id, username, user_type, email, first_name, last_name, telephone, dni, profile_picture, password) VALUES 
+INSERT IGNORE INTO users (id, username, role, email, first_name, last_name, telephone, dni, profile_picture, password) VALUES 
 -- clientes
 (1, 'alice123', 'CLIENT', 'alice@example.com', 'Alice', 'Johnson', '123456789', '00000000A', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Alice_in_wonderland_1951.jpg/1200px-Alice_in_wonderland_1951.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
 (2, 'bob456', 'CLIENT', 'bob@example.com', 'Bob', 'Smith', '987654321', '11111111A', 'https://i.pinimg.com/1200x/3c/de/d5/3cded5aa576c39ccdad0ddf4180903ca.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),

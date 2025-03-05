@@ -12,18 +12,24 @@ function App() {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/auth/current-user", {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const user = await response.json();
-          setCurrentUser(user);
-          localStorage.setItem("user", JSON.stringify(user));
-        } else {
-          setCurrentUser(null);
-          localStorage.removeItem("user");
-        }
+        const token = window.localStorage.getItem("jwt");
+          console.log("Token JWT:", token);
+          
+          // Verificar si el token existe antes de hacer la solicitud
+          if (token) {
+            const response = await fetch("http://localhost:8080/api/users/auth/current-user", {
+              method: "GET",
+              headers: {
+                "Authorization": `Bearer ${token}`,  // Incluir el token JWT en el encabezado
+                "Content-Type": "application/json",
+              },
+              credentials: "include", // Si usas cookies, de lo contrario puedes eliminar esto
+            });
+            const data = await response.json(); 
+            console.log("Data:", data);
+            setCurrentUser(data.user);
+            localStorage.setItem("user", JSON.stringify(data.user));  // Almacenar datos del usuario
+          }
       } catch (error) {
         console.error("Error fetching current user:", error);
         setCurrentUser(null);
@@ -31,7 +37,7 @@ function App() {
       }
     };
 
-    fetchCurrentUser();
+     fetchCurrentUser();
   }, []);
 
   return (
