@@ -42,52 +42,6 @@ INSERT IGNORE INTO events (id, event_type, guests, budget, event_date, user_id) 
 (9, 'WEDDING', 200, 20000.00, '2023-09-30', 4),
 (10, 'CHRISTENING', 100, 11000.00, '2023-10-30', 5);
 
-INSERT IGNORE INTO event_venue (venue_id, event_id) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 6),
-(1, 7),
-(1, 8),
-
-(2, 4),
-(2, 5),
-(2, 9),
-(2, 10);
-
-INSERT IGNORE INTO event_other_service (other_service_id, event_id) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 6),
-(1, 7),
-
-(2, 1),
-(2, 5),
-(2, 6),
-
-(3, 2),
-(3, 7),
-(3, 10),
-
-(4, 3),
-(4, 8),
-
-(5, 4),
-(5, 5),
-(5, 8),
-(5, 9),
-(5, 10),
-
-(6, 2),
-(6, 3),
-(6, 4),
-(6, 5),
-
-(7, 4),
-(7, 9);
-
-
 INSERT IGNORE INTO invitations (id, first_name, last_name, telephone, address, email, event_id) VALUES
 (1, 'Antonio', 'Martinez Ares', '654000111', 'Calle Sierpes, 1', 'oveja@example.com', 1),
 (2, 'Juan Manuel', 'Braza Benitez', '654000112', 'Calle Sierpes, 2', 'sheriff@example.com', 1),
