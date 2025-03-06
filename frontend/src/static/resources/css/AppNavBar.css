@@ -13,6 +13,13 @@
     z-index: 1000;
 }
 
+.navbar-flex {
+    display: flex;
+    align-items: center;
+    gap: 4em;
+    margin-left: 4em;
+}
+
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -38,7 +45,6 @@
     flex-direction: row;
     flex-grow: 1;
     justify-content: center;
-
 }
 
 .navbar-list li {

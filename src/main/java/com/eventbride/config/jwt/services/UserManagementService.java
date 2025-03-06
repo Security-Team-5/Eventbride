@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.eventbride.config.jwt.JWTUtils;
 import com.eventbride.dto.ReqRes;
+import com.eventbride.dto.UserDTO;
 import com.eventbride.user.User;
 import com.eventbride.user.UserRepository;
 
@@ -49,7 +50,7 @@ public class UserManagementService {
             user.setRole(registrationRequest.getRole());
             User userResult = userRepo.save(user);
             if (userResult.getId()>0) {
-                resp.setUser((userResult));
+                resp.setUser(new UserDTO(userResult));
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
             }
@@ -132,7 +133,7 @@ public class UserManagementService {
         ReqRes reqRes = new ReqRes();
         try {
             User userById = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User Not found"));
-            reqRes.setUser(userById);
+            reqRes.setUser(new UserDTO(userById));
             reqRes.setStatusCode(200);
             reqRes.setMessage("Users with id '" + id + "' found successfully");
         } catch (Exception e) {
@@ -184,7 +185,7 @@ public class UserManagementService {
                 }
 
                 User savedUser = userRepo.save(existingUser);
-                reqRes.setUser(savedUser);
+                reqRes.setUser(new UserDTO(savedUser));
                 reqRes.setStatusCode(200);
                 reqRes.setMessage("User updated successfully");
             } else {
@@ -203,7 +204,7 @@ public class UserManagementService {
         try {
             Optional<User> userOptional = userRepo.findByUsername(username);
             if (userOptional.isPresent()) {
-                reqRes.setUser(userOptional.get());
+                reqRes.setUser(new UserDTO(userOptional.get()));
                 reqRes.setStatusCode(200);
                 reqRes.setMessage("successful");
             } else {

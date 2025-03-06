@@ -30,6 +30,6 @@ public class ReqRes {
     private String profilePicture;
     private String role;
 
-    private User user;
+    private UserDTO user;
     private List<User> usersList;    
 }

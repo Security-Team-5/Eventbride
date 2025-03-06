@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
 import usuario from "../static/resources/images/user.png";
-import { useCurrentUser } from "../hooks/useCurrentUser";
 
 function Navbar() {
-  const {currentUser, loading} = useCurrentUser(null)
+  //const {currentUser, loading} = useCurrentUser(null)
+
+  // Obtener datos user desde localStorage
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   const renderNavList = () => {
     if (!currentUser) {
@@ -19,9 +20,9 @@ function Navbar() {
       );
     }
     // TODO cambiar este tipo de implicaciones por el role correcto
-    if (currentUser.userType === "CLIENT") {
+    if (currentUser.role === "CLIENT") {
       return (
-        <div>
+        <div className="navbar-flex">
           <p className="navbar-list"><a href="/miseventos">Mis eventos</a></p>
           <p className="navbar-list"><a href="/lugares">Lugares</a></p>
           <p className="navbar-list"><a href="/proveedores">Proveedores</a></p>
@@ -31,7 +32,7 @@ function Navbar() {
       );
     }
 
-    if (currentUser.userType === "SUPPLIER") {
+    if (currentUser.role === "SUPPLIER") {
       return (
         <div>
           <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
