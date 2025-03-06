@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import "./App.css";
 import NavBar from "./components/AppNavBar";
+import Terms from "./pages/Terms";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 
 function App() {
@@ -17,13 +18,14 @@ function App() {
   return (
     <div className="app-container"> 
       <Router>
-        <NavBar />
+        <div className="navbar"><NavBar /></div>
         <div className="content">
           <Routes>
             <Route path="/user"  />
             <Route path="/" element={currentUser ? <Home user={currentUser} /> : <Navigate to="/login" />} />
             <Route path="/login" element={<Login setUser={setCurrentUser} />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/terminos-y-condiciones" element={<Terms />} />
           </Routes>
         </div>
       </Router>

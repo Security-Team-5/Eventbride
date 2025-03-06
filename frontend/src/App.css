@@ -4,9 +4,10 @@ html, body, #root {
   max-width: none;
   margin: 0;
   padding: 0;
-  background-color: #B3E5FC; 
+  background-color: #FFFDF3;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 #root {
@@ -17,12 +18,17 @@ html, body, #root {
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 82vh;
-  min-height: 0; 
+  height: auto;
+  min-height: 0;
+  
+}
+
+.navbar {
+  height: 100px;
 }
 
 .content {
-  flex-grow: 1; 
+  flex-grow: 1;
   margin-top: 100px;
   height: 100%; 
   display: flex;
