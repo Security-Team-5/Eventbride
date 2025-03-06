@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.eventbride.event_properties.EventProperties;
 import com.eventbride.invitation.Invitation;
 import com.eventbride.model.BaseEntity;
-import com.eventbride.otherService.OtherService;
 import com.eventbride.user.User;
-import com.eventbride.venue.Venue;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -59,10 +59,7 @@ public class Event extends BaseEntity{
         COMMUNION
     }
 
-    @OneToMany(mappedBy = "event")
-    private List<Venue> venues;
-
-    @OneToMany(mappedBy = "event")
-    private List<OtherService> otherServices;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EventProperties> eventProperties;
 
 }
