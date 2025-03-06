@@ -83,4 +83,5 @@ public class EventService {
 		Event toDelete = findById(id);
 		eventRepository.delete(toDelete);
 	}
+
 }

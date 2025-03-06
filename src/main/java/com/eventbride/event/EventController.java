@@ -10,9 +10,7 @@ import com.eventbride.event_properties.EventProperties;
 import com.eventbride.invitation.Invitation;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
-
 import jakarta.validation.Valid;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,7 +82,7 @@ public class EventController {
             return new ResponseEntity<>(this.eventService.updateEvent(updateEvent, eventId), HttpStatus.OK);
         }
     }
-
+  
 	@DeleteMapping("/{eventId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable("eventId") int eventId) {
@@ -99,6 +97,6 @@ public class EventController {
         eventService.save(event);
         eventService.deleteEvent(eventId);
         }
-
-}
+  }
+  
 }
