@@ -10,19 +10,17 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 function Home({ user }) {
   return (
     <main className="contenedorPrincipal">
-      {/* Banner de ancho completo */}
       <div className="bannerCompleto">
         <img src="https://t4.ftcdn.net/jpg/04/10/98/29/360_F_410982967_TiQ653hlfXQrI4vuLpEBwMpLOYR013fK.jpg" alt="Banner principal" className="imagenBanner" />
         <div className="overlayBanner">
           <div className="contenidoBanner">
             <img src={logo} alt="Eventbride Logo" className="logo-home" />
-            <p className="subtituloBanner">Expertos en la organización de bodas, bautizos y comuniones</p>
+            <p className="subtituloBanner">Eventbride. Eventos que brillan, recuerdos que perduran.</p>
             <button className="botonPrimario">Crear evento</button>
           </div>
         </div>
       </div>
 
-      {/* Sección de bienvenida y quiénes somos */}
       <section className="seccionBienvenida">
         <div className="contenedor">
           <div className="encabezadoCentrado">
@@ -57,7 +55,6 @@ function Home({ user }) {
         </div>
       </section>
 
-      {/* Sección de valores o servicios */}
       <section className="seccionValores">
         <div className="contenedor">
           <h2 className="tituloSeccion">Packs destacados</h2>
@@ -65,15 +62,15 @@ function Home({ user }) {
             {[
               {
                 title: "Bautizos",
-                description: "Nos comprometemos a ofrecer productos y servicios de la más alta calidad.",
+                description: "Un día lleno de amor y emoción para dar la bienvenida a una nueva vida. Celebra con nosotros.",
               },
               {
                 title: "Bodas",
-                description: "Actuamos con honestidad y transparencia en todas nuestras operaciones.",
+                description: "El día más especial merece una celebración inolvidable. Creamos el ambiente perfecto para tu gran momento.",
               },
               {
                 title: "Comuniones",
-                description: "Buscamos constantemente nuevas formas de mejorar y superar expectativas.",
+                description: "Un evento único para un día inolvidable. Hacemos que la primera comunión sea mágica.",
               },
             ].map((valor, index) => (
               <div key={index} className="tarjetaValor">
