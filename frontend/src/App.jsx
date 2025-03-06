@@ -1,30 +1,31 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
-import "./App.css"; 
+import "./App.css";
+import NavBar from "./components/AppNavBar";
+import Terms from "./pages/Terms";
+import { useCurrentUser } from "./hooks/useCurrentUser";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+  if (loading) {
+    return <div>Loading...</div>; // Muestra algo mientras se carga el usuario
+  }
 
   return (
     <div className="app-container"> 
       <Router>
+        <div className="navbar"><NavBar /></div>
         <div className="content">
           <Routes>
             <Route path="/user"  />
-            <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
-            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route path="/" element={currentUser ? <Home user={currentUser} /> : <Navigate to="/login" />} />
+            <Route path="/login" element={<Login setUser={setCurrentUser} />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/terminos-y-condiciones" element={<Terms />} />
           </Routes>
         </div>
       </Router>
