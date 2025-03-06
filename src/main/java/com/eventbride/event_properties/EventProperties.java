@@ -24,11 +24,11 @@ public class EventProperties {
     private Event event;
 
     @ManyToOne
-    @JoinColumn(name = "other_service_id", nullable = false)
+    @JoinColumn(name = "other_service_id", nullable = true)
     private OtherService otherService;
 
     @ManyToOne
-    @JoinColumn(name = "venue_id", nullable = false)
+    @JoinColumn(name = "venue_id", nullable = true)
     private Venue venue;
 
     @Column(name = "approved", nullable = false)

@@ -126,4 +126,4 @@ INSERT INTO event_properties (event_id, other_service_id, venue_id, approved, re
 
 (10, 3, null, TRUE, '2023-09-30'),
 (10, 5, null, TRUE, '2023-09-30'),
-(10, null, 2, TRUE, '2023-09-30'),
+(10, null, 2, TRUE, '2023-09-30');
