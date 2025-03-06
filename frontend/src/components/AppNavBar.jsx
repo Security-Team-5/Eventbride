@@ -1,13 +1,21 @@
+/* eslint-disable no-unused-vars */
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
 import usuario from "../static/resources/images/user.png";
+import React, { useState } from 'react';
+
 
 function Navbar() {
   //const {currentUser, loading} = useCurrentUser(null)
+  const [isOpen, setIsOpen] = useState(false);
 
   // Obtener datos user desde localStorage
   const currentUser = JSON.parse(localStorage.getItem("user"));
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   const renderNavList = () => {
     if (!currentUser) {
@@ -24,6 +32,15 @@ function Navbar() {
       return (
         <div className="navbar-flex">
           <p className="navbar-list"><a href="/my-events">Mis eventos</a></p>
+          <p className="navbar-list" onClick={toggleDropdown}>
+            <a href="#">Crear evento</a>
+            {isOpen && (
+            <div className="dropdown">
+              <p><a href="/create-events">Desde cero</a></p>
+              <p><a href="/quiz">Cuestionario</a></p>
+            </div>
+        )}
+      </p>
           <p className="navbar-list"><a href="/lugares">Lugares</a></p>
           <p className="navbar-list"><a href="/proveedores">Proveedores</a></p>
           <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
