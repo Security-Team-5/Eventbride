@@ -23,7 +23,7 @@ function Navbar() {
     if (currentUser.role === "CLIENT") {
       return (
         <div className="navbar-flex">
-          <p className="navbar-list"><a href="/miseventos">Mis eventos</a></p>
+          <p className="navbar-list"><a href="/my-events">Mis eventos</a></p>
           <p className="navbar-list"><a href="/lugares">Lugares</a></p>
           <p className="navbar-list"><a href="/proveedores">Proveedores</a></p>
           <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>

@@ -84,4 +84,9 @@ public class EventService {
 		eventRepository.delete(toDelete);
 	}
 
+    @Transactional
+    public Optional<Event> getRecentEventByUserId(Integer userId) {
+        return eventRepository.findRecentEventByUserId(userId);
+    }
+
 }

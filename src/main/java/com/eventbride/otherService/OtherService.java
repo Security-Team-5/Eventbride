@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -42,14 +43,14 @@ public class OtherService extends Service {
         DECORATION
     }
 
-    @OneToMany(mappedBy = "otherService")
+    @OneToMany(mappedBy = "otherService", fetch = FetchType.EAGER)
     private List<Rating> ratings;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "otherService", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "otherService", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<EventProperties> eventProperties;
 
 }

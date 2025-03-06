@@ -1,5 +1,6 @@
 package com.eventbride.event;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,4 +20,7 @@ public interface EventRepository extends CrudRepository<Event, Integer>{
 
     @Query("SELECT ep.venue FROM EventProperties ep WHERE ep.event=?1")
     public List<Venue> findVenuesByEvent(Event event);
+
+    @Query("SELECT e FROM Event e LEFT JOIN e.eventProperties ep WHERE e.user.id = :userId ORDER BY e.eventDate ASC LIMIT 1")
+    Optional<Event> findRecentEventByUserId (Integer userId);
 }
