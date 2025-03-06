@@ -25,15 +25,11 @@ public class VenueController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<Venue>> getFilteredVenues(
+    public List<Venue> getFilteredVenues(
             @RequestParam(required = false) String city,
             @RequestParam(required = false) Integer maxGuests,
             @RequestParam(required = false) Double surface) {
-        List<Venue> venues = venueService.getFilteredVenues(city, maxGuests, surface);
-        if (venues.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(venues);
+        return venueService.getFilteredVenues(city, maxGuests, surface);
     }
 
     @PostMapping
