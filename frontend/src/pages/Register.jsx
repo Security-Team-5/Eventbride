@@ -68,7 +68,7 @@ const Register = () => {
           <input type="url" name="profilePicture" placeholder="https://foto.de/perfil" value={form.profilePicture} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Correo electrónico" value={form.email} onChange={handleChange} required />
           <input type="tel" name="telephone" placeholder="Teléfono" value={form.telephone} onChange={handleChange} required />
-          <input type="dni" name="dni" placeholder="DNI" value={form.dni} onChange={handleChange} required />
+          <input type="text" name="dni" placeholder="DNI" value={form.dni} onChange={handleChange} required />
           <input type="password" name="password" placeholder="Contraseña" value={form.password} onChange={handleChange} required />
           <select name="role" value={form.role} onChange={handleChange} required>
             <option value="">Selecciona tu rol</option>
