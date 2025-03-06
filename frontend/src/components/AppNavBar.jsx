@@ -65,7 +65,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-brand">
         <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
-        <a href="/"><span className="navbar-title">Eventbride</span></a>
+        <a href="/"><span className="navbar-title">Inicio</span></a>
       </div>
       {renderNavList()}
       {currentUser && (
