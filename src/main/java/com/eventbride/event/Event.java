@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.eventbride.event_properties.EventProperties;
 import com.eventbride.invitation.Invitation;
 import com.eventbride.model.BaseEntity;
 import com.eventbride.user.User;
@@ -59,6 +60,6 @@ public class Event extends BaseEntity{
     }
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<EventProperties> eventServices;
+    private List<EventProperties> eventProperties;
 
 }

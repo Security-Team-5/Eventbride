@@ -2,7 +2,7 @@ package com.eventbride.venue;
 
 import java.util.List;
 
-import com.eventbride.event.EventProperties;
+import com.eventbride.event_properties.EventProperties;
 import com.eventbride.rating.Rating;
 import com.eventbride.service.Service;
 import com.eventbride.user.User;
@@ -60,6 +60,6 @@ public class Venue extends Service {
     private User user;
 
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
-    private List<EventProperties> eventServices;
+    private List<EventProperties> eventProperties;
 
 }

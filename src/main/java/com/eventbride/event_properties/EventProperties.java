@@ -1,7 +1,8 @@
-package com.eventbride.event;
+package com.eventbride.event_properties;
 
 import java.time.LocalDate;
 
+import com.eventbride.event.Event;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.venue.Venue;
 
