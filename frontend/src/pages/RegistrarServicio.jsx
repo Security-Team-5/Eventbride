@@ -20,20 +20,26 @@ const RegistrarServicio = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = () => {
         console.log('Datos del formulario:', formData);
-    };
+        fetch("/api/" + serviceType, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(formData) 
 
+          })
+    };
     return (
         <div>
             <h2>Registrar Servicio</h2>
             <h3>Tipo de servicio</h3>
             <select id="serviceType" value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
                 <option value="unselected" className="hidden-option" disabled>Selecciona un tipo de servicio</option>
-                <option value="venue">Recinto para eventos</option>
-                <option value="other">Otro</option>
+                <option value="venues">Recinto para eventos</option>
+                <option value="other-services">Otro</option>
             </select>
-            <p>Seleccionaste: {serviceType}</p>
             <div>
                 <form onSubmit={handleSubmit}>
                     {serviceType !== "unselected" && (
@@ -113,7 +119,7 @@ const RegistrarServicio = () => {
                                     maxLength="250"
                                 />
                             </div>
-                            {serviceType === "venue" && (
+                            {serviceType === "venues" && (
                                 <div>
                                     <p>Campos específicos para recintos de eventos:</p>
 
@@ -188,7 +194,7 @@ const RegistrarServicio = () => {
                                     <button type="submit">Registrar recinto</button>
                                 </div>
                             )}
-                            {serviceType === "other" && (
+                            {serviceType === "other-services" && (
                                 <div>
                                     <p>Campos específicos para otro tipo de servicio:</p>
                                     
