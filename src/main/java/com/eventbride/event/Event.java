@@ -59,7 +59,7 @@ public class Event extends BaseEntity{
         COMMUNION
     }
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventProperties> eventProperties;
 
 }

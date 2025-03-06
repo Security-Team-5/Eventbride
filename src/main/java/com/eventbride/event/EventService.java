@@ -77,4 +77,11 @@ public class EventService {
         }
         return null;
     }
+
+	@Transactional
+	public void deleteEvent(int id) throws DataAccessException {
+		Event toDelete = findById(id);
+		eventRepository.delete(toDelete);
+	}
+
 }

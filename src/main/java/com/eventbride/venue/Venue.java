@@ -59,7 +59,7 @@ public class Venue extends Service {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventProperties> eventProperties;
 
 }

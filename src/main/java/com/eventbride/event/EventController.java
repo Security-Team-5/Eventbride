@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.invitation.Invitation;
-
+import com.eventbride.user.User;
+import com.eventbride.user.UserService;
 import jakarta.validation.Valid;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,10 +28,12 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+    private final UserService userService;
 
     @Autowired
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, UserService userService) {
         this.eventService = eventService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -79,5 +82,21 @@ public class EventController {
             return new ResponseEntity<>(this.eventService.updateEvent(updateEvent, eventId), HttpStatus.OK);
         }
     }
-
+  
+	@DeleteMapping("/{eventId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable("eventId") int eventId) {
+        if(eventService.findById(eventId) != null) {
+            Event event = eventService.findById(eventId);
+            User user = event.getUser();
+        if (user != null) {
+            user.getEvents().remove(event);
+            userService.save(user);  
+        }
+        event.getEventProperties().clear(); // Comprobar si hace falta, creo que no
+        eventService.save(event);
+        eventService.deleteEvent(eventId);
+        }
+  }
+  
 }
