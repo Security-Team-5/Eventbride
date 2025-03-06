@@ -83,47 +83,47 @@ INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comm
 (20, 1, 5, null, 4, 'Great service, would recommend!'),
 (21, 1, 6, null, 4, 'Great service, would recommend!');
 
-INSERT INTO event_properties (event_id, other_service_id, venue_id, approved, request_date) VALUES
-(1, 1, null, TRUE, '2023-12-01'),
-(1, 2, null, TRUE, '2023-12-01'),
-(1, null, 1, TRUE, '2023-12-01'),
+INSERT IGNORE INTO event_properties (id, event_id, other_service_id, venue_id, approved, request_date) VALUES
+(1, 1, 1, null, TRUE, '2023-12-01'),
+(2, 1, 2, null, TRUE, '2023-12-01'),
+(3, 1, null, 1, TRUE, '2023-12-01'),
 
-(2, 1, null, TRUE, '2023-12-02'),
-(2, 3, null, TRUE, '2023-12-02'),
-(2, 6, null, TRUE, '2023-12-02'),
-(2, null, 1, TRUE, '2023-12-02'),
+(4, 2, 1, null, TRUE, '2023-12-02'),
+(5, 2, 3, null, TRUE, '2023-12-02'),
+(6, 2, 6, null, TRUE, '2023-12-02'),
+(7, 2, null, 1, TRUE, '2023-12-02'),
 
-(3, 1, null, TRUE, '2023-12-03'),
-(3, 4, null, TRUE, '2023-12-03'),
-(3, 6, null, TRUE, '2023-12-03'),
-(3, null, 1, TRUE, '2023-12-03'),
+(8, 3, 1, null, TRUE, '2023-12-03'),
+(9, 3, 4, null, TRUE, '2023-12-03'),
+(10, 3, 6, null, TRUE, '2023-12-03'),
+(11, 3, null, 1, TRUE, '2023-12-03'),
 
-(4, 5, null, TRUE, '2023-12-04'),
-(4, 6, null, TRUE, '2023-12-04'),
-(4, 7, null, TRUE, '2023-12-04'),
-(4, null, 2, TRUE, '2023-12-04'),
+(12, 4, 5, null, TRUE, '2023-12-04'),
+(13, 4, 6, null, TRUE, '2023-12-04'),
+(14, 4, 7, null, TRUE, '2023-12-04'),
+(15, 4, null, 2, TRUE, '2023-12-04'),
 
-(5, 2, null, TRUE, '2023-12-02'),
-(5, 5, null, TRUE, '2023-12-02'),
-(5, 6, null, TRUE, '2023-12-02'),
-(5, null, 2, TRUE, '2023-12-02'),
+(16, 5, 2, null, TRUE, '2023-12-02'),
+(17, 5, 5, null, TRUE, '2023-12-02'),
+(18, 5, 6, null, TRUE, '2023-12-02'),
+(19, 5, null, 2, TRUE, '2023-12-02'),
 
-(6, 1, null, TRUE, '2023-05-30'),
-(6, 2, null, TRUE, '2023-05-30'),
-(6, null, 1, TRUE, '2023-05-30'),
+(20, 6, 1, null, TRUE, '2023-05-30'),
+(21, 6, 2, null, TRUE, '2023-05-30'),
+(22, 6, null, 1, TRUE, '2023-05-30'),
 
-(7, 1, null, TRUE, '2023-06-30'),
-(7, 3, null, TRUE, '2023-06-30'),
-(7, null, 1, TRUE, '2023-06-30'),
+(23, 7, 1, null, TRUE, '2023-06-30'),
+(24, 7, 3, null, TRUE, '2023-06-30'),
+(25, 7, null, 1, TRUE, '2023-06-30'),
 
-(8, 4, null, TRUE, '2023-07-30'),
-(8, 5, null, TRUE, '2023-07-30'),
-(8, null, 1, TRUE, '2023-07-30'),
+(26, 8, 4, null, TRUE, '2023-07-30'),
+(27, 8, 5, null, TRUE, '2023-07-30'),
+(28, 8, null, 1, TRUE, '2023-07-30'),
 
-(9, 5, null, TRUE, '2023-08-30'),
-(9, 7, null, TRUE, '2023-08-30'),
-(9, null, 2, TRUE, '2023-08-30'),
+(29, 9, 5, null, TRUE, '2023-08-30'),
+(30, 9, 7, null, TRUE, '2023-08-30'),
+(31, 9, null, 2, TRUE, '2023-08-30'),
 
-(10, 3, null, TRUE, '2023-09-30'),
-(10, 5, null, TRUE, '2023-09-30'),
-(10, null, 2, TRUE, '2023-09-30');
+(32, 10, 3, null, TRUE, '2023-09-30'),
+(33, 10, 5, null, TRUE, '2023-09-30'),
+(34, 10, null, 2, TRUE, '2023-09-30');
