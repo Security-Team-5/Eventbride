@@ -13,13 +13,22 @@ const VenuesScreen = () => {
         try {
             console.log("Filter Params - City:", city, "Max Guests:", maxGuests, "Surface:", surface);
 
-            const params = {
-                city,
-                maxGuests,
-                surface
-            };
+            const params = {};
+            if (city) params.city = city;
+            if (maxGuests) params.maxGuests = maxGuests;
+            if (surface) params.surface = surface;
 
-            const response = await axios.get("http://localhost:8080/api/venues/filter", {params});
+            const response = await axios.get("http://localhost:8080/api/venues/filter", { params });
+
+            setVenues(response.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const findAllVenues = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/api/venues");
 
             setVenues(response.data);
         } catch (error) {
@@ -28,11 +37,22 @@ const VenuesScreen = () => {
     };
 
     useEffect(() => {
-        getFilteredVenues();
-    }, [city, maxGuests, surface]);
+        if (city || maxGuests || surface) {
+            getFilteredVenues();
+        } else {
+            findAllVenues();
+        }
+    }, []);
 
     const applyFilters = () => {
         getFilteredVenues();
+    };
+
+    const clearFilters = () => {
+        setCity('');
+        setMaxGuests('');
+        setSurface('');
+        findAllVenues();
     };
 
     const toggleFilters = () => {
@@ -79,6 +99,11 @@ const VenuesScreen = () => {
                         onClick={applyFilters}
                         style={{ padding: '10px 15px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
                         Aplicar filtros
+                    </button>
+                    <button 
+                        onClick={clearFilters}
+                        style={{ padding: '10px 15px', backgroundColor: '#FF0000', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', marginLeft: '10px' }}>
+                        Borrar filtros
                     </button>
                 </div>
             )}

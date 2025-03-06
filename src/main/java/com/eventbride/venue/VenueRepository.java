@@ -12,7 +12,7 @@ public interface VenueRepository extends JpaRepository<Venue, Integer> {
 
     @Query("SELECT v FROM Venue v WHERE " +
     "(:city IS NULL OR LOWER(v.cityAvailable) LIKE LOWER(CONCAT('%', :city, '%'))) AND " +
-    "(:maxGuests IS NULL OR v.maxGuests <= :maxGuests) AND " +
+    "(:maxGuests IS NULL OR v.maxGuests >= :maxGuests) AND " +
     "(:surface IS NULL OR v.surface >= :surface)")
     List<Venue> findByFilters(@Param("city") String city, 
                               @Param("maxGuests") int maxGuests, 
