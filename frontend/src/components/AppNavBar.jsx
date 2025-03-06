@@ -1,67 +1,43 @@
-import { useState, useEffect } from "react";
-import "../components/AppNavBar.css";
+import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
 import usuario from "../static/resources/images/user.png";
 
 function Navbar() {
-  const [currentUser, setCurrentUser] = useState(null);
+  //const {currentUser, loading} = useCurrentUser(null)
 
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/auth/current-user", {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const user = await response.json();
-          setCurrentUser(user);
-          localStorage.setItem("user", JSON.stringify(user));
-        } else {
-//          setCurrentUser(null);
-          localStorage.removeItem("user");
-        }
-      } catch (error) {
-        console.error("Error fetching current user:", error);
-//        setCurrentUser(null);
-        localStorage.removeItem("user");
-      }
-    };
-
-    fetchCurrentUser();
-    console.log("currentUser", currentUser);
-    setCurrentUser({userType: "SUPPLIER"});
-    console.log("currentUser", currentUser);
-  }, currentUser);
+  // Obtener datos user desde localStorage
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   const renderNavList = () => {
     if (!currentUser) {
       return (
-        <ul className="navbar-list">
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
+        <p className="navbar-list">
+          <a href="/terminos-y-condiciones">
+          Términos y Condiciones
+          </a>
+        </p>
+      );
+    }
+    // TODO cambiar este tipo de implicaciones por el role correcto
+    if (currentUser.role === "CLIENT") {
+      return (
+        <div className="navbar-flex">
+          <p className="navbar-list"><a href="/miseventos">Mis eventos</a></p>
+          <p className="navbar-list"><a href="/lugares">Lugares</a></p>
+          <p className="navbar-list"><a href="/proveedores">Proveedores</a></p>
+          <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
+          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
+        </div>
       );
     }
 
-    if (currentUser.userType === "CLIENT") {
+    if (currentUser.role === "SUPPLIER") {
       return (
-        <ul className="navbar-list">
-          <li><a href="/miseventos">Mis eventos</a></li>
-          <li><a href="/lugares">Lugares</a></li>
-          <li><a href="/proveedores">Proveedores</a></li>
-          <li><a href="/invitaciones">Invitaciones</a></li>
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
-      );
-    }
-
-    if (currentUser.userType === "SUPPLIER") {
-      return (
-        <ul className="navbar-list">
-          <li><a href="/misservicios">Mis servicios</a></li>
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
+        <div>
+          <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
+          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
+        </div>
       );
     }
 
@@ -86,6 +62,18 @@ function Navbar() {
             <a href="/perfil">
               <img src={usuario} alt="Usuario" className="usuario" />
             </a>
+          </div>
+          <div className="navbar-user">
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("jwt");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+              }}
+            >
+              Logout
+            </button>
           </div>
         </>
       )}
