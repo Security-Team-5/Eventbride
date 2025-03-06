@@ -1,0 +1,78 @@
+/* Estilo del evento */
+.event-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 3%;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .event-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 4%;
+    margin-top: -5%;
+  }
+  
+  .event-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: -1%;
+  }
+  
+  .event-info p {
+    font-size: 1.1rem;
+    margin: -1%;
+    min-width: 150px;
+  }
+  
+  .event-date,
+  .event-guests,
+  .event-budget {
+    font-weight: bold;
+  }
+  
+  .no-event {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  /* Estilo del recinto y otros servicios */
+  .event-properties {
+    display: flex;
+    justify-content: space-between;
+    gap: 3%;
+    margin-top: 2%;
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+  
+  .event-venues,
+  .event-services {
+    width: 50%;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  h3 {
+    text-align: center;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .venue-card,
+  .service-card {
+    background: white;
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 0.9rem;
+  }

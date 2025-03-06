@@ -15,7 +15,9 @@ function Home({ user }) {
         <div className="overlayBanner">
           <div className="contenidoBanner">
             <img src={logo} alt="Eventbride Logo" className="logo-home" />
-            <p className="subtituloBanner">Eventbride. Eventos que brillan, recuerdos que perduran.</p>
+            <p className="subtituloBanner">Eventbride. 
+              <br></br>
+              Eventos que brillan, recuerdos que perduran.</p>
             <button className="botonPrimario">Crear evento</button>
           </div>
         </div>
@@ -24,6 +26,7 @@ function Home({ user }) {
       <section className="seccionBienvenida">
         <div className="contenedor">
           <div className="encabezadoCentrado">
+            <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"></link>
             <h2 className="tituloSeccion">Bienvenidos</h2>
             <div className="separador"></div>
             <p className="textoDescriptivo">
@@ -38,6 +41,7 @@ function Home({ user }) {
                 <h3 className="tituloTarjeta">Nuestra Misión</h3>
                 <p className="textoTarjeta">
                   Nuestra misión es ayudarte a planificar y organizar esos momentos tan especiales en la vida: comuniones, bautizos y bodas.
+                  <br></br>
                   Con nuestras herramientas fáciles de usar, podrás gestionar todos los detalles importantes, desde las fechas hasta los proveedores,
                   y asegurarte de que tu celebración sea perfecta.
                 </p>
@@ -46,7 +50,9 @@ function Home({ user }) {
                 <h3 className="tituloTarjeta">Nuestra Visión</h3>
                 <p className="textoTarjeta">
                   En Eventbride, nuestra misión es hacer que la organización sea fácil, eficiente y libre de estrés.
+                  <br></br>
                   Nos comprometemos a ofrecer una plataforma intuitiva que permita a los usuarios gestionar cada detalle con confianza y tranquilidad.
+                  <br></br>
                   Queremos que disfrutes del proceso de planificación, asegurándonos de que cada evento sea memorable y único, sin preocuparte por los pequeños detalles.
                 </p>
               </div>

@@ -1,6 +1,7 @@
 /* Terms.css */
 .terms-container {
     font-family: Arial, sans-serif;
+    background-color: #FFFDF3;
     
   }
 
@@ -17,6 +18,7 @@
   h1 {
     text-align: center;
     color: #000000;
+    margin-top: 6.5%;
   }
   
   section {
@@ -31,6 +33,7 @@
     font-size: 16px;
     line-height: 1.6;
     color: #000000;
+    text-align: center;
   }
 
   ul li::before {

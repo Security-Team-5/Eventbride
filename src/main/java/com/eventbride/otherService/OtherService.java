@@ -50,7 +50,7 @@ public class OtherService extends Service {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "otherService", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "otherService", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<EventProperties> eventProperties;
 
 }

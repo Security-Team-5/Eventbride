@@ -33,7 +33,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults()) // Desactiva CSRF para facilitar pruebas
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/api/users/auth/register","/api/users/auth/login", "/api/venues/**", "/api/users/auth/current-user" , "/api/other-services/**", "/api/venues/**").permitAll() // Permite el acceso a estas rutas
+                .requestMatchers("/api/auth/**", "/api/users/auth/register","/api/users/auth/login", "/api/venues/**", "/api/users/auth/current-user", "/api/v1/events/**", "/api/other-services/**", "/api/venues/**").permitAll() // Permite el acceso a estas rutas
                 .anyRequest().authenticated()
             )
             .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -41,7 +41,7 @@ public class SecurityConfig {
                 jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             /* .formLogin(login -> login.disable()) // Desactiva el formulario de login por defecto
             .httpBasic(httpBasic -> httpBasic.disable())*/; // Desactiva la autenticación HTTP básica
-        
+
         return http.build();
     }
 

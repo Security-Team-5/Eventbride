@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -10,6 +9,7 @@ import "./App.css";
 import NavBar from "./components/AppNavBar";
 import Terms from "./pages/Terms";
 import { useCurrentUser } from "./hooks/useCurrentUser";
+import MyEvents from "./pages/MyEvents";
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -17,7 +17,7 @@ function App() {
   if (loading) {
     return <div>Loading...</div>; // Muestra algo mientras se carga el usuario
   }
-
+  
   return (
     <div className="app-container"> 
       <Router>
@@ -32,6 +32,7 @@ function App() {
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
             <Route path="/terminos-y-condiciones" element={<Terms />} />
+            <Route path="/my-events" element={<MyEvents />} />
           </Routes>
         </div>
       </Router>
