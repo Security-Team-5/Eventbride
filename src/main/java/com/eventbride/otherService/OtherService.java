@@ -2,11 +2,12 @@ package com.eventbride.otherService;
 
 import java.util.List;
 
-import com.eventbride.event.Event;
+import com.eventbride.event.EventProperties;
 import com.eventbride.rating.Rating;
 import com.eventbride.service.Service;
 import com.eventbride.user.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -48,8 +49,7 @@ public class OtherService extends Service {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false) // Relación con la entidad Event
-    private Event event;
+    @OneToMany(mappedBy = "otherService", cascade = CascadeType.ALL)
+    private List<EventProperties> eventServices;
 
 }
