@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,8 @@ import com.eventbride.dto.ReqRes;
 import com.eventbride.dto.UserDTO;
 import com.eventbride.user.User;
 import com.eventbride.user.UserRepository;
+
+import jakarta.validation.ConstraintViolationException;
 
 @Service
 public class UserManagementService {
@@ -31,7 +34,6 @@ public class UserManagementService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     public ReqRes register(ReqRes registrationRequest) {
         ReqRes resp = new ReqRes();
@@ -51,13 +53,22 @@ public class UserManagementService {
             User userResult = userRepo.save(user);
             if (userResult.getId()>0) {
                 resp.setUser(new UserDTO(userResult));
-                resp.setMessage("User Saved Successfully");
+                resp.setMessage("Usuario guardado exitosamente");
                 resp.setStatusCode(200);
             }
 
-        }catch (Exception e){
+        } catch (DataIntegrityViolationException e) {
+        // Manejo de excepciones por violaciones de integridad (ej. usuario ya existe)
+        resp.setStatusCode(400);
+        resp.setError("El usuario con este nombre de usuario, correo electrónico y DNI ya existe.");
+        } catch (ConstraintViolationException e) {
+            // Manejo de errores relacionados con restricciones (ej. campos vacíos)
+            resp.setStatusCode(400);
+            resp.setError("Faltan campos obligatorios o son inválidos.");
+        } catch (Exception e) {
+            // Excepción general para otros errores
             resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+            resp.setError("Ocurrió un error inesperado: " + e.getMessage());
         }
         return resp;
     }
@@ -76,7 +87,7 @@ public class UserManagementService {
             response.setRole(user.getRole());
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hrs");
-            response.setMessage("Successfully Logged In");
+            response.setMessage("Inicio de sesión exitoso");
 
         }catch (Exception e){
             response.setStatusCode(500);
@@ -96,7 +107,7 @@ public class UserManagementService {
                 response.setToken(jwt);
                 response.setRefreshToken(refreshTokenReqiest.getToken());
                 response.setExpirationTime("24Hr");
-                response.setMessage("Successfully Refreshed Token");
+                response.setMessage("Token actualizado exitosamente");
             }
             response.setStatusCode(200);
             return response;
@@ -119,7 +130,7 @@ public class UserManagementService {
                 reqRes.setMessage("Successful");
             } else {
                 reqRes.setStatusCode(404);
-                reqRes.setMessage("No users found");
+                reqRes.setMessage("No se encontraron usuarios");
             }
             return reqRes;
         } catch (Exception e) {
@@ -132,13 +143,13 @@ public class UserManagementService {
     public ReqRes getUsersById(Integer id) {
         ReqRes reqRes = new ReqRes();
         try {
-            User userById = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User Not found"));
+            User userById = userRepo.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
             reqRes.setUser(new UserDTO(userById));
             reqRes.setStatusCode(200);
-            reqRes.setMessage("Users with id '" + id + "' found successfully");
+            reqRes.setMessage("Usuario con id '" + id + "' encontrado exitosamente");
         } catch (Exception e) {
             reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred: " + e.getMessage());
+            reqRes.setMessage("Ocurrió un error: " + e.getMessage());
         }
         return reqRes;
     }
@@ -150,14 +161,14 @@ public class UserManagementService {
             if (userOptional.isPresent()) {
                 userRepo.deleteById(userId);
                 reqRes.setStatusCode(200);
-                reqRes.setMessage("User deleted successfully");
+                reqRes.setMessage("Usuario eliminado exitosamente");
             } else {
                 reqRes.setStatusCode(404);
-                reqRes.setMessage("User not found for deletion");
+                reqRes.setMessage("Usuario no encontrado para eliminación");
             }
         } catch (Exception e) {
             reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred while deleting user: " + e.getMessage());
+            reqRes.setMessage("Ocurrió un error al eliminar el usuario: " + e.getMessage());
         }
         return reqRes;
     }
@@ -187,14 +198,14 @@ public class UserManagementService {
                 User savedUser = userRepo.save(existingUser);
                 reqRes.setUser(new UserDTO(savedUser));
                 reqRes.setStatusCode(200);
-                reqRes.setMessage("User updated successfully");
+                reqRes.setMessage("Usuario actualizado exitosamente");
             } else {
                 reqRes.setStatusCode(404);
-                reqRes.setMessage("User not found for update");
+                reqRes.setMessage("Usuario no encontrado para actualización");
             }
         } catch (Exception e) {
             reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred while updating user: " + e.getMessage());
+            reqRes.setMessage("Ocurrió un error al actualizar el usuario: " + e.getMessage());
         }
         return reqRes;
     }
@@ -209,12 +220,12 @@ public class UserManagementService {
                 reqRes.setMessage("successful");
             } else {
                 reqRes.setStatusCode(404);
-                reqRes.setMessage("User not found for update");
+                reqRes.setMessage("Usuario no encontrado para actualización");
             }
 
         }catch (Exception e){
             reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred while getting user info: " + e.getMessage());
+            reqRes.setMessage("Ocurrió un error al obtener la información del usuario: " + e.getMessage());
         }
         return reqRes;
 
