@@ -34,12 +34,12 @@ public class OtherServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<OtherService> createOtherService(@Valid @RequestBody OtherService otherService) {
+    public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
         try {
             OtherService newOtherService = otherServiceService.createOtherService(otherService);
             return ResponseEntity.ok(newOtherService);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

@@ -2,14 +2,25 @@ import React, { useState } from 'react';
 import "../static/resources/css/RegistrarServicio.css";
 
 const RegistrarServicio = () => {
+
+    // Obtener datos user desde localStorage
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+
     const [serviceType, setServiceType] = useState("unselected");
     const [formData, setFormData] = useState({
         name: '',
         available: false,
         cityAvailable: '',
-        servicePrice: '',
+        servicePricePerGuest: '',
+        servicePricePerHour: '',
+        fixedPrice: '',
         picture: '',
-        description: ''
+        description: '',
+        hours: '',
+        limitedByPricePerGuest: false,
+        limitedByPricePerHour: false,
+        otherServiceType: 'CATERING',
+        user: currentUser.id
     });
 
     const handleChange = (e) => {
@@ -82,12 +93,71 @@ const RegistrarServicio = () => {
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="servicePrice">Precio del Servicio:</label>
+                                <label htmlFor="servicePricePerGuest">Precio del Servicio por Invitado:</label>
                                 <input
                                     type="number"
-                                    id="servicePrice"
-                                    name="servicePrice"
-                                    value={formData.servicePrice}
+                                    id="servicePricePerGuest"
+                                    name="servicePricePerGuest"
+                                    value={formData.servicePricePerGuest}
+                                    onChange={handleChange}
+                                    required
+                                    min="0"
+                                    step="0.01"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="servicePricePerHour">Precio del Servicio por hora:</label>
+                                <input
+                                    type="number"
+                                    id="servicePricePerHour"
+                                    name="servicePricePerHour"
+                                    value={formData.servicePricePerHour}
+                                    onChange={handleChange}
+                                    required
+                                    min="0"
+                                    step="0.01"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="fixedPrice">Precio Fijo:</label>
+                                <input
+                                    type="number"
+                                    id="fixedPrice"
+                                    name="fixedPrice"
+                                    value={formData.fixedPrice}
+                                    onChange={handleChange}
+                                    required
+                                    min="0"
+                                    step="0.01"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="limitedByPricePerGuest">¿Por persona?:</label>
+                                <input
+                                    type="checkbox"
+                                    id="limitedByPricePerGuest"
+                                    name="limitedByPricePerGuest"
+                                    checked={formData.limitedByPricePerGuest}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="limitedByPricePerHour">¿Por Hora?:</label>
+                                <input
+                                    type="checkbox"
+                                    id="limitedByPricePerHour"
+                                    name="limitedByPricePerHour"
+                                    checked={formData.limitedByPricePerHour}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="hours">Horas disponibles:</label>
+                                <input
+                                    type="number"
+                                    id="hours"
+                                    name="hours"
+                                    value={formData.hours}
                                     onChange={handleChange}
                                     required
                                     min="0"
