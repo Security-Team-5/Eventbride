@@ -20,11 +20,7 @@ function Navbar() {
   const renderNavList = () => {
     if (!currentUser) {
       return (
-        <p className="navbar-list">
-          <a href="/terminos-y-condiciones">
-          Términos y Condiciones
-          </a>
-        </p>
+        null
       );
     }
     // TODO cambiar este tipo de implicaciones por el role correcto
