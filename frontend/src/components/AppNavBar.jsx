@@ -38,11 +38,11 @@ function Navbar() {
             <div className="dropdown">
               <p><a href="/create-events">Desde cero</a></p>
               <p><a href="/quiz">Cuestionario</a></p>
-            </div>
+        </div>
         )}
-      </p>
-          <p className="navbar-list"><a href="/lugares">Lugares</a></p>
-          <p className="navbar-list"><a href="/proveedores">Proveedores</a></p>
+          </p>
+          <p className="navbar-list"><a href="/lugares">Recintos</a></p>
+          <p className="navbar-list"><a href="/proveedores">Otros servicios</a></p>
           <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
           <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
         </div>
@@ -51,7 +51,7 @@ function Navbar() {
 
     if (currentUser.role === "SUPPLIER") {
       return (
-        <div>
+        <div className="navbar-flex">
           <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
           <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
         </div>
