@@ -72,7 +72,7 @@ function Navbar() {
                 window.location.href = "/";
               }}
             >
-              Logout
+              Cerrar sesión
             </button>
           </div>
         </>

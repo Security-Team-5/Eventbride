@@ -13,6 +13,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  border-radius: 10px;
   padding: 0 20px;
   background-color: #FFFDF3;
   
@@ -88,6 +89,7 @@
 .encabezadoCentrado {
   text-align: center;
   margin-bottom: 3rem;
+  font-family: 'Playfair Display', serif;
 }
 
 .tituloSeccion {
@@ -95,6 +97,7 @@
   font-weight: bold;
   margin-bottom: 1rem;
   text-align: center;
+  font-family: 'Playfair Display', serif;
 }
 
 .separador {
@@ -128,7 +131,7 @@
 }
 
 .tarjeta {
-  background-color: palevioletred;
+  background-color: #edd0f5e0;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -138,10 +141,13 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .textoTarjeta {
-  color: white;
+  color: rgb(0, 0, 0);
+  text-align: center;
+
 }
 
 .seccionValores {
@@ -170,7 +176,7 @@
 }
 
 .tarjetaValor {
-  background-color: #FFFDF3;
+  background-color: #edd0f5e0;
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -182,7 +188,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
-  color: palevioletred;
+  color: rgb(0, 0, 0);
 }
 
 .textoValor {
