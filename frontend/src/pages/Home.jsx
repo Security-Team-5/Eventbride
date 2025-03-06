@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "../static/resources/css/Home.css";
 import "../static/resources/css/AppNavBar.css";
+
 import { useCurrentUser } from "../hooks/useCurrentUser";
 
 // eslint-disable-next-line react/prop-types
