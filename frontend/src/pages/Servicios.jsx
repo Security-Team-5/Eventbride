@@ -5,11 +5,14 @@ import "../static/resources/css/RegistrarServicio.css";
 const Servicios = () => {
     const [services, setServices] = useState([]);
 
+    // Obtener datos user desde localStorage
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+
     useEffect(() => {
         // Fetch the services of the provider
         const fetchServices = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/other-services/provider');
+                const response = await axios.get(`http://localhost:8080/api/services/${currentUser.id}`);
                 setServices(response.data);
             } catch (error) {
                 console.error('Error fetching services:', error);
@@ -23,14 +26,22 @@ const Servicios = () => {
         <div className="mis-servicios-container">
             <h2>Mis Servicios</h2>
             <div className="services-list">
-                {services.map(service => (
-                    <div key={service.id} className="service-item">
-                        <h3>{service.name}</h3>
-                        <p>Disponible: {service.available ? 'Sí' : 'No'}</p>
-                        <p>Ciudad: {service.cityAvailable}</p>
-                        <p>Precio: {service.servicePrice}</p>
-                        <p>Descripción: {service.description}</p>
-                        {/* Add more attributes as needed */}
+                {services.venues?.map(venue => (
+                    <div key={venue.id} className="service-item">
+                        <h3>{venue.name}</h3>
+                        <p>Disponible: {venue.available ? 'Sí' : 'No'}</p>
+                        <p>Ciudad: {venue.cityAvailable}</p>
+                        <p>Precio: {venue.servicePricePerGuest}</p>
+                        <p>Descripción: {venue.description}</p>
+                    </div>
+                ))}
+                {services.otherServices?.map(otherService => (
+                    <div key={otherService.id} className="service-item">
+                        <h3>{otherService.name}</h3>
+                        <p>Disponible: {otherService.available ? 'Sí' : 'No'}</p>
+                        <p>Ciudad: {otherService.cityAvailable}</p>
+                        <p>Precio: {otherService.servicePricePerGuest}</p>
+                        <p>Descripción: {otherService.description}</p>
                     </div>
                 ))}
             </div>

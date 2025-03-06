@@ -22,4 +22,9 @@ public class VenueService {
         return venueRepository.save(venue);
     }
 
+	@Transactional
+	public List<Venue> getVenuesByUserId(Integer userId) {
+		return venueRepository.findByUserId(userId);
+	}
+
 }

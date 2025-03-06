@@ -23,7 +23,7 @@ public class OtherServiceService {
         return otherServiceRepo.findAll();
     }
 
-    @Transactional 
+    @Transactional
     public Optional<OtherService> getOtherServiceById(Integer id) {
         return otherServiceRepo.findById(id);
     }
@@ -71,7 +71,8 @@ public class OtherServiceService {
         otherService.setName(otherServ.getName());
         otherService.setAvailable(otherServ.getAvailable());
         otherService.setCityAvailable(otherServ.getCityAvailable());
-        otherService.setServicePrice(otherServ.getServicePrice());
+		otherService.setServicePricePerGuest(otherServ.getServicePricePerGuest());
+		otherService.setServicePricePerHour(otherServ.getServicePricePerHour());
         otherService.setPicture(otherServ.getPicture());
         otherService.setDescription(otherServ.getDescription());
         otherService.setOtherServiceType(otherServ.getOtherServiceType());
@@ -86,6 +87,6 @@ public class OtherServiceService {
     public void deleteUser(Integer id) {
         otherServiceRepo.deleteById(id);
     }
-    
+
 
 }

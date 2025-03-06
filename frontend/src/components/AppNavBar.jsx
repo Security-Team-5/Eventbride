@@ -34,7 +34,7 @@ function Navbar() {
 
     if (currentUser.role === "SUPPLIER") {
       return (
-        <div>
+        <div className="navbar-flex">
           <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
           <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
         </div>

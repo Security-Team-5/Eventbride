@@ -2,6 +2,7 @@ package com.eventbride.otherService;
 
 import java.util.List;
 
+import com.eventbride.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +23,8 @@ public class OtherServiceController {
 
     @Autowired
     private OtherServiceService otherServiceService;
-    
+
+
     @GetMapping("/filter")
     public List<OtherService> getFilteredOtherServices(
             @RequestParam(required = false) String name,
@@ -38,7 +40,7 @@ public class OtherServiceController {
             return ResponseEntity.ok(newOtherService);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
-        }   
+        }
     }
 }
 
