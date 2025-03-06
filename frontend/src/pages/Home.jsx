@@ -60,25 +60,26 @@ function Home({ user }) {
         </div>
         <div className="contenedor">
         <div className="seccionQuienesSomos">
-            <h2 className="tituloSeccion" href="/create-events">Crear evento</h2>
+            <h2 className="tituloSeccion">Crear evento</h2>
             <div className="contenedorColumnas">
               <div className="tarjeta">
                 <h3 className="tituloTarjeta">Crear de cero</h3>
                 <p className="textoTarjeta">
                   Crea un evento de cero a tu gusto.
                 </p>
-                <button className="botonCrear" style={{ display: 'block', margin: '0 auto', marginTop: '40px', border: '1px solid rgba(169, 169, 169, 1)', backgroundColor: 'rgba(247, 217, 227, 0.96)'}}>
+                <a href="/create-events"  style={{ display: 'flex', margin: '0 auto', marginTop: '46px', border: '1px solid rgb(0, 0, 0)', backgroundColor: 'rgba(247, 217, 227, 0.96)', borderRadius: '10px', padding: '10px',height: '7%', width: '25%', textAlign: 'center', color: "black", flexDirection:"column", justifyContent:"center"}} >
                   Crear evento
-                </button>
+                </a>
+
               </div>
               <div className="tarjeta">
                 <h3 className="tituloTarjeta">¿Estás indeciso? Te ayudamos</h3>
                 <p className="textoTarjeta">
                   Te ofrecemos un cuestionario para ayudarte a que puedas encontrar el evento perfecto para ti.
                 </p>
-                <button className="botonCrear" style={{ display: 'block', margin: '0 auto', border: '1px solid  rgba(169, 169, 169, 1)', backgroundColor: 'rgba(247, 217, 227, 0.96)'}}>
+                <a style={{ display: 'flex', margin: '0 auto', marginTop: '20px', border: '1px solid rgb(0, 0, 0)', backgroundColor: 'rgba(247, 217, 227, 0.96)', borderRadius: '10px', padding: '10px',height: '7%', width: '25%', textAlign: 'center', color: "black", flexDirection:"column", justifyContent:"center"}} >
                   Cuestionario
-                </button>
+                </a>
                 </div>
             </div>
           </div>
