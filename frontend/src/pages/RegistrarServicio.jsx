@@ -20,7 +20,8 @@ const RegistrarServicio = () => {
         });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         console.log('Datos del formulario:', formData);
         fetch("/api/" + serviceType, {
             headers: {
@@ -28,11 +29,11 @@ const RegistrarServicio = () => {
             },
             method: "POST",
             body: JSON.stringify(formData) 
-
-          })
+        });
     };
+
     return (
-        <div>
+        <div className="registrar-servicio-container">
             <h2>Registrar Servicio</h2>
             <h3>Tipo de servicio</h3>
             <select id="serviceType" value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
@@ -43,8 +44,8 @@ const RegistrarServicio = () => {
             <div>
                 <form onSubmit={handleSubmit}>
                     {serviceType !== "unselected" && (
-                        <div>
-                            <div>
+                        <div className="form-section">
+                            <div className="form-group">
                                 <label htmlFor="name">Nombre:</label>
                                 <input
                                     type="text"
@@ -57,7 +58,7 @@ const RegistrarServicio = () => {
                                     maxLength="500"
                                 />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label htmlFor="available">Disponible:</label>
                                 <input
                                     type="checkbox"
@@ -67,7 +68,7 @@ const RegistrarServicio = () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label htmlFor="cityAvailable">Ciudad Disponible:</label>
                                 <input
                                     type="text"
@@ -80,7 +81,7 @@ const RegistrarServicio = () => {
                                     maxLength="30"
                                 />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label htmlFor="servicePrice">Precio del Servicio:</label>
                                 <input
                                     type="number"
@@ -93,7 +94,7 @@ const RegistrarServicio = () => {
                                     step="0.01"
                                 />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label htmlFor="picture">Imagen:</label>
                                 <input
                                     type="text"
@@ -106,7 +107,7 @@ const RegistrarServicio = () => {
                                     maxLength="250"
                                 />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label htmlFor="description">Descripción:</label>
                                 <input
                                     type="text"
@@ -120,10 +121,9 @@ const RegistrarServicio = () => {
                                 />
                             </div>
                             {serviceType === "venues" && (
-                                <div>
+                                <div className="form-section">
                                     <p>Campos específicos para recintos de eventos:</p>
-
-                                    <div>
+                                    <div className="form-group">
                                         <label htmlFor="postalCode">Código postal:</label>
                                         <input
                                             type="text"
@@ -136,8 +136,7 @@ const RegistrarServicio = () => {
                                             maxLength="5"
                                         />
                                     </div>
-
-                                    <div>
+                                    <div className="form-group">
                                         <label htmlFor="coordinates">Coordenadas:</label>
                                         <input
                                             type="text"
@@ -150,8 +149,7 @@ const RegistrarServicio = () => {
                                             maxLength="30"
                                         />
                                     </div>
-
-                                    <div>
+                                    <div className="form-group">
                                         <label htmlFor="address">Dirección:</label>
                                         <input
                                             type="text"
@@ -164,8 +162,7 @@ const RegistrarServicio = () => {
                                             maxLength="50"
                                         />
                                     </div>
-
-                                    <div>
+                                    <div className="form-group">
                                         <label htmlFor="maxGuests">Máximo de invitados:</label>
                                         <input
                                             type="number"
@@ -177,8 +174,7 @@ const RegistrarServicio = () => {
                                             min="1"
                                         />
                                     </div>
-
-                                    <div>
+                                    <div className="form-group">
                                         <label htmlFor="surface">Superficie (m²):</label>
                                         <input
                                             type="number"
@@ -190,15 +186,13 @@ const RegistrarServicio = () => {
                                             min="1"
                                         />
                                     </div>
-
-                                    <button type="submit">Registrar recinto</button>
+                                    <button type="submit" className="submit-button">Registrar recinto</button>
                                 </div>
                             )}
                             {serviceType === "other-services" && (
-                                <div>
+                                <div className="form-section">
                                     <p>Campos específicos para otro tipo de servicio:</p>
-                                    
-                                    <div>
+                                    <div className="form-group">
                                         <label htmlFor="otherServiceType">Tipo de servicio:</label>
                                         <select
                                             id="otherServiceType"
@@ -212,7 +206,7 @@ const RegistrarServicio = () => {
                                             <option value="DECORATION">Decoración</option>
                                         </select>
                                     </div>
-                                    <div>
+                                    <div className="form-group">
                                         <label htmlFor="extraInformation">Información extra:</label>
                                         <input
                                             type="text"
@@ -225,8 +219,7 @@ const RegistrarServicio = () => {
                                             maxLength="250"
                                         />
                                     </div>
-
-                                    <button type="submit">Registrar otro servicio</button>
+                                    <button type="submit" className="submit-button">Registrar otro servicio</button>
                                 </div>
                             )}
                         </div>
