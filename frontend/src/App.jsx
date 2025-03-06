@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -14,7 +13,7 @@ function App() {
   if (loading) {
     return <div>Loading...</div>; // Muestra algo mientras se carga el usuario
   }
-
+  
   return (
     <div className="app-container"> 
       <Router>
