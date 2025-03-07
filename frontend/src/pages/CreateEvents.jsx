@@ -38,7 +38,7 @@ function CreateEvents() {
     try {
       const response = await axios.post('/api/v1/events', newEvent);
       console.log(response.data);
-      navigate("/")
+      navigate("/my-events")
     
     } catch (error) {
       alert('Error al crear el evento');
