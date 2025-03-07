@@ -109,12 +109,16 @@ public class EventController {
     }
  */    
     @GetMapping("/next/{userId}")
-    public ResponseEntity<List<Event>> getEventsByUserId(@PathVariable Integer userId) {
+    public ResponseEntity<List<EventDTO>> getEventsByUserId(@PathVariable Integer userId) {
         List<Event> events = eventService.findEventsByUserId(userId);
         if (events.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(events, HttpStatus.OK);
+        List<EventDTO> eventDTOs = new ArrayList<>();
+        for (Event event : events) {
+            eventDTOs.add(new EventDTO(event));
+        }
+        return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
   
 }
