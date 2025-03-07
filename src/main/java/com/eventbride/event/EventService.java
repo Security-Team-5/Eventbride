@@ -89,4 +89,9 @@ public class EventService {
         return eventRepository.findRecentEventByUserId(userId);
     }
 
+    @Transactional
+    public List<Event> findEventsByUserId(Integer userId) {
+        return eventRepository.findAllEventsByUserId(userId);
+    }
+
 }

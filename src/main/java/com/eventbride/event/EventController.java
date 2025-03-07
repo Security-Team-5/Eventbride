@@ -101,11 +101,20 @@ public class EventController {
         }
   }
 
-    @GetMapping("/next/{userId}")
+/*
     public ResponseEntity<EventDTO> getNextEvent(@PathVariable Integer userId) {
         Event nextEvent = eventService.getRecentEventByUserId(userId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
         return ResponseEntity.ok(new EventDTO(nextEvent));
+    }
+ */    
+    @GetMapping("/next/{userId}")
+    public ResponseEntity<List<Event>> getEventsByUserId(@PathVariable Integer userId) {
+        List<Event> events = eventService.findEventsByUserId(userId);
+        if (events.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
   
 }
