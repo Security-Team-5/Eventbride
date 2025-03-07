@@ -7,6 +7,7 @@ import NavBar from "./components/AppNavBar";
 import Terms from "./pages/Terms";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import MyEvents from "./pages/MyEvents";
+import CreateEvents from "./pages/CreateEvents"
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -27,6 +28,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/terminos-y-condiciones" element={<Terms />} />
             <Route path="/my-events" element={<MyEvents />} />
+            <Route path="/create-events" element={<CreateEvents />} />
           </Routes>
         </div>
       </Router>

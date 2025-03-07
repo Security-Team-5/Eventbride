@@ -1,143 +1,230 @@
-html, body, #root {
-  height: 100%;
-  width: 100%;
-  max-width: none;
+.contenedorPrincipal {
+  display: flex;
+  min-height: 100vh;
+  max-height: 100vh;
+  max-width: 100vw;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background-color: #FFFDF3;
   margin: 0;
   padding: 0;
-  background-color: #FFFDF3;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
 }
 
-#root {
-  max-width: 100% !important;
+.contenedor {
   width: 100%;
-}
-
-.app-container {
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  min-height: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 0 20px;
+  background-color: #FFFDF3;
   
 }
 
-.navbar {
-  height: 100px;
-}
-
-.content {
-  flex-grow: 1;
-  margin-top: 100px;
-  height: 100%; 
-  display: flex;
-  flex-direction: column;
-}
-
-.navbar-logo {
-  height: 90px; 
-  width: auto;
-  margin-right: 10px; 
-}
-.navbar {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
+.bannerCompleto {
+  position: relative;
   width: 100%;
+  height: 40vh;
+  border-bottom: 3px solid white;
 }
 
-.nav-spacer {
-  flex-grow: 1;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.user-avatar {
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
+.imagenBanner {
+  width: 100%;
+  height: 40vh;
   object-fit: cover;
 }
-.navbar-container {
-  width: 100%; 
-  height: 100px;
-  position: fixed; 
+
+.overlayBanner {
+  position: absolute;
   top: 0;
   left: 0;
-  background-color: rgb(228, 83, 83); 
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
-  z-index: 1000; 
+  right: 0;
+  bottom: 50px;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 3px solid white;
+  height: 40vh;
 }
 
-.navbar-collapse {
+.contenidoBanner {
+  margin-top: 150px;
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.tituloPrincipal {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.subtituloBanner {
+  font-size: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  color: white;
+}
+
+.botonPrimario {
+  margin-top: 1.5rem;
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: palevioletred;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.botonPrimario:hover {
+  background-color: rgba(216, 112, 147, 0.576);
+}
+
+.seccionBienvenida {
   width: 100%;
+  margin: 0 auto;
+  border-radius: 10px;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.599), rgba(255, 255, 255, 0)),
+    url("https://s3-alpha-sig.figma.com/img/232d/4d5b/b149ff0ae6134858828f4033d31f550d?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=B6Jvf53Sn-Yd~mlWhsLn7pEg6rYWzEkW0tXYW7DftF12jZ~eAI8kmUqzGO3hgRDxnrMObu-olpdc5oZOtfRXRlkGNyDGBf-jTRa9HcNQGeMGD94-b-YrjZQNx1R7TKDb34fJqFqUefvIdeIALt2TPd5DnCNKWzLjv5rev5BwKnyGgtRL~MwIzLl5n3PrV3jbIdYi-PbR3AGAXz~V7R0aPV9oh69GcmJsXnCle5SUBj2hH6MtAXmAF01sbxbMlSTKaatOsQlfpOz-V9w65Mk5qqd-hDBhfNOnmr982P~CSBBantqrGE1389OItJWgaJ9ZpBl0kvk4hesmmflKI127Vg__");
+  padding: 4rem 0;
+  background-color: #FFFDF3;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /
+.encabezadoCentrado {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-family: 'Playfair Display', serif;
 }
 
+.tituloSeccion {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+}
 
-#root {
-  max-width: 1080px; 
+.separador {
+  width: 6rem;
+  height: 4px;
+  background-color: palevioletred;
+  margin: 0 auto 2rem;
+}
+
+.textoDescriptivo {
+  font-size: 1.125rem;
+  color: #4b5563;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.seccionQuienesSomos {
+  margin-top: 4rem;
+}
+
+.contenedorColumnas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .contenedorColumnas {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.tarjeta {
+  background-color: #edd0f5e0;
   padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 4%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tituloTarjeta {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
+.textoTarjeta {
+  color: rgb(0, 0, 0);
+  text-align: center;
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.seccionValores {
+  width: 100%;
+  padding: 4rem 0;
+  position: relative;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.599), rgba(255, 255, 255, 0)),
+    url("https://s3-alpha-sig.figma.com/img/232d/4d5b/b149ff0ae6134858828f4033d31f550d?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=B6Jvf53Sn-Yd~mlWhsLn7pEg6rYWzEkW0tXYW7DftF12jZ~eAI8kmUqzGO3hgRDxnrMObu-olpdc5oZOtfRXRlkGNyDGBf-jTRa9HcNQGeMGD94-b-YrjZQNx1R7TKDb34fJqFqUefvIdeIALt2TPd5DnCNKWzLjv5rev5BwKnyGgtRL~MwIzLl5n3PrV3jbIdYi-PbR3AGAXz~V7R0aPV9oh69GcmJsXnCle5SUBj2hH6MtAXmAF01sbxbMlSTKaatOsQlfpOz-V9w65Mk5qqd-hDBhfNOnmr982P~CSBBantqrGE1389OItJWgaJ9ZpBl0kvk4hesmmflKI127Vg__");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.contenedorValores {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+  
+}
+
+@media (min-width: 768px) {
+  .contenedorValores {
+    grid-template-columns: 1fr 1fr 1fr;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+.tarjetaValor {
+  background-color: #edd0f5e0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 5%;
+}
+
+.tituloValor {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: rgb(0, 0, 0);
+}
+
+.textoValor {
+  color: #4b5563;
+}
+
+.logo-home {
+  width: 150px;
+  height: auto;
+  margin-right: 10px;
+}
+
+@media (max-width: 640px) {
+  .tituloPrincipal {
+    font-size: 2rem;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .subtituloBanner {
+    font-size: 1.125rem;
   }
-}
 
-.card {
-  padding: 2em;
-}
+  .tituloSeccion {
+    font-size: 2rem;
+  }
 
-.read-the-docs {
-  color: #888;
-}
-
-.user-name {
-  font-size: 20px; 
-  font-weight: bold; 
-  font-family: "Arial", sans-serif; 
-  color: #000000; 
-  text-transform: uppercase; 
-  margin-right: 10px; 
+  .bannerCompleto {
+    height: 50vh;
+  }
 }

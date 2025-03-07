@@ -6,7 +6,7 @@ function Terms() {
       <h1>Términos y Condiciones</h1> 
 
       <section>
-        <h2>Objeto del Acuerdo</h2>
+        <h2 className="term-paragraph">Objeto del Acuerdo</h2>
         <div className="term-paragraph">
           <p className="term">
             Este documento regula el uso de la plataforma EventBride, que conecta a usuarios interesados en organizar
@@ -17,7 +17,7 @@ function Terms() {
       </section>
 
       <section>
-        <h2>Aceptación de los Términos</h2>
+        <h2 className="term-paragraph">Aceptación de los Términos</h2>
 
         <div className="term-paragraph">
           <p className="term">
@@ -29,7 +29,7 @@ function Terms() {
       </section>
 
       <section>
-        <h2>Registro y Uso de la Plataforma</h2>
+        <h2 className="term-paragraph">Registro y Uso de la Plataforma</h2>
         <div className="term-paragraph">
           <p className="term">
           Los usuarios deberán proporcionar información veraz y mantener la confidencialidad de sus credenciales de acceso.
@@ -41,7 +41,7 @@ function Terms() {
       </section>
 
       <section>
-        <h2>Procesamiento de Pagos</h2>
+        <h2 className="term-paragraph">Procesamiento de Pagos</h2>
 
         <div className="term-paragraph">
           <p className="term">
@@ -54,19 +54,19 @@ function Terms() {
         </div>
       </section>
 
-      <section>
-        <h2>Reservas, Cancelaciones y Reembolsos</h2>
+      <section >
+        <h2 className="term-paragraph">Reservas, Cancelaciones y Reembolsos</h2>
         <div className="term-paragraph">
           <p className="term">
           Las condiciones específicas de reserva y reembolso se definirán en el acuerdo entre el usuario y el proveedor,
           siempre en línea con nuestras políticas generales.
           </p>
         </div>
-        
-          <li>Bodas: la cancelación gratuita debe realizarse al menos 5 meses antes de la fecha del evento.</li>
-          <li>Bautizos: la cancelación gratuita debe realizarse al menos 2 meses antes del evento.</li>
-          <li>Comuniones: la cancelación gratuita debe realizarse al menos 3 meses antes del evento.</li>
-        
+          <ul>
+          <li className="term-paragraph">Bodas: la cancelación gratuita debe realizarse al menos 5 meses antes de la fecha del evento.</li>
+          <li className="term-paragraph">Bautizos: la cancelación gratuita debe realizarse al menos 2 meses antes del evento.</li>
+          <li className="term-paragraph">Comuniones: la cancelación gratuita debe realizarse al menos 3 meses antes del evento.</li>
+          </ul>
         
         <div className="term-paragraph">
           <p className="term">
@@ -79,7 +79,7 @@ function Terms() {
 
       <section>
         
-        <h2>Valoración de Servicios</h2>
+        <h2 className="term-paragraph">Valoración de Servicios</h2>
         <div className="term-paragraph">
           <p className="term">
           Los usuarios podrán calificar y dejar reseñas sobre la atención y calidad de los servicios recibidos a través de
@@ -92,7 +92,7 @@ function Terms() {
       </section>
 
       <section>
-        <h2>Caso de Incumplimiento de los Servicios</h2>
+        <h2 className="term-paragraph">Caso de Incumplimiento de los Servicios</h2>
         <div className="term-paragraph">
           <p className="term">
           En el supuesto de que el proveedor no preste el servicio contratado, la plataforma limitará su actuación a
@@ -104,7 +104,7 @@ function Terms() {
       </section>
 
       <section>
-        <h2>Propiedad Intelectual y Uso de Contenidos</h2>
+        <h2 className="term-paragraph">Propiedad Intelectual y Uso de Contenidos</h2>
         <div className="term-paragraph">
           <p className="term">
           Todo el contenido, diseño, logotipos y marcas de EventBride son propiedad exclusiva de la plataforma. Queda
@@ -114,7 +114,7 @@ function Terms() {
       </section>
 
       <section>
-        <h2>Protección de Datos</h2>
+        <h2 className="term-paragraph">Protección de Datos</h2>
         <div className="term-paragraph">
           <p className="term">
           EventBride se compromete a tratar los datos personales de usuarios y proveedores conforme a la legislación
