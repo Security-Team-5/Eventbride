@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #B3E5FC; 
+    
   }
   
   .login-box {
@@ -21,6 +21,13 @@
   }
   
   .login-box input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .login-box select {
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;

@@ -9,7 +9,6 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,11 +31,20 @@ public class Service extends BaseEntity {
     @Size(min = 1, max = 30)
     private String cityAvailable;
 
-    @Column(name = "service_price", precision = 9, scale = 2, nullable = false)
+    @Column(name = "service_price_guest", precision = 9, scale = 2, nullable = false)
     @Digits(integer = 7, fraction = 2)
-    @NotNull
     @DecimalMin("0.0")
-    private BigDecimal servicePrice;
+    private BigDecimal servicePricePerGuest;
+
+    @Column(name = "service_price_hour", precision = 9, scale = 2, nullable = false)
+    @Digits(integer = 7, fraction = 2)
+    @DecimalMin("0.0")
+    private BigDecimal servicePricePerHour;
+
+    @Column(name = "fixed_price", precision = 9, scale = 2, nullable = false)
+    @Digits(integer = 7, fraction = 2)
+    @DecimalMin("0.0")
+    private BigDecimal fixedPrice;
 
     @Column(name = "picture", nullable = false)
     @NotBlank
@@ -45,12 +53,16 @@ public class Service extends BaseEntity {
 
     @Column(name = "description", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 250)
+    @Size(min = 1, max = 1000)
     private String description;
 
-    /* COMENTADO HASTA TENER LA CLASE SUPPLIER 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "supplier_id", nullable = false)
-    private Supplier supplier; */
+    @Column(name = "hours", nullable = false)
+    private Integer hours;    
+
+    @Column(name = "limited_by_price_per_guest", nullable = false)
+    private Boolean limitedByPricePerGuest;
+
+    @Column(name = "limited_by_price_per_hour", nullable = false)
+    private Boolean limitedByPricePerHour;
 
 }

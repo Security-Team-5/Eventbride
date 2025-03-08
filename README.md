@@ -11,9 +11,6 @@ Como configurar el proyecto.
     use Eventbride; (para meterte en la database)
     show tables; (para ver si se han creado. De primeras saldrá vacio)
 ```
-Una vez con todo hecho, deberías ver algo así:
-
-![image](https://github.com/user-attachments/assets/b9c11486-8b60-4856-b040-c45649d071f0)
 
 5. En el proyecto buscar el archivo *application-mysql.properties.example* (ruta: src\main\resources\application-mysql.properties.example).
 
@@ -52,4 +49,8 @@ Con todo activo te debería salir una pantalla tal que así:
     - pass: 1234
 
 10. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
+
+Una vez con todo hecho, deberías ver algo así:
+
+![image](https://github.com/user-attachments/assets/b9c11486-8b60-4856-b040-c45649d071f0)
 

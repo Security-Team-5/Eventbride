@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -9,39 +8,22 @@ import RegistrarServicio from "./pages/RegistrarServicio";
 import VenuesScreen from "./pages/VenuesScreen";
 import "./App.css";
 import NavBar from "./components/AppNavBar";
+import Terms from "./pages/Terms";
+import { useCurrentUser } from "./hooks/useCurrentUser";
+import MyEvents from "./pages/MyEvents";
+import CreateEvents from "./pages/CreateEvents"
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
 
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/auth/current-user", {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const user = await response.json();
-          setCurrentUser(user);
-          localStorage.setItem("user", JSON.stringify(user));
-        } else {
-          setCurrentUser(null);
-          localStorage.removeItem("user");
-        }
-      } catch (error) {
-        console.error("Error fetching current user:", error);
-        setCurrentUser(null);
-        localStorage.removeItem("user");
-      }
-    };
-
-    fetchCurrentUser();
-  }, []);
-
+  if (loading) {
+    return <div>Loading...</div>; // Muestra algo mientras se carga el usuario
+  }
+  
   return (
     <div className="app-container"> 
       <Router>
-        <NavBar />
+        <div className="navbar"><NavBar /></div>
         <div className="content">
           <Routes>
             <Route path="/user"  />
@@ -52,6 +34,10 @@ function App() {
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
             <Route path="/venues" element={<VenuesScreen />} />
+            <Route path="/terminos-y-condiciones" element={<Terms />} />
+            <Route path="/my-events" element={<MyEvents />} />
+            <Route path="/create-events" element={<CreateEvents />} />
+
           </Routes>
         </div>
       </Router>

@@ -1,67 +1,56 @@
-import { useState, useEffect } from "react";
-import "../components/AppNavBar.css";
+/* eslint-disable no-unused-vars */
+import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
 import usuario from "../static/resources/images/user.png";
+import React, { useState } from 'react';
+
 
 function Navbar() {
-  const [currentUser, setCurrentUser] = useState(null);
+  //const {currentUser, loading} = useCurrentUser(null)
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/auth/current-user", {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const user = await response.json();
-          setCurrentUser(user);
-          localStorage.setItem("user", JSON.stringify(user));
-        } else {
-//          setCurrentUser(null);
-          localStorage.removeItem("user");
-        }
-      } catch (error) {
-        console.error("Error fetching current user:", error);
-//        setCurrentUser(null);
-        localStorage.removeItem("user");
-      }
-    };
+  // Obtener datos user desde localStorage
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
-    fetchCurrentUser();
-    console.log("currentUser", currentUser);
-    setCurrentUser({userType: "SUPPLIER"});
-    console.log("currentUser", currentUser);
-  }, currentUser);
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   const renderNavList = () => {
     if (!currentUser) {
       return (
-        <ul className="navbar-list">
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
+        null
+      );
+    }
+    // TODO cambiar este tipo de implicaciones por el role correcto
+    if (currentUser.role === "CLIENT") {
+      return (
+        <div className="navbar-flex">
+          <p className="navbar-list"><a href="/my-events">Mis eventos</a></p>
+          <p className="navbar-list" onClick={toggleDropdown}>
+            <a href="#">Crear evento</a>
+            {isOpen && (
+            <div className="dropdown">
+              <p><a href="/create-events">Desde cero</a></p>
+              <p><a href="/quiz">Cuestionario</a></p>
+        </div>
+        )}
+          </p>
+          <p className="navbar-list"><a href="/lugares">Recintos</a></p>
+          <p className="navbar-list"><a href="/proveedores">Otros servicios</a></p>
+          <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
+          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
+        </div>
       );
     }
 
-    if (currentUser.userType === "CLIENT") {
+    if (currentUser.role === "SUPPLIER") {
       return (
-        <ul className="navbar-list">
-          <li><a href="/miseventos">Mis eventos</a></li>
-          <li><a href="/lugares">Lugares</a></li>
-          <li><a href="/proveedores">Proveedores</a></li>
-          <li><a href="/invitaciones">Invitaciones</a></li>
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
-      );
-    }
-
-    if (currentUser.userType === "SUPPLIER") {
-      return (
-        <ul className="navbar-list">
-          <li><a href="/misservicios">Mis servicios</a></li>
-          <li><a href="/terminos">Términos y Condiciones</a></li>
-        </ul>
+        <div className="navbar-flex">
+          <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
+          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
+        </div>
       );
     }
 
@@ -72,7 +61,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-brand">
         <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
-        <a href="/"><span className="navbar-title">Eventbride</span></a>
+        <a href="/"><span className="navbar-title">Inicio</span></a>
       </div>
       {renderNavList()}
       {currentUser && (
@@ -86,6 +75,18 @@ function Navbar() {
             <a href="/perfil">
               <img src={usuario} alt="Usuario" className="usuario" />
             </a>
+          </div>
+          <div className="navbar-user">
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("jwt");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+              }}
+            >
+              Cerrar sesión
+            </button>
           </div>
         </>
       )}

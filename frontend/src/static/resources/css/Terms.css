@@ -1,0 +1,43 @@
+/* Terms.css */
+.terms-container {
+    font-family: Arial, sans-serif;
+    background-color: #FFFDF3;
+    
+  }
+
+.term-paragraph {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.term {
+  width: 50%;
+}
+  
+  h1 {
+    text-align: center;
+    color: #000000;
+    margin-top: 6.5%;
+  }
+  
+  section {
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    color: #000000;
+  }
+  
+  p { 
+    font-size: 16px;
+    line-height: 1.6;
+    color: #000000;
+    text-align: center;
+  }
+
+  ul li::before {
+    content: "• ";
+    color: #000000;
+  }
+  

@@ -4,28 +4,26 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.eventbride.event_properties.EventProperties;
 import com.eventbride.invitation.Invitation;
 import com.eventbride.model.BaseEntity;
-import com.eventbride.otherService.OtherService;
 import com.eventbride.user.User;
-import com.eventbride.venue.Venue;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "events")
@@ -53,7 +51,7 @@ public class Event extends BaseEntity{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
     private List<Invitation> invitations;
 
     public enum EventType {
@@ -62,17 +60,7 @@ public class Event extends BaseEntity{
         COMMUNION
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "event_venue", 
-      joinColumns = @JoinColumn(name = "venue_id", referencedColumnName = "id"), 
-      inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
-    private List<Venue> venues;
-
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "event_other_service", 
-      joinColumns = @JoinColumn(name = "other_service_id", referencedColumnName = "id"), 
-      inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
-    private List<OtherService> otherServices;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<EventProperties> eventProperties;
 
 }
