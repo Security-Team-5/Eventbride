@@ -8,7 +8,7 @@ Como configurar el proyecto.
 4. Poner los siguientes comandos:
 ```
     create database eventbride; (para crear la database)
-    use Eventbride; (para meterte en la database)
+    use eventbride; (para meterte en la database)
     show tables; (para ver si se han creado. De primeras saldrá vacio)
 ```
 
