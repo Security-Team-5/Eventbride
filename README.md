@@ -40,7 +40,7 @@ IMPORTANTE, no pongas el user y contraseña entre comillas, sigue la estructura 
     npm install
     npm run dev
 ```
-Con todo activo te debería salir una pantalla tal que así:
+Con todo activo te debería salir una pantalla tal que así (o similar dependiendo de la versión que exista en ese momento):
 
 ![image](https://github.com/user-attachments/assets/24b833aa-99ee-4176-a1f0-557f567a8c50)
 
@@ -50,7 +50,7 @@ Con todo activo te debería salir una pantalla tal que así:
 
 10. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
 
-Una vez con todo hecho, deberías ver algo así:
+Una vez con todo hecho, deberías ver algo así, pero con todas las entidades existentes en ese momento:
 
 ![image](https://github.com/user-attachments/assets/b9c11486-8b60-4856-b040-c45649d071f0)
 
