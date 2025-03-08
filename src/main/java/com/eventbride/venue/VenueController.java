@@ -1,6 +1,7 @@
 package com.eventbride.venue;
 
 import java.util.List;
+import jakarta.validation.Valid;;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,24 @@ public class VenueController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(VenueDTO.fromEntities(venues));
+    }
+
+    @GetMapping("/filter")
+    public List<Venue> getFilteredVenues(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Integer maxGuests,
+            @RequestParam(required = false) Double surface) {
+        return venueService.getFilteredVenues(city, maxGuests, surface);
+    }
+
+    @PostMapping
+    public ResponseEntity<Venue> saveVenue(@Valid @RequestBody Venue venue) {
+        try {
+            Venue newVenue = venueService.save(venue);
+            return ResponseEntity.ok(newVenue);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }
