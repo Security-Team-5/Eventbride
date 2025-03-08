@@ -18,12 +18,11 @@ function Home({ user }) {
             <p className="subtituloBanner">Eventbride. 
               <br></br>
               Eventos que brillan, recuerdos que perduran.</p>
-            <button className="botonPrimario">Crear evento</button>
           </div>
         </div>
       </div>
 
-      <section className="seccionBienvenida">
+      <section className="seccionValores">
         <div className="contenedor">
           <div className="encabezadoCentrado">
             <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"></link>
@@ -59,9 +58,32 @@ function Home({ user }) {
             </div>
           </div>
         </div>
-      </section>
+        <div className="contenedor">
+        <div className="seccionQuienesSomos">
+            <h2 className="tituloSeccion">Crear evento</h2>
+            <div className="contenedorColumnas">
+              <div className="tarjeta">
+                <h3 className="tituloTarjeta">Crear de cero</h3>
+                <p className="textoTarjeta">
+                  Crea un evento de cero a tu gusto.
+                </p>
+                <a href="/create-events"  style={{ display: 'flex', margin: '0 auto', marginTop: '46px', border: '1px solid rgb(0, 0, 0)', backgroundColor: 'rgba(247, 217, 227, 0.96)', borderRadius: '10px', padding: '10px',height: '7%', width: '25%', textAlign: 'center', color: "black", flexDirection:"column", justifyContent:"center"}} >
+                  Crear evento
+                </a>
 
-      <section className="seccionValores">
+              </div>
+              <div className="tarjeta">
+                <h3 className="tituloTarjeta">¿Estás indeciso? Te ayudamos</h3>
+                <p className="textoTarjeta">
+                  Te ofrecemos un cuestionario para ayudarte a que puedas encontrar el evento perfecto para ti.
+                </p>
+                <a style={{ display: 'flex', margin: '0 auto', marginTop: '20px', border: '1px solid rgb(0, 0, 0)', backgroundColor: 'rgba(247, 217, 227, 0.96)', borderRadius: '10px', padding: '10px',height: '7%', width: '25%', textAlign: 'center', color: "black", flexDirection:"column", justifyContent:"center"}} >
+                  Cuestionario
+                </a>
+                </div>
+            </div>
+          </div>
+        </div>
         <div className="contenedor">
           <h2 className="tituloSeccion">Packs destacados</h2>
           <div className="contenedorValores">

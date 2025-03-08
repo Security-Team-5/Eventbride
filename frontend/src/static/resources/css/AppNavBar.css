@@ -105,3 +105,27 @@
     padding-top: 80px;
     text-align: center;
 }
+
+.dropdown {
+    position: absolute;
+    top: 100%;  
+    left: 20%;
+    background-color: #d9be75;
+    z-index: 1000;  
+    width: 10%;
+  }
+
+  .dropdown p {
+    margin: 0; /* Elimina el margen por defecto de <p> */
+    padding: 10px;
+  }
+  
+  .dropdown p a {
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    display: block; /* Hace que <a> ocupe toda la línea del <p> */
+  }
+
+  .dropdown p a:hover {
+    transform: scale(1.05);
+    transition: transform 0.1s ease-in-out;
+  }

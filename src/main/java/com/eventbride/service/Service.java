@@ -53,7 +53,7 @@ public class Service extends BaseEntity {
 
     @Column(name = "description", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 250)
+    @Size(min = 1, max = 1000)
     private String description;
 
     @Column(name = "hours", nullable = false)

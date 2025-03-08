@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.dto.VenueDTO;
@@ -31,6 +32,14 @@ public class VenueController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(VenueDTO.fromEntities(venues));
+    }
+
+    @GetMapping("/filter")
+    public List<Venue> getFilteredVenues(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Integer maxGuests,
+            @RequestParam(required = false) Double surface) {
+        return venueService.getFilteredVenues(city, maxGuests, surface);
     }
 
     @PostMapping

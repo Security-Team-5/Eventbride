@@ -5,11 +5,13 @@ import Home from "./pages/Home";
 import OtherServiceScreen from "./pages/OtherServiceScreen";
 import Servicios from "./pages/Servicios";
 import RegistrarServicio from "./pages/RegistrarServicio";
+import VenuesScreen from "./pages/VenuesScreen";
 import "./App.css";
 import NavBar from "./components/AppNavBar";
 import Terms from "./pages/Terms";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import MyEvents from "./pages/MyEvents";
+import CreateEvents from "./pages/CreateEvents"
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -31,8 +33,10 @@ function App() {
             <Route path="/other-services" element={<OtherServiceScreen />} />
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
-            <Route path="/terminos-y-condiciones" element={<Terms />} />
             <Route path="/my-events" element={<MyEvents />} />
+            <Route path="/venues" element={<VenuesScreen />} />
+            <Route path="/terminos-y-condiciones" element={<Terms />} />
+            <Route path="/create-events" element={<CreateEvents />} />
           </Routes>
         </div>
       </Router>

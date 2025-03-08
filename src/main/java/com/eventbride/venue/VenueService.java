@@ -30,6 +30,14 @@ public class VenueService {
     }
 
     @Transactional
+    public List<Venue> getFilteredVenues(String city, Integer maxGuests, Double surface) {
+        return venueRepository.findByFilters(
+            city,
+            maxGuests != null ? maxGuests : 0,
+            surface != null ? surface : 0.0
+        );
+    }
+    
     public Venue save(Venue venue) {
 		Optional<User> user = userService.getUserById(venue.getUser().getId());
 		if(user.isPresent()){
