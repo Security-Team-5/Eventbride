@@ -3,7 +3,7 @@
 Como configurar el proyecto.
 
 1. Instalar MariaDB (https://mariadb.org/).
-2. Instalar Java 17.
+2. Instalar Java 17. Configurar variable de entorno (JAVA_HOME) con la ruta donde esté el jdk17.
 3. Abrir MYSQL Client y configurar la contraseña que se desee.
 4. Poner los siguientes comandos:
 ```
