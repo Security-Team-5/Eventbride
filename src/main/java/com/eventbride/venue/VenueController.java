@@ -34,12 +34,12 @@ public class VenueController {
     }
 
     @PostMapping
-    public ResponseEntity<Venue> createVenue(@Valid @RequestBody Venue venue) {
+    public ResponseEntity<?> createVenue(@Valid @RequestBody Venue venue) {
         try {
             Venue newVenue = venueService.save(venue);
-            return ResponseEntity.ok(newVenue);
+            return ResponseEntity.ok(new VenueDTO(newVenue));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

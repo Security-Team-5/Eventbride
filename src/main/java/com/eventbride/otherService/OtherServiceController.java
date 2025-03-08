@@ -2,6 +2,7 @@ package com.eventbride.otherService;
 
 import java.util.List;
 
+import com.eventbride.dto.OtherServiceDTO;
 import com.eventbride.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class OtherServiceController {
     public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
         try {
             OtherService newOtherService = otherServiceService.createOtherService(otherService);
-            return ResponseEntity.ok(newOtherService);
+            return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

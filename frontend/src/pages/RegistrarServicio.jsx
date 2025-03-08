@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import "../static/resources/css/RegistrarServicio.css";
+import {useNavigate} from "react-router-dom";
 
 const RegistrarServicio = () => {
 
@@ -7,12 +8,16 @@ const RegistrarServicio = () => {
     const currentUser = JSON.parse(localStorage.getItem("user"));
 
     const [serviceType, setServiceType] = useState("unselected");
+    const [limitedBy, setLimitedBy] = useState("perGuest");
+
+    const navigate = useNavigate()
+
     const [formData, setFormData] = useState({
         name: '',
         available: false,
         cityAvailable: '',
-        servicePricePerGuest: '',
-        servicePricePerHour: '',
+        servicePricePerGuest: 0,
+        servicePricePerHour: 0,
         fixedPrice: '',
         picture: '',
         description: '',
@@ -20,7 +25,9 @@ const RegistrarServicio = () => {
         limitedByPricePerGuest: false,
         limitedByPricePerHour: false,
         otherServiceType: 'CATERING',
-        user: currentUser.id
+        user: {
+                id: currentUser.id
+        }
     });
 
     const handleChange = (e) => {
@@ -33,6 +40,9 @@ const RegistrarServicio = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        formData.limitedByPricePerGuest = limitedBy === "perGuest";
+        formData.limitedByPricePerHour = limitedBy === "perHour";
+
         console.log('Datos del formulario:', formData);
         fetch("/api/" + serviceType, {
             headers: {
@@ -40,7 +50,12 @@ const RegistrarServicio = () => {
             },
             method: "POST",
             body: JSON.stringify(formData) 
-        });
+        })
+            .then(response => response.json())
+            .then(data => {
+                navigate("/misservicios")
+            })
+            .catch(error => console.error("Error obteniendo evento:", error));;
     };
 
     return (
@@ -92,32 +107,8 @@ const RegistrarServicio = () => {
                                     maxLength="30"
                                 />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="servicePricePerGuest">Precio del Servicio por Invitado:</label>
-                                <input
-                                    type="number"
-                                    id="servicePricePerGuest"
-                                    name="servicePricePerGuest"
-                                    value={formData.servicePricePerGuest}
-                                    onChange={handleChange}
-                                    required
-                                    min="0"
-                                    step="0.01"
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="servicePricePerHour">Precio del Servicio por hora:</label>
-                                <input
-                                    type="number"
-                                    id="servicePricePerHour"
-                                    name="servicePricePerHour"
-                                    value={formData.servicePricePerHour}
-                                    onChange={handleChange}
-                                    required
-                                    min="0"
-                                    step="0.01"
-                                />
-                            </div>
+
+
                             <div className="form-group">
                                 <label htmlFor="fixedPrice">Precio Fijo:</label>
                                 <input
@@ -132,25 +123,48 @@ const RegistrarServicio = () => {
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="limitedByPricePerGuest">¿Por persona?:</label>
-                                <input
-                                    type="checkbox"
-                                    id="limitedByPricePerGuest"
-                                    name="limitedByPricePerGuest"
-                                    checked={formData.limitedByPricePerGuest}
-                                    onChange={handleChange}
-                                />
+                                <label htmlFor="limitedByPricePerGuest">¿Cobro por invitado o por hora?</label>
+                                <select id="limitedBy" value={limitedBy} onChange={(e) => setLimitedBy(e.target.value)}>
+                                    <option value="perGuest">Por invitado</option>
+                                    <option value="perHour">Por hora</option>
+                                </select>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="limitedByPricePerHour">¿Por Hora?:</label>
-                                <input
-                                    type="checkbox"
-                                    id="limitedByPricePerHour"
-                                    name="limitedByPricePerHour"
-                                    checked={formData.limitedByPricePerHour}
-                                    onChange={handleChange}
-                                />
-                            </div>
+                            <>
+                                {
+                                    limitedBy==="perGuest" && (
+                                        <div className="form-group">
+                                            <label htmlFor="servicePricePerGuest">Precio del Servicio por Invitado:</label>
+                                            <input
+                                                type="number"
+                                                id="servicePricePerGuest"
+                                                name="servicePricePerGuest"
+                                                value={formData.servicePricePerGuest}
+                                                onChange={handleChange}
+                                                required
+                                                min="0"
+                                                step="0.01"
+                                            />
+                                        </div>
+                                    )
+                                }
+                                {
+                                    limitedBy==="perHour" && (
+                                        <div className="form-group">
+                                            <label htmlFor="servicePricePerHour">Precio del Servicio por hora:</label>
+                                            <input
+                                                type="number"
+                                                id="servicePricePerHour"
+                                                name="servicePricePerHour"
+                                                value={formData.servicePricePerHour}
+                                                onChange={handleChange}
+                                                required
+                                                min="0"
+                                                step="0.01"
+                                            />
+                                        </div>
+                                    )
+                                }
+                            </>
                             <div className="form-group">
                                 <label htmlFor="hours">Horas disponibles:</label>
                                 <input
@@ -288,7 +302,7 @@ const RegistrarServicio = () => {
                                             minLength="1"
                                             maxLength="250"
                                         />
-                                    </div>
+                                    </div> 
                                     <button type="submit" className="submit-button">Registrar otro servicio</button>
                                 </div>
                             )}
