@@ -3,17 +3,14 @@
 Como configurar el proyecto.
 
 1. Instalar MariaDB (https://mariadb.org/).
-2. Instalar Java 17.
+2. Instalar Java 17. Configurar variable de entorno (JAVA_HOME) con la ruta donde esté el jdk17.
 3. Abrir MYSQL Client y configurar la contraseña que se desee.
 4. Poner los siguientes comandos:
 ```
     create database eventbride; (para crear la database)
-    use Eventbride; (para meterte en la database)
+    use eventbride; (para meterte en la database)
     show tables; (para ver si se han creado. De primeras saldrá vacio)
 ```
-Una vez con todo hecho, deberías ver algo así:
-
-![image](https://github.com/user-attachments/assets/b9c11486-8b60-4856-b040-c45649d071f0)
 
 5. En el proyecto buscar el archivo *application-mysql.properties.example* (ruta: src\main\resources\application-mysql.properties.example).
 
@@ -43,7 +40,7 @@ IMPORTANTE, no pongas el user y contraseña entre comillas, sigue la estructura 
     npm install
     npm run dev
 ```
-Con todo activo te debería salir una pantalla tal que así:
+Con todo activo te debería salir una pantalla tal que así (o similar dependiendo de la versión que exista en ese momento):
 
 ![image](https://github.com/user-attachments/assets/24b833aa-99ee-4176-a1f0-557f567a8c50)
 
@@ -52,4 +49,8 @@ Con todo activo te debería salir una pantalla tal que así:
     - pass: 1234
 
 10. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
+
+Una vez con todo hecho, deberías ver algo así, pero con todas las entidades existentes en ese momento:
+
+![image](https://github.com/user-attachments/assets/b9c11486-8b60-4856-b040-c45649d071f0)
 
