@@ -27,7 +27,7 @@ function Navbar() {
     if (currentUser.role === "CLIENT") {
       return (
         <div className="navbar-flex">
-          <p className="navbar-list"><a href="/my-events">Mis eventos</a></p>
+          <p className="navbar-list"><a href="/events">Mis eventos</a></p>
           <p className="navbar-list" onClick={toggleDropdown}>
             <a href="#">Crear evento</a>
             {isOpen && (
