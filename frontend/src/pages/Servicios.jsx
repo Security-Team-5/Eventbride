@@ -31,7 +31,21 @@ const Servicios = () => {
                         <h3>{venue.name}</h3>
                         <p>Disponible: {venue.available ? 'Sí' : 'No'}</p>
                         <p>Ciudad: {venue.cityAvailable}</p>
-                        <p>Precio: {venue.servicePricePerGuest}</p>
+                        {
+                            venue.limitedByPricePerGuest && (
+                                <p>Precio por invitado: {venue.servicePricePerGuest}€</p>
+                            )
+                        }
+                        {
+                            venue.limitedByPricePerHour && (
+                                <p>Precio por hora: {venue.servicePricePerHour}€</p>
+                            )
+                        }
+                        {
+                            !venue.limitedByPricePerHour && !venue.limitedByPricePerGuest && (
+                                <p>Precio fijo: {venue.servicePricePerHour}€</p>
+                            )
+                        }
                         <p>Descripción: {venue.description}</p>
                     </div>
                 ))}
@@ -40,7 +54,21 @@ const Servicios = () => {
                         <h3>{otherService.name}</h3>
                         <p>Disponible: {otherService.available ? 'Sí' : 'No'}</p>
                         <p>Ciudad: {otherService.cityAvailable}</p>
-                        <p>Precio: {otherService.servicePricePerGuest}</p>
+                        {
+                            otherService.limitedByPricePerGuest && (
+                                <p>Precio por invitado: {otherService.servicePricePerGuest}€</p>
+                            )
+                        }
+                        {
+                            otherService.limitedByPricePerHour && (
+                                <p>Precio por hora: {otherService.servicePricePerHour}€</p>
+                            )
+                        }
+                        {
+                            !otherService.limitedByPricePerHour && !otherService.limitedByPricePerGuest && (
+                                <p>Precio fijo: {otherService.servicePricePerHour}€</p>
+                            )
+                        }
                         <p>Descripción: {otherService.description}</p>
                     </div>
                 ))}

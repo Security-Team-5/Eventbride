@@ -86,3 +86,8 @@ select, input[type="text"], input[type="number"], input[type="checkbox"] {
 .submit-button:hover {
     background-color: darkgreen;
 }
+
+.error-title {
+    color: red;
+    text-align: start
+}

@@ -9,6 +9,17 @@ const RegistrarServicio = () => {
 
     const [serviceType, setServiceType] = useState("unselected");
     const [limitedBy, setLimitedBy] = useState("perGuest");
+    const [errors, setErrors] = useState({
+        name: '',
+        cityAvailable: '',
+        servicePricePerGuest: '',
+        servicePricePerHour: '',
+        fixedPrice: '',
+        picture: '',
+        description: '',
+        hours: '',
+        otherServiceType: 'CATERING',
+    })
 
     const navigate = useNavigate()
 
@@ -53,9 +64,15 @@ const RegistrarServicio = () => {
         })
             .then(response => response.json())
             .then(data => {
-                navigate("/misservicios")
+                if(!data.error){
+                    navigate("/misservicios")
+                } else{
+                    const errorName = data.error
+                    setErrors(data);
+                }
+
             })
-            .catch(error => console.error("Error obteniendo evento:", error));;
+            .catch(error => console.error("Error obteniendo evento:", error));
     };
 
     return (
@@ -73,6 +90,7 @@ const RegistrarServicio = () => {
                         <div className="form-section">
                             <div className="form-group">
                                 <label htmlFor="name">Nombre:</label>
+                                <p className="error-title">{errors.name}</p>
                                 <input
                                     type="text"
                                     id="name"
@@ -96,6 +114,7 @@ const RegistrarServicio = () => {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="cityAvailable">Ciudad Disponible:</label>
+                                <p className="error-title">{errors.cityAvailable}</p>
                                 <input
                                     type="text"
                                     id="cityAvailable"
@@ -107,26 +126,12 @@ const RegistrarServicio = () => {
                                     maxLength="30"
                                 />
                             </div>
-
-
-                            <div className="form-group">
-                                <label htmlFor="fixedPrice">Precio Fijo:</label>
-                                <input
-                                    type="number"
-                                    id="fixedPrice"
-                                    name="fixedPrice"
-                                    value={formData.fixedPrice}
-                                    onChange={handleChange}
-                                    required
-                                    min="0"
-                                    step="0.01"
-                                />
-                            </div>
                             <div className="form-group">
                                 <label htmlFor="limitedByPricePerGuest">¿Cobro por invitado o por hora?</label>
                                 <select id="limitedBy" value={limitedBy} onChange={(e) => setLimitedBy(e.target.value)}>
                                     <option value="perGuest">Por invitado</option>
                                     <option value="perHour">Por hora</option>
+                                    <option value="fixed">Precio fijo</option>
                                 </select>
                             </div>
                             <>
@@ -134,6 +139,7 @@ const RegistrarServicio = () => {
                                     limitedBy==="perGuest" && (
                                         <div className="form-group">
                                             <label htmlFor="servicePricePerGuest">Precio del Servicio por Invitado:</label>
+                                            <p className="error-title">{errors.servicePricePerGuest}</p>
                                             <input
                                                 type="number"
                                                 id="servicePricePerGuest"
@@ -151,6 +157,7 @@ const RegistrarServicio = () => {
                                     limitedBy==="perHour" && (
                                         <div className="form-group">
                                             <label htmlFor="servicePricePerHour">Precio del Servicio por hora:</label>
+                                            <p className="error-title">{errors.servicePricePerHour}</p>
                                             <input
                                                 type="number"
                                                 id="servicePricePerHour"
@@ -164,9 +171,28 @@ const RegistrarServicio = () => {
                                         </div>
                                     )
                                 }
+                                {
+                                    limitedBy==="fixed" && (
+                                        <div className="form-group">
+                                            <label htmlFor="fixedPrice">Precio del Servicio fijo:</label>
+                                            <p className="error-title">{errors.fixedPrice}</p>
+                                            <input
+                                                type="number"
+                                                id="fixedPrice"
+                                                name="fixedPrice"
+                                                value={formData.fixedPrice}
+                                                onChange={handleChange}
+                                                required
+                                                min="0"
+                                                step="0.01"
+                                            />
+                                        </div>
+                                    )
+                                }
                             </>
                             <div className="form-group">
                                 <label htmlFor="hours">Horas disponibles:</label>
+                                <p className="error-title">{errors.hours}</p>
                                 <input
                                     type="number"
                                     id="hours"
@@ -180,6 +206,7 @@ const RegistrarServicio = () => {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="picture">Imagen:</label>
+                                <p className="error-title">{errors.picture}</p>
                                 <input
                                     type="text"
                                     id="picture"
@@ -193,6 +220,7 @@ const RegistrarServicio = () => {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="description">Descripción:</label>
+                                <p className="error-title">{errors.description}</p>
                                 <input
                                     type="text"
                                     id="description"
@@ -209,6 +237,7 @@ const RegistrarServicio = () => {
                                     <p>Campos específicos para recintos de eventos:</p>
                                     <div className="form-group">
                                         <label htmlFor="postalCode">Código postal:</label>
+                                        <p className="error-title">{errors.postalCode}</p>
                                         <input
                                             type="text"
                                             id="postalCode"
@@ -222,6 +251,7 @@ const RegistrarServicio = () => {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="coordinates">Coordenadas:</label>
+                                        <p className="error-title">{errors.coordinates}</p>
                                         <input
                                             type="text"
                                             id="coordinates"
@@ -235,6 +265,7 @@ const RegistrarServicio = () => {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="address">Dirección:</label>
+                                        <p className="error-title">{errors.address}</p>
                                         <input
                                             type="text"
                                             id="address"
@@ -248,6 +279,7 @@ const RegistrarServicio = () => {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="maxGuests">Máximo de invitados:</label>
+                                        <p className="error-title">{errors.maxGuests}</p>
                                         <input
                                             type="number"
                                             id="maxGuests"
@@ -260,6 +292,7 @@ const RegistrarServicio = () => {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="surface">Superficie (m²):</label>
+                                        <p className="error-title">{errors.surface}</p>
                                         <input
                                             type="number"
                                             id="surface"
@@ -292,6 +325,7 @@ const RegistrarServicio = () => {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="extraInformation">Información extra:</label>
+                                        <p className="error-title">{errors.extraInformation}</p>
                                         <input
                                             type="text"
                                             id="extraInformation"
@@ -302,7 +336,7 @@ const RegistrarServicio = () => {
                                             minLength="1"
                                             maxLength="250"
                                         />
-                                    </div> 
+                                    </div>
                                     <button type="submit" className="submit-button">Registrar otro servicio</button>
                                 </div>
                             )}
