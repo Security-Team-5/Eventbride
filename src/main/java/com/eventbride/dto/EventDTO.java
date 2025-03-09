@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EventDTO {
+    private Integer id;
     private Event.EventType eventType;
     private Integer guests;
     private BigDecimal budget;
@@ -20,6 +21,7 @@ public class EventDTO {
 
     // Constructor para simplificar la creación del DTO
     public EventDTO(Event event) {
+        this.id = event.getId();
         this.eventType = event.getEventType();
         this.guests = event.getGuests();
         this.budget = event.getBudget();

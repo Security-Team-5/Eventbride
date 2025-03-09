@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../static/resources/css/MyEvents.css";
 
 function MyEvents() {
   const [eventos, setEventos] = useState([]);
+  const navigate = useNavigate(); // Hook para redirigir
+
 
   const currentUser = JSON.parse(localStorage.getItem("user"));
 
@@ -48,6 +51,7 @@ function MyEvents() {
   };
 
   // Decodificar caracteres especiales en caso de problemas de codificación
+  /*
   const decodeText = (text) => {
     try {
       return decodeURIComponent(escape(text));
@@ -55,13 +59,14 @@ function MyEvents() {
       return text;
     }
   };
+  */
 
   return (
     <>
       {eventos.length > 0 ? (
         eventos.map((evento, index) => (
           <div key={index} className="event-container">
-            <div className="event-details">
+            <div>
               <h2 className="event-title">{tipoDeEvento(evento.eventType)}</h2>
               <div className="event-info">
                 <p className="event-date">Fecha: {formatearFecha(evento.eventDate)}</p>
@@ -71,31 +76,15 @@ function MyEvents() {
                 </p>
               </div>
             </div>
-            <div style={{display: "flex", flexDirection: "row"}}>
-              <div className="event-venues">
-                <h3>Recinto contratado</h3>
-                {evento.eventPropertiesDTO?.map((prop, i) =>
-                  prop.venueDTO ? (
-                    <div key={i} className="venue-card">
-                      <p><strong>Nombre:</strong> {decodeText(prop.venueDTO.name)}</p>
-                      <p><strong>Ubicación:</strong> {decodeText(prop.venueDTO.address)}</p>
-                    </div>
-                  ) : null
-                )}
-              </div>
-
-              <div className="event-services">
-                <h3>Otros servicios contratados</h3>
-                {evento.eventPropertiesDTO?.map((prop, i) =>
-                  prop.otherServiceDTO ? (
-                    <div key={i} className="service-card">
-                      <p><strong>Servicio:</strong> {decodeText(prop.otherServiceDTO.name)}</p>
-                      <p><strong>Descripción:</strong> {decodeText(prop.otherServiceDTO.description)}</p>
-                    </div>
-                  ) : null
-                )}
-              </div>
-            </div>
+            {evento.eventType === "WEDDING" && (
+              <img onClick={() => { console.log("Navegando a:", `/event/${evento.id}`); navigate(`/event/${evento.id}`)}} src={'https://imgix.bustle.com/uploads/image/2023/3/24/09d2b351-99fd-49eb-a5b1-9e4ad742109f-24350248-f965-4ac2-8cd5-687c79fac92b.jpeg?w=414&h=275&fit=crop&crop=focalpoint&dpr=2&fp-x=0.356&fp-y=0.3052'} alt="Boda" className="foto" />
+            )}
+            {evento.eventType === "COMMUNION" && (
+              <img onClick={() => navigate(`/event/${evento.id}`)} src={'https://media.istockphoto.com/id/2046030661/es/foto/comuni%C3%B3n-santo-grial-con-panes-sin-levadura-y-c%C3%A1liz-de-vino-%C3%BAltima-cena-con-corpus-christi-de.jpg?s=612x612&w=0&k=20&c=tVRw3ZhhEY8FIhZWybDC1-J3hB74tkI2LURJq-2Gjto='} alt="Comunión" className="foto" />
+            )}
+            {evento.eventType === "CHRISTENING" && (
+              <img onClick={() => navigate(`/event/${evento.id}`)} src={'https://cdn.pixabay.com/photo/2016/04/20/23/35/religion-1342376_1280.jpg'} alt="Bautizo" className="foto" />
+            )}
           </div>
         ))
       ) : (

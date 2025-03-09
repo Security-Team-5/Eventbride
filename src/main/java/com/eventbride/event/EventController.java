@@ -44,8 +44,8 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public Event findById(@PathVariable("id") Integer id) {
-        return eventService.findById(id);
+    public EventDTO findById(@PathVariable("id") Integer id) {
+        return new EventDTO(eventService.findById(id));
     }
 
     @PostMapping()
