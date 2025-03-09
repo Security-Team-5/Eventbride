@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OtherServiceDTO {
+	private Integer id;
     private String name;
     private Boolean available;
     private String cityAvailable;
@@ -32,6 +33,7 @@ public class OtherServiceDTO {
 
     // Constructor para simplificar la creación del DTO
     public OtherServiceDTO(OtherService otherService) {
+		this.id = otherService.getId();
         this.name = otherService.getName();
         this.available = otherService.getAvailable();
         this.cityAvailable = otherService.getCityAvailable();

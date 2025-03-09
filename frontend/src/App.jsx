@@ -34,11 +34,13 @@ function App() {
             <Route path="/other-services" element={<OtherServiceScreen />} />
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
+            <Route path="/my-events" element={<MyEvents />} />
             <Route path="/venues" element={<VenuesScreen />} />
             <Route path="/terminos-y-condiciones" element={<Terms />} />
             <Route path="/events" element={<MyEvents />} />
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
+
           </Routes>
         </div>
       </Router>

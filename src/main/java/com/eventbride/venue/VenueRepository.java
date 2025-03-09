@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public interface VenueRepository extends JpaRepository<Venue, Integer> {
+	List<Venue> findByUserId(Integer userId);
 
     @Query("SELECT v FROM Venue v WHERE " +
     "(:city IS NULL OR LOWER(v.cityAvailable) LIKE LOWER(CONCAT('%', :city, '%'))) AND " +
@@ -17,5 +19,4 @@ public interface VenueRepository extends JpaRepository<Venue, Integer> {
     List<Venue> findByFilters(@Param("city") String city, 
                               @Param("maxGuests") int maxGuests, 
                               @Param("surface") double surface);
-
 }
