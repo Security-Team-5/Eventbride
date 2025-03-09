@@ -1,9 +1,8 @@
 /* Estilo del evento */
-.event-container {
-    width: 40%;
+.event-contain {
     max-width: 50%;
     margin: 0 auto;
-    padding: 2%;
+    padding: 3%;
     background-color: #f4f4f9;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -84,12 +83,4 @@
     margin-top: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 0.9rem;
-  }
-
-  .foto{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-top: 5%;
   }
