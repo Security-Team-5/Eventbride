@@ -44,8 +44,8 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public Event findById(@PathVariable("id") Integer id) {
-        return eventService.findById(id);
+    public EventDTO findById(@PathVariable("id") Integer id) {
+        return new EventDTO(eventService.findById(id));
     }
 
     @PostMapping()
@@ -101,11 +101,24 @@ public class EventController {
         }
   }
 
-    @GetMapping("/next/{userId}")
+/*
     public ResponseEntity<EventDTO> getNextEvent(@PathVariable Integer userId) {
         Event nextEvent = eventService.getRecentEventByUserId(userId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
         return ResponseEntity.ok(new EventDTO(nextEvent));
+    }
+ */    
+    @GetMapping("/next/{userId}")
+    public ResponseEntity<List<EventDTO>> getEventsByUserId(@PathVariable Integer userId) {
+        List<Event> events = eventService.findEventsByUserId(userId);
+        if (events.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<EventDTO> eventDTOs = new ArrayList<>();
+        for (Event event : events) {
+            eventDTOs.add(new EventDTO(event));
+        }
+        return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
   
 }

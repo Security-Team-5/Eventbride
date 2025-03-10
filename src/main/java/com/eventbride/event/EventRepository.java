@@ -23,4 +23,8 @@ public interface EventRepository extends CrudRepository<Event, Integer>{
 
     @Query("SELECT e FROM Event e LEFT JOIN e.eventProperties ep WHERE e.user.id = :userId ORDER BY e.eventDate ASC LIMIT 1")
     Optional<Event> findRecentEventByUserId (Integer userId);
+
+    @Query("SELECT e FROM Event e WHERE e.user.id = :userId")
+    List<Event> findAllEventsByUserId(int userId);
+
 }

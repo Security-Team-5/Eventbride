@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VenueDTO {
+	private Integer id;
     private String name;
     private Boolean available;
     private String cityAvailable;
@@ -34,6 +35,7 @@ public class VenueDTO {
 
     // Constructor para simplificar la creación del DTO
     public VenueDTO(Venue venue) {
+		this.id = venue.getId();
         this.name = venue.getName();
         this.available = venue.getAvailable();
         this.cityAvailable = venue.getCityAvailable();

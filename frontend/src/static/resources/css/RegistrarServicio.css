@@ -1,3 +1,93 @@
 .hidden-option {
     display: none;
 }
+
+.mis-servicios-container {
+    padding: 20px;
+}
+
+.services-list {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.service-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.create-service-button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.create-service-button:hover {
+    background-color: darkgreen;
+}
+
+.registrar-servicio-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black; /* Cambiar el color del texto a negro */
+}
+
+h2, h3 {
+    text-align: center;
+    color: black; /* Cambiar el color del texto a negro */
+}
+
+select, input[type="text"], input[type="number"], input[type="checkbox"] {
+    width: calc(100% - 20px); /* Reducir el ancho para añadir espacio */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: black; /* Cambiar el color del texto a negro */
+    background-color: white; /* Cambiar el fondo a blanco */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff; /* Cambiar el fondo a blanco */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: rgb(0, 0, 0); /* Cambiar el color del texto a negro */
+}
+
+.submit-button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: darkgreen;
+}
+
+.error-title {
+    color: red;
+    text-align: start
+}

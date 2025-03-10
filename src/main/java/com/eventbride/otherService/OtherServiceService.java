@@ -1,5 +1,11 @@
 package com.eventbride.otherService;
 
+import com.eventbride.config.jwt.services.UserManagementService;
+import com.eventbride.dto.ReqRes;
+import com.eventbride.dto.ServiceDTO;
+import com.eventbride.service.ServiceService;
+import com.eventbride.user.User;
+import com.eventbride.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +24,18 @@ public class OtherServiceService {
     @Autowired
     private OtherServiceRepository otherServiceRepo;
 
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private ServiceService serviceService;
+
     @Transactional
     public List<OtherService> getAllOtherServices() {
         return otherServiceRepo.findAll();
     }
 
-    @Transactional 
+    @Transactional
     public Optional<OtherService> getOtherServiceById(Integer id) {
         return otherServiceRepo.findById(id);
     }
@@ -53,6 +65,7 @@ public class OtherServiceService {
         return otherServiceRepo.findByAvailable(available);
     }
 
+    @Transactional
     public List<OtherService> getFilteredOtherServices(String name, String city, OtherServiceType type) {
         return otherServiceRepo.findByFilters(name, city, type);
     }
@@ -60,13 +73,18 @@ public class OtherServiceService {
 
     @Transactional
     public OtherService createOtherService(OtherService otherService) {
-        if (otherService.getId() != null) {
-            throw new RuntimeException("No se puede registrar un servicio con Id ya existente");
-        }
+		Optional<User> user = userService.getUserById(otherService.getUser().getId());
+		if(user.isPresent()){
+			ServiceDTO allServices = serviceService.getAllServiceByUserId(otherService.getUser().getId());
+			int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
+			if(slotsCount > 3) {
+				throw new RuntimeException("Slot count exceeded");
+			}
+			otherService.setUser(user.get());
 
-        if(otherServiceRepo.existsByName(otherService.getName())) {
-            throw new RuntimeException("Ya existe un servicio con ese nombre, introduce otro");
-        }
+		} else {
+			throw new RuntimeException("User not found");
+		}
         return otherServiceRepo.save(otherService);
     }
 
@@ -100,6 +118,6 @@ public class OtherServiceService {
     public void deleteUser(Integer id) {
         otherServiceRepo.deleteById(id);
     }
-    
+
 
 }
