@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../App.css"; 
 
@@ -98,7 +98,12 @@ const OtherServiceScreen = () => {
                         <li key={service.id}>
                             <h3>{service.name}</h3>
                             <p>Ciudad disponible: {service.cityAvailable}</p>
-                            <p>Precio: {service.servicePrice} €</p>
+                            <p>
+                                Precio:{" "}
+                                {service.limitedByPricePerGuest ? `${service.servicePricePerGuest} € por invitado` : 
+                                service.limitedByPricePerHour ? `${service.servicePricePerHour} € por hora` : 
+                                `${service.fixedPrice} €`}
+                            </p>
                             <p>Información extra: {service.extraInformation}</p>
                         </li>
                     ))}
