@@ -30,4 +30,14 @@ public class ServiceController {
 		List<Venue> venues = venueService.getVenuesByUserId(id);
 		return new ResponseEntity<>(new ServiceDTO(otherServices, venues), HttpStatus.OK);
 	}
+
+	@GetMapping("/admin")
+    public ResponseEntity<List<ServiceDTO>> getAllServices() {
+        List<OtherService> allOtherServices = otherServiceService.getAllOtherServices();
+        List<Venue> allVenues = venueService.getAllVenues();
+		List<ServiceDTO> allServices = new ArrayList<>();
+		allServices.add(new ServiceDTO(allOtherServices, allVenues));
+		return new ResponseEntity<List<ServiceDTO>>(allServices, HttpStatus.CREATED);
+    }
+
 }

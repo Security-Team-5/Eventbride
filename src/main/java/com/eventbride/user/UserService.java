@@ -2,9 +2,13 @@ package com.eventbride.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.eventbride.dto.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +24,12 @@ public class UserService {
     @Transactional
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserDTO> getAllUsersDTO() {
+        List<User> users = userRepository.findAll();
+        return UserDTO.fromEntities(users); 
     }
 
     @Transactional

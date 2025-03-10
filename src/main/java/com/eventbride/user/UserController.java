@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.eventbride.dto.UserDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -30,6 +33,12 @@ public class UserController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/DTO")
+    public ResponseEntity<List<UserDTO>> getAllUsersDTO() {
+        List<UserDTO> users = userService.getAllUsersDTO();
+        return ResponseEntity.ok(users); 
     }
 
     @GetMapping("/{id}")

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.eventbride.dto.EventDTO;
+import com.eventbride.dto.UserDTO;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.invitation.Invitation;
 import com.eventbride.user.User;
@@ -41,6 +42,12 @@ public class EventController {
     @GetMapping
     public List<Event> findAllEvents() {
         return eventService.findAll();
+    }
+
+    @GetMapping("/DTO")
+    public ResponseEntity<List<EventDTO>> findAllEventsDTO() {
+        List<EventDTO> events = eventService.getAllEventsDTO();
+        return ResponseEntity.ok(events);   
     }
 
     @GetMapping("/{id}")
