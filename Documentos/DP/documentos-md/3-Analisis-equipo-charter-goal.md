@@ -2,6 +2,8 @@
 ## <p style="text-align: center;">Ingeniería del Software y Práctica Profesional (ISPP)</p>
 <center><img src="..\..\img\Eventbride.png"></center>
 
+### Grupo 3: EventBride
+
 ### Miembros:
 - Francisco Avilés Carrera
 - Daniel Benito Hidalgo
@@ -21,9 +23,8 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: 04/02/2025
-
-Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://github.com/ISPP-Eventbride/Eventbride)
+### Fecha: 10/03/2025
+### Entregable: Sprint 1
 
 ---
 
@@ -33,6 +34,7 @@ Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://git
 | - | - | - | - |
 |04/02/2025 |1\.0 |Creación del documento y redacción del mismo |DP |
 |18/02/2025 |1\.1 |Revisión final |DP |
+|10/03/2025 |1\.2 |Pasar a formato Markdown |Sprint 1 |
 
 ## Contenido 
 
