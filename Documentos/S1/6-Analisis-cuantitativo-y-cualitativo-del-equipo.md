@@ -38,6 +38,7 @@
 | 10/03/2025 | v2.1    | Análisis cualitativo, hasta donde se tiene información                       | Sprint 1 | María de la Salud Carrera Talaverón |
 | 10/03/2025 | v2.2    | Reestimación del sprint                                                      | Sprint 1 | María de la Salud Carrera Talaverón |
 | 10/03/2025 | v2.3    | Adición de tareas sobre gestión de usuarios piloto y estimación de una tarea | Sprint 1 | María de la Salud Carrera Talaverón |
+| 10/03/2025 | v2.4    | Adición de nuevas tareas estimadas                                           | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -175,6 +176,12 @@ Se reasignaron las tareas que estaban pendientes y sin empezar. Aquellas que ya 
 | Manual de usuario | 12 | Fernando José de Celis, Adrián Cabello, Francisco Avilés y Gonzalo Navas |
 | Documento cómo se hacen las revisiones de las tareas | 4 | María de la Salud Carrera y Antonio Montero |
 | Desplegar la aplicación | 4 | Lorenzo Torralba y Andrés Pizzano |
+| [DOC] Contribuciones al Knowledge Base | 4 | Fernando de Celis Hurtado |
+| [DOC] Commitment Agreement Usuarios Piloto | 4 | Daniel Benito y Gonzalo Navas |
+| [DOC] Evaluación usuarios piloto | 3 | Daniel Benito y Gonzalo Navas |
+| [DOC] Evaluación miembros del grupo | 2 | Adrián Cabello |
+| [FEATURE] Añadir usuario admin | 3 | Adrián Cabello |
+| [DOC] Vídeo demo aplicación | 7 | Fernando José de Celis, Adrián Cabello, Francisco Avilés y Gonzalo Navas |
 
 <div id='concl'></div>
 
