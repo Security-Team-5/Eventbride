@@ -26,12 +26,13 @@ public class OtherServiceController {
     private OtherServiceService otherServiceService;
 
 
-    @GetMapping("/filter")
-    public List<OtherService> getFilteredOtherServices(
+ @GetMapping("/filter")
+    public List<OtherServiceDTO> getFilteredOtherServices(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) OtherServiceType type) {
-        return otherServiceService.getFilteredOtherServices(name, city, type);
+        List<OtherService> otherServices = otherServiceService.getFilteredOtherServices(name, city, type);
+        return OtherServiceDTO.fromEntities(otherServices);
     }
 
     @PostMapping
