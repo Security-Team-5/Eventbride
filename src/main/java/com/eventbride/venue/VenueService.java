@@ -30,6 +30,11 @@ public class VenueService {
     }
 
     @Transactional
+    public Optional<Venue> getVenueById(Integer id) {
+        return venueRepository.findById(id);
+    }
+
+    @Transactional
     public List<Venue> getFilteredVenues(String city, Integer maxGuests, Double surface) {
         return venueRepository.findByFilters(
             city,

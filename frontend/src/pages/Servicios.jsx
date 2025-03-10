@@ -12,7 +12,7 @@ const Servicios = () => {
         // Fetch the services of the provider
         const fetchServices = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/services/${currentUser.id}`);
+                const response = await axios.get(`http://localhost:8080/api/services/user/${currentUser.id}`);
                 setServices(response.data);
             } catch (error) {
                 console.error('Error fetching services:', error);
