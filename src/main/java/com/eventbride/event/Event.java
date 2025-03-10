@@ -29,7 +29,8 @@ import lombok.Setter;
 @Table(name = "events")
 @Getter
 @Setter
-public class Event extends BaseEntity{
+
+public class Event extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type", nullable = false)
@@ -48,6 +49,7 @@ public class Event extends BaseEntity{
     private LocalDate eventDate;
 
     @ManyToOne
+
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
