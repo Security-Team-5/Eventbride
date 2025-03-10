@@ -29,7 +29,7 @@ const RegistrarServicio = () => {
         cityAvailable: '',
         servicePricePerGuest: 0,
         servicePricePerHour: 0,
-        fixedPrice: '',
+        fixedPrice: 0,
         picture: '',
         description: '',
         hours: '',

@@ -34,14 +34,6 @@ public class Rating extends BaseEntity{
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "other_service_id")
-    private OtherService otherService;
-
-    @ManyToOne
-    @JoinColumn(name = "venue_id")
-    private Venue venue;
-
-    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 }
