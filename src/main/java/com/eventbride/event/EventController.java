@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.eventbride.dto.EventDTO;
 import com.eventbride.event_properties.EventProperties;
+import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.invitation.Invitation;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
@@ -31,11 +32,14 @@ public class EventController {
 
     private final EventService eventService;
     private final UserService userService;
+    private final EventPropertiesService eventPropertiesService;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService) {
+    public EventController(EventService eventService, UserService userService,
+            EventPropertiesService eventPropertiesService) {
         this.eventService = eventService;
         this.userService = userService;
+        this.eventPropertiesService = eventPropertiesService;
     }
 
     @GetMapping
@@ -71,7 +75,7 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Event> update(@PathVariable("eventId") Integer eventId, @RequestBody @Valid Event event) {
         Event updateEvent = eventService.findById(eventId);
-        if(updateEvent == null) {
+        if (updateEvent == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             updateEvent.setEventType(event.getEventType());
@@ -85,6 +89,7 @@ public class EventController {
         }
     }
 
+
 	@DeleteMapping("/{eventId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable("eventId") int eventId) {
@@ -92,18 +97,29 @@ public class EventController {
             Event event = eventService.findById(eventId);
 
 			event.getEventProperties().clear();
-			eventService.save(event);
-			eventService.deleteEvent(eventId);
-        }
-  }
 
-/*
-    public ResponseEntity<EventDTO> getNextEvent(@PathVariable Integer userId) {
-        Event nextEvent = eventService.getRecentEventByUserId(userId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
-        return ResponseEntity.ok(new EventDTO(nextEvent));
+            // Poner a null todas las propiedades del eventProperties asociado a Event
+            List<EventProperties> eventProperties = event.getEventProperties();
+            for (EventProperties e : eventProperties) {
+                e.setOtherService(null);
+                e.setVenue(null);
+                eventPropertiesService.save(e);
+            }
+            eventService.save(event);
+            eventService.deleteEvent(eventId);
+        }
     }
- */
+
+
+    /*
+     * public ResponseEntity<EventDTO> getNextEvent(@PathVariable Integer userId) {
+     * Event nextEvent = eventService.getRecentEventByUserId(userId)
+     * .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+     * "Evento no encontrado"));
+     * return ResponseEntity.ok(new EventDTO(nextEvent));
+     * }
+     */
+
     @GetMapping("/next/{userId}")
     public ResponseEntity<List<EventDTO>> getEventsByUserId(@PathVariable Integer userId) {
         List<Event> events = eventService.findEventsByUserId(userId);
@@ -116,5 +132,5 @@ public class EventController {
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
-
 }
+
