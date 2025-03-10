@@ -1,5 +1,5 @@
-# <p style="text-align: center;">Título del Documento</p>
-## <p style="text-align: center;">Ingeniería del Software y Práctica Profesional (ISPP)</p>
+# <center>Título del Documento</center>
+## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
 <center><img src=".\img\Eventbride.png"></center>
 
 ### Miembros:

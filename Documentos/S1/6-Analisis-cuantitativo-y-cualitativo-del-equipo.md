@@ -1,5 +1,5 @@
-# <p style="text-align: center;">Análisis Cuantitativo y Cualitativo del Equipo</p>
-## <p style="text-align: center;">Ingeniería del Software y Práctica Profesional (ISPP)</p>
+# <center>Análisis Cuantitativo y Cualitativo del Equipo</center>
+## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
 <center><img src="..\img\Eventbride.png"></center>
 
 ### Miembros:
