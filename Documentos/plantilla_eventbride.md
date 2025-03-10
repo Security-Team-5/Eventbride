@@ -23,6 +23,8 @@
 
 ### Fecha: PONER FECHA
 
+Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://github.com/ISPP-Eventbride/Eventbride)
+
 ---
 
 ### Historial de versiones
