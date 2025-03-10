@@ -25,7 +25,12 @@ public class OtherServiceController {
     @Autowired
     private OtherServiceService otherServiceService;
 
-
+@GetMapping
+    public List<OtherServiceDTO> getAllOtherServices() {
+        List<OtherService> otherServices = otherServiceService.getAllOtherServices();
+        return OtherServiceDTO.fromEntities(otherServices);
+    }
+	
  @GetMapping("/filter")
     public List<OtherServiceDTO> getFilteredOtherServices(
             @RequestParam(required = false) String name,

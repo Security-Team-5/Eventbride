@@ -32,15 +32,36 @@ const OtherServiceScreen = () => {
         }
     };
 
+    const getAllOtherServices = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/api/other-services");
+            setOtherServices(response.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
     const handleCategoryClick = (category) => {
         if (category !== type) { // con esto se quita el que al clickar en otra categoria, se mantenga el filtro de la anterior
             setCategory(category);
             setType(category); 
         }
+        else if (category === type) {
+            setCategory(null);
+            setType(null);
+        }
     };
+    
+    useEffect(() => {
+        getAllOtherServices();
+    }, []);
+
     useEffect(() => {
         if (type) {
             getFilteredOtherServices();
+        }
+        else if (!type) {
+            getAllOtherServices();
         }
     }, [type, name, city]);
 
@@ -92,7 +113,11 @@ const OtherServiceScreen = () => {
             )}
 
             <div>
-                <h2>Servicios disponibles en la categoría: {category}</h2>
+                {type != null ? (
+                    <h2>Servicios disponibles en la categoría: {category}</h2>
+                ) : (
+                    <h2>Servicios disponibles</h2>
+                )}
                 <ul>
                     {otherServices.map((service) => (
                         <li key={service.id}>
