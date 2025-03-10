@@ -20,7 +20,7 @@ public class EventProperties {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "event_id", nullable = true)
     private Event event;
 
     @ManyToOne
@@ -31,11 +31,10 @@ public class EventProperties {
     @JoinColumn(name = "venue_id", nullable = true)
     private Venue venue;
 
-    @Column(name = "approved", nullable = false)
+    @Column(name = "approved", nullable = true)
     private Boolean approved;
 
-    @Column(name = "request_date", nullable = false)
+    @Column(name = "request_date", nullable = true)
     private LocalDate requestDate;
 
 }
-
