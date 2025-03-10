@@ -2,6 +2,8 @@
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
 <center><img src="..\img\Eventbride.png"></center>
 
+### Grupo 3: Eventbride
+
 ### Miembros:
 - Francisco Avilés Carrera
 - Daniel Benito Hidalgo
@@ -23,17 +25,19 @@
 
 ### Fecha: 13/03/2025
 
+### Entregable: Sprint 1
+
 ---
 
 ### Historial de versiones
 
-| Fecha      | Versión | Descripción                                                                  | Entrega  |
-|------------|---------|------------------------------------------------------------------------------|----------|
-| 07/03/2025 | v1.0    | Creación del documento y estructura del mismo                                | Sprint 1 |
-| 10/03/2025 | v2.0    | Plantilla del análisis cuantitativo, sin rellenar aún                        | Sprint 1 |
-| 10/03/2025 | v2.1    | Análisis cualitativo, hasta donde se tiene información                       | Sprint 1 |
-| 10/03/2025 | v2.2    | Reestimación del sprint                                                      | Sprint 1 |
-| 10/03/2025 | v2.3    | Adición de tareas sobre gestión de usuarios piloto y estimación de una tarea | Sprint 1 |
+| Fecha      | Versión | Descripción                                                                  | Entrega  | Contribuyente(s)                    |
+|------------|---------|------------------------------------------------------------------------------|----------|-------------------------------------|
+| 07/03/2025 | v1.0    | Creación del documento y estructura del mismo                                | Sprint 1 | María de la Salud Carrera Talaverón |
+| 10/03/2025 | v2.0    | Plantilla del análisis cuantitativo, sin rellenar aún                        | Sprint 1 | María de la Salud Carrera Talaverón |
+| 10/03/2025 | v2.1    | Análisis cualitativo, hasta donde se tiene información                       | Sprint 1 | María de la Salud Carrera Talaverón |
+| 10/03/2025 | v2.2    | Reestimación del sprint                                                      | Sprint 1 | María de la Salud Carrera Talaverón |
+| 10/03/2025 | v2.3    | Adición de tareas sobre gestión de usuarios piloto y estimación de una tarea | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
