@@ -2,6 +2,8 @@
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
 <center><img src=".\img\Eventbride.png"></center>
 
+### Grupo 3: Eventbride
+
 ### Miembros:
 - Francisco Avilés Carrera
 - Daniel Benito Hidalgo
@@ -21,15 +23,17 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: PONER FECHA
+### Fecha: XX
+
+### Entregable: Sprint XX
 
 ---
 
 ### Historial de versiones
 
-| Fecha      | Versión | Descripción                                | Entrega  |
-|------------|---------|--------------------------------------------|----------|
-| 10/03/2025 | v1.0    | Creación del documento y estructura básica | Sprint 1 |
+| Fecha      | Versión | Descripción                                | Entrega  | Contribuyente(s)                    |
+|------------|---------|--------------------------------------------|----------|-------------------------------------|
+| 10/03/2025 | v1.0    | Creación del documento y estructura básica | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
