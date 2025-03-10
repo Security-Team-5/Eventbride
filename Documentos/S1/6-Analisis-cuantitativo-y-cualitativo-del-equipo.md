@@ -39,6 +39,7 @@
 | 10/03/2025 | v2.2    | Reestimación del sprint                                                      | Sprint 1 | María de la Salud Carrera Talaverón |
 | 10/03/2025 | v2.3    | Adición de tareas sobre gestión de usuarios piloto y estimación de una tarea | Sprint 1 | María de la Salud Carrera Talaverón |
 | 10/03/2025 | v2.4    | Adición de nuevas tareas estimadas                                           | Sprint 1 | María de la Salud Carrera Talaverón |
+| 10/03/2025 | v2.5    | Adición de nuevos asignados a una tarea                                      | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -169,7 +170,7 @@ Se reasignaron las tareas que estaban pendientes y sin empezar. Aquellas que ya 
 | [FEATURE] Creación y gestión de listas de invitados | 15 | Miguel Hernández, David Godoy y Francisco Avilés |
 | [FEATURE] Edición de información de invitados | 6 | Miguel Hernández, David Godoy y Francisco Avilés |
 | [FEATURE] Editar perfil | 6 | Gonzalo Navas y Fernando José de Celis |
-| Pasar pdfs y words a markdown | 6 | Ignacio Blanquero y Sergio Pons |
+| Pasar pdfs y words a markdown | 6 | Ignacio Blanquero, Sergio Pons, Daniel Benito y María de la Salud Carrera |
 | Intro de la presentación | 12 | Natalia Olmo, Daniel Benito, David Godoy y Miguel Hernández |
 | Actualizar los documentos "Análisis de costes" y "Monetización de la aplicación" | 4 | Miguel Hernández y Andrés Pizzano |
 | Documento retrospectiva | 4 | David Godoy y Andrés Pizzano |
