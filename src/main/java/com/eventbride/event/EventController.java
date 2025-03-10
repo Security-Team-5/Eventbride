@@ -84,20 +84,16 @@ public class EventController {
             return new ResponseEntity<>(this.eventService.updateEvent(updateEvent, eventId), HttpStatus.OK);
         }
     }
-  
+
 	@DeleteMapping("/{eventId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable("eventId") int eventId) {
         if(eventService.findById(eventId) != null) {
             Event event = eventService.findById(eventId);
-            User user = event.getUser();
-        if (user != null) {
-            user.getEvents().remove(event);
-            userService.save(user);  
-        }
-        event.getEventProperties().clear(); // Comprobar si hace falta, creo que no
-        eventService.save(event);
-        eventService.deleteEvent(eventId);
+
+			event.getEventProperties().clear();
+			eventService.save(event);
+			eventService.deleteEvent(eventId);
         }
   }
 
@@ -107,7 +103,7 @@ public class EventController {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
         return ResponseEntity.ok(new EventDTO(nextEvent));
     }
- */    
+ */
     @GetMapping("/next/{userId}")
     public ResponseEntity<List<EventDTO>> getEventsByUserId(@PathVariable Integer userId) {
         List<Event> events = eventService.findEventsByUserId(userId);
@@ -120,5 +116,5 @@ public class EventController {
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
-  
+
 }

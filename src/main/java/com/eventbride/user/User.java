@@ -42,18 +42,6 @@ public class User extends Person implements UserDetails{
     @NotBlank
     private String role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Event> events;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Rating> ratings;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<OtherService> otherServices;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Venue> venues;
-
     @Override
     public Collection< ? extends GrantedAuthority> getAuthorities() {
         return List.of( new SimpleGrantedAuthority(role));
