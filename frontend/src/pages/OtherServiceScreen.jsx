@@ -29,14 +29,37 @@ const OtherServiceScreen = () => {
             setType(category);
         }
     };
+    const handleCategoryClickDeactivate = (category) => {
+        if (category !== null) {
+        setCategory(null);
+        setType(null);
+        }
+        
+    };
+
+    const getAllOtherServices = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/api/other-services");
+            setOtherServices(response.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
 
     const handleServiceClick = (serviceId) => {
         navigate(`/other-services/information/${serviceId}`);
     };
 
     useEffect(() => {
+        getAllOtherServices();
+    }, []);
+
+    useEffect(() => {
         if (type) {
             getFilteredOtherServices();
+        }
+        else if (type === null) {
+            getAllOtherServices();
         }
     }, [type, name, city]);
 
@@ -51,6 +74,7 @@ const OtherServiceScreen = () => {
                 <button onClick={() => handleCategoryClick('CATERING')}>Catering</button>
                 <button onClick={() => handleCategoryClick('ENTERTAINMENT')}>Entretenimiento</button>
                 <button onClick={() => handleCategoryClick('DECORATION')}>Decoración</button>
+                <button onClick={() => handleCategoryClickDeactivate()}>Todos</button>
             </div>
 
             <div className="filters-toggle">

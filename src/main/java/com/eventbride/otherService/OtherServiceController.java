@@ -10,11 +10,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 import jakarta.validation.Valid;
 
@@ -35,8 +36,7 @@ public class OtherServiceController {
 @GetMapping("/{id}")
     public OtherService getOtherServiceById(@PathVariable("id") Integer id) {
 		Optional<OtherService> otherSer = otherServiceService.getOtherServiceById(id);
-		// return otherSer.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not found"));
-		return otherSer != null ? otherSer.get() : null;
+		return otherSer.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not found"));
     }
 
  @GetMapping("/filter")

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 function InformationService() {
   const { id } = useParams();
   const [service, setService] = useState(null);
-  /*
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -86,29 +86,9 @@ function InformationService() {
         <p>No hay información del proveedor.</p>
       )}
     </div>
-  );*/
+  );
 
-  useEffect(() => {
-    console.log(`Fetching service with id: ${id}`);  // verificar el ID --> si lo hace bien
-    fetch(`/api/other-services/${id}`, {
-        headers: {
-            "Content-Type": "application/json"
-            }
-        }).then((response) => {
-            console.log(response);  
-            if (!response.ok) {
-                throw new Error("No se pudo obtener el servicio");
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log("Service data:", data);
-            setService(data);
-        })
-        .catch((error) => {
-            console.error("Error obteniendo servicio:", error);
-        });
-    }, [id]);
+
 }
 
 export default InformationService;
