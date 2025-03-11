@@ -10,7 +10,7 @@ function AdminServices() {
     // Get JWT token
     const jwt = window.localStorage.getItem("jwt");
 
-    if(jwt===undefined){
+    if (jwt === undefined) {
         return "This page is for admin users."
     }
 
@@ -35,8 +35,8 @@ function AdminServices() {
             .then(data => {
                 console.log("Servicios obtenidos:", data);
                 // Unimos `otherServices` y `venues` en un solo array
-                const otherServices = Array.isArray(data[0].otherServices) ? data[0].otherServices : [];
-                const venues = Array.isArray(data[0].venues) ? data[0].venues : [];
+                const otherServices = Array.isArray(data[0].otherServices) ? data[0].otherServices.map(otherService => ({ ...otherService, type: "other-services" })) : [];
+                const venues = Array.isArray(data[0].venues) ? data[0].venues.map(venue => ({ ...venue, type: "venue" })) : [];
 
                 // Combinar ambos arrays en uno solo
                 setServices([...otherServices, ...venues]);
@@ -49,6 +49,7 @@ function AdminServices() {
         fetch(`/api/admin/services/${service.id}`, {
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
             },
             method: "PUT",
             body: JSON.stringify(service),
@@ -61,16 +62,18 @@ function AdminServices() {
             .catch(error => console.error("Error actualizando servicio:", error));
     }
 
-    function deleteService(serviceId) {
-        fetch(`/api/admin/services/${serviceId}`, {
+    function deleteService(serviceId, serviceType) {
+        fetch(`/api/${serviceType}/admin/${serviceId}`, {
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
             },
             method: "DELETE",
         })
-            .then(() => {
+            .then((response) => {
                 console.log("Servicio eliminado:", serviceId);
-                setServices(prevServices => prevServices.filter(service => service.id !== serviceId));
+                if (response.ok)
+                    setServices(prevServices => prevServices.filter(service => service.id !== serviceId));
             })
             .catch(error => console.error("Error eliminando servicio:", error));
     }
@@ -106,6 +109,21 @@ function AdminServices() {
                                         <strong>Limitado por Precio por Hora:</strong> {service.limitedByPricePerHour ? "Sí" : "No"}
                                     </p>
                                     <p><strong>Descripción:</strong> {service.description}</p>
+                                    {service.type === "venue" && (
+                                        <>
+                                            <p><strong>Código Postal:</strong> {service.postalCode}</p>
+                                            <p><strong>Coordenadas:</strong> {service.coordinates}</p>
+                                            <p><strong>Dirección:</strong> {service.address}</p>
+                                            <p><strong>Capacidad Máxima:</strong> {service.maxGuests}</p>
+                                            <p><strong>Superficie:</strong> {service.surface} m²</p>
+                                        </>
+                                    )}
+                                    {service.type === "other-service" && (
+                                        <>
+                                            <p><strong>Tipo de Servicio:</strong> {service.otherServiceType}</p>
+                                            <p><strong>Información Extra:</strong> {service.extraInformation}</p>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                             <img
@@ -117,7 +135,7 @@ function AdminServices() {
                             />
                             <div className="button-container">
                                 <button className="save-btn" onClick={() => updateService(service.id)}>Guardar</button>
-                                <button className="delete-btn" onClick={() => deleteService(service.id)}>Borrar</button>
+                                <button className="delete-btn" onClick={() => deleteService(service.id, service.type)}>Borrar</button>
                             </div>
                         </div>
                     ))

@@ -1,6 +1,7 @@
 package com.eventbride.venue;
 
 import com.eventbride.dto.ServiceDTO;
+import com.eventbride.event_properties.EventPropertiesRepository;
 import com.eventbride.service.ServiceService;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
@@ -17,14 +18,16 @@ public class VenueService {
     @Autowired
     private VenueRepository venueRepository;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private ServiceService serviceService;
+    @Autowired
+    private ServiceService serviceService;
 
+    @Autowired
+    private EventPropertiesRepository eventPropertiesRepository;
 
-	@Transactional
+    @Transactional
     public List<Venue> getAllVenues() {
         return venueRepository.findAll();
     }
@@ -39,28 +42,34 @@ public class VenueService {
     }
 
     public Venue save(Venue venue) {
-		Optional<User> user = userService.getUserById(venue.getUser().getId());
-		if(user.isPresent()){
-			ServiceDTO allServices = serviceService.getAllServiceByUserId(venue.getUser().getId());
-			int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
-			if(slotsCount > 3) {
-				throw new RuntimeException("Slot count exceeded");
-			}
-			venue.setUser(user.get());
-		} else {
-			throw new RuntimeException("User not found");
-		}
+        Optional<User> user = userService.getUserById(venue.getUser().getId());
+        if (user.isPresent()) {
+            ServiceDTO allServices = serviceService.getAllServiceByUserId(venue.getUser().getId());
+            int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
+            if (slotsCount > 3) {
+                throw new RuntimeException("Slot count exceeded");
+            }
+            venue.setUser(user.get());
+        } else {
+            throw new RuntimeException("User not found");
+        }
         return venueRepository.save(venue);
     }
 
-	@Transactional
-	public List<Venue> getVenuesByUserId(Integer userId) {
-		return venueRepository.findByUserId(userId);
-	}
+    @Transactional
+    public List<Venue> getVenuesByUserId(Integer userId) {
+        return venueRepository.findByUserId(userId);
+    }
 
-	@Transactional
-	public void deleteVenue(Integer id) {
-		venueRepository.deleteById(id);
-	}
+    @Transactional
+    public void deleteVenue(Integer id) {
+        Venue venue = venueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Venue not found"));
 
+        // Eliminar EventProperties asociadas al Venue
+        eventPropertiesRepository.deleteByVenue(venue);
+
+        // Eliminar Venue
+        venueRepository.deleteById(id);
+    }
 }

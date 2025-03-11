@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 import java.util.List;
 
-
+import com.eventbride.event_properties.EventPropertiesRepository;
 
 @Service
 public class OtherServiceService {
@@ -29,6 +29,9 @@ public class OtherServiceService {
 
 	@Autowired
 	private ServiceService serviceService;
+
+    @Autowired
+    private EventPropertiesRepository eventPropertiesRepository;
 
     @Transactional
     public List<OtherService> getAllOtherServices() {
@@ -115,7 +118,14 @@ public class OtherServiceService {
 
 	@Transactional
 	public void deleteOtherService(Integer id) {
-		otherServiceRepo.deleteById(id);
+		OtherService otherService = otherServiceRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("OtherService not found"));
+
+        // Elimina EventProperties asociadas para evitar fallos con la foreign key
+        eventPropertiesRepository.deleteByOtherService(otherService);
+
+        // Elimina OtherService
+        otherServiceRepo.delete(otherService);
 	}
 
     @Transactional

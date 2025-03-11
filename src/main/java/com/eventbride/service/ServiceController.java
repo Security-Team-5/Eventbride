@@ -3,7 +3,6 @@ package com.eventbride.service;
 import com.eventbride.dto.ServiceDTO;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceService;
-import com.eventbride.user.User;
 import com.eventbride.user.UserService;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueService;
@@ -12,14 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:5173")
