@@ -29,8 +29,8 @@ Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://git
 
 |Fecha|Versión|Descripción|Entrega |
 | - | - | - | - |
-|24/02/2025 |1\.0 |Planificación del Sprint 1 |Sprint 1 |
-|11/03/2025|v1.1|Pasar el documento a markdown|Sprint 1|Sergio Pons López|
+|24/02/2025 |1.0 |Planificación del Sprint 1 |Sprint 1 |
+|11/03/2025|1.1|Pasar el documento a markdown|Sprint 1|Sergio Pons López|
 
 ## Contenido 
 
