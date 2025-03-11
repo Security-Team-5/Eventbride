@@ -29,8 +29,9 @@ import lombok.Setter;
 @Table(name = "events")
 @Getter
 @Setter
-public class Event extends BaseEntity{
-    
+
+public class Event extends BaseEntity {
+
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type", nullable = false)
     private EventType eventType;
@@ -51,16 +52,36 @@ public class Event extends BaseEntity{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "event_id")
     private List<Invitation> invitations;
 
     public enum EventType {
-        WEDDING, 
-        CHRISTENING, 
+        WEDDING,
+        CHRISTENING,
         COMMUNION
     }
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "event_id")
     private List<EventProperties> eventProperties;
 
+    @Column(name = "payment_date", nullable = false)
+    private LocalDate paymentDate;
+
+    public LocalDate getPaymentDate() {
+        if (eventType == EventType.WEDDING) {
+            return eventDate.minusMonths(4);
+        } else if (eventType == EventType.CHRISTENING) {
+            return eventDate.minusMonths(2);
+        } else {
+            return eventDate.minusMonths(1);
+        }
+    }
+
+    @Column(name = "confirmed_guests", nullable = true)
+    private Integer confirmedGuests;
+
+    @Column(name = "paid", nullable = true)
+    private Boolean paid;
 }
