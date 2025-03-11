@@ -62,11 +62,7 @@ Este documento recoge la planificación del Sprint 1, el cual será el segundo e
 |Revisión  documento  análisis competidores |1 |María de la Salud Carrera |
 |Documento de requisitos |9 |David  Godoy,  Gonzalo  Navas, Lorenzo Torralba |
 |Añadir  casos  de  uso  core  al documento de casos de uso|3 |Adrián Cabello, Andrés Pizzano |
-
-
-
 |Crear Términos y condiciones de la app |8 |Daniel Benito, Fernando José De Celis |
-| :- | - | :- |
 |Diagrama UML |9 |Miguel  Hernández,  Andrés Pizzano, Fran Avilés |
 |Retrospectiva  de  mitad  de Sprint |6 |David  Godoy,  Pablo  Jesús Castellanos, Natalia Olmo |
 |Resumen de la IA |3 |Gonzalo  Navas,  Lorenzo Torralba |
@@ -208,4 +204,4 @@ En general, este Sprint sentará las bases para futuras iteraciones, promoviendo
 
 ## Bibliografía
 
-Bibliografía.
+Intencionalmente en blanco.
