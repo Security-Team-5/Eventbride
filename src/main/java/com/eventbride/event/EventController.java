@@ -89,18 +89,14 @@ public class EventController {
         }
     }
 
-    @DeleteMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("eventId") int eventId) {
-        if (eventService.findById(eventId) != null) {
+
+	@DeleteMapping("/{eventId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable("eventId") int eventId) {
+        if(eventService.findById(eventId) != null) {
             Event event = eventService.findById(eventId);
-            User user = event.getUser();
-            // Buscar y poner a null usuario en entidad Event
-            if (user != null) {
-                event.setUser(null);
-                user.getEvents().remove(event);
-                userService.save(user);
-            }
+
+			event.getEventProperties().clear();
 
             // Poner a null todas las propiedades del eventProperties asociado a Event
             List<EventProperties> eventProperties = event.getEventProperties();
@@ -114,6 +110,7 @@ public class EventController {
         }
     }
 
+
     /*
      * public ResponseEntity<EventDTO> getNextEvent(@PathVariable Integer userId) {
      * Event nextEvent = eventService.getRecentEventByUserId(userId)
@@ -122,6 +119,7 @@ public class EventController {
      * return ResponseEntity.ok(new EventDTO(nextEvent));
      * }
      */
+
     @GetMapping("/next/{userId}")
     public ResponseEntity<List<EventDTO>> getEventsByUserId(@PathVariable Integer userId) {
         List<Event> events = eventService.findEventsByUserId(userId);
@@ -134,5 +132,5 @@ public class EventController {
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
-
 }
+

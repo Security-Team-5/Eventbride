@@ -20,10 +20,6 @@ public class EventProperties {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = true)
-    private Event event;
-
-    @ManyToOne
     @JoinColumn(name = "other_service_id", nullable = true)
     private OtherService otherService;
 
