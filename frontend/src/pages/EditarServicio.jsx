@@ -1,25 +1,95 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams, useNavigate } from "react-router-dom";
+import "../static/resources/css/RegistrarServicio.css";
 
 const EditarServicio = ({ match }) => {
-    const [service, setService] = useState(null);
+    const navigate = useNavigate()
+    const { id } = useParams();
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    const [limitedBy, setLimitedBy] = useState("perGuest");
     const [isVenue, setIsVenue] = useState(false);
+    const [errors, setErrors] = useState({
+        name: '',
+        cityAvailable: '',
+        servicePricePerGuest: '',
+        servicePricePerHour: '',
+        fixedPrice: '',
+        picture: '',
+        description: '',
+        hours: '',
+        otherServiceType: 'CATERING',
+    })
+
+    const [formData, setFormData] = useState({
+        name: '',
+        available: false,
+        cityAvailable: '',
+        servicePricePerGuest: 0,
+        servicePricePerHour: 0,
+        fixedPrice: '',
+        picture: '',
+        description: '',
+        hours: '',
+        limitedByPricePerGuest: false,
+        limitedByPricePerHour: false,
+        otherServiceType: 'CATERING',
+        user: {
+                id: currentUser.id
+        }
+    });
 
     useEffect(() => {
         const fetchService = async () => {
             try {
-                const response = await axios.get(`/api/services/${match.params.id}`);
-                setService(response.data);
-                setIsVenue(response.data.type === 'venue');
+                const response = await axios.get(`/api/services/${id}`);
+                setIsVenue(response.data.venues);
+                if (response.data.venues) {
+                    setFormData({
+                        name: response.data.venues.name,
+                        available: response.data.venues.available,
+                        
+                    });
+                }
+                ;
             } catch (error) {
                 console.error('Error fetching the service:', error);
             }
         };
-
+        console.log(formData);
         fetchService();
-    }, [match.params.id]);
+    }, []);
 
 
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value
+        });
+    };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (isVenue) {
+            try {
+                const reponse = await axios.put(`/api/venues/${id}`, formData);
+                navigate('/misservicios');
+            }
+            catch (error) {
+                console.error('Error updating the venue:', error);
+            }
+        } else {
+            try {
+                const response = await axios.put(`/api/other-services/${id}`, formData);
+                navigate('/misservicios');
+            }
+            catch (error) {
+                console.error('Error updating the service:', error);
+            }
+        }
+    }
 
     return (
         <div>
