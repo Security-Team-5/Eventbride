@@ -10,8 +10,8 @@ public interface EventPropertiesRepository extends CrudRepository<EventPropertie
 
     List<EventProperties> findAll();
 
-    @Query("SELECT DISTINCT ep FROM EventProperties ep WHERE ep.event=?1")
-	public EventProperties findEventPropertiesByEvent(Event event);
+	@Query("SELECT ep FROM Event e JOIN e.eventProperties ep WHERE e = :event")
+    public List<EventProperties> findEventPropertiesByEvent(Event event);
 
     @Query("SELECT DISTINCT ep FROM EventProperties ep WHERE ep.otherService=?1")
 	public EventProperties findEventPropertiesByOtherService(Event event);

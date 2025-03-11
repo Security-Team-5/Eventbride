@@ -23,5 +23,11 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
+**Deadline**
+When the bug should be fixed.
+
+**Depends on**
+What other issues must be completed before starting this one.
+
 **Additional context**
 Add any other context about the problem here.

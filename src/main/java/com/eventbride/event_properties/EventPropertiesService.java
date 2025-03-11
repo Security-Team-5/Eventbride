@@ -27,7 +27,7 @@ public class EventPropertiesService {
 
     @Transactional(readOnly = true)
     public EventProperties findById(int id) throws DataAccessException {
-        Optional<EventProperties> g = eventPropertiesRepository.findById(id); 
+        Optional<EventProperties> g = eventPropertiesRepository.findById(id);
         return g.get();
     }
 
@@ -45,7 +45,7 @@ public class EventPropertiesService {
 
     @Transactional(readOnly = true)
     public EventProperties findEventPropertiesByEvent(Event event){
-        return eventPropertiesRepository.findEventPropertiesByEvent(event);
+        return (EventProperties) eventPropertiesRepository.findEventPropertiesByEvent(event);
     }
 
     @Transactional(readOnly = true)
@@ -56,5 +56,5 @@ public class EventPropertiesService {
     @Transactional(readOnly = true)
     public EventProperties findEventPropertiesByVenue(Event event){
         return eventPropertiesRepository.findEventPropertiesByVenue(event);
-    }    
+    }
 }
