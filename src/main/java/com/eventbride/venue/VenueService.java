@@ -72,4 +72,30 @@ public class VenueService {
         // Eliminar Venue
         venueRepository.deleteById(id);
     }
+
+    public Venue updateVenue(Integer id, Venue venueDetails) {
+        Venue venue = venueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Venue not found with id " + id));
+        
+        venue.setName(venueDetails.getName());
+        venue.setAvailable(venueDetails.getAvailable());
+        venue.setCityAvailable(venueDetails.getCityAvailable());
+        venue.setServicePricePerGuest(venueDetails.getServicePricePerGuest());
+        venue.setServicePricePerHour(venueDetails.getServicePricePerHour());
+        venue.setFixedPrice(venueDetails.getFixedPrice());
+        venue.setPicture(venueDetails.getPicture());
+        venue.setDescription(venueDetails.getDescription());
+        venue.setHours(venueDetails.getHours());
+        venue.setLimitedByPricePerGuest(venueDetails.getLimitedByPricePerGuest());
+        venue.setLimitedByPricePerHour(venueDetails.getLimitedByPricePerHour());
+
+        venue.setPostalCode(venueDetails.getPostalCode());
+        venue.setCoordinates(venueDetails.getCoordinates());
+        venue.setAddress(venueDetails.getAddress());
+        venue.setMaxGuests(venueDetails.getMaxGuests());
+        venue.setSurface(venueDetails.getSurface());
+        venue.setUser(venueDetails.getUser());
+
+        return venueRepository.save(venue);
+    }
 }

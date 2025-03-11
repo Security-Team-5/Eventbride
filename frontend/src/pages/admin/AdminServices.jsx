@@ -37,7 +37,7 @@ function AdminServices() {
                 console.log("Servicios obtenidos:", data);
                 // Unimos `otherServices` y `venues` en un solo array
                 const otherServices = Array.isArray(data[0].otherServices) ? data[0].otherServices.map(otherService => ({ ...otherService, type: "other-services" })) : [];
-                const venues = Array.isArray(data[0].venues) ? data[0].venues.map(venue => ({ ...venue, type: "venue" })) : [];
+                const venues = Array.isArray(data[0].venues) ? data[0].venues.map(venue => ({ ...venue, type: "venues" })) : [];
 
                 // Combinar ambos arrays en uno solo
                 setServices([...otherServices, ...venues]);
@@ -107,6 +107,10 @@ function AdminServices() {
                                 {editingService?.id === service.id ? (
                                     <div className="service-info">
                                         <form onSubmit={handleSave}>
+                                            <div className="form-group">
+                                                <label htmlFor="name"><strong>Título del Servicio:</strong></label>
+                                                <input type="text" name="name" value={editingService.name} onChange={handleInputChange} />
+                                            </div>
                                             <div className="form-group">
                                                 <label htmlFor="available"><strong>Disponible:</strong></label>
                                                 <select name="available" value={editingService.available} onChange={handleInputChange}>

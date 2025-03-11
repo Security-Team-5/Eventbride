@@ -89,6 +89,22 @@ public class VenueController {
 		return ResponseEntity.badRequest().body(errorDetails);
 	}
 
+	@PutMapping("/admin/{id}")
+	public ResponseEntity<?> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue venueDetails) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		if (roles.contains("ADMIN")) {
+			try {
+				Venue updatedVenue = venueService.updateVenue(id, venueDetails);
+				return new ResponseEntity<>(new VenueDTO(updatedVenue), HttpStatus.OK);
+			} catch (RuntimeException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+
 	@DeleteMapping("/admin/{id}")
 	public ResponseEntity<?> deleteService(@PathVariable Integer id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
