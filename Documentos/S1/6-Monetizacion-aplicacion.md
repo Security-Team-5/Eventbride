@@ -35,7 +35,7 @@ Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://git
 |08/03/2025 |2\.0 |Actualización requisitos |Sprint 1 |<p>Pablo Jesús Castellanos Compaña, </p><p>Natalia Olmo Villegas,</p><p> María de la Salud Carrera Talaverón </p>|
 |11/03/2025|v2.1|Pasar el documento a markdown| Sprint 1 | Sergio Pons López |
 
-Contenido 
+## Contenido 
 
 1. [Resumen ](#resumen)
 2. [Introducción ](#intro)
@@ -102,7 +102,7 @@ Fecha en la que se realizará el pago del evento. Se te pedirá la tarjeta, pero
 
 Ciertos servicios podrán exigirte el pago de una  fianza que se añadirá en el desglose de precios a la hora de realizar el pago final. Junto a esto se añadirá también el porcentaje de comisión de Eventbride, todo anteriormente referenciado arriba en el documento.
 
-El plazo para confirmar a los invitados será de hasta **cuatro** meses antes del evento en caso de tratarse de una boda; **dos** meses si es una comunión y **un** mes si es un bautizo. ![](Aspose.Words.2dce1bf8-f15b-4a20-9292-bc5272a5876c.002.png)
+El plazo para confirmar a los invitados será de hasta **cuatro** meses antes del evento en caso de tratarse de una boda; **dos** meses si es una comunión y **un** mes si es un bautizo. 
 
 Además,  se  contempla  añadir  servicios  de  autobuses  o  taxis  de  ida  y  vuelta, privados de la propia aplicación, para facilitar el acceso al evento. Se ofrecerán descuentos en  estos  servicios  dependiendo  de  la  cantidad  de  servicios  contratados  en  nuestra aplicación. Esto es algo muy útil, pues si se ofrecen servicios de transporte ida para los invitados desde el lugar de celebración previo al evento, y servicios de transporte de vuelta con  una  o  varias  paradas,  a  un  precio  asequible,  los  invitados  podrán  sentirse  más cómodos.   Esto queda sujeto a la evolución del proyecto.
 
