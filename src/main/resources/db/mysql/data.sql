@@ -43,17 +43,17 @@ INSERT IGNORE INTO events (id, event_type, guests, budget, event_date, payment_d
 (10, 'CHRISTENING', 100, 11000.00, '2023-10-30', '2023-08-30', 90, TRUE, 5);
 
 
-INSERT IGNORE INTO invitations (id, first_name, last_name, telephone, address, email, event_id) VALUES
-(1, 'Antonio', 'Martinez Ares', '654000111', 'Calle Sierpes, 1', 'oveja@example.com', 1),
-(2, 'Juan Manuel', 'Braza Benitez', '654000112', 'Calle Sierpes, 2', 'sheriff@example.com', 1),
-(3, 'Juan Carlos', 'Aragon', '654000113', 'Calle Sierpes, 3', 'veneno@example.com', 2),
-(4, 'Manolo', 'Santander', '654000114', 'Calle Sierpes, 4', 'viña@example.com', 2),
-(5, 'Jesus', 'Bienvenido', '654000115', 'Calle Sierpes, 5', 'rata@example.com', 3),
-(6, 'Antonio', 'Martin', '654000116', 'Calle Sierpes, 6', 'musa@example.com', 3),
-(7, 'Jose', 'Guerrero', '654000117', 'Calle Sierpes, 7', 'yuyu@example.com', 4),
-(8, 'Francisco', 'Alba', '654000118', 'Calle Sierpes, 8', 'caleta@example.com', 4),
-(9, 'Kike', 'Remolino', '654000119', 'Calle Sierpes, 9', 'heavy@example.com', 5),
-(10, 'Julio', 'Pardo', '654000110', 'Calle Sierpes, 10', 'opera@example.com', 5);
+INSERT IGNORE INTO invitations (id, first_name, last_name, telephone, email, invitation_type, event_id) VALUES
+(1, 'Antonio', 'Martinez Ares', '654000111', 'oveja@example.com', 'SENT', 1),
+(2, 'Juan Manuel', 'Braza Benitez', '654000112', 'sheriff@example.com', 'SENT', 1),
+(3, 'Juan Carlos', 'Aragon', '654000113', 'veneno@example.com', 'SENT', 2),
+(4, 'Manolo', 'Santander', '654000114', 'viña@example.com', 'SENT', 2),
+(5, 'Jesus', 'Bienvenido', '654000115', 'rata@example.com', 'SENT', 3),
+(6, 'Antonio', 'Martin', '654000116', 'musa@example.com', 'SENT', 3),
+(7, 'Jose', 'Guerrero', '654000117', 'yuyu@example.com', 'SENT', 4),
+(8, 'Francisco', 'Alba', '654000118', 'caleta@example.com', 'SENT', 4),
+(9, 'Kike', 'Remolino', '654000119', 'heavy@example.com', 'SENT', 5),
+(10, 'Julio', 'Pardo', '654000110',  'opera@example.com', 'SENT', 5);
 
 
 INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comment) VALUES
