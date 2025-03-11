@@ -1,17 +1,24 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AdminServices() {
     const [services, setServices] = useState([]);
+    const [editServiceId, setEditServiceId] = useState(null); // Para saber qué servicio se está editando
+    const [serviceData, setServiceData] = useState({});
+
     const navigate = useNavigate();
     const currentUser = JSON.parse(localStorage.getItem("user"));
-
-    // Get JWT token
     const jwt = window.localStorage.getItem("jwt");
+    const otherServiceTypeMap = {
+        CATERING: "Catering",
+        ENTERTAINMENT: "Entretenimiento",
+        DECORATION :"Decoración",
+    };
 
     if (jwt === undefined) {
-        return "This page is for admin users."
+        return "This page is for admin users.";
     }
 
     useEffect(() => {
@@ -34,13 +41,9 @@ function AdminServices() {
             })
             .then(data => {
                 console.log("Servicios obtenidos:", data);
-                // Unimos `otherServices` y `venues` en un solo array
-                const otherServices = Array.isArray(data[0].otherServices) ? data[0].otherServices.map(otherService => ({ ...otherService, type: "other-services" })) : [];
+                const otherServices = Array.isArray(data[0].otherServices) ? data[0].otherServices.map(otherService => ({ ...otherService, type: "other-service" })) : [];
                 const venues = Array.isArray(data[0].venues) ? data[0].venues.map(venue => ({ ...venue, type: "venue" })) : [];
-
-                // Combinar ambos arrays en uno solo
                 setServices([...otherServices, ...venues]);
-                console.log("Servicios combinados:", services);
             })
             .catch(error => console.error("Error obteniendo servicios:", error));
     }
@@ -52,12 +55,13 @@ function AdminServices() {
                 "Authorization": `Bearer ${jwt}`
             },
             method: "PUT",
-            body: JSON.stringify(service),
+            body: JSON.stringify(serviceData[service.id]), 
         })
             .then(response => response.json())
             .then(updatedService => {
                 console.log("Servicio actualizado:", updatedService);
                 setServices(prevServices => prevServices.map(s => s.id === updatedService.id ? updatedService : s));
+                setEditServiceId(null);
             })
             .catch(error => console.error("Error actualizando servicio:", error));
     }
@@ -78,6 +82,32 @@ function AdminServices() {
             .catch(error => console.error("Error eliminando servicio:", error));
     }
 
+    function handleInputChange(e) {
+        const { name, value } = e.target;
+        const updatedData = {
+            ...serviceData,
+            [editServiceId]: {
+                ...serviceData[editServiceId],
+                [name]: value
+            }
+        };
+        setServiceData(updatedData); 
+    }
+
+
+    function startEditing(service) {
+        setEditServiceId(service.id);  
+        setServiceData(prevData => ({
+            ...prevData,
+            [service.id]: service  
+        }));
+    }
+
+    function autoResizeTextarea(e) {
+        e.target.style.height = 'auto'; 
+        e.target.style.height = `${e.target.scrollHeight}px`; 
+    }
+
     return (
         <>
             {currentUser?.role === "ADMIN" ? (
@@ -87,55 +117,134 @@ function AdminServices() {
                             <div>
                                 <h2 className="service-title">{service.name}</h2>
                                 <div className="service-info">
-                                    <p><strong>Disponible:</strong> {service.available ? "Sí" : "No"}</p>
-                                    <p><strong>Ciudad Disponible:</strong> {service.cityAvailable}</p>
-                                    <p>
-                                        <strong>Precio por Invitado:</strong>{" "}
-                                        {service.servicePricePerGuest.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                                    </p>
-                                    <p>
-                                        <strong>Precio por Hora:</strong>{" "}
-                                        {service.servicePricePerHour.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                                    </p>
-                                    <p>
-                                        <strong>Precio Fijo:</strong>{" "}
-                                        {service.fixedPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                                    </p>
-                                    <p><strong>Horas:</strong> {service.hours}</p>
-                                    <p>
-                                        <strong>Limitado por Precio por Invitado:</strong> {service.limitedByPricePerGuest ? "Sí" : "No"}
-                                    </p>
-                                    <p>
-                                        <strong>Limitado por Precio por Hora:</strong> {service.limitedByPricePerHour ? "Sí" : "No"}
-                                    </p>
-                                    <p><strong>Descripción:</strong> {service.description}</p>
-                                    {service.type === "venue" && (
-                                        <>
-                                            <p><strong>Código Postal:</strong> {service.postalCode}</p>
-                                            <p><strong>Coordenadas:</strong> {service.coordinates}</p>
-                                            <p><strong>Dirección:</strong> {service.address}</p>
-                                            <p><strong>Capacidad Máxima:</strong> {service.maxGuests}</p>
-                                            <p><strong>Superficie:</strong> {service.surface} m²</p>
-                                        </>
-                                    )}
-                                    {service.type === "other-service" && (
-                                        <>
-                                            <p><strong>Tipo de Servicio:</strong> {service.otherServiceType}</p>
-                                            <p><strong>Información Extra:</strong> {service.extraInformation}</p>
-                                        </>
-                                    )}
+                                    <form onSubmit={e => { e.preventDefault(); updateService(service) }}>
+                                        <div>
+                                            <label>Nombre del Servicio:</label>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                value={serviceData[editServiceId]?.name || service.name}
+                                                onChange={handleInputChange}
+                                                readOnly={editServiceId !== service.id}  
+                                            />
+                                        </div>
+                                        <div>
+                                            <label>Disponible:</label>
+                                            <select
+                                                name="available"
+                                                value={serviceData[editServiceId]?.available || service.available}
+                                                onChange={handleInputChange}
+                                                disabled={editServiceId !== service.id} 
+                                                style={{ width: "100%" }}
+                                            >
+                                                <option value="true">Sí</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label>Ciudad Disponible:</label>
+                                            <input
+                                                type="text"
+                                                name="cityAvailable"
+                                                value={serviceData[editServiceId]?.cityAvailable || service.cityAvailable}
+                                                onChange={handleInputChange}
+                                                readOnly={editServiceId !== service.id}  
+                                            />
+                                        </div>
+                                        <div>
+                                            <label>Descripción:</label>
+                                            <textarea
+                                                name="description"
+                                                value={serviceData[editServiceId]?.description || service.description}
+                                                onChange={handleInputChange}
+                                                onInput={autoResizeTextarea}
+                                                rows="1"
+                                                style={{
+                                                    width: "98%",
+                                                    resize: "none",
+                                                    overflow: "hidden",
+                                                    minHeight: "50px",
+                                                    padding: "8px",
+                                                    fontSize: "14px",
+                                                    borderRadius: "5px",
+                                                    border: "1px solid #ccc"
+                                                }}
+                                                readOnly={editServiceId !== service.id}  
+                                            />
+                                        </div>
+
+                                        {service.type === "venue" && (
+                                            <>
+                                                <div>
+                                                    <label>Código Postal:</label>
+                                                    <input
+                                                        type="text"
+                                                        name="postalCode"
+                                                        value={serviceData[editServiceId]?.postalCode || service.postalCode}
+                                                        onChange={handleInputChange}
+                                                        readOnly={editServiceId !== service.id} 
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {service.type === "other-service" && (
+                                            <>
+                                                <div>
+                                                    <label>Tipo de Servicio:</label>
+                                                    <select
+                                                        name="role"
+                                                        value={serviceData.id === service.id ? service.otherServiceType : service.otherServiceType}
+                                                        onChange={handleInputChange}
+                                                        style={{ width: "100%" }}
+                                                    >
+                                                        {Object.keys(otherServiceTypeMap).map(otherServiceType => (
+                                                            <option key={otherServiceType} value={otherServiceType}>{otherServiceTypeMap[otherServiceType]}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label>Información Extra:</label>
+                                                    <textarea
+                                                        name="extraInformation"
+                                                        value={serviceData[editServiceId]?.extraInformation || service.extraInformation}
+                                                        onChange={handleInputChange}
+                                                        onInput={autoResizeTextarea}
+                                                        rows="1"
+                                                        style={{
+                                                            width: "98%",
+                                                            resize: "none",
+                                                            overflow: "hidden",
+                                                            minHeight: "50px",
+                                                            padding: "8px",
+                                                            fontSize: "14px",
+                                                            borderRadius: "5px",
+                                                            border: "1px solid #ccc"
+                                                        }}
+                                                        readOnly={editServiceId !== service.id}  
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
+
+                                        <div>
+                                            <label>Foto:</label>
+                                            <img src={service.picture} className="service-image" />
+                                        </div>
+
+                                        {editServiceId === service.id ? (
+                                            <div className="button-container">
+                                                <button className="save-btn" type="submit">Guardar</button>
+                                                <button className="delete-btn" onClick={() => deleteService(service.id)}>Borrar</button>
+                                            </div>
+                                        ) : (
+                                            <div className="button-container">
+                                                <button onClick={() => startEditing(service)} className="edit-btn">Editar</button>
+                                                <button className="delete-btn" onClick={() => deleteService(service.id)}>Borrar</button>
+                                            </div>
+                                        )}
+                                    </form>
                                 </div>
-                            </div>
-                            <img
-                                src={service.picture}
-                                alt={service.name}
-                                className="service-image"
-                                onClick={() => navigate(`/service/${service.id}`)}
-                                style={{ cursor: "pointer" }}
-                            />
-                            <div className="button-container">
-                                <button className="save-btn" onClick={() => updateService(service.id)}>Guardar</button>
-                                <button className="delete-btn" onClick={() => deleteService(service.id, service.type)}>Borrar</button>
                             </div>
                         </div>
                     ))
