@@ -3,11 +3,12 @@ package com.eventbride.otherService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.eventbride.dto.OtherServiceDTO;
-import com.eventbride.service.Service;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -31,6 +32,13 @@ public class OtherServiceController {
         return OtherServiceDTO.fromEntities(otherServices);
     }
 	
+@GetMapping("/{id}")
+    public OtherService getOtherServiceById(@PathVariable("id") Integer id) {
+		Optional<OtherService> otherSer = otherServiceService.getOtherServiceById(id);
+		// return otherSer.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not found"));
+		return otherSer != null ? otherSer.get() : null;
+    }
+
  @GetMapping("/filter")
     public List<OtherServiceDTO> getFilteredOtherServices(
             @RequestParam(required = false) String name,

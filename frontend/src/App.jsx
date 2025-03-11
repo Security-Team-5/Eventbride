@@ -13,6 +13,7 @@ import { useCurrentUser } from "./hooks/useCurrentUser";
 import MyEvents from "./pages/MyEvents";
 import CreateEvents from "./pages/CreateEvents"
 import EventDetails from "./pages/EventDetails";
+import InformationService from "./pages/InformationService";
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -40,6 +41,7 @@ function App() {
             <Route path="/events" element={<MyEvents />} />
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
+            <Route path="/other-services/information/:id" element={<InformationService />} />
 
           </Routes>
         </div>
