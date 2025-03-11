@@ -49,12 +49,11 @@ public class Event extends BaseEntity {
     private LocalDate eventDate;
 
     @ManyToOne
-
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id")
     private List<Invitation> invitations;
 
     public enum EventType {
@@ -64,7 +63,25 @@ public class Event extends BaseEntity {
     }
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id")
     private List<EventProperties> eventProperties;
 
+    @Column(name = "payment_date", nullable = false)
+    private LocalDate paymentDate;
+
+    public LocalDate getPaymentDate() {
+        if (eventType == EventType.WEDDING) {
+            return eventDate.minusMonths(4);
+        } else if (eventType == EventType.CHRISTENING) {
+            return eventDate.minusMonths(2);
+        } else {
+            return eventDate.minusMonths(1);
+        }
+    }
+
+    @Column(name = "confirmed_guests", nullable = true)
+    private Integer confirmedGuests;
+
+    @Column(name = "paid", nullable = true)
+    private Boolean paid;
 }
