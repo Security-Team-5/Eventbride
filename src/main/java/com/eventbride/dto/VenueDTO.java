@@ -20,7 +20,6 @@ public class VenueDTO {
     private BigDecimal fixedPrice;
     private String picture;
     private String description;
-    private Integer hours;
     private Boolean limitedByPricePerGuest;
     private Boolean limitedByPricePerHour;
     private String postalCode;
@@ -44,7 +43,6 @@ public class VenueDTO {
         this.fixedPrice = venue.getFixedPrice();
         this.picture = venue.getPicture();
         this.description = venue.getDescription();
-        this.hours = venue.getHours();
         this.limitedByPricePerGuest = venue.getLimitedByPricePerGuest();
         this.limitedByPricePerHour = venue.getLimitedByPricePerHour();
         this.postalCode = venue.getPostalCode();

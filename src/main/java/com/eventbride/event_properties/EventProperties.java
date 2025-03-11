@@ -33,4 +33,7 @@ public class EventProperties {
     @Column(name = "request_date", nullable = true)
     private LocalDate requestDate;
 
+    @Column(name = "hours", nullable = true)
+    private Integer hours;
+
 }

@@ -104,7 +104,6 @@ public class OtherServiceService {
         otherService.setFixedPrice(otherServ.getFixedPrice());
         otherService.setPicture(otherServ.getPicture());
         otherService.setDescription(otherServ.getDescription());
-        otherService.setHours(otherServ.getHours());
         otherService.setLimitedByPricePerGuest(otherServ.getLimitedByPricePerGuest());
         otherService.setLimitedByPricePerHour(otherServ.getLimitedByPricePerHour());
 

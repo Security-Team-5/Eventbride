@@ -21,7 +21,6 @@ public class OtherServiceDTO {
     private BigDecimal fixedPrice;
     private String picture;
     private String description;
-    private Integer hours;
     private Boolean limitedByPricePerGuest;
     private Boolean limitedByPricePerHour;
     private OtherServiceType otherServiceType;
@@ -42,7 +41,6 @@ public class OtherServiceDTO {
         this.fixedPrice = otherService.getFixedPrice();
         this.picture = otherService.getPicture();
         this.description = otherService.getDescription();
-        this.hours = otherService.getHours();
         this.limitedByPricePerGuest = otherService.getLimitedByPricePerGuest();
         this.limitedByPricePerHour = otherService.getLimitedByPricePerHour();
         this.otherServiceType = otherService.getOtherServiceType();
