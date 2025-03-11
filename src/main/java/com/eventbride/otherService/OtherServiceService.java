@@ -113,6 +113,10 @@ public class OtherServiceService {
 
     }
 
+	@Transactional
+	public void deleteOtherService(Integer id) {
+		otherServiceRepo.deleteById(id);
+	}
 
     @Transactional
     public void deleteUser(Integer id) {

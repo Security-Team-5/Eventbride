@@ -37,7 +37,7 @@ public class VenueService {
             surface != null ? surface : 0.0
         );
     }
-    
+
     public Venue save(Venue venue) {
 		Optional<User> user = userService.getUserById(venue.getUser().getId());
 		if(user.isPresent()){
@@ -56,6 +56,11 @@ public class VenueService {
 	@Transactional
 	public List<Venue> getVenuesByUserId(Integer userId) {
 		return venueRepository.findByUserId(userId);
+	}
+
+	@Transactional
+	public void deleteVenue(Integer id) {
+		venueRepository.deleteById(id);
 	}
 
 }

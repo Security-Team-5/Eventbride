@@ -7,6 +7,13 @@ function AdminServices() {
     const navigate = useNavigate();
     const currentUser = JSON.parse(localStorage.getItem("user"));
 
+    // Get JWT token
+    const jwt = window.localStorage.getItem("jwt");
+
+    if(jwt===undefined){
+        return "This page is for admin users."
+    }
+
     useEffect(() => {
         getServices();
     }, []);
@@ -15,6 +22,7 @@ function AdminServices() {
         fetch("api/services/admin", {
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
             },
             method: "GET",
         })
