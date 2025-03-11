@@ -1,6 +1,7 @@
 package com.eventbride.user;
 
-
+import com.eventbride.event.EventService;
+import com.eventbride.event.Event;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EventService eventService;
 
 
     @GetMapping
@@ -89,12 +93,18 @@ public class UserController {
      * Eliminar un usuario por ID.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
-        try {
+    public void deleteUser(@PathVariable("id") Integer id) {
+        if(userService.getUserById(id) != null){
+            Optional<User> user = userService.getUserById(id);
+
+            List<Event> events = eventService.findEventsByUserId(id);
+            for (Event e: events){
+                e.setUser(null);
+            }
+            userService.save(user.get());
             userService.deleteUser(id);
-            return ResponseEntity.ok("Usuario eliminado correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body("Usuario no encontrado");
+            
+
         }
     }
 }

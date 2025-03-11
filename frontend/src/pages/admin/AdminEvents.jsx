@@ -159,7 +159,7 @@ function AdminEvents() {
                           padding: "10px",   
                           fontSize: "16px",   
                           height: "15px",
-                          width: "10%",  
+                          width: "15%",  
                           marginLeft: "5px",    
                         }}
                       />

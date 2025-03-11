@@ -6,6 +6,7 @@ import "../../static/resources/css/Admin.css";
 function AdminUsers() {
     const [users, setUsers] = useState([]);
     const [editUserId, setEditUserId] = useState(null); // Para saber qué usuario se está editando
+    const jwtToken = localStorage.getItem("jwt");
     const [userData, setUserData] = useState({
         id: "",
         firstname: "",
@@ -17,14 +18,15 @@ function AdminUsers() {
         role: "",
         profilePicture: ""
     });
+
     const navigate = useNavigate();
     const roleMap = {
         CLIENT: "Cliente",
         SUPPLIER: "Proveedor",
         ADMIN: "Admin"
     };
-    
 
+    // Obtener todos los usuarios
     useEffect(() => {
         getUsers();
     }, []);
@@ -49,10 +51,30 @@ function AdminUsers() {
             .catch(error => console.error("Error obteniendo usuarios:", error));
     }
 
-    function updateUser(userId) {
-        fetch(`/api/users/admin/update/${userId.id}`, {
+    // Inicia el proceso de edición
+    function startEditing(user) {
+        setEditUserId(user.id);
+        setUserData({
+            ...user
+        });
+    }
+
+    // Actualizar los datos del usuario
+    function updateUser() {
+        if (!editUserId) {
+            console.error("El ID del usuario es nulo");
+            return;
+        }
+
+        // Validar datos antes de enviar
+        if (!validateUserData(userData)) {
+            return;
+        }
+
+        fetch(`/api/users/${editUserId}`, {
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwtToken}`
             },
             method: "PUT",
             body: JSON.stringify(userData),
@@ -61,15 +83,29 @@ function AdminUsers() {
             .then(updatedUser => {
                 console.log("Usuario actualizado:", updatedUser);
                 setUsers(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u));
-                setEditUserId(null)
+                setEditUserId(null); // Salir del modo de edición
             })
             .catch(error => console.error("Error actualizando usuario:", error));
     }
 
-    function deleteUser(userId) {
+    // Validar los datos antes de enviarlos
+    function validateUserData(userData) {
+        if (!userData.firstname || !userData.lastname || !userData.username || !userData.email) {
+            alert("Por favor, complete todos los campos obligatorios.");
+            return false;
+        }
+        return true;
+    }
+
+    // Eliminar un usuario
+    function deleteUser(userId, e) {
+        // Prevenir el envío del formulario (si está dentro de un formulario)
+        if (e) e.preventDefault();
+
         fetch(`/api/users/${userId}`, {
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwtToken}`
             },
             method: "DELETE",
         })
@@ -80,19 +116,13 @@ function AdminUsers() {
             .catch(error => console.error("Error eliminando usuario:", error));
     }
 
+    // Manejar el cambio de un campo de entrada
     function handleInputChange(e) {
         const { name, value } = e.target;
         setUserData(prevData => ({
             ...prevData,
-            [name]: value,
+            [name]: value, // Actualizamos el campo específico
         }));
-    }
-
-    function startEditing(user) {
-        setEditUserId(user.id);
-        setUserData({
-            ...user
-        });
     }
 
     return (
@@ -103,7 +133,7 @@ function AdminUsers() {
                         <div>
                             <h2 className="service-title">{user.firstname} {user.lastname}</h2>
                             <div className="service-info">
-                                <form onSubmit={e => { e.preventDefault(); updateUser(user) }}>
+                                <form onSubmit={e => { e.preventDefault(); updateUser() }}>
                                     <div>
                                         <label>Nombre:</label>
                                         <input
@@ -178,12 +208,12 @@ function AdminUsers() {
                                     {editUserId === user.id ? (
                                         <div className="button-container">
                                             <button className="save-btn" type="submit">Guardar</button>
-                                            <button className="delete-btn" onClick={() => deleteUser(user.id)}>Borrar</button>
+                                            <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
                                         </div>
                                     ) : (
                                         <div className="button-container">
                                             <button onClick={() => startEditing(user)} className="edit-btn">Editar</button>
-                                            <button className="delete-btn" onClick={() => deleteUser(user.id)}>Borrar</button>
+                                            <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
                                         </div>
                                     )}
                                 </form>

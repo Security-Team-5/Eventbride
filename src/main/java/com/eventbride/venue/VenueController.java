@@ -101,4 +101,26 @@ public class VenueController {
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 
+	@PutMapping("/admin/{id}")
+	public ResponseEntity<?> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue updatedVenue) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+		if (roles.contains("ADMIN")) {
+			try {
+				// Llamar al servicio para actualizar el Venue
+				Venue updated = venueService.updateVenue(id, updatedVenue);
+
+				// Retornar el DTO con el Venue actualizado
+				return ResponseEntity.ok(new VenueDTO(updated));
+
+			} catch (RuntimeException e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error actualizando el Venue: " + e.getMessage());
+			}
+		}
+
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+
 }

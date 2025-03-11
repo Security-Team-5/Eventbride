@@ -95,7 +95,6 @@ public class OtherServiceService {
     public OtherService updateOtherService(Integer id, OtherService otherServ){
         OtherService otherService = otherServiceRepo.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado ningun servicio con esa Id"));
 
-        // Actualizar las propiedades heredadas de Service
         otherService.setName(otherServ.getName());
         otherService.setAvailable(otherServ.getAvailable());
         otherService.setCityAvailable(otherServ.getCityAvailable());
@@ -107,7 +106,6 @@ public class OtherServiceService {
         otherService.setLimitedByPricePerGuest(otherServ.getLimitedByPricePerGuest());
         otherService.setLimitedByPricePerHour(otherServ.getLimitedByPricePerHour());
 
-        // Actualizar las propiedades específicas de OtherService
         otherService.setOtherServiceType(otherServ.getOtherServiceType());
         otherService.setExtraInformation(otherServ.getExtraInformation());
 

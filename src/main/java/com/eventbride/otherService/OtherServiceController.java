@@ -94,6 +94,26 @@ public class OtherServiceController {
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 
+	@PutMapping("/admin/{id}")
+	public ResponseEntity<?> updateOtherService(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		if(roles.contains("ADMIN")) {
+			try {
+				OtherService updated = otherServiceService.updateOtherService(id, updatedService);
+
+				return ResponseEntity.ok(new OtherServiceDTO(updated));  
+
+			} catch (RuntimeException e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error actualizando el servicio: " + e.getMessage());
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+
+
+
 }
 
 
