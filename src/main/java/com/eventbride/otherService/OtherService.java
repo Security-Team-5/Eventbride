@@ -38,19 +38,17 @@ public class OtherService extends Service {
     private String extraInformation;
 
     public enum OtherServiceType {
-        CATERING, 
-        ENTERTAINMENT, 
+        CATERING,
+        ENTERTAINMENT,
         DECORATION
     }
 
-    @OneToMany(mappedBy = "otherService", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "other_service_id")
     private List<Rating> ratings;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(mappedBy = "otherService", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<EventProperties> eventProperties;
 
 }

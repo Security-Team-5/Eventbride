@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../static/resources/css/EventDetails.css";
 
 function EventDetails() {
   const [evento, setEvento] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // Obtener la lista de evento
   function getEvents() {
@@ -17,11 +19,41 @@ function EventDetails() {
       .then(response => response.json())
       .then(data => {
         console.log("evento obtenido:", data);
-        setEvento(data); 
+        setEvento(data);
       })
       .catch(error => console.error("Error obteniendo evento:", error));
-      setEvento(null);
+    setEvento(null);
   }
+
+  // Función para eliminar el evento
+  function deleteEvent() {
+    fetch(`/api/v1/events/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log("Evento eliminado correctamente");
+          // Redirigir a la página principal
+          navigate("/");
+        } else {
+          console.error("Error al eliminar el evento");
+        }
+      })
+      .catch(error => console.error("Error eliminando evento:", error));
+  }
+
+  // Abrir modal
+  const openModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  // Cerrar modal
+  const closeModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   // Cargar evento al montar el componente
   useEffect(() => {
@@ -60,43 +92,68 @@ function EventDetails() {
 
   return (
     <>
-          <div className="event-contain">
-            <div className="event-details">
-              <h2 className="event-title">{tipoDeEvento(evento?.eventType)}</h2>
-              <div className="event-info">
-                <p className="event-date">Fecha: {formatearFecha(evento?.eventDate)}</p>
-                <p className="event-guests">Invitados: {evento?.guests}</p>
-                <p className="event-budget">
-                  Presupuesto: {evento?.budget.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                </p>
-              </div>
-            </div>
-            <div style={{display: "flex", flexDirection: "row"}}>
-              <div className="event-venues">
-                <h3>Recinto contratado</h3>
-                {evento?.eventPropertiesDTO?.map((prop, i) =>
-                  prop.venueDTO ? (
-                    <div key={i} className="venue-card">
-                      <p><strong>Nombre:</strong> {decodeText(prop.venueDTO.name)}</p>
-                      <p><strong>Ubicación:</strong> {decodeText(prop.venueDTO.address)}</p>
-                    </div>
-                  ) : null
-                )}
-              </div>
+      <div className="event-contain">
+        <div className="event-details">
+          <div className="event-header">
+            <h2 className="event-title">{tipoDeEvento(evento?.eventType)}</h2>
+            <button className="delete-button" onClick={openModal}>Eliminar Evento</button>
+          </div>
+          <div className="event-info">
+            <p className="event-date">Fecha: {formatearFecha(evento?.eventDate)}</p>
+            <p className="event-guests">Invitados: {evento?.guests}</p>
+            <p className="event-budget">
+              Presupuesto: {evento?.budget?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+            </p>
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div className="event-venues">
+            <h3>Recinto contratado</h3>
+            {evento?.eventPropertiesDTO?.map((prop, i) =>
+              prop.venueDTO ? (
+                <div key={i} className="venue-card">
+                  <p><strong>Nombre:</strong> {decodeText(prop.venueDTO.name)}</p>
+                  <p><strong>Ubicación:</strong> {decodeText(prop.venueDTO.address)}</p>
+                </div>
+              ) : null
+            )}
+          </div>
 
-              <div className="event-services">
-                <h3>Otros servicios contratados</h3>
-                {evento?.eventPropertiesDTO?.map((prop, i) =>
-                  prop.otherServiceDTO ? (
-                    <div key={i} className="service-card">
-                      <p><strong>Servicio:</strong> {decodeText(prop.otherServiceDTO.name)}</p>
-                      <p><strong>Descripción:</strong> {decodeText(prop.otherServiceDTO.description)}</p>
-                    </div>
-                  ) : null
-                )}
-              </div>
+          <div className="event-services">
+            <h3>Otros servicios contratados</h3>
+            {evento?.eventPropertiesDTO?.map((prop, i) =>
+              prop.otherServiceDTO ? (
+                <div key={i} className="service-card">
+                  <p><strong>Servicio:</strong> {decodeText(prop.otherServiceDTO.name)}</p>
+                  <p><strong>Descripción:</strong> {decodeText(prop.otherServiceDTO.description)}</p>
+                </div>
+              ) : null
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Modal de confirmación */}
+      {isDeleteModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>¿Estás seguro de que quieres eliminar este evento?</h3>
+            </div>
+            <div className="modal-body">
+              <p>Esta acción no se puede deshacer. El evento será eliminado permanentemente.</p>
+            </div>
+            <div className="modal-footer">
+              <button className="cancel-button" onClick={closeModal}>
+                Cancelar
+              </button>
+              <button className="confirm-button" onClick={deleteEvent}>
+                Eliminar
+              </button>
             </div>
           </div>
+        </div>
+      )}
     </>
   );
 }

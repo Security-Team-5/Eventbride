@@ -29,8 +29,9 @@ import lombok.Setter;
 @Table(name = "events")
 @Getter
 @Setter
-public class Event extends BaseEntity{
-    
+
+public class Event extends BaseEntity {
+
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type", nullable = false)
     private EventType eventType;
@@ -48,19 +49,22 @@ public class Event extends BaseEntity{
     private LocalDate eventDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
+    @OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "event_id")
     private List<Invitation> invitations;
 
     public enum EventType {
-        WEDDING, 
-        CHRISTENING, 
+        WEDDING,
+        CHRISTENING,
         COMMUNION
     }
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "event_id")
     private List<EventProperties> eventProperties;
 
 }
