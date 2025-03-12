@@ -53,7 +53,7 @@ public class EventPropertiesController {
         return new ResponseEntity<>(savedEventProperties, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{eventId}/add-otherservice")
+    @PostMapping("/{eventId}/add-otherservice/{otherServiceId}")
     public ResponseEntity<String> addOtherServiceToEvent(@PathVariable Integer eventId, @PathVariable Integer otherServiceId) {
         eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId);
         return ResponseEntity.ok("Servicio añadido al evento correctamente");
