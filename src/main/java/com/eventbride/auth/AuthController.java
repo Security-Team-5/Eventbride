@@ -15,12 +15,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    // TODO: Arreglar el método login porque sólo devuelve un usuario cuando las credenciales son correctas, pero no inicia sesión en la aplicación.
+    // TODO: Arreglar el método login porque sólo devuelve un usuario cuando las
+    // credenciales son correctas, pero no inicia sesión en la aplicación.
 
     @Autowired
     private UserService userService;
@@ -41,15 +41,17 @@ public class AuthController {
     // POSIBLE MÉTODO QUE ARREGLA EL LOGIN
     // @PostMapping("/login")
     // public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-    //     try {
-    //         Authentication authentication = authenticationManager.authenticate(
-    //                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-    //         SecurityContextHolder.getContext().setAuthentication(authentication);
-    //         Optional<User> user = userService.getUserByUsername(request.getUsername());
-    //         return ResponseEntity.ok(user.get());
-    //     } catch (AuthenticationException e) {
-    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
-    //     }
+    // try {
+    // Authentication authentication = authenticationManager.authenticate(
+    // new UsernamePasswordAuthenticationToken(request.getUsername(),
+    // request.getPassword()));
+    // SecurityContextHolder.getContext().setAuthentication(authentication);
+    // Optional<User> user = userService.getUserByUsername(request.getUsername());
+    // return ResponseEntity.ok(user.get());
+    // } catch (AuthenticationException e) {
+    // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales
+    // incorrectas");
+    // }
     // }
 
     @GetMapping("/current-user")

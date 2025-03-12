@@ -15,7 +15,8 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOrigins("http://localhost:5173", "https://ispp-2425-03.ew.r.appspot.com",
+                                "http://localhost:8080", "http://localhost:5174")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

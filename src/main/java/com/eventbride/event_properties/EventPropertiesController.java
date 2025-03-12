@@ -44,7 +44,6 @@ public class EventPropertiesController {
     public ResponseEntity<EventProperties> create(@RequestBody @Valid EventProperties eventProperties) {
         EventProperties newEventProperties = new EventProperties();
         BeanUtils.copyProperties(eventProperties, newEventProperties, "id");
-        newEventProperties.setEvent(eventProperties.getEvent());
         newEventProperties.setOtherService(eventProperties.getOtherService());
         newEventProperties.setVenue(eventProperties.getVenue());
         newEventProperties.setApproved(eventProperties.getApproved());
@@ -61,7 +60,6 @@ public class EventPropertiesController {
         if(updateEventProperties == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            updateEventProperties.setEvent(eventProperties.getEvent());
             updateEventProperties.setOtherService(eventProperties.getOtherService());
             updateEventProperties.setVenue(eventProperties.getVenue());
             updateEventProperties.setApproved(eventProperties.getApproved());

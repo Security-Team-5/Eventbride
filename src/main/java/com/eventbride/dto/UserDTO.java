@@ -33,11 +33,6 @@ public class UserDTO {
         this.dni = user.getDni();
         this.profilePicture = user.getProfilePicture();
         this.role = user.getRole();
-        if(user.getEvents() != null){
-            this.events = user.getEvents().stream()
-                    .map(EventDTO::new)  // Convertir la lista de eventos a DTOs
-                    .collect(Collectors.toList());
-        }
     }
 
     // Método estático para convertir una lista de usuarios en una lista de DTOs

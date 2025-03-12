@@ -15,10 +15,10 @@ public interface EventRepository extends CrudRepository<Event, Integer>{
     @Query("SELECT DISTINCT event FROM Event event WHERE event.user.id = :userId")
 	public Event findByUserId(int userId);
 
-    @Query("SELECT ep.otherService FROM EventProperties ep WHERE ep.event=?1")
+	@Query("SELECT ep.otherService FROM Event e JOIN e.eventProperties ep WHERE e = :event")
     public List<OtherService> findOthersServicesByEvent(Event event);
 
-    @Query("SELECT ep.venue FROM EventProperties ep WHERE ep.event=?1")
+	@Query("SELECT ep.venue FROM Event e JOIN e.eventProperties ep WHERE e = :event")
     public List<Venue> findVenuesByEvent(Event event);
 
     @Query("SELECT e FROM Event e LEFT JOIN e.eventProperties ep WHERE e.user.id = :userId ORDER BY e.eventDate ASC LIMIT 1")

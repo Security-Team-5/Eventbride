@@ -4,6 +4,8 @@ import com.eventbride.dto.ServiceDTO;
 import com.eventbride.service.ServiceService;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,11 @@ public class VenueService {
     }
 
     @Transactional
+    public Optional<Venue> getVenueById(Integer id) {
+        return venueRepository.findById(id);
+    }
+
+    @Transactional
     public List<Venue> getFilteredVenues(String city, Integer maxGuests, Double surface) {
         return venueRepository.findByFilters(
             city,
@@ -52,6 +59,18 @@ public class VenueService {
 		}
         return venueRepository.save(venue);
     }
+
+    @Transactional
+    public Venue update(Integer id, Venue venue) {
+        Venue existingVenue = venueRepository.findById(id).orElse(null);
+        if (existingVenue == null) {
+            throw new RuntimeException("Venue not found");
+        }
+        BeanUtils.copyProperties(venue, existingVenue, "id");
+        
+        return venueRepository.save(existingVenue);
+    }
+
 
 	@Transactional
 	public List<Venue> getVenuesByUserId(Integer userId) {
