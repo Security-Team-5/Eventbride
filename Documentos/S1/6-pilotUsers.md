@@ -49,15 +49,17 @@
    1. [Primera fase](#primera-fase)
    2. [Segunda fase](#segunda-fase)
 4. [¿Cómo nos comunicaremos con ellos?](#como-nos-comunicaremos-con-ellos)
-5. [Recompensas ofrecidas](#recompensas-ofrecidas)
-6. [Usuarios piloto recogidos](#usuarios-piloto-recogidos)
+5. [¿Cómo trabajaremos con ellos?](#como-trabajaremos-con-ellos)
+6. [Gestión y recogida de feedback](#gestión-y-recogida-del-feedback)
+7. [Recompensas ofrecidas](#recompensas-ofrecidas)
+8. [Usuarios piloto recogidos](#usuarios-piloto-recogidos)
    1. [Proveedores](#proveedores)
    2. [Clientes](#clientes-1)
-7. [Resultados encuesta feedback Sprint 1](#id3)
-8. [Resultados encuesta feedback Sprint 2](#id4)
-9. [Resultados encuesta feedback Sprint 3](#id5)
-10. [Conclusión](#concl)
-11. [Bibliografía](#bib)
+9. [Resultados encuesta feedback Sprint 1](#id3)
+10. [Resultados encuesta feedback Sprint 2](#id4)
+11. [Resultados encuesta feedback Sprint 3](#id5)
+12. [Conclusión](#concl)
+13. [Bibliografía](#bib)
 
 <div id='intro'></div>
 
@@ -141,6 +143,24 @@ Hemos realizado la comunicación con los proveedores a través de correo electr�
 Por otro lado, las encuestas destinadas a los usuarios se difundieron a través de WhatsApp entre los contactos del equipo, lo que permitió identificar a los usuarios piloto mencionados más adelante en este informe.
 
 Por último, con los usuarios piloto que se ofrecieron voluntarios dentro de la asignatura se creó un grupo de WhatsApp para facilitar la comunicación con ellos.
+
+<div id='como-trabajaremos-con-ellos'></div>
+
+## ¿Cómo trabajaremos con ellos?
+
+Para plantear el funcionamiento del programa, hemos decidido trabajar principalmente mediante encuestas realizadas con Google forms, que eran enviadas en unas fechas establecidas y ahondarán en diferentes aspectos de la plataforma y su funcionamiento, dichas encuestas serán entregadas como se explica en el punto anterior, haciendo uso del correo corporativo o los canales habilitados para la comunicación con estos. En las encuestas realizadas, se intentará integrar junto a preguntas de respuesta rápida (selecciones, aportación de puntuaciones, etc) algunas preguntas que dejen mas libertad expresiva al usuario, con el fin de recibir información mas especifica y detallada
+
+Junto a las encuestas realizadas, se valorará la realización de reuniones con estos usuarios para aclarar posibles dudas surgidas o debatir algunas de las propuestas expresadas en los comentarios proporcionados.
+
+<div id='gestión-y-recogida-del-feedback'></div>
+
+## Gestión y recogida del feedback
+
+Partiendo de los puntos anteriores, al usar como herramienta Google Forms, permite conectar la información de las respuestas con una hoja de cálculo donde se puede recoger algunas métricas interesantes como el momento de recepción de la respuesta.
+
+Una vez que finalice el plazo de recogida de respuestas fijado, el equipo de gestión de usuarios piloto pasará la información de la hoja de cálculo a un documento que facilite analizar y estudiar el feedback recibido. Todo feedback cuya implementación sea valorada como una mejora al sistema actual pasará a entrar en el proyecto como una petición de cambio a estudiar por equipo de desarrollo o corrección de errores, según la índole del comentario.
+
+
 
 <div id='recompensas-ofrecidas'></div>
 
