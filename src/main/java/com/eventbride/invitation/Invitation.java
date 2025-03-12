@@ -6,6 +6,8 @@ import com.eventbride.model.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -38,14 +40,19 @@ public class Invitation extends BaseEntity{
 	@Digits(integer = 9, fraction = 0)
     private Integer telephone;
 
-    @Column(name = "address", nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 50)
-    private String address;
-
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = true, unique = true)
     @NotBlank
 	@Email
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "invitation_type", nullable = false)
+    private InvitationType invitationType;
+
+    public enum InvitationType {
+        SENT,
+        RECEIVED,
+        ACCEPTED
+    }
 
 }

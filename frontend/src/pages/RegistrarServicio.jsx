@@ -17,7 +17,6 @@ const RegistrarServicio = () => {
         fixedPrice: '',
         picture: '',
         description: '',
-        hours: '',
         otherServiceType: 'CATERING',
     })
 
@@ -32,7 +31,6 @@ const RegistrarServicio = () => {
         fixedPrice: 0,
         picture: '',
         description: '',
-        hours: '',
         limitedByPricePerGuest: false,
         limitedByPricePerHour: false,
         otherServiceType: 'CATERING',
@@ -67,6 +65,7 @@ const RegistrarServicio = () => {
                 if(!data.error){
                     navigate("/misservicios")
                 } else{
+                    // eslint-disable-next-line no-unused-vars
                     const errorName = data.error
                     setErrors(data);
                 }
@@ -190,20 +189,6 @@ const RegistrarServicio = () => {
                                     )
                                 }
                             </>
-                            <div className="form-group">
-                                <label htmlFor="hours">Horas disponibles:</label>
-                                <p className="error-title">{errors.hours}</p>
-                                <input
-                                    type="number"
-                                    id="hours"
-                                    name="hours"
-                                    value={formData.hours}
-                                    onChange={handleChange}
-                                    required
-                                    min="0"
-                                    step="0.01"
-                                />
-                            </div>
                             <div className="form-group">
                                 <label htmlFor="picture">Imagen:</label>
                                 <p className="error-title">{errors.picture}</p>
