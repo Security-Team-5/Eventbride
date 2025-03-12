@@ -49,9 +49,14 @@ public class EventController {
     }
 
     @GetMapping("/DTO")
-    public ResponseEntity<List<EventDTO>> findAllEventsDTO() {
-        List<EventDTO> events = eventService.getAllEventsDTO();
-        return ResponseEntity.ok(events);   
+    public ResponseEntity<?> findAllEventsDTO() {
+		try{
+			List<EventDTO> events = eventService.getAllEventsDTO();
+			return ResponseEntity.ok(events);
+		}
+		catch(Exception e){
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
     }
 
     @GetMapping("/{id}")
@@ -80,24 +85,27 @@ public class EventController {
 
     @PutMapping("/{eventId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Event> update(@PathVariable("eventId") Integer eventId, @RequestBody @Valid Event event) {
-        Event updateEvent = eventService.findById(eventId);
-        if (updateEvent == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            updateEvent.setEventType(event.getEventType());
-            updateEvent.setGuests(event.getGuests());
-            updateEvent.setBudget(event.getBudget());
-            updateEvent.setEventDate(event.getEventDate());
-            updateEvent.setUser(event.getUser());
-            updateEvent.setInvitations(event.getInvitations());
+    public ResponseEntity<?> update(@PathVariable("eventId") Integer eventId, @RequestBody @Valid Event event) {
+        try {
+			Event updateEvent = eventService.findById(eventId);
+			if (updateEvent == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			} else {
+				updateEvent.setEventType(event.getEventType());
+				updateEvent.setGuests(event.getGuests());
+				updateEvent.setBudget(event.getBudget());
+				updateEvent.setEventDate(event.getEventDate());
+				updateEvent.setUser(event.getUser());
+				updateEvent.setInvitations(event.getInvitations());
 
-            updateEvent.getEventProperties().clear();
-            if(event.getEventProperties() != null)
-                updateEvent.getEventProperties().addAll(event.getEventProperties());
+				Event e = this.eventService.updateEvent(updateEvent, eventId);
+				return new ResponseEntity<>(new EventDTO(e), HttpStatus.OK);
+			}
+		}
+		catch (Exception e) {
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
 
-            return new ResponseEntity<>(this.eventService.updateEvent(updateEvent, eventId), HttpStatus.OK);
-        }
     }
 
 

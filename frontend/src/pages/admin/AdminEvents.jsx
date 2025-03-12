@@ -39,13 +39,18 @@ function AdminEvents() {
   }
 
   function updateEvent(event) {
+
+    const evento = eventData[event.id];
+    evento.eventProperties = evento.eventPropertiesDTO;
+    delete evento.eventPropertiesDTO;
+
     fetch(`/api/v1/events/${event.id}`, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${jwt}`,
       },
       method: "PUT",
-      body: JSON.stringify(eventData[event.id]),
+      body: JSON.stringify(evento),
     })
       .then(response => response.json())
       .then(updatedEvent => {
@@ -172,7 +177,7 @@ function AdminEvents() {
                         }}
                       />
                     </div>
-                    {event.eventPropertiesDTO && event.eventPropertiesDTO.length > 0 ? (
+                    {event.eventPropertiesDTO && event.eventPropertiesDTO?.length > 0 || (event.eventProperties && event.eventProperties?.length > 0) ? (
                       <div
                         className="event-properties"
                         style={{
@@ -187,7 +192,7 @@ function AdminEvents() {
                           Propiedades del Evento
                         </h3>
                         <ul style={{ listStyleType: "none", padding: "0" }}>
-                          {event.eventPropertiesDTO.map((prop, i) => (
+                          {event.eventPropertiesDTO?.map((prop, i) => (
                             <li key={i} style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>
                               {/* Si hay Venue asociado */}
                               {prop.venueDTO && (
