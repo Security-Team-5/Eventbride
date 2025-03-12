@@ -53,18 +53,39 @@ public class EventPropertiesController {
         return new ResponseEntity<>(savedEventProperties, HttpStatus.CREATED);
     }
 
+    @PostMapping("/{eventId}/add-otherservice")
+    public ResponseEntity<String> addOtherServiceToEvent(@PathVariable Integer eventId, @PathVariable Integer otherServiceId) {
+        eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId);
+        return ResponseEntity.ok("Servicio añadido al evento correctamente");
+    }
+
+    @PostMapping("/{eventId}/add-otherservice-hours")
+    public ResponseEntity<String> addOtherServiceToEventWithHours(@PathVariable Integer eventId, @PathVariable Integer otherServiceId, @PathVariable Integer hours) {
+        eventPropertiesService.addOtherServiceToEventWithHours(eventId, otherServiceId, hours);
+        return ResponseEntity.ok("Servicio añadido al evento correctamente");
+    }
+
+    @PostMapping("/{eventId}/add-venue")
+    public ResponseEntity<String> addVenueToEvent(@PathVariable Integer eventId, @PathVariable Integer venueId, @PathVariable Integer hours) {
+        eventPropertiesService.addVenueToEvent(eventId, venueId, hours);
+        return ResponseEntity.ok("Servicio añadido al evento correctamente");
+    }
+
     @PutMapping("/{eventPropertiesId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<EventProperties> update(@PathVariable("eventPropertiesId") Integer eventPropertiesId, @RequestBody @Valid EventProperties eventProperties) {
+    public ResponseEntity<EventProperties> update(@PathVariable("eventPropertiesId") Integer eventPropertiesId,
+            @RequestBody @Valid EventProperties eventProperties) {
         EventProperties updateEventProperties = eventPropertiesService.findById(eventPropertiesId);
-        if(updateEventProperties == null) {
+        if (updateEventProperties == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             updateEventProperties.setOtherService(eventProperties.getOtherService());
             updateEventProperties.setVenue(eventProperties.getVenue());
             updateEventProperties.setApproved(eventProperties.getApproved());
             updateEventProperties.setRequestDate(eventProperties.getRequestDate());
-            return new ResponseEntity<>(this.eventPropertiesService.updateEventProperties(updateEventProperties, eventPropertiesId), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    this.eventPropertiesService.updateEventProperties(updateEventProperties, eventPropertiesId),
+                    HttpStatus.OK);
         }
     }
 

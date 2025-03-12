@@ -2,12 +2,10 @@ package com.eventbride.otherService;
 
 import java.util.List;
 
-import com.eventbride.event_properties.EventProperties;
 import com.eventbride.rating.Rating;
 import com.eventbride.service.Service;
 import com.eventbride.user.User;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
