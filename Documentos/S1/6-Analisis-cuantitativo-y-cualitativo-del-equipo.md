@@ -42,6 +42,7 @@
 | 10/03/2025 | v2.5    | Adición de nuevos asignados a una tarea                                      | Sprint 1 | María de la Salud Carrera Talaverón |
 | 12/03/2025 | v3.0    | Adición de nuevas tareas asignadas y reasignación de las anteriroes          | Sprint 1 | María de la Salud Carrera Talaverón |
 | 12/03/2025 | v3.1    | Análisis cualitativo actualizado                                             | Sprint 1 | María de la Salud Carrera Talaverón |
+| 12/03/2025 | v3.2    | Introducción y conclusión                                                    | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -56,13 +57,13 @@
 
 ## Introducción
 
-Introducción.
+El presente documento tiene como objetivo realizar un análisis tanto cuantitativo como cualitativo del desempeño y progreso del equipo en el Sprint 1 del proyecto "Eventbride". A través de este análisis, se evaluará el cumplimiento de las métricas establecidas, así como el esfuerzo individual y colectivo para alcanzar los objetivos del sprint. Además, se detallará el trabajo de cada miembro en función de sus roles y responsabilidades, asegurando que el proyecto avance conforme a lo planeado. Este análisis servirá como base para identificar áreas de mejora y ajustar la planificación en futuros sprints.
 
 <div id='id1'></div>
 
 ## Análisis cuantitativo
 
-El análisis cuantitativo se va a realizar en base a las métricas establecidas en el documento de Especificaciones métricas de este proyecto. También se comparará el número de horas totales esperadas con las que se llevan actualmente. Por persona, se esperan mínimo 500 líneas de código (LdC), 10 commits, 15 issues completadas con éxito, 5 pull requests revisadas, 5 tests y 150 horas. El fin del Sprint 1 supone aproximadamente el 43% del tiempo del proyecto. Por tanto, se espera que para el jueves día 13 de marzo de 2025 se lleven alrededor de 215 LdC, 4 commits, 6 issues completadas, 2 PR revisadas, 2 tests y 64,5 horas por persona. Si alguna de estas métricas aún no se ha cumplido, hay margen para compensarlas en sprints futuros (especialmente los tests, ya que no se han contemplado en la planificación aún). En la siguiente tablan se ve el progreso de cada desarrollador, a día de 12 de marzo de 2025[^1]:
+El análisis cuantitativo se va a realizar en base a las métricas establecidas en el documento de Especificaciones métricas de este proyecto. También se comparará el número de horas totales esperadas con las que se llevan actualmente. Por persona, se esperan mínimo 500 líneas de código (LdC), 10 commits, 15 issues completadas con éxito, 5 pull requests revisadas, 5 tests y 150 horas. El fin del Sprint 1 supone aproximadamente el 43% del tiempo del proyecto. Por tanto, se espera que para el jueves día 13 de marzo de 2025 se lleven alrededor de 215 LdC, 4 commits, 6 issues completadas, 2 PR revisadas, 2 tests y 64,5 horas por persona. Si alguna de estas métricas aún no se ha cumplido, hay margen para compensarlas en sprints futuros (especialmente los tests, ya que no se han contemplado en la planificación aún). En la siguiente tabla se ve el progreso de cada desarrollador (en la rama `master` del proyecto), a día de 12 de marzo de 2025[^1]:
 
 | Desarrollador/a                     | LdC | Commits | Issues completadas  | PR revisadas | Tests | Horas |
 |-------------------------------------|-----|---------|---------------------|--------------|-------|-------|
@@ -148,7 +149,7 @@ Por último, Pablo Jesús Castellanos Compaña es el coordinador de tiempos. Su 
 
 La reestimación de la planificación del Sprint 1 se realizó el día 08/03/2025. Participaron en ella la Project Manager y los Jefes de Desarrollo de los grupos 1 y 2. El Jefe de Desarrollo del grupo 3 dio el visto bueno a las tareas repartidas en su grupo. Esta reestimación está sujeta a cambios si surgen conflictos durante el desarrollo del sprint o si algún miembro del grupo se da cuenta de que falta alguna tarea o requisito pedido por los profesores de la asignatura.
 
-Se reasignaron las tareas que estaban pendientes y sin empezar. Aquellas que ya se habían empezado no fueron reasignadas, a excepción de la tarea correspondiente a la elaboración de este documento, a la que se asignó una nueva persona además de la que ya estaba asignada. La nueva distribución de tareas se hizo teniendo en cuenta las horas de trabajo que llevaba cada desarrollador, los roles que desempeña cada uno y compatibilidades de horarios. Se buscó que las personas que trabajan juntas en una tarea lo hicieran también en otras, para que se minimice el número de personas con las que un miembro del equipo debe cuadrar sus horarios de trabajo, ya que esto fue uno de los factores que retrasó el desarrollo de las tareas. De esta forma, el nuevo Sprint Backlog quedó así (a día 10 de marzo de 2025):
+Se reasignaron las tareas que estaban pendientes y sin empezar. Aquellas que ya se habían empezado no fueron reasignadas, a excepción de la tarea correspondiente a la elaboración de este documento, a la que se asignó una nueva persona además de la que ya estaba asignada. La nueva distribución de tareas se hizo teniendo en cuenta las horas de trabajo que llevaba cada desarrollador, los roles que desempeña cada uno y compatibilidades de horarios. Se buscó que las personas que trabajan juntas en una tarea lo hicieran también en otras, para que se minimice el número de personas con las que un miembro del equipo debe cuadrar sus horarios de trabajo, ya que esto fue uno de los factores que retrasó el desarrollo de las tareas. De esta forma, el nuevo Sprint Backlog quedó así (a día 12 de marzo de 2025[^1]):
 
 | Tarea | Tiempo estimado (horas) | Asignados |
 |-------|-------------------------|-----------|
@@ -185,7 +186,7 @@ Se reasignaron las tareas que estaban pendientes y sin empezar. Aquellas que ya 
 
 ## Conclusiones
 
-Conclusiones.
+En conclusión, el análisis del Sprint 1 de "Eventbride" ha permitido observar tanto los logros como las áreas que requieren ajustes en la ejecución del proyecto. El equipo ha demostrado un buen compromiso con las tareas asignadas, aunque algunos aspectos, como la gestión del tiempo y la comunicación, han mostrado oportunidades de mejora. Este análisis no solo refleja el rendimiento actual, sino que también establece una base sólida para la mejora continua en los siguientes sprints, con el objetivo de cumplir de manera eficiente con los plazos y expectativas del proyecto.
 
 <div id='bib'></div>
 
