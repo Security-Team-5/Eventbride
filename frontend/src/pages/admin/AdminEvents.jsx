@@ -38,7 +38,7 @@ function AdminEvents() {
   }
 
   function updateEvent(event) {
-    fetch(`/api/events/${event.id}`, {
+    fetch(`/api/v1/events/${event.id}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -48,6 +48,7 @@ function AdminEvents() {
       .then(response => response.json())
       .then(updatedEvent => {
         console.log("Evento actualizado:", updatedEvent);
+        console.log("Aqui");
         setEvents(prevEvents => prevEvents.map(e => e.id === updatedEvent.id ? updatedEvent : e));
         setEditEventId(null);  // Salimos del modo de edición
       })
