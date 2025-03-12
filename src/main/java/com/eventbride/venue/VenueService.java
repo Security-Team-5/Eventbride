@@ -39,6 +39,12 @@ public class VenueService {
         return venueRepository.findById(id);
     }
 
+
+	@Transactional
+	public List<Venue> getVenuesByUserId(Integer userId) {
+		return venueRepository.findByUserId(userId);
+	}
+
     @Transactional
     public List<Venue> getFilteredVenues(String city, Integer maxGuests, Double surface) {
         return venueRepository.findByFilters(
@@ -71,15 +77,51 @@ public class VenueService {
             throw new RuntimeException("Venue not found");
         }
         BeanUtils.copyProperties(venue, existingVenue, "id");
-        
+
         return venueRepository.save(existingVenue);
     }
 
-
 	@Transactional
-	public List<Venue> getVenuesByUserId(Integer userId) {
-		return venueRepository.findByUserId(userId);
+	public Venue updateVenue(Integer id, Venue updatedVenue) {
+
+		Venue existingVenue = venueRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("No se ha encontrado ningun Venue con esa Id"));
+
+		existingVenue.setName(updatedVenue.getName());
+		existingVenue.setAvailable(updatedVenue.getAvailable());
+		existingVenue.setCityAvailable(updatedVenue.getCityAvailable());
+		existingVenue.setServicePricePerGuest(updatedVenue.getServicePricePerGuest());
+		existingVenue.setServicePricePerHour(updatedVenue.getServicePricePerHour());
+		existingVenue.setFixedPrice(updatedVenue.getFixedPrice());
+		existingVenue.setPicture(updatedVenue.getPicture());
+		existingVenue.setDescription(updatedVenue.getDescription());
+		existingVenue.setLimitedByPricePerGuest(updatedVenue.getLimitedByPricePerGuest());
+		existingVenue.setLimitedByPricePerHour(updatedVenue.getLimitedByPricePerHour());
+
+		existingVenue.setAddress(updatedVenue.getAddress());
+		existingVenue.setPostalCode(updatedVenue.getPostalCode());
+		existingVenue.setCoordinates(updatedVenue.getCoordinates());
+		existingVenue.setMaxGuests(updatedVenue.getMaxGuests());
+		existingVenue.setSurface(updatedVenue.getSurface());
+
+		// Guardar el Venue actualizado
+		return venueRepository.save(existingVenue);
 	}
 
+	@Transactional
+	public void deleteVenue(Integer id) {
+		Venue venue = venueRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("Venue not found"));
+
+		// Eliminar EventProperties asociadas al Venue
+		eventPropertiesRepository.deleteByVenue(venue);
+
+		// Eliminar Venue
+		venueRepository.deleteById(id);
+	}
+
+	public void saveAll(List<Venue> venues) {
+		venueRepository.saveAll(venues);
+	}
 
 }

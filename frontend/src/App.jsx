@@ -40,7 +40,6 @@ function App() {
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
             <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio/>} />
-            </Routes>
             <Route path="/my-events" element={<MyEvents />} />
             <Route path="/venues" element={<VenuesScreen />} />
             <Route path="/terminos-y-condiciones" element={<Terms />} />
@@ -54,6 +53,8 @@ function App() {
                 <Route path="/admin-services" element={<AdminServices />} />
               </>
             }
+          </Routes>
+
         </div>
       </Router>
     </div>

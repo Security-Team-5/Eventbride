@@ -87,9 +87,38 @@ public class VenueController {
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();
 
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), error.getDefaultMessage());
-        });
+		ex.getBindingResult().getFieldErrors().forEach(error -> {
+			errors.put(error.getField(), error.getDefaultMessage());
+		});
+
+		return ResponseEntity.badRequest().body(errors);
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<Map<String, String>> handleJsonParseError(HttpMessageNotReadableException ex) {
+		Map<String, String> errorDetails = new HashMap<>();
+
+		Throwable cause = ex.getCause();
+		if (cause instanceof JsonMappingException jsonMappingException) {
+			for (JsonMappingException.Reference reference : jsonMappingException.getPath()) {
+				String fieldName = reference.getFieldName();
+				errorDetails.put(fieldName,
+					"El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
+			}
+			errorDetails.put("error", "El formato del JSON es incorrecto o faltan datos obligatorios.");
+		} else if (cause instanceof JsonParseException) {
+			errorDetails.put("error", "Error de sintaxis en el JSON. Verifica la estructura.");
+		} else {
+			errorDetails.put("error", "El formato del JSON es incorrecto o faltan datos obligatorios.");
+		}
+
+		return ResponseEntity.badRequest().body(errorDetails);
+	}
+
+
+	@DeleteMapping("/admin/{id}")
+	public ResponseEntity<?> deleteService(@PathVariable Integer id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 		if (roles.contains("ADMIN")) {
@@ -100,7 +129,7 @@ public class VenueController {
 	}
 
 	@PutMapping("/admin/{id}")
-	public ResponseEntity<?> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue venueDetails) {
+	public ResponseEntity<?> updateVenueAdmin(@PathVariable Integer id, @Valid @RequestBody Venue venueDetails) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
