@@ -42,10 +42,10 @@ public class OtherServiceController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<OtherService> updateOtherService(@PathVariable Integer id, @RequestBody OtherService otherService) {
+    public ResponseEntity<OtherServiceDTO> updateOtherService(@PathVariable Integer id, @RequestBody OtherService otherService) {
         try {
             OtherService updatedOtherService = otherServiceService.updateOtherService(id, otherService);
-            return ResponseEntity.ok(updatedOtherService);
+            return ResponseEntity.ok(new OtherServiceDTO(updatedOtherService));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }

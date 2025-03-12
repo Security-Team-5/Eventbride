@@ -69,10 +69,10 @@ public class VenueController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Venue> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue venue) {
+    public ResponseEntity<VenueDTO> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue venue) {
         try {
             Venue updatedVenue = venueService.update(id, venue);
-            return ResponseEntity.ok(updatedVenue);
+            return ResponseEntity.ok(new VenueDTO(updatedVenue));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }
