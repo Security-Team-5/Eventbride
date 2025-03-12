@@ -9,12 +9,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +33,16 @@ public class OtherServiceController {
             @RequestParam(required = false) OtherServiceType type) {
         return otherServiceService.getFilteredOtherServices(name, city, type);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OtherService> getOtherServiceById(@PathVariable Integer id) {
+        return otherServiceService.getOtherServiceById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
     
     @PutMapping("/{id}")
-    public ResponseEntity<OtherService> updateOtherService(@RequestParam Integer id, @RequestParam OtherService otherService) {
+    public ResponseEntity<OtherService> updateOtherService(@PathVariable Integer id, @RequestBody OtherService otherService) {
         try {
             OtherService updatedOtherService = otherServiceService.updateOtherService(id, otherService);
             return ResponseEntity.ok(updatedOtherService);

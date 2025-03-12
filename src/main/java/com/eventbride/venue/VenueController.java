@@ -43,6 +43,13 @@ public class VenueController {
         return ResponseEntity.ok(VenueDTO.fromEntities(venues));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Venue> getVenueById(@PathVariable Integer id) {
+        return venueService.getVenueById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/filter")
     public List<Venue> getFilteredVenues(
             @RequestParam(required = false) String city,

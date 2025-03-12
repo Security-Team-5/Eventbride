@@ -3,12 +3,11 @@ import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 import "../static/resources/css/RegistrarServicio.css";
 
-const EditarServicio = ({ match }) => {
+const EditarServicio = () => {
     const navigate = useNavigate()
-    const { id } = useParams();
+    const { id, serviceType } = useParams();
     const currentUser = JSON.parse(localStorage.getItem("user"));
     const [limitedBy, setLimitedBy] = useState("perGuest");
-    const [isVenue, setIsVenue] = useState(false);
     const [errors, setErrors] = useState({
         name: '',
         cityAvailable: '',
@@ -17,7 +16,6 @@ const EditarServicio = ({ match }) => {
         fixedPrice: '',
         picture: '',
         description: '',
-        hours: '',
         otherServiceType: 'CATERING',
     })
 
@@ -30,35 +28,72 @@ const EditarServicio = ({ match }) => {
         fixedPrice: '',
         picture: '',
         description: '',
-        hours: '',
         limitedByPricePerGuest: false,
         limitedByPricePerHour: false,
         otherServiceType: 'CATERING',
         user: {
-                id: currentUser.id
+            id: currentUser.id
         }
     });
 
     useEffect(() => {
-        const fetchService = async () => {
-            try {
-                const response = await axios.get(`/api/services/${id}`);
-                setIsVenue(response.data.venues);
-                if (response.data.venues) {
+        if (serviceType == 'venue') {
+            const fetchVenue = async () => {
+                try {
+                    const response = await axios.get(`/api/venues/${id}`);
                     setFormData({
-                        name: response.data.venues.name,
-                        available: response.data.venues.available,
-                        
+                        name: response.data.name,
+                        available: response.data.available,
+                        cityAvailable: response.data.cityAvailable,
+                        servicePricePerGuest: response.data.servicePricePerGuest,
+                        servicePricePerHour: response.data.servicePricePerHour,
+                        fixedPrice: response.data.fixedPrice,
+                        picture: response.data.picture,
+                        description: response.data.description,
+                        limitedByPricePerGuest: response.data.limitedByPricePerGuest,
+                        limitedByPricePerHour: response.data.limitedByPricePerHour,
+                        postalCode: response.data.postalCode,
+                        coordinates: response.data.coordinates,
+                        address: response.data.address,
+                        maxGuests: response.data.maxGuests,
+                        surface: response.data.surface,
+                        user: {
+                            id: currentUser.id
+                        }
                     });
+                } catch (error) {
+                    console.error('Error fetching the venue:', error);
                 }
-                ;
-            } catch (error) {
-                console.error('Error fetching the service:', error);
-            }
-        };
-        console.log(formData);
-        fetchService();
-    }, []);
+            };
+            fetchVenue();
+        } else {
+            const fetchOtherService = async () => {
+                try {
+                    const response = await axios.get(`/api/other-services/${id}`);
+                    setFormData({
+                        name: response.data.name,
+                        available: response.data.available,
+                        cityAvailable: response.data.cityAvailable,
+                        servicePricePerGuest: response.data.servicePricePerGuest,
+                        servicePricePerHour: response.data.servicePricePerHour,
+                        fixedPrice: response.data.fixedPrice,
+                        picture: response.data.picture,
+                        description: response.data.description,
+                        limitedByPricePerGuest: response.data.limitedByPricePerGuest,
+                        limitedByPricePerHour: response.data.limitedByPricePerHour,
+                        otherServiceType: response.data.otherServiceType,
+                        extraInformation: response.data.extraInformation,
+                        user: {
+                            id: currentUser.id
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error fetching the other service:', error);
+                }
+            };
+            fetchOtherService();
+        }
+    }, [id, serviceType]);
 
 
     const handleChange = (e) => {
@@ -72,7 +107,7 @@ const EditarServicio = ({ match }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isVenue) {
+        if (serviceType == 'venue') {
             try {
                 const reponse = await axios.put(`/api/venues/${id}`, formData);
                 navigate('/misservicios');
@@ -199,20 +234,6 @@ const EditarServicio = ({ match }) => {
                         }
                     </>
                     <div className="form-group">
-                        <label htmlFor="hours">Horas disponibles:</label>
-                        <p className="error-title">{errors.hours}</p>
-                        <input
-                            type="number"
-                            id="hours"
-                            name="hours"
-                            value={formData.hours}
-                            onChange={handleChange}
-                            required
-                            min="0"
-                            step="0.01"
-                        />
-                    </div>
-                    <div className="form-group">
                         <label htmlFor="picture">Imagen:</label>
                         <p className="error-title">{errors.picture}</p>
                         <input
@@ -240,7 +261,7 @@ const EditarServicio = ({ match }) => {
                             maxLength="250"
                         />
                     </div>
-                    {isVenue ? (
+                    {serviceType == "venue" ? (
                         <div className="form-section">
                             <p>Campos específicos para recintos de eventos:</p>
                             <div className="form-group">
@@ -311,7 +332,6 @@ const EditarServicio = ({ match }) => {
                                     min="1"
                                 />
                             </div>
-                            <button type="submit" className="submit-button">Registrar recinto</button>
                         </div>
                     ) : (
                         <div className="form-section">

@@ -41,7 +41,7 @@ function App() {
             <Route path="/events" element={<MyEvents />} />
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
-            <Route path="/misservicios/editar/:id" element={<EditarServicio/>} />
+            <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio/>} />
           </Routes>
         </div>
       </Router>

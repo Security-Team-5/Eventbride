@@ -19,15 +19,14 @@ const Servicios = () => {
                 const otherServices = Array.isArray(response.data.otherServices) ? response.data.otherServices.map(otherService => ({ ...otherService, type: 'otherService' })) : [];
                 const venues = Array.isArray(response.data.venues) ? response.data.venues.map(venue => ({ ...venue, type: 'venue' })) : [];
                 setServices([ ...otherServices, ...venues ]);
-                console.log('Services:', services);
             } catch (error) {
                 console.error('Error fetching services:', error);
             }
         };
-
         fetchServices();
     }, [currentUser.id]);
 
+    console.log('Services:', services);
     return (
         <div className="mis-servicios-container">
             <h2>Mis Servicios</h2>
@@ -53,7 +52,7 @@ const Servicios = () => {
                             )
                         }
                         <p>Descripción: {service.description}</p>
-                        <button onClick={() => navigate(`/misservicios/editar/${service.id}`, { id: service.id , serviceType: service.type })}>Editar</button>
+                        <button onClick={() => navigate(`/misservicios/editar/${service.type}/${service.id}/`, { id: service.id , serviceType: service.type })}>Editar</button>
                     </div>
                 ))}
             </div>
