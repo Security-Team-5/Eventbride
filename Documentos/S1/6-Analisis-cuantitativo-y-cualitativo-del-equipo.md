@@ -40,6 +40,8 @@
 | 10/03/2025 | v2.3    | Adición de tareas sobre gestión de usuarios piloto y estimación de una tarea | Sprint 1 | María de la Salud Carrera Talaverón |
 | 10/03/2025 | v2.4    | Adición de nuevas tareas estimadas                                           | Sprint 1 | María de la Salud Carrera Talaverón |
 | 10/03/2025 | v2.5    | Adición de nuevos asignados a una tarea                                      | Sprint 1 | María de la Salud Carrera Talaverón |
+| 12/03/2025 | v3.0    | Adición de nuevas tareas asignadas y reasignación de las anteriroes          | Sprint 1 | María de la Salud Carrera Talaverón |
+| 12/03/2025 | v3.1    | Análisis cualitativo actualizado                                             | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -100,23 +102,23 @@ La labor de los desarrolladores y testers incluye:
 
 | Desarrollador/a                     | Esfuerzo | Finalización tareas  | Registro tiempo | Comunicación | Compromiso con la calidad |
 |-------------------------------------|----------|----------------------|-----------------|--------------|---------------------------|
-| Francisco Avilés Carrera            |          |                      | Sí              |              |                           |
-| Daniel Benito Hidalgo               |          |                      | Sí              |              |                           |
-| Ignacio Blanquero Blanco            |          |                      | Sí              |              |                           |
-| Adrián Cabello Martín               |          |                      | Sí              |              |                           |
-| María de la Salud Carrera Talaverón |          |                      | Sí              |              |                           |
-| Pablo Jesús Castellanos Compaña     |          |                      | Sí              |              |                           |
-| Fernando José de Celis Hurtado      |          |                      | Sí              |              |                           |
-| David Godoy Fernández               |          |                      | Sí              |              |                           |
-| Miguel Hernández Sánchez            |          |                      | Sí              |              |                           |
-| Antonio Montero López               |          |                      | Sí              |              |                           |
-| Gonzalo Navas Remmers               |          |                      | Sí              |              |                           |
-| Héctor Noguera González             |          |                      | Sí              |              |                           |
-| Natalia Olmo Villegas               |          |                      | Sí              |              |                           |
-| Manuel Pérez Vélez                  |          |                      | Sí              |              |                           |
-| Andrés Pizzano Cerrillos            |          |                      | Sí              |              |                           |
-| Sergio Pons López                   |          |                      | Sí              |              |                           |
-| Lorenzo Torralba Lanzas             |          |                      | Sí              |              |                           |
+| Francisco Avilés Carrera            |          |      Sí              | Sí              |     Sí       | Sí                 |
+| Daniel Benito Hidalgo               |          |      Sí              | Sí              |     Sí       | Mejorable                 |
+| Ignacio Blanquero Blanco            |          |      Sí              | Sí              |     Sí       | Mejorable                 |
+| Adrián Cabello Martín               |          |      Sí              | Sí              |     Sí       | Mejorable                 |
+| María de la Salud Carrera Talaverón |          |      Sí              | Sí              |     Sí       | Sí                 |
+| Pablo Jesús Castellanos Compaña     |          |      Sí              | Sí              |     Sí       | Sí                 |
+| Fernando José de Celis Hurtado      |          |      Sí              | Sí              |     Sí       | Mejorable                 |
+| David Godoy Fernández               |          |      Sí              | Sí              |     Sí       | Mejorable                 |
+| Miguel Hernández Sánchez            |          |       Sí             | Sí              |     Sí       | Mejorable                 |
+| Antonio Montero López               |          |       Sí             | Sí              |     Sí       | Sí                 |
+| Gonzalo Navas Remmers               |          |       Sí             | Sí              |     Sí       | Mejorable                 |
+| Héctor Noguera González             |          |       Sí             | Sí              |     Sí       | Mejorable                 |
+| Natalia Olmo Villegas               |          |       Sí             | Sí              |     Sí       | Sí                 |
+| Manuel Pérez Vélez                  |          |       Sí             | Sí              |     Sí       | Sí                 |
+| Andrés Pizzano Cerrillos            |          |       Sí             | Sí              |     Sí       | Mejorable                 |
+| Sergio Pons López                   |          |       Sí             | Sí              |     Sí       | Mejorable                 |
+| Lorenzo Torralba Lanzas             |          |       Sí             | Sí              |     Sí       | Mejorable                 |
 
 En cuanto a los miembros del grupo con roles extra, se van a comentar las responsabilidades de cada uno según el rol que tengan. La Project Manager (PM) debe asegurar la correcta gestión del proyecto (lo que se traduce en la planificación del sprint y la asignación de tareas), facilitando la comunicación y coordinación del equipo, así como el cumplimiento de plazos y objetivos. Los Jefes de Desarrollo (JD) deben cumplir la misma función pero únicamente sobre el subgrupo de trabajo que gestionan, además de apoyar a la PM en su labor.
 
@@ -150,39 +152,34 @@ Se reasignaron las tareas que estaban pendientes y sin empezar. Aquellas que ya 
 
 | Tarea | Tiempo estimado (horas) | Asignados |
 |-------|-------------------------|-----------|
-| [FEATURE] Registro de Servicios | 9 | Miguel Hernández y Gonzalo Navas |
-| [FEATURE] Pestaña “Mis Eventos” | 9 | Miguel Hernández y Francisco Avilés |
-| [FEATURE] Solicitud de reserva de contratación de servicios y página de detalles del servicio | 12 | Héctor Noguera, Sergio Pons y Manuel Pérez |
-| [FEATURE] Editar servicios | 4 | David Godoy y Andrés Pizzano |
+| [FEATURE] Registro de Servicios | 9 | Sergio Pons, Miguel Hernández y Gonzalo Navas |
+| [FEATURE] Pestaña “Mis Eventos” | 9 | Pablo Jesús Castellanos, Miguel Hernández y Francisco Avilés |
+| [FEATURE] Solicitud de reserva de contratación de servicios y página de detalles del servicio | 12 | Héctor Noguera, Sergio Pons, Natalia Olmo y Manuel Pérez |
+| [FEATURE] Editar servicios | 4 | David Godoy |
 | Análisis cuantitativo y cualitativo del equipo | 4 | María de la Salud Carrera y Miguel Hernández |
 | Controlar tiempos Clockify | 3 | Pablo Jesús Castellanos |
 | [CHANGE] Poner la UI acorde | 6 | Pablo Jesús Castellanos y Miguel Hernández |
-| [FEATURE] Reserva de contratación de servicios por parte del proovedor | 20 | Antonio Montero, Héctor Noguera, Manuel Pérez y Natalia Olmo |
 | Revisar documento Deliverable Failure Conditions | 4 | Francisco Avilés, María de la Salud Carrera, Pablo Jesús Castellanos y Natalia Olmo |
-| Elaborar presentación | 12 | Daniel Benito, Fernando José de Celis, Gonzalo Navas |
+| Elaborar presentación | 12 | Daniel Benito y Gonzalo Navas |
 | Revisar documentos | 9 | Manuel Pérez, Antonio Montero, Pablo Jesús Castellanos y María de la Salud Carrera |
-| [FEATURE] Cambiar modelos | 16 | Miguel Hernández, Pablo Jesús Castellanos, Fran Avilés, Andrés Pizzano |
-| Gestionar feedback de usuarios piloto Sprint 1 | 4 | Daniel Benito, Gonzalo Navas, Pablo Jesús Castellanos y Natalia Olmo |
-| [FEATURE] Cancelación del servicio | 8 | María de la Salud Carrera y Adrián Cabello |
-| [FEATURE] Precio total del evento | 3 | Lorenzo Torralba |
-| [FEATURE] Cálculo de presupuesto restante | 4 | Lorenzo Torralba y Andrés Pizzano |
-| [FEATURE] Alertas de presupuesto | 4 | Lorenzo Torralba y Andrés Pizzano |
-| [FEATURE] Creación y gestión de listas de invitados | 15 | Miguel Hernández, David Godoy y Francisco Avilés |
-| [FEATURE] Edición de información de invitados | 6 | Miguel Hernández, David Godoy y Francisco Avilés |
-| [FEATURE] Editar perfil | 6 | Gonzalo Navas y Fernando José de Celis |
-| Pasar pdfs y words a markdown | 6 | Ignacio Blanquero, Sergio Pons, Daniel Benito y María de la Salud Carrera |
+| [FEATURE] Cambiar modelos | 16 | Miguel Hernández, Pablo Jesús Castellanos, Fran Avilés y Andrés Pizzano |
+| Gestionar feedback de usuarios piloto Sprint 1 | 4 | Daniel Benito y Gonzalo Navas |
+| Pasar pdfs y words a markdown | 6 | Ignacio Blanquero, Sergio Pons, Daniel Benito, Manuel Pérez y María de la Salud Carrera |
 | Intro de la presentación | 12 | Natalia Olmo, Daniel Benito, David Godoy y Miguel Hernández |
-| Actualizar los documentos "Análisis de costes" y "Monetización de la aplicación" | 4 | Miguel Hernández y Andrés Pizzano |
+| Actualizar los documentos "Análisis de costes" y "Monetización de la aplicación" | 4 | Lorenzo Torralba y Antonio Montero |
 | Documento retrospectiva | 4 | David Godoy y Andrés Pizzano |
-| Manual de usuario | 12 | Fernando José de Celis, Adrián Cabello, Francisco Avilés y Gonzalo Navas |
-| Documento cómo se hacen las revisiones de las tareas | 4 | María de la Salud Carrera y Antonio Montero |
+| Manual de usuario | 12 | Fernando José de Celis y Antonio Montero |
 | Desplegar la aplicación | 4 | Lorenzo Torralba y Andrés Pizzano |
-| [DOC] Contribuciones al Knowledge Base | 4 | Fernando de Celis Hurtado |
+| [DOC] Informe de Contribuciones al Knowledge Base | 3 | Fernando de Celis Hurtado y Sergio Pons |
 | [DOC] Commitment Agreement Usuarios Piloto | 4 | Daniel Benito y Gonzalo Navas |
 | [DOC] Evaluación usuarios piloto | 3 | Daniel Benito y Gonzalo Navas |
-| [DOC] Evaluación miembros del grupo | 2 | Adrián Cabello |
-| [FEATURE] Añadir usuario admin | 3 | Adrián Cabello |
-| [DOC] Vídeo demo aplicación | 7 | Fernando José de Celis, Adrián Cabello, Francisco Avilés y Gonzalo Navas |
+| [FEATURE] Añadir usuario admin | 15 | Adrián Cabello, Gonzalo Navas, Natalia Olmo, Pablo Jesús Castellano, Miguel Hernández, Fernando José de Celis |
+| [DOC] Vídeo demo aplicación | 7 | Fernando José de Celis y Adrián Cabello |
+| [DOC] Pasar commitment agreements v3 a md | 4 | Ignacio Blanquero y Antonio Montero |
+| [DOC] Pasar informe de IA a md | 3 | María de la Salud Carrera |
+| [DOC] Time Effort Report | 3 | Ignacio Blanquero |
+| [DOC] Documento Performance Evaluation | 2 | Francisco Avilés |
+| [CHANGE] Problema con gitignore | 1 | Lorenzo Torralba |
 
 <div id='concl'></div>
 
