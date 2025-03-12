@@ -46,7 +46,9 @@ public class SecurityConfig {
                 "/api/venues/**", 
                 "/api/services/**").permitAll()
                 .requestMatchers("/api/services/admin", 
-                "/api/v1/events/DTO").hasRole("ADMIN")
+                "/api/v1/events/DTO",
+                "/api/other-services/admin/**",
+                "/api/venues/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

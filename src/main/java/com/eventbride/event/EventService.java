@@ -60,22 +60,14 @@ public class EventService {
         for(OtherService otherService: otherServices){
             if(otherService.getLimitedByPricePerGuest()){
                 services_price=services_price.add(otherService.getServicePricePerGuest().multiply(new BigDecimal(event.getGuests())));
-            }
-            if(otherService.getLimitedByPricePerHour()){
-                services_price=services_price.add(otherService.getServicePricePerHour().multiply(new BigDecimal(otherService.getHours())));
-            }
-            else{
+            } else{
                 services_price=services_price.add(otherService.getFixedPrice());
             }
         }
         for(Venue venue: venues){
             if(venue.getLimitedByPricePerGuest()){
                 services_price=services_price.add(venue.getServicePricePerGuest().multiply(new BigDecimal(event.getGuests())));
-            }
-            if(venue.getLimitedByPricePerHour()){
-                services_price=services_price.add(venue.getServicePricePerHour().multiply(new BigDecimal(venue.getHours())));
-            }
-            else{
+            } else{
                 services_price=services_price.add(venue.getFixedPrice());
             }
         }

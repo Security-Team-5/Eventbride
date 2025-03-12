@@ -1,11 +1,32 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../static/resources/css/Admin.css";
 
 function AdminUsers() {
     const [users, setUsers] = useState([]);
-    const navigate = useNavigate();
+    const [editUserId, setEditUserId] = useState(null); // Para saber qué usuario se está editando
+    const jwtToken = localStorage.getItem("jwt");
+    const [userData, setUserData] = useState({
+        id: "",
+        firstname: "",
+        lastname: "",
+        username: "",
+        email: "",
+        telephone: "",
+        dni: "",
+        role: "",
+        profilePicture: ""
+    });
 
+    const navigate = useNavigate();
+    const roleMap = {
+        CLIENT: "Cliente",
+        SUPPLIER: "Proveedor",
+        ADMIN: "Admin"
+    };
+
+    // Obtener todos los usuarios
     useEffect(() => {
         getUsers();
     }, []);
@@ -30,26 +51,61 @@ function AdminUsers() {
             .catch(error => console.error("Error obteniendo usuarios:", error));
     }
 
-    function updateUser(userId) {
-        fetch(`/api/users/admin/update/${userId.id}`, {
+    // Inicia el proceso de edición
+    function startEditing(user) {
+        setEditUserId(user.id);
+        setUserData({
+            ...user
+        });
+    }
+
+    // Actualizar los datos del usuario
+    function updateUser() {
+        if (!editUserId) {
+            console.error("El ID del usuario es nulo");
+            return;
+        }
+
+        // Validar datos antes de enviar
+        if (!validateUserData(userData)) {
+            return;
+        }
+
+        fetch(`/api/users/${editUserId}`, {
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwtToken}`
             },
             method: "PUT",
-            body: JSON.stringify(userId),
+            body: JSON.stringify(userData),
         })
             .then(response => response.json())
-            .then(updatedService => {
-                console.log("Usuario actualizado:", updatedService);
-                setUsers(prevServices => prevServices.map(s => s.id === updatedService.id ? updatedService : s));
+            .then(updatedUser => {
+                console.log("Usuario actualizado:", updatedUser);
+                setUsers(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u));
+                setEditUserId(null); // Salir del modo de edición
             })
             .catch(error => console.error("Error actualizando usuario:", error));
     }
 
-    function deleteUser(userId) {
+    // Validar los datos antes de enviarlos
+    function validateUserData(userData) {
+        if (!userData.firstname || !userData.lastname || !userData.username || !userData.email) {
+            alert("Por favor, complete todos los campos obligatorios.");
+            return false;
+        }
+        return true;
+    }
+
+    // Eliminar un usuario
+    function deleteUser(userId, e) {
+        // Prevenir el envío del formulario (si está dentro de un formulario)
+        if (e) e.preventDefault();
+
         fetch(`/api/users/${userId}`, {
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwtToken}`
             },
             method: "DELETE",
         })
@@ -60,6 +116,15 @@ function AdminUsers() {
             .catch(error => console.error("Error eliminando usuario:", error));
     }
 
+    // Manejar el cambio de un campo de entrada
+    function handleInputChange(e) {
+        const { name, value } = e.target;
+        setUserData(prevData => ({
+            ...prevData,
+            [name]: value, // Actualizamos el campo específico
+        }));
+    }
+
     return (
         <>
             {users.length > 0 ? (
@@ -68,24 +133,91 @@ function AdminUsers() {
                         <div>
                             <h2 className="service-title">{user.firstname} {user.lastname}</h2>
                             <div className="service-info">
-                                <p><strong>Usuario:</strong> {user.username}</p>
-                                <p><strong>Email:</strong> {user.email}</p>
-                                <p><strong>Teléfono:</strong> {user.telephone}</p>
-                                <p><strong>DNI:</strong> {user.dni}</p>
-                                <p><strong>Rol:</strong> {user.role}</p>
-                                <p><strong>Eventos:</strong> {user.events.length > 0 ? user.events.map(event => event.id).join(", ") : "Ninguno"}</p>
+                                <form onSubmit={e => { e.preventDefault(); updateUser() }}>
+                                    <div>
+                                        <label>Nombre:</label>
+                                        <input
+                                            type="text"
+                                            name="firstname"
+                                            value={userData.id === user.id ? userData.firstname : user.firstname}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label>Apellido:</label>
+                                        <input
+                                            type="text"
+                                            name="lastname"
+                                            value={userData.id === user.id ? userData.lastname : user.lastname}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label>Usuario:</label>
+                                        <input
+                                            type="text"
+                                            name="username"
+                                            value={userData.id === user.id ? userData.username : user.username}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label>Email:</label>
+                                        <input
+                                            type="text"
+                                            name="email"
+                                            value={userData.id === user.id ? userData.email : user.email}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label>Teléfono:</label>
+                                        <input
+                                            type="text"
+                                            name="telephone"
+                                            value={userData.id === user.id ? userData.telephone : user.telephone}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label>DNI:</label>
+                                        <input
+                                            type="text"
+                                            name="dni"
+                                            value={userData.id === user.id ? userData.dni : user.dni}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label>Rol:</label>
+                                        <select
+                                            name="role"
+                                            value={userData.id === user.id ? userData.role : user.role}
+                                            onChange={handleInputChange}
+                                        >
+                                            {Object.keys(roleMap).map(role => (
+                                                <option key={role} value={role}>{roleMap[role]}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Foto de perfil:</label>
+                                        <img src={user.profilePicture} alt={user.username} className="service-image" />
+                                    </div>
+
+                                    {editUserId === user.id ? (
+                                        <div className="button-container">
+                                            <button className="save-btn" type="submit">Guardar</button>
+                                            <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
+                                        </div>
+                                    ) : (
+                                        <div className="button-container">
+                                            <button onClick={() => startEditing(user)} className="edit-btn">Editar</button>
+                                            <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
+                                        </div>
+                                    )}
+                                </form>
                             </div>
-                        </div>
-                        <img
-                            src={user.profilePicture}
-                            alt={user.username}
-                            className="service-image"
-                            onClick={() => navigate(`/user/${user.id}`)}
-                            style={{ cursor: "pointer", alignItems: "center" }}
-                        />
-                        <div className="button-container">
-                            <button className="save-btn" onClick={() => updateUser(user.id)}>Editar</button>
-                            <button className="delete-btn" onClick={() => deleteUser(user.id)}>Borrar</button>
                         </div>
                     </div>
                 ))

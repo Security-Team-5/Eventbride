@@ -101,6 +101,10 @@
   font-family: 'Playfair Display', serif;
 }
 
+.app-container{
+  overflow-x: hidden;
+}
+
 .tituloSeccion {
   font-size: 2.5rem;
   font-weight: bold;

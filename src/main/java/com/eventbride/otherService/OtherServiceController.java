@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.eventbride.dto.OtherServiceDTO;
@@ -83,27 +82,6 @@ public class OtherServiceController {
 		return ResponseEntity.badRequest().body(errorDetails);
 	}
 
-	@PutMapping("/admin/{id}")
-	public ResponseEntity<?> updateService(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-		if (roles.contains("ADMIN")) {
-			try {
-				Optional<OtherService> existingServiceOptional = otherServiceService.getOtherServiceById(id);
-				if (existingServiceOptional.isEmpty()) {
-					return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
-				}
-				updatedService.setId(id);
-				OtherService savedService = otherServiceService.updateOtherService(id, updatedService);
-				return new ResponseEntity<>(new OtherServiceDTO(savedService), HttpStatus.OK);
-			} catch (RuntimeException e) {
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-			}
-		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-	}
-
 	@DeleteMapping("/admin/{id}")
 	public ResponseEntity<?> deleteService(@PathVariable Integer id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -115,6 +93,26 @@ public class OtherServiceController {
 		}
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
+
+	@PutMapping("/admin/{id}")
+	public ResponseEntity<?> updateOtherService(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		if(roles.contains("ADMIN")) {
+			try {
+				OtherService updated = otherServiceService.updateOtherService(id, updatedService);
+
+				return ResponseEntity.ok(new OtherServiceDTO(updated));  
+
+			} catch (RuntimeException e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error actualizando el servicio: " + e.getMessage());
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+
+
 
 }
 

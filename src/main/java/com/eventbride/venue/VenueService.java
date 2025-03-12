@@ -73,29 +73,31 @@ public class VenueService {
         venueRepository.deleteById(id);
     }
 
-    public Venue updateVenue(Integer id, Venue venueDetails) {
-        Venue venue = venueRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Venue not found with id " + id));
-        
-        venue.setName(venueDetails.getName());
-        venue.setAvailable(venueDetails.getAvailable());
-        venue.setCityAvailable(venueDetails.getCityAvailable());
-        venue.setServicePricePerGuest(venueDetails.getServicePricePerGuest());
-        venue.setServicePricePerHour(venueDetails.getServicePricePerHour());
-        venue.setFixedPrice(venueDetails.getFixedPrice());
-        venue.setPicture(venueDetails.getPicture());
-        venue.setDescription(venueDetails.getDescription());
-        venue.setHours(venueDetails.getHours());
-        venue.setLimitedByPricePerGuest(venueDetails.getLimitedByPricePerGuest());
-        venue.setLimitedByPricePerHour(venueDetails.getLimitedByPricePerHour());
+    @Transactional
+    public Venue updateVenue(Integer id, Venue updatedVenue) {
 
-        venue.setPostalCode(venueDetails.getPostalCode());
-        venue.setCoordinates(venueDetails.getCoordinates());
-        venue.setAddress(venueDetails.getAddress());
-        venue.setMaxGuests(venueDetails.getMaxGuests());
-        venue.setSurface(venueDetails.getSurface());
-        venue.setUser(venueDetails.getUser());
+        Venue existingVenue = venueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se ha encontrado ningun Venue con esa Id"));
 
-        return venueRepository.save(venue);
+        existingVenue.setName(updatedVenue.getName());
+        existingVenue.setAvailable(updatedVenue.getAvailable());
+        existingVenue.setCityAvailable(updatedVenue.getCityAvailable());
+        existingVenue.setServicePricePerGuest(updatedVenue.getServicePricePerGuest());
+        existingVenue.setServicePricePerHour(updatedVenue.getServicePricePerHour());
+        existingVenue.setFixedPrice(updatedVenue.getFixedPrice());
+        existingVenue.setPicture(updatedVenue.getPicture());
+        existingVenue.setDescription(updatedVenue.getDescription());
+        existingVenue.setLimitedByPricePerGuest(updatedVenue.getLimitedByPricePerGuest());
+        existingVenue.setLimitedByPricePerHour(updatedVenue.getLimitedByPricePerHour());
+
+        existingVenue.setAddress(updatedVenue.getAddress());
+        existingVenue.setPostalCode(updatedVenue.getPostalCode());
+        existingVenue.setCoordinates(updatedVenue.getCoordinates());
+        existingVenue.setMaxGuests(updatedVenue.getMaxGuests());
+        existingVenue.setSurface(updatedVenue.getSurface());
+
+        // Guardar el Venue actualizado
+        return venueRepository.save(existingVenue);
     }
+
 }
