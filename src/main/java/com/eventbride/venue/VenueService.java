@@ -100,4 +100,9 @@ public class VenueService {
         return venueRepository.save(existingVenue);
     }
 
+    public void saveAll(List<Venue> venues) {
+        venueRepository.saveAll(venues);
+    }
+    
+
 }

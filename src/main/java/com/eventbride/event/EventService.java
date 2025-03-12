@@ -93,4 +93,7 @@ public class EventService {
         return eventRepository.findAllEventsByUserId(userId);
     }
 
+    public void saveAll(List<Event> events) {
+        eventRepository.saveAll(events);
+    }
 }

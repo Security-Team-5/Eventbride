@@ -1,6 +1,12 @@
 package com.eventbride.user;
 
 import com.eventbride.event.EventService;
+import com.eventbride.otherService.OtherService;
+import com.eventbride.otherService.OtherServiceService;
+import com.eventbride.rating.RatingService;
+import com.eventbride.venue.Venue;
+import com.eventbride.venue.VenueService;
+import com.eventbride.rating.Rating;
 import com.eventbride.event.Event;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +35,14 @@ public class UserController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private RatingService ratingService;
+
+    @Autowired
+    private VenueService venueService;
+
+    @Autowired
+    private OtherServiceService otherServiceService;
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -42,22 +56,20 @@ public class UserController {
     @GetMapping("/DTO")
     public ResponseEntity<List<UserDTO>> getAllUsersDTO() {
         List<UserDTO> users = userService.getAllUsersDTO();
-        return ResponseEntity.ok(users); 
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         User user = userService.getUserById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
         return ResponseEntity.ok(user);
     }
-
-
 
     @GetMapping("/username/{username}")
     public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
         Optional<User> user = Optional.ofNullable(userService.getUserByUsername(username)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")));
         return ResponseEntity.ok(user);
     }
 
@@ -94,17 +106,36 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Integer id) {
-        if(userService.getUserById(id) != null){
+        if (userService.getUserById(id) != null) {
             Optional<User> user = userService.getUserById(id);
 
             List<Event> events = eventService.findEventsByUserId(id);
-            for (Event e: events){
+            for (Event e : events) {
                 e.setUser(null);
             }
-            userService.save(user.get());
-            userService.deleteUser(id);
-            
+            eventService.saveAll(events);
 
+            List<Rating> ratings = ratingService.findRatingsByUserId(id);
+            for (Rating r : ratings) {
+                r.setUser(null);
+            }
+            ratingService.saveAll(ratings);
+
+
+            List<Venue> venues = venueService.getVenuesByUserId(id);
+            for (Venue v : venues) {
+                v.setUser(null);
+            }
+            venueService.saveAll(venues);
+
+            List<OtherService> otherServices = otherServiceService.getOtherServiceByUserId(id);
+            for (OtherService os : otherServices) {
+                os.setUser(null);
+            }
+            otherServiceService.saveAll(otherServices);
+
+            userService.deleteUser(id);
         }
     }
+
 }

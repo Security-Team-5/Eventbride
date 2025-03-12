@@ -130,5 +130,10 @@ public class OtherServiceService {
         otherServiceRepo.deleteById(id);
     }
 
+    @Transactional
+    public void saveAll(List<OtherService> otherServices) {
+        otherServiceRepo.saveAll(otherServices);
+    }
+
 
 }

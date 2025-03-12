@@ -27,36 +27,35 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/venues")
 public class VenueController {
 
-    @Autowired
-    private VenueService venueService;
+	@Autowired
+	private VenueService venueService;
 
+	@GetMapping
+	public ResponseEntity<List<VenueDTO>> getAllVenues() {
+		List<Venue> venues = venueService.getAllVenues();
+		if (venues.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(VenueDTO.fromEntities(venues));
+	}
 
-    @GetMapping
-    public ResponseEntity<List<VenueDTO>> getAllVenues() {
-        List<Venue> venues = venueService.getAllVenues();
-        if (venues.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(VenueDTO.fromEntities(venues));
-    }
+	@GetMapping("/filter")
+	public List<Venue> getFilteredVenues(
+			@RequestParam(required = false) String city,
+			@RequestParam(required = false) Integer maxGuests,
+			@RequestParam(required = false) Double surface) {
+		return venueService.getFilteredVenues(city, maxGuests, surface);
+	}
 
-    @GetMapping("/filter")
-    public List<Venue> getFilteredVenues(
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) Integer maxGuests,
-            @RequestParam(required = false) Double surface) {
-        return venueService.getFilteredVenues(city, maxGuests, surface);
-    }
-
-    @PostMapping
-    public ResponseEntity<?> createVenue(@Valid @RequestBody Venue venue) {
-        try {
-            Venue newVenue = venueService.save(venue);
-            return ResponseEntity.ok(new VenueDTO(newVenue));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+	@PostMapping
+	public ResponseEntity<?> createVenue(@Valid @RequestBody Venue venue) {
+		try {
+			Venue newVenue = venueService.save(venue);
+			return ResponseEntity.ok(new VenueDTO(newVenue));
+		} catch (RuntimeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -77,7 +76,8 @@ public class VenueController {
 		if (cause instanceof JsonMappingException jsonMappingException) {
 			for (JsonMappingException.Reference reference : jsonMappingException.getPath()) {
 				String fieldName = reference.getFieldName();
-				errorDetails.put(fieldName, "El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
+				errorDetails.put(fieldName,
+						"El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
 			}
 			errorDetails.put("error", "El formato del JSON es incorrecto o faltan datos obligatorios.");
 		} else if (cause instanceof JsonParseException) {
@@ -94,7 +94,7 @@ public class VenueController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-		if(roles.contains("ADMIN")) {
+		if (roles.contains("ADMIN")) {
 			venueService.deleteVenue(id);
 			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
 		}
@@ -102,24 +102,18 @@ public class VenueController {
 	}
 
 	@PutMapping("/admin/{id}")
-	public ResponseEntity<?> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue updatedVenue) {
+	public ResponseEntity<?> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue venueDetails) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-
 		if (roles.contains("ADMIN")) {
 			try {
-				// Llamar al servicio para actualizar el Venue
-				Venue updated = venueService.updateVenue(id, updatedVenue);
-
-				// Retornar el DTO con el Venue actualizado
-				return ResponseEntity.ok(new VenueDTO(updated));
-
+				Venue updatedVenue = venueService.updateVenue(id, venueDetails);
+				return new ResponseEntity<>(new VenueDTO(updatedVenue), HttpStatus.OK);
 			} catch (RuntimeException e) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error actualizando el Venue: " + e.getMessage());
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 			}
 		}
-
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 
