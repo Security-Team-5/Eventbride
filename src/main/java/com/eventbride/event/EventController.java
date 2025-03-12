@@ -91,7 +91,11 @@ public class EventController {
             updateEvent.setEventDate(event.getEventDate());
             updateEvent.setUser(event.getUser());
             updateEvent.setInvitations(event.getInvitations());
-            updateEvent.setEventProperties(event.getEventProperties());
+
+            updateEvent.getEventProperties().clear();
+            if(event.getEventProperties() != null)
+                updateEvent.getEventProperties().addAll(event.getEventProperties());
+
             return new ResponseEntity<>(this.eventService.updateEvent(updateEvent, eventId), HttpStatus.OK);
         }
     }

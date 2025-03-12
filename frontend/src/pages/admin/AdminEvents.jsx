@@ -8,6 +8,7 @@ function AdminEvents() {
   const [eventData, setEventData] = useState({});
   const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem("user"));
+  const jwt = localStorage.getItem("jwt");
   const eventTypeMap = {
     WEDDING: "Boda",
     CHRISTENING: "Bautizo",
@@ -41,6 +42,7 @@ function AdminEvents() {
     fetch(`/api/v1/events/${event.id}`, {
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwt}`,
       },
       method: "PUT",
       body: JSON.stringify(eventData[event.id]),
@@ -92,6 +94,11 @@ function AdminEvents() {
     }));
   }
 
+  function handleOnSubmit(event){
+      console.log(event)
+      updateEvent(event);
+  }
+
   return (
     <>
       {currentUser?.role === "ADMIN" ? (
@@ -110,7 +117,7 @@ function AdminEvents() {
               <div>
                 <h2 className="service-title">Evento #{event.id}</h2>
                 <div className="service-info">
-                  <form onSubmit={e => { e.preventDefault(); updateEvent(event) }}>
+                  <form onSubmit={(e) => e.preventDefault()}>
                     <div>
                       <label>Tipo de Evento:</label>
                       <select
@@ -203,7 +210,7 @@ function AdminEvents() {
                     )}
                       {editEventId === event.id ? (
                         <div className="button-container">
-                          <button className="save-btn" type="submit">Guardar</button>
+                          <button className="save-btn" type="submit" onClick={() => {handleOnSubmit(event)}}>Guardar</button>
                           <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
                       </div>
                       ) : (
