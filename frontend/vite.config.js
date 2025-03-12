@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// DEBE UTILIZARSE PARA DESARROLLO
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
