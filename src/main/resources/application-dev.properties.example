@@ -32,11 +32,17 @@ spring.web.resources.cache.cachecontrol.max-age=12h
 
 # Configuración de MySQL con valores predeterminados
 spring.datasource.url=${MYSQL_URL:jdbc:mysql://localhost/eventbride?useSSL=false&serverTimezone=UTC}
-spring.datasource.username=${MYSQL_USER:root}
-spring.datasource.password=${MYSQL_PASS:andgon}
+spring.datasource.username=${MYSQL_USER:TU USUARIO}
+spring.datasource.password=${MYSQL_PASS:TU CONTRASEÑA}
 
 # Habilitar la inicialización de la base de datos
 spring.sql.init.mode=always
 
 # Especificar el dialecto de Hibernate
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+#CORS
+spring.web.cors.allowed-origins=http://localhost:5173
+spring.web.cors.allowed-methods=GET,POST,PUT,DELETE
+spring.web.cors.allowed-headers=*
+spring.web.cors.allow-credentials=true
