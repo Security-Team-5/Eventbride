@@ -26,4 +26,14 @@ public class ServiceDTO {
 		this.otherServices = othserviceDTOs;
 	}
 
+    public ServiceDTO(OtherService otherService) {
+		this.otherServices = new ArrayList<>();
+		this.otherServices.add(new OtherServiceDTO(otherService));
+    }
+
+	public ServiceDTO(Venue venue) {
+		this.venues = new ArrayList<>();
+		this.venues.add(new VenueDTO(venue));
+	}
+
 }

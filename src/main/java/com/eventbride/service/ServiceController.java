@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/services")
 public class ServiceController {
@@ -32,17 +32,17 @@ public class ServiceController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/{id}")
+	@GetMapping("/user/{id}")
 	public ResponseEntity<ServiceDTO> getServicesByUserId(@PathVariable Integer id) {
 		List<OtherService> otherServices = otherServiceService.getOtherServiceByUserId(id);
 		List<Venue> venues = venueService.getVenuesByUserId(id);
 		return new ResponseEntity<>(new ServiceDTO(otherServices, venues), HttpStatus.OK);
 	}
 
+
 	@GetMapping("/admin")
     public ResponseEntity<List<ServiceDTO>> getAllServices() {
 
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 		if(roles.contains("ADMIN")) {
@@ -56,5 +56,17 @@ public class ServiceController {
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-
+	@GetMapping("/{id}")
+    public ResponseEntity<Object> getServiceById(@PathVariable Integer id) {
+        Optional<OtherService> otherService = otherServiceService.getOtherServiceById(id);
+            return new ResponseEntity<>(new ServiceDTO(otherService.get()), HttpStatus.OK);
+        }
+	
+        Optional<Venue> venue = venueService.getVenueById(id);
+        if (venue.isPresent()) {
+            return new ResponseEntity<>(new ServiceDTO(venue.get()), HttpStatus.OK);
+        }
+	
+        return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
+    }
 }

@@ -1,25 +1,16 @@
 package com.eventbride.otherService;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.eventbride.dto.OtherServiceDTO;
-import com.eventbride.dto.ServiceDTO;
 import com.eventbride.service.Service;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,26 +22,27 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/other-services")
 public class OtherServiceController {
 
-	@Autowired
-	private OtherServiceService otherServiceService;
+    @Autowired
+    private OtherServiceService otherServiceService;
 
-	@GetMapping("/filter")
-	public List<OtherService> getFilteredOtherServices(
-			@RequestParam(required = false) String name,
-			@RequestParam(required = false) String city,
-			@RequestParam(required = false) OtherServiceType type) {
-		return otherServiceService.getFilteredOtherServices(name, city, type);
-	}
 
-	@PostMapping
-	public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
-		try {
-			OtherService newOtherService = otherServiceService.createOtherService(otherService);
-			return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
-		} catch (RuntimeException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
+    @GetMapping("/filter")
+    public List<OtherService> getFilteredOtherServices(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) OtherServiceType type) {
+        return otherServiceService.getFilteredOtherServices(name, city, type);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
+        try {
+            OtherService newOtherService = otherServiceService.createOtherService(otherService);
+            return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -71,8 +63,7 @@ public class OtherServiceController {
 		if (cause instanceof JsonMappingException jsonMappingException) {
 			for (JsonMappingException.Reference reference : jsonMappingException.getPath()) {
 				String fieldName = reference.getFieldName();
-				errorDetails.put(fieldName,
-						"El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
+				errorDetails.put(fieldName, "El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
 			}
 			errorDetails.put("error", "El formato del JSON es incorrecto o faltan datos obligatorios.");
 		} else if (cause instanceof JsonParseException) {
@@ -84,37 +75,6 @@ public class OtherServiceController {
 		return ResponseEntity.badRequest().body(errorDetails);
 	}
 
-	@DeleteMapping("/admin/{id}")
-	public ResponseEntity<?> deleteService(@PathVariable Integer id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-		if (roles.contains("ADMIN")) {
-			otherServiceService.deleteOtherService(id);
-			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-	}
-
-	@PutMapping("/admin/{id}")
-	public ResponseEntity<?> updateService(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-		if (roles.contains("ADMIN")) {
-			try {
-				Optional<OtherService> existingServiceOptional = otherServiceService.getOtherServiceById(id);
-				if (existingServiceOptional.isEmpty()) {
-					return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
-				}
-				updatedService.setId(id);
-				OtherService savedService = otherServiceService.updateOtherService(id, updatedService);
-				return new ResponseEntity<>(new OtherServiceDTO(savedService), HttpStatus.OK);
-			} catch (RuntimeException e) {
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-			}
-		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-	}
-
 }
+
+

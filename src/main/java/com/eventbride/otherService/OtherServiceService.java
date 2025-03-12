@@ -8,6 +8,8 @@ import com.eventbride.user.User;
 import com.eventbride.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.BeanUtils;
+
 
 import com.eventbride.otherService.OtherService.OtherServiceType;
 
@@ -95,20 +97,8 @@ public class OtherServiceService {
     public OtherService updateOtherService(Integer id, OtherService otherServ){
         OtherService otherService = otherServiceRepo.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado ningun servicio con esa Id"));
 
-        otherService.setName(otherServ.getName());
-        otherService.setAvailable(otherServ.getAvailable());
-        otherService.setCityAvailable(otherServ.getCityAvailable());
-        otherService.setServicePricePerGuest(otherServ.getServicePricePerGuest());
-        otherService.setServicePricePerHour(otherServ.getServicePricePerHour());
-        otherService.setFixedPrice(otherServ.getFixedPrice());
-        otherService.setPicture(otherServ.getPicture());
-        otherService.setDescription(otherServ.getDescription());
-        otherService.setLimitedByPricePerGuest(otherServ.getLimitedByPricePerGuest());
-        otherService.setLimitedByPricePerHour(otherServ.getLimitedByPricePerHour());
-
-        otherService.setOtherServiceType(otherServ.getOtherServiceType());
-        otherService.setExtraInformation(otherServ.getExtraInformation());
-
+        BeanUtils.copyProperties(otherServ, otherService, "id");
+        
         return otherServiceRepo.save(otherService);
 
     }

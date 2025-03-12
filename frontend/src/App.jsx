@@ -6,6 +6,7 @@ import OtherServiceScreen from "./pages/OtherServiceScreen";
 import Servicios from "./pages/Servicios";
 import RegistrarServicio from "./pages/RegistrarServicio";
 import VenuesScreen from "./pages/VenuesScreen";
+import EditarServicio from "./pages/EditarServicio";
 import "./App.css";
 import NavBar from "./components/AppNavBar";
 import Terms from "./pages/Terms";
@@ -38,6 +39,8 @@ function App() {
             <Route path="/other-services" element={<OtherServiceScreen />} />
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
+            <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio/>} />
+            </Routes>
             <Route path="/my-events" element={<MyEvents />} />
             <Route path="/venues" element={<VenuesScreen />} />
             <Route path="/terminos-y-condiciones" element={<Terms />} />
@@ -51,7 +54,6 @@ function App() {
                 <Route path="/admin-services" element={<AdminServices />} />
               </>
             }
-          </Routes>
         </div>
       </Router>
     </div>

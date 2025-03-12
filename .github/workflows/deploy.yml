@@ -1,0 +1,61 @@
+name: Deploy to Google App Engine
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      #Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      #Configurar Google Cloud SDK
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          credentials: ${{ secrets.GCP_SA_KEY }}
+
+      #Instalar dependencias del frontend (si es necesario)
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      #Generar el archivo .env para el frontend
+      - name: Generate .env for frontend
+        run: |
+          cd frontend
+          cp .env.example .env
+
+      #Configurar Java y Maven
+      - name: Set up Java & Maven
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'  # Puedes usar 'adoptopenjdk' si prefieres
+          java-version: '17'
+          cache: 'maven'  # Habilita caché para acelerar futuras ejecuciones
+
+      #Compilar el backend con Maven
+      - name: Build Backend with Maven
+        run: |
+          cd backend
+          mvn clean install
+
+      #Modificar el archivo application.properties para el perfil dev (si es necesario)
+      - name: Modify application.properties for prod profile
+        run: |
+          cd backend
+          grep -q "^spring.profiles.active=" src/main/resources/application.properties \
+            && sed -i 's/^spring.profiles.active=.*/spring.profiles.active=prod/' src/main/resources/application.properties \
+            || echo "spring.profiles.active=prod" >> src/main/resources/application.properties
+
+      #Desplegar a Google App Engine
+      - name: Deploy to App Engine
+        run: |
+          gcloud app deploy --quiet
