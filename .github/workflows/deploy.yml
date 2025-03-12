@@ -25,6 +25,11 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
+      #Generar el archivo .env para el frontend
+      - name: Generate .env for frontend
+        run: |
+          cd frontend
+          cp .env.example .env
 
       #Instalar dependencias del frontend (si es necesario)
       - name: Install frontend dependencies
@@ -32,12 +37,6 @@ jobs:
           cd frontend
           npm install
           npm run build
-
-      #Generar el archivo .env para el frontend
-      - name: Generate .env for frontend
-        run: |
-          cd frontend
-          cp .env.example .env
 
       #Configurar Java y Maven
       - name: Set up Java & Maven
