@@ -13,13 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # 2️⃣ Configurar autenticación en Google Cloud
+      #Configurar autenticación en Google Cloud
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      # 3️⃣ Configurar Google Cloud SDK (con autenticación correcta)
+      #Configurar Google Cloud SDK (con autenticación correcta)
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
@@ -47,11 +47,11 @@ jobs:
           java-version: '17'
           cache: 'maven'  # Habilita caché para acelerar futuras ejecuciones
 
-      # 🔧 Dar permisos de ejecución a mvnw en la raíz del repositorio
+      #Dar permisos de ejecución a mvnw en la raíz del repositorio
       - name: Grant execute permission to mvnw
         run: chmod +x mvnw
 
-      # 6️⃣ Compilar el proyecto con Maven
+      #Compilar el proyecto con Maven
       - name: Build with Maven
         run: |
           ./mvnw clean install -DskipTests
@@ -59,7 +59,6 @@ jobs:
       #Modificar el archivo application.properties para el perfil dev (si es necesario)
       - name: Modify application.properties for prod profile
         run: |
-          cd backend
           grep -q "^spring.profiles.active=" src/main/resources/application.properties \
             && sed -i 's/^spring.profiles.active=.*/spring.profiles.active=prod/' src/main/resources/application.properties \
             || echo "spring.profiles.active=prod" >> src/main/resources/application.properties
