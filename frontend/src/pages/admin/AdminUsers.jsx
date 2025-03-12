@@ -71,7 +71,7 @@ function AdminUsers() {
             return;
         }
 
-        fetch(`/api/users/${editUserId}`, {
+        fetch(`/api/users/admin/${editUserId}`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${jwtToken}`

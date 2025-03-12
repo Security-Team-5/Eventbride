@@ -10,15 +10,23 @@ import com.eventbride.rating.Rating;
 import com.eventbride.event.Event;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.core.Authentication;
 
 import com.eventbride.dto.UserDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import jakarta.validation.Valid;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,15 +99,39 @@ public class UserController {
     /**
      * Actualizar un usuario existente.
      */
+    /*
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User userDetails) {
+    public User updateUser(@PathVariable Integer id, @Valid @RequestBody User userDetails) {
         try {
             User updatedUser = userService.updateUser(id, userDetails);
-            return ResponseEntity.ok(updatedUser);
+            return updatedUser;
         } catch (RuntimeException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+    */
+
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        if (roles.contains("ADMIN")) {
+            try {
+                Optional<User> existingUser = userService.getUserById(id);
+                if (existingUser.isEmpty()) {
+                    return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+                }
+                updatedUser.setId(id);
+                User savedUser = userService.updateUser(id, updatedUser);
+                return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+            } catch (RuntimeException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
 
     /**
      * Eliminar un usuario por ID.

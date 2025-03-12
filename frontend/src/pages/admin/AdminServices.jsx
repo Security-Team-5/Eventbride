@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -154,11 +155,25 @@ function AdminServices() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="description"><strong>Descripción:</strong></label>
-                                                <input type="text" name="description" value={editingService.description} onChange={handleInputChange} />
+                                                <textarea
+                                                    id="description"
+                                                    name="description"
+                                                    value={editingService.description}
+                                                    onChange={handleInputChange}
+                                                    rows={5}
+                                                    style={{
+                                                        width: "100%",
+                                                        borderColor: '#ccc',
+                                                        borderRadius: "5px",
+                                                        fontSize: "16px"
+                                                    }}
+                                                    placeholder="Escribe la descripción aquí..."
+                                                />
                                             </div>
+
                                             <div className="form-group">
                                                 <label htmlFor="picture"><strong>Enlace de la Imagen:</strong></label>
-                                                <input type="text" name="picture" value={editingService.picture} onChange={handleInputChange} />
+                                                <input style={{fontSize: "16px"}} type="text" name="picture" value={editingService.picture} onChange={handleInputChange} />
                                             </div>
                                             {service.type === "venue" && (
                                                 <>
