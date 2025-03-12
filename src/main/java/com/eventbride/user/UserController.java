@@ -113,23 +113,29 @@ public class UserController {
 
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        if (roles.contains("ADMIN")) {
-            try {
-                Optional<User> existingUser = userService.getUserById(id);
-                if (existingUser.isEmpty()) {
-                    return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
-                }
-                updatedUser.setId(id);
-                User savedUser = userService.updateUser(id, updatedUser);
-                return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
-            } catch (RuntimeException e) {
-                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+			List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+			if (roles.contains("ADMIN")) {
+				try {
+					Optional<User> existingUser = userService.getUserById(id);
+					if (existingUser.isEmpty()) {
+						return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+					}
+					updatedUser.setId(id);
+					User savedUser = userService.updateUser(id, updatedUser);
+					return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+				} catch (RuntimeException e) {
+					return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+				}
+			}
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
     }
 
 

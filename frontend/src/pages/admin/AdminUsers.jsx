@@ -9,8 +9,8 @@ function AdminUsers() {
     const jwtToken = localStorage.getItem("jwt");
     const [userData, setUserData] = useState({
         id: "",
-        firstname: "",
-        lastname: "",
+        firstName: "",
+        lastName: "",
         username: "",
         email: "",
         telephone: "",
@@ -70,6 +70,7 @@ function AdminUsers() {
         if (!validateUserData(userData)) {
             return;
         }
+        userData.password = "password";
 
         fetch(`/api/users/admin/${editUserId}`, {
             headers: {
@@ -90,7 +91,7 @@ function AdminUsers() {
 
     // Validar los datos antes de enviarlos
     function validateUserData(userData) {
-        if (!userData.firstname || !userData.lastname || !userData.username || !userData.email) {
+        if (!userData.firstName || !userData.lastName || !userData.username || !userData.email) {
             alert("Por favor, complete todos los campos obligatorios.");
             return false;
         }
@@ -131,15 +132,15 @@ function AdminUsers() {
                 users.map((user, index) => (
                     <div key={index} className="service-container" style={{ display: "flex", flexDirection: "column", marginTop: "6%" }}>
                         <div>
-                            <h2 className="service-title">{user.firstname} {user.lastname}</h2>
+                            <h2 className="service-title">{user.firstName} {user.lastName}</h2>
                             <div className="service-info">
-                                <form onSubmit={e => { e.preventDefault(); updateUser() }}>
+                                <form onSubmit={e => { e.preventDefault();}}>
                                     <div>
                                         <label>Nombre:</label>
                                         <input
                                             type="text"
-                                            name="firstname"
-                                            value={userData.id === user.id ? userData.firstname : user.firstname}
+                                            name="firstName"
+                                            value={userData.id === user.id ? userData.firstName : user.firstName}
                                             onChange={handleInputChange}
                                         />
                                     </div>
@@ -147,8 +148,8 @@ function AdminUsers() {
                                         <label>Apellido:</label>
                                         <input
                                             type="text"
-                                            name="lastname"
-                                            value={userData.id === user.id ? userData.lastname : user.lastname}
+                                            name="lastName"
+                                            value={userData.id === user.id ? userData.lastName : user.lastName}
                                             onChange={handleInputChange}
                                         />
                                     </div>
@@ -207,7 +208,7 @@ function AdminUsers() {
 
                                     {editUserId === user.id ? (
                                         <div className="button-container">
-                                            <button className="save-btn" type="submit">Guardar</button>
+                                            <button className="save-btn" onClick={updateUser}>Guardar</button>
                                             <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
                                         </div>
                                     ) : (

@@ -29,7 +29,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<UserDTO> getAllUsersDTO() {
         List<User> users = userRepository.findAll();
-        return UserDTO.fromEntities(users); 
+        return UserDTO.fromEntities(users);
     }
 
     @Transactional
@@ -55,15 +55,15 @@ public class UserService {
         if (user.getId() != null) {
             throw new RuntimeException("No se puede registrar un usuario con ID preexistente");
         }
-    
+
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("El username ya está en uso");
         }
-    
+
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("El email ya está registrado");
         }
-        
+
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
 
@@ -74,7 +74,7 @@ public class UserService {
     public User updateUser(Integer id, User userDetails) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    
+
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
         user.setFirstName(userDetails.getFirstName());
@@ -82,9 +82,7 @@ public class UserService {
         user.setTelephone(userDetails.getTelephone());
         user.setDni(userDetails.getDni());
         user.setRole(userDetails.getRole());
-        String hashedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(hashedPassword);
-    
+
         return userRepository.save(user);
     }
 
@@ -97,6 +95,6 @@ public class UserService {
     public User save(User user) throws DataAccessException {
         return userRepository.save(user);
     }
-    
-    
+
+
 }
