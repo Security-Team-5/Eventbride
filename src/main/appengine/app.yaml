@@ -1,19 +1,34 @@
 runtime: java17
 instance_class: F2
+
+env_variables:
+  SPRING_DATASOURCE_URL: jdbc:mysql:///eventbrideDB?cloudSqlInstance=eventbrideserverdb&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: root
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 5
+  target_cpu_utilization: 0.65
+
 handlers:
-# Serve all API calls to Spring
-- url: /api/.*
-  script: auto
-# Serve calls to Swagger-UI to Spring too
-- url: /v3/api-docs.*
-  script: auto
-- url: /swagger-ui.*
-  script: auto
-# Serve all static files with url ending with a file extension
-- url: /(.*\..+)$
-  static_files: frontend/dist/\1
-  upload: frontend/dist/(.*\..+)$
-# Catch all handler to index.html
-- url: /.*
-  static_files: frontend/dist/index.html
-  upload: frontend/dist/index.html
+  # Serve all API calls to Spring
+  - url: /api/.*
+    script: auto
+
+  # Serve calls to Swagger-UI to Spring too
+  - url: /v3/api-docs.*
+    script: auto
+  - url: /swagger-ui.*
+    script: auto
+
+  # Serve all static files with url ending with a file extension
+  - url: /(.*\..+)$
+    static_files: frontend/dist/\1
+    upload: frontend/dist/(.*\..+)$
+
+  # Catch all handler to index.html
+  - url: /.*
+    static_files: frontend/dist/index.html
+    upload: frontend/dist/index.html
