@@ -92,9 +92,9 @@
     color: #007BFF;
 }
 
-.confirm-button {
+.confirm-button-other-service {
     padding: 10px 15px;
-    background-color: #28a745;
+    background-color: #27ae47;
     color: white;
     border: none;
     border-radius: 5px;
@@ -103,6 +103,6 @@
     align-self: center; 
 }
 
-.confirm-button:hover {
+.confirm-button-other-service:hover {
     background-color: #218838;
 }
