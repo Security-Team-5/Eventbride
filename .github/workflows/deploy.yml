@@ -13,12 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      #Configurar Google Cloud SDK
+      # 2️⃣ Configurar autenticación en Google Cloud
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # 3️⃣ Configurar Google Cloud SDK (con autenticación correcta)
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          credentials: ${{ secrets.GCP_SA_KEY }}
+
 
       #Instalar dependencias del frontend (si es necesario)
       - name: Install frontend dependencies
@@ -44,7 +50,7 @@ jobs:
       #Compilar el backend con Maven
       - name: Build Backend with Maven
         run: |
-          mvnw clean install
+          ./mvnw clean install
 
       #Modificar el archivo application.properties para el perfil dev (si es necesario)
       - name: Modify application.properties for prod profile
