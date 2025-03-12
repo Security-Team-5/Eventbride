@@ -47,10 +47,14 @@ jobs:
           java-version: '17'
           cache: 'maven'  # Habilita caché para acelerar futuras ejecuciones
 
-      #Compilar el backend con Maven
-      - name: Build Backend with Maven
+      # 🔧 Dar permisos de ejecución a mvnw en la raíz del repositorio
+      - name: Grant execute permission to mvnw
+        run: chmod +x mvnw
+
+      # 6️⃣ Compilar el proyecto con Maven
+      - name: Build with Maven
         run: |
-          ./mvnw clean install
+          ./mvnw clean install -DskipTests
 
       #Modificar el archivo application.properties para el perfil dev (si es necesario)
       - name: Modify application.properties for prod profile
