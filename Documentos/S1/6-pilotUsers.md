@@ -24,7 +24,7 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: 11/03/2025
+### Fecha: 12/03/2025
 
 ### Entregable: Sprint 1
 
@@ -38,6 +38,7 @@
 | 19/02/2025 | v1.1     | Revisión y corrección de detalles menores       | DP       | María de la Salud Carrera Talaverón y Sergio Pons López |
 | 27/02/2025 | v2.0     | Adición de información más concreta sobre el análisis de viabilidad | Sprint 1 | María de la Salud Carrera Talaverón y Sergio Pons López |
 | 11/03/2025 | v3.0     | Redacción del documento en formato markdown | Sprint 1 | Ignacio Blanquero Blanco |
+|12/03/2025|v4.0|Reestructuración documento| Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -52,8 +53,11 @@
 6. [Usuarios piloto recogidos](#usuarios-piloto-recogidos)
    1. [Proveedores](#proveedores)
    2. [Clientes](#clientes-1)
-7. [Conclusión](#concl)
-8. [Bibliografía](#bib)
+7. [Resultados encuesta feedback Sprint 1](#id3)
+8. [Resultados encuesta feedback Sprint 2](#id4)
+9. [Resultados encuesta feedback Sprint 3](#id5)
+10. [Conclusión](#concl)
+11. [Bibliografía](#bib)
 
 <div id='intro'></div>
 
@@ -207,6 +211,18 @@ Los alumnos que serán usuarios pilotos de nuestra aplicación son:
 - Ramón Vergara Garrido
 
 Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo para Daniel, Gonzalo Navas Remmers.
+
+<div id='id3'></div>
+
+## Resultados encuesta feedback Sprint 1 
+
+<div id='id4'></div>
+
+## Resultados encuesta feedback Sprint 2 
+
+<div id='id5'></div>
+
+## Resultados encuesta feedback Sprint 3 
 
 <div id='concl'></div>
 

@@ -24,7 +24,7 @@
 - Sergio Pons López. 
 - Lorenzo Torralba Lanzas. 
 
-### Fecha: 24/02/2025 
+### Fecha: 12/03/2025 
 
 ### Entregable: Sprint 1
 
@@ -37,6 +37,7 @@
 |24/02/2025 |v1\.0 |Relleno con caterings, haciendas y magos |Sprint1 |  |
 |26/02/2025 |v1\.1 |Relleno con lugares de celebración y entretenimiento | Sprint 1 | |
 |11/03/2025|v1.2|Pasar el documento a markdown| Sprint 1 | Sergio Pons López |
+|12/03/2025|v2.0|Reestructuración documento| Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido 
 
@@ -49,11 +50,8 @@
     4. [Bufete de quesos](#id24)
     5. [Lugar de celebración](#id25)
     6. [Decoración](#id26)
-    6. [Animación](#id27)
-4. [Resultados encuesta feedback Sprint 1](#id3)
-5. [Resultados encuesta feedback Sprint 2](#id4)
-6. [Resultados encuesta feedback Sprint 3](#id5)
-7. [Bibliografía](#bib)
+    7. [Animación](#id27)
+4. [Bibliografía](#bib)
 
 <div id='intro'></div>
 
@@ -174,19 +172,6 @@ En primer lugar se muestran las empresas que se han ofrecido a ser usuarios pilo
 | NGL Weeding          | 18/02/2025     | Correo: nglwedding@gmail.com                 | Fotógrafo | No         |
 | Juan Luis Morilla    | 18/02/2025     | Correo: foto@juanluismorilla.com, inslimpa.vara@gmail.com | Fotógrafo | Sí         |
 | Master sound         | 24/02/2025     | WhatsApp                                    | Animación, DJ, Alquiler de sonido, iluminación, pantallas led, llevamos grupos, horas locas, fotomatones 360, espejos mágicos, ceremonias civiles | Sí |
-
-
-<div id='id3'></div>
-
-## Resultados encuesta feedback Sprint 1 
-
-<div id='id4'></div>
-
-## Resultados encuesta feedback Sprint 2 
-
-<div id='id5'></div>
-
-## Resultados encuesta feedback Sprint 3 
 
 <div id='bib'></div>
 
