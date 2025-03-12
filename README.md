@@ -27,7 +27,9 @@ IMPORTANTE, no pongas el user y contraseña entre comillas, sigue la estructura 
     spring.datasource.password=${MYSQL_PASS:lalaland}
 ```
 
-8. Realizar los siguientes comandos:
+8. Realizar los pasos 5, 6 y 7 pero con el archivo *application-mysql.properties.example* (ruta: src\main\resources\application-mysql.properties.example).
+
+9. Realizar los siguientes comandos:
 
 *Backend*
 ```
@@ -44,11 +46,11 @@ Con todo activo te debería salir una pantalla tal que así (o similar dependien
 
 ![image](https://github.com/user-attachments/assets/24b833aa-99ee-4176-a1f0-557f567a8c50)
 
-9. User y pass para probar en el navegador:
+10. User y pass para probar en el navegador:
     - user: alice123
     - pass: 1234
 
-10. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
+11. Con todo esto hecho, con el comando ```show tables;``` en el CMD de MySQL debería aparecer todo correctamente.
 
 Una vez con todo hecho, deberías ver algo así, pero con todas las entidades existentes en ese momento:
 
