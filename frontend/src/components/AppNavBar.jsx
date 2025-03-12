@@ -54,6 +54,16 @@ function Navbar() {
       );
     }
 
+    if (currentUser.role === "ADMIN") {
+      return (
+        <div className="navbar-flex">
+          <p className="navbar-list"><a href="/admin-services">Administar servicios</a></p>
+          <p className="navbar-list"><a href="/admin-users">Administar usuarios</a></p>
+          <p className="navbar-list"><a href="/admin-events">Administar eventos</a></p>
+        </div>
+      );
+    }
+
     return null;
   };
 

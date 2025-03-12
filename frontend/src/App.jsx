@@ -14,6 +14,10 @@ import { useCurrentUser } from "./hooks/useCurrentUser";
 import MyEvents from "./pages/MyEvents";
 import CreateEvents from "./pages/CreateEvents"
 import EventDetails from "./pages/EventDetails";
+import AdminEvents from "./pages/admin/AdminEvents";
+import AdminServices from "./pages/admin/AdminServices";
+import AdminUsers from "./pages/admin/AdminUsers";
+
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -35,14 +39,22 @@ function App() {
             <Route path="/other-services" element={<OtherServiceScreen />} />
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
+            <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio/>} />
             <Route path="/my-events" element={<MyEvents />} />
             <Route path="/venues" element={<VenuesScreen />} />
             <Route path="/terminos-y-condiciones" element={<Terms />} />
             <Route path="/events" element={<MyEvents />} />
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
-            <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio/>} />
+            {currentUser && currentUser.role == "ADMIN" &&
+              <>
+                <Route path="/admin-events" element={<AdminEvents/>} />
+                <Route path="/admin-users" element={<AdminUsers />} />
+                <Route path="/admin-services" element={<AdminServices />} />
+              </>
+            }
           </Routes>
+
         </div>
       </Router>
     </div>

@@ -2,9 +2,13 @@ package com.eventbride.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.eventbride.dto.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +24,12 @@ public class UserService {
     @Transactional
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserDTO> getAllUsersDTO() {
+        List<User> users = userRepository.findAll();
+        return UserDTO.fromEntities(users);
     }
 
     @Transactional
@@ -45,15 +55,15 @@ public class UserService {
         if (user.getId() != null) {
             throw new RuntimeException("No se puede registrar un usuario con ID preexistente");
         }
-    
+
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("El username ya está en uso");
         }
-    
+
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("El email ya está registrado");
         }
-        
+
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
 
@@ -64,13 +74,15 @@ public class UserService {
     public User updateUser(Integer id, User userDetails) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    
+
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
         user.setTelephone(userDetails.getTelephone());
-    
+        user.setDni(userDetails.getDni());
+        user.setRole(userDetails.getRole());
+
         return userRepository.save(user);
     }
 
@@ -83,6 +95,6 @@ public class UserService {
     public User save(User user) throws DataAccessException {
         return userRepository.save(user);
     }
-    
-    
+
+
 }

@@ -1,13 +1,32 @@
 package com.eventbride.user;
 
+import com.eventbride.event.EventService;
+import com.eventbride.otherService.OtherService;
+import com.eventbride.otherService.OtherServiceService;
+import com.eventbride.rating.RatingService;
+import com.eventbride.venue.Venue;
+import com.eventbride.venue.VenueService;
+import com.eventbride.rating.Rating;
+import com.eventbride.event.Event;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.core.Authentication;
+
+import com.eventbride.dto.UserDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import jakarta.validation.Valid;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +39,30 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventService eventService;
+
+    @Autowired
+    private RatingService ratingService;
+
+    @Autowired
+    private VenueService venueService;
+
+    @Autowired
+    private OtherServiceService otherServiceService;
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/DTO")
+    public ResponseEntity<List<UserDTO>> getAllUsersDTO() {
+        List<UserDTO> users = userService.getAllUsersDTO();
         return ResponseEntity.ok(users);
     }
 
@@ -61,26 +98,81 @@ public class UserController {
     /**
      * Actualizar un usuario existente.
      */
+    /*
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User userDetails) {
+    public User updateUser(@PathVariable Integer id, @Valid @RequestBody User userDetails) {
         try {
             User updatedUser = userService.updateUser(id, userDetails);
-            return ResponseEntity.ok(updatedUser);
+            return updatedUser;
         } catch (RuntimeException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+    */
+
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+			List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+			if (roles.contains("ADMIN")) {
+				try {
+					Optional<User> existingUser = userService.getUserById(id);
+					if (existingUser.isEmpty()) {
+						return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+					}
+					updatedUser.setId(id);
+					User savedUser = userService.updateUser(id, updatedUser);
+					return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+				} catch (RuntimeException e) {
+					return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+				}
+			}
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+    }
+
 
     /**
      * Eliminar un usuario por ID.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
-        try {
+    public void deleteUser(@PathVariable("id") Integer id) {
+        if (userService.getUserById(id) != null) {
+            Optional<User> user = userService.getUserById(id);
+
+            List<Event> events = eventService.findEventsByUserId(id);
+            for (Event e : events) {
+                e.setUser(null);
+            }
+            eventService.saveAll(events);
+
+            List<Rating> ratings = ratingService.findRatingsByUserId(id);
+            for (Rating r : ratings) {
+                r.setUser(null);
+            }
+            ratingService.saveAll(ratings);
+
+
+            List<Venue> venues = venueService.getVenuesByUserId(id);
+            for (Venue v : venues) {
+                v.setUser(null);
+            }
+            venueService.saveAll(venues);
+
+            List<OtherService> otherServices = otherServiceService.getOtherServiceByUserId(id);
+            for (OtherService os : otherServices) {
+                os.setUser(null);
+            }
+            otherServiceService.saveAll(otherServices);
+
             userService.deleteUser(id);
-            return ResponseEntity.ok("Usuario eliminado correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body("Usuario no encontrado");
         }
     }
+
 }

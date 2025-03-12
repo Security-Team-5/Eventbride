@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eventbride.dto.EventDTO;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.venue.Venue;
 
@@ -25,6 +26,12 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<Event> findAll() {
         return eventRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<EventDTO> getAllEventsDTO() {
+        List<Event> events = eventRepository.findAll();
+        return EventDTO.fromEntities(events); 
     }
 
     @Transactional(readOnly = true)
@@ -86,4 +93,7 @@ public class EventService {
         return eventRepository.findAllEventsByUserId(userId);
     }
 
+    public void saveAll(List<Event> events) {
+        eventRepository.saveAll(events);
+    }
 }
