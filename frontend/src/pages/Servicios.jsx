@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../apiClient';
 import "../static/resources/css/RegistrarServicio.css";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const Servicios = () => {
         // Fetch the services of the provider
         const fetchServices = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/services/user/${currentUser.id}`);
+                const response = await apiClient.get(`/api/services/user/${currentUser.id}`);
                 console.log('Response:', response.data);
                 const otherServices = Array.isArray(response.data.otherServices) ? response.data.otherServices.map(otherService => ({ ...otherService, type: 'otherService' })) : [];
                 const venues = Array.isArray(response.data.venues) ? response.data.venues.map(venue => ({ ...venue, type: 'venue' })) : [];

@@ -16,23 +16,20 @@ import org.springframework.web.bind.annotation.*;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 import jakarta.validation.Valid;
 
-
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/other-services")
 public class OtherServiceController {
 
-    @Autowired
-    private OtherServiceService otherServiceService;
+	@Autowired
+	private OtherServiceService otherServiceService;
 
-
-    @GetMapping("/filter")
-    public List<OtherService> getFilteredOtherServices(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) OtherServiceType type) {
-        return otherServiceService.getFilteredOtherServices(name, city, type);
-    }
+	@GetMapping("/filter")
+	public List<OtherService> getFilteredOtherServices(
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) String city,
+			@RequestParam(required = false) OtherServiceType type) {
+		return otherServiceService.getFilteredOtherServices(name, city, type);
+	}
 
     @GetMapping("/{id}")
     public ResponseEntity<OtherService> getOtherServiceById(@PathVariable Integer id) {
@@ -81,7 +78,8 @@ public class OtherServiceController {
 		if (cause instanceof JsonMappingException jsonMappingException) {
 			for (JsonMappingException.Reference reference : jsonMappingException.getPath()) {
 				String fieldName = reference.getFieldName();
-				errorDetails.put(fieldName, "El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
+				errorDetails.put(fieldName,
+						"El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
 			}
 			errorDetails.put("error", "El formato del JSON es incorrecto o faltan datos obligatorios.");
 		} else if (cause instanceof JsonParseException) {
@@ -94,5 +92,3 @@ public class OtherServiceController {
 	}
 
 }
-
-
