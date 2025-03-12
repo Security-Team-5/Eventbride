@@ -35,6 +35,8 @@
 |------------|---------|--------------------------------------------|----------|-------------------------------------|
 | 10/03/2025 | v1.0    | Creación del documento y estructura básica | Sprint 1 | María de la Salud Carrera Talaverón |
 
+---
+
 ## Contenido
 1. [Introducción](#intro)
 2. [Contenido 1](#id1)
