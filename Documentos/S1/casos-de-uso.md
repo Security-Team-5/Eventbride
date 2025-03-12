@@ -23,33 +23,36 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: 10/03/2025
+### Fecha: 12/03/2025
+
 ### Entregable: Sprint 1
 
 ---
 
 ### Historial de versiones
 
-|Fecha|Versión|Descripción|Entrega|
-|---|---|---|---|
-|24/02/2025 |v1.0|Creación del documento y estructura básica| DP |
-|10/03/2025 |v2.0 |Introducción | Sprint 1 |
-|10/03/2025 |v2.1 |Pasar a formato Markdown | Sprint 1 |
+|Fecha|Versión|Descripción|Entrega|Contribuyente(s)|
+|---|---|---|---|---|
+|12/02/2025 |v1.0|Creación del documento y redacción del mismo| DP |Adrián Cabello Martín, David Godoy Fernández, Andrés Pizzano Cerrillos|
+|26/02/2025 |v1.1 |Corrección feedback semana 2| DP |Adrián Cabello Martín, David Godoy Fernández, Andrés Pizzano Cerrillos|
+|27/02/2025 |v1.2 |Finalización del documento| DP |Adrián Cabello Martín, David Godoy Fernández, Andrés Pizzano Cerrillos|
+|10/03/2025 |v1.3 |Actualización y revisión | Sprint 1 |Pablo Jesús Castellanos Compaña y Natalia Olmo Villegas|
+|10/03/2025 |v1.4 |Pasar a formato Markdown | Sprint 1 |Daniel Benito Hidalgo|
+|12/03/2025 |v1.5 |Adición de información requerida en la plantilla | Sprint 1 |María de la Salud Carrera Talaverón|
 
 ## Contenido
 1. [Casos de uso Core](#intro)
     1. [Caso de uso core 1](#id11)
     2. [Caso de uso core 2](#id12)
     3. [Caso de uso core 3](#id13)
-2. [Casos de uso](#caso)
+2. [Principales casos dde uso de la aplicación](#caso)
     1. [Caso de uso 4](#id24)
     2. [Caso de uso 5](#id25)
     3. [Caso de uso 6](#id26)
     4. [Caso de uso 7](#id27)
     5. [Caso de uso 8](#id28)
     6. [Caso de uso 9](#id29)
-4. [Conclusiones](#concl)
-5. [Bibliografía](#bib)
+3. [Bibliografía](#bib)
 
 <div id='intro'></div>
 
@@ -57,7 +60,7 @@
 
 <div id='id11'></div>
 
-## Caso de uso core 1
+### Caso de uso core 1
 
 1. **Identificación del Caso de Uso** 
     - **Nombre del Caso de Uso**: Solicitar contratar un servicio para un evento 
@@ -86,7 +89,7 @@
 
 <div id='id12'></div>
 
-## Caso de uso core 2
+### Caso de uso core 2
 
 1. **Identificación del Caso de Uso** 
     - **Nombre del Caso de Uso**: Registrar servicio
@@ -108,7 +111,7 @@
 
 <div id='id13'></div>
 
-## Caso de uso core 3
+### Caso de uso core 3
 
 1. **Identificación del Caso de Uso** 
     - **Nombre del Caso de Uso**: Crear evento
@@ -131,7 +134,7 @@
 
 <div id='id24'></div>
 
-## Caso de uso 4
+### Caso de uso 4
 
 1. **Identificación del Caso de Uso** 
     - **Nombre del Caso de Uso**: Gestionar lista de invitados 
@@ -157,7 +160,7 @@
 
 <div id='id25'></div>
 
-## Caso de uso 5
+### Caso de uso 5
 
 1. **Identificación del Caso de Uso** 
     - **Nombre del Caso de Uso**: Seguimiento del presupuesto del evento 
@@ -177,7 +180,7 @@
 
 <div id='id26'></div>
 
-## Caso de uso 6
+### Caso de uso 6
 
 1. **Identificación del Caso de Uso** 
    -  **Nombre del Caso de Uso**: Contactar con el servicio de atención al cliente 
@@ -199,7 +202,7 @@
 
 <div id='id27'></div>
 
-## Caso de uso 7
+### Caso de uso 7
 
 1. **Identificación del Caso de Uso** 
     - **Nombre del Caso de Uso**: Revisar y calificar servicios 
@@ -224,7 +227,7 @@
 
 <div id='id28'></div>
 
-## Caso de uso 8
+### Caso de uso 8
 
 1. **Identificación del Caso de Uso** 
     - **Nombre del Caso de Uso**: Recibir notificaciones 
@@ -243,7 +246,7 @@
 
 <div id='id29'></div>
 
-## Caso de uso 9
+### Caso de uso 9
 
 1. **Identificación del Caso de Uso** 
     - **Nombre del Caso de Uso**: Asistente de compra

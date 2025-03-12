@@ -28,8 +28,7 @@
 
 ### Entregable: Sprint 1
 
-Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://github.com/ISPP-Eventbride/Eventbride)
-
+---
 
 ### Historial de versiones
 
@@ -43,17 +42,17 @@ Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://git
 
 1. [Introducción](#intro)
 2. [Metodología recopilación datos de los usuarios pilotos interesados](#id1)
-3. [Usuarios piloto ](#id2)
+3. [Usuarios piloto](#id2)
     1. [Usuarios interesados en celebrar bodas, bautizos o comuniones](#id21)
-    2. [Caterings: ](#id22)
-    3. [Cortador de jamón:  ](#id23)
-    4. [Bufete de quesos ](#id24)
-    5. [Lugar de celebración ](#id25)
-    6. [Decoración ](#id26)
-    6. [Animación   ](#id27)
-4. [Resultados encuesta feedback Sprint 1  ](#id3)
-5. [Resultados encuesta feedback Sprint 2  ](#id4)
-6. [Resultados encuesta feedback Sprint 3  ](#id5)
+    2. [Caterings](#id22)
+    3. [Cortador de jamón](#id23)
+    4. [Bufete de quesos](#id24)
+    5. [Lugar de celebración](#id25)
+    6. [Decoración](#id26)
+    6. [Animación](#id27)
+4. [Resultados encuesta feedback Sprint 1](#id3)
+5. [Resultados encuesta feedback Sprint 2](#id4)
+6. [Resultados encuesta feedback Sprint 3](#id5)
 7. [Bibliografía](#bib)
 
 <div id='intro'></div>
@@ -90,7 +89,7 @@ En primer lugar se muestran las empresas que se han ofrecido a ser usuarios pilo
 
 <div id='id22'></div>
 
-### Caterings: 
+### Caterings
 
 | Nombre                                       | Fecha contacto | Medio de contacto                            | Respuesta |
 |----------------------------------------------|----------------|----------------------------------------------|-----------|
@@ -113,7 +112,7 @@ En primer lugar se muestran las empresas que se han ofrecido a ser usuarios pilo
 
 <div id='id23'></div>
 
-### Cortador de jamón: 
+### Cortador de jamón
 
 
 | Nombre                             | Fecha contacto | Medio de contacto                           | Respuesta |
@@ -134,7 +133,7 @@ En primer lugar se muestran las empresas que se han ofrecido a ser usuarios pilo
 
 <div id='id25'></div>
 
-### Lugar de celebración:  
+### Lugar de celebración
 
 
 | Nombre                          | Fecha contacto | Medio de contacto                           | Respuesta |
@@ -154,7 +153,7 @@ En primer lugar se muestran las empresas que se han ofrecido a ser usuarios pilo
 
 <div id='id26'></div>
 
-### Decoración: 
+### Decoración
 
 | Nombre            | Fecha contacto | Medio de contacto                          | Respuesta                  |
 |-------------------|----------------|--------------------------------------------|----------------------------|

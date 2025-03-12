@@ -23,18 +23,20 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: 10/03/2025
+### Fecha: 12/03/2025
+
 ### Entregable: Sprint 1
 
 ---
 
 ### Historial de versiones
 
-|Fecha|Versión|Descripción|Entrega|
-|---|---|---|---|
-|24/02/2025 |v1.0|Creación del documento y estructura básica| DP |
-|10/03/2025 |v2.0 |Introducción | Sprint 1 |
-|10/03/2025 |v2.1 |Pasar a formato Markdown | Sprint 1 |
+|Fecha|Versión|Descripción|Entrega| Contribuyente(s) |
+|---|---|---|---|---|
+|24/02/2025 |v1.0|Primera Instancia del análisis de mercado| DP |Fernando José de Celis Hurtado, Antonio Montero López, Miguel Hernández Sánchez y Pablo Jesús Castellanos Compaña|
+|10/03/2025 |v2.0 |Introducción | Sprint 1 |María de la Salud Carrera Talaverón|
+|10/03/2025 |v2.1 |Pasar a formato Markdown | Sprint 1 | Daniel Benito Hidalgo|
+|12/03/2025 |v2.2 |Adición de información requerida en la plantilla | Sprint 1 |María de la Salud Carrera Talaverón|
 
 ## Contenido
 1. [Introducción](#intro)
@@ -119,7 +121,7 @@ Los meses ideales para bautizar a un bebé son **abril, mayo, septiembre y octub
 
 ---
 
-<div id='id23'></div>
+<div id='id24'></div>
 
 ### Tendencias de búsqueda en internet
 
@@ -160,11 +162,15 @@ No se produce mucha variación de la búsqueda a lo largo de un año del términ
 
 ---
 
+<div id='concl'></div>
+
 ## Conclusiones
 
 Se puede decir que la demanda de bodas, bautizos y comuniones es constante. Los bautizos y comuniones sufren una recesión posible al decrecimiento de la natalidad y la fe cristiana. Existe una demanda por experiencias únicas y personalizadas en eventos de este tipo. Por lo tanto, se concluye que nuestra aplicación tiene demanda suficiente que podemos absorber en forma de clientes. 
 
 ---
+
+<div id='bib'></div>
 
 ## Bibliografía
 

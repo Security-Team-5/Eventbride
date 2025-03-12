@@ -2,28 +2,30 @@
 ## <p style="text-align: center;">Ingeniería del Software y Práctica Profesional (ISPP)</p>
 <center><img src="../img/Eventbride.png"></center>
 
-### Miembros: 
-- Francisco Avilés Carrera. 
-- Daniel Benito Hidalgo. 
-- Ignacio Blanquero Blanco. 
-- Adrián Cabello Martín. 
-- María de la Salud Carrera Talaverón. 
-- Pablo Jesús Castellanos Compaña.
-- Fernando José de Celis Hurtado. 
-- David Godoy Fernández. 
-- Miguel Hernández Sánchez. 
-- Antonio Montero López. 
-- Gonzalo Navas Remmers. 
-- Héctor Noguera González. 
-- Natalia Olmo Villegas. 
-- Manuel Pérez Vélez. 
-- Andrés Pizzano Cerrillos. 
-- Sergio Pons López. 
-- Lorenzo Torralba Lanzas. 
+### Grupo 3: Eventbride
 
-### Fecha: 13/03/2025 
+### Miembros:
+- Francisco Avilés Carrera
+- Daniel Benito Hidalgo
+- Ignacio Blanquero Blanco
+- Adrián Cabello Martín
+- María de la Salud Carrera Talaverón
+- Pablo Jesús Castellanos Compaña
+- Fernando José de Celis Hurtado
+- David Godoy Fernández
+- Miguel Hernández Sánchez
+- Antonio Montero López
+- Gonzalo Navas Remmers
+- Héctor Noguera González
+- Natalia Olmo Villegas
+- Manuel Pérez Vélez
+- Andrés Pizzano Cerrillos
+- Sergio Pons López
+- Lorenzo Torralba Lanzas
 
-Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://github.com/ISPP-Eventbride/Eventbride)
+### Fecha: 11/03/2025
+
+### Entregable: Sprint 1
 
 ---
 

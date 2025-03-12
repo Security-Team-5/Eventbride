@@ -2,35 +2,40 @@
 ## <p style="text-align: center;">Ingeniería del Software y Práctica Profesional (ISPP)</p>
 <center><img src="../img/Eventbride.png"></center>
 
+### Grupo 3: Eventbride
+
 ### Miembros:
-- Francisco Avilés Carrera. 
-- Daniel Benito Hidalgo. 
-- Ignacio Blanquero Blanco. 
-- Adrián Cabello Martín. 
-- María de la Salud Carrera Talaverón. 
-- Pablo Jesús Castellanos Compaña.
-- Fernando José de Celis Hurtado. 
-- David Godoy Fernández. 
-- Miguel Hernández Sánchez. 
-- Antonio Montero López. 
-- Gonzalo Navas Remmers. 
-- Héctor Noguera González. 
-- Natalia Olmo Villegas. 
-- Manuel Pérez Vélez. 
-- Andrés Pizzano Cerrillos. 
-- Sergio Pons López. 
-- Lorenzo Torralba Lanzas. 
+- Francisco Avilés Carrera
+- Daniel Benito Hidalgo
+- Ignacio Blanquero Blanco
+- Adrián Cabello Martín
+- María de la Salud Carrera Talaverón
+- Pablo Jesús Castellanos Compaña
+- Fernando José de Celis Hurtado
+- David Godoy Fernández
+- Miguel Hernández Sánchez
+- Antonio Montero López
+- Gonzalo Navas Remmers
+- Héctor Noguera González
+- Natalia Olmo Villegas
+- Manuel Pérez Vélez
+- Andrés Pizzano Cerrillos
+- Sergio Pons López
+- Lorenzo Torralba Lanzas
 
-### Fecha: 24/02/2025 
+### Fecha: 12/03/2025
 
-Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://github.com/ISPP-Eventbride/Eventbride)
+### Entregable: Sprint 1
+
+---
 
 #### Historial de versiones 
 
-|Fecha|Versión|Descripción|Entrega |
-| - | - | - | - |
-|24/02/2025 |1.0 |Planificación del Sprint 1 |Sprint 1 |
-|11/03/2025|1.1|Pasar el documento a markdown|Sprint 1|Sergio Pons López|
+|Fecha|Versión|Descripción|Entrega |Contribuyentes|
+| - | - | - | - | - |
+|24/02/2025 |v1.0 |Planificación del Sprint 1 |Sprint 1 |Natalia Olmo Villegas|
+|11/03/2025|v1.1|Pasar el documento a markdown|Sprint 1|Sergio Pons López|
+|12/03/2025 |v1.2 |Adición de información requerida en la plantilla | Sprint 1 |María de la Salud Carrera Talaverón|
 
 ## Contenido 
 

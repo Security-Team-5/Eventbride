@@ -1,6 +1,8 @@
-# <p style="text-align: center;">Título del Documento</p>
-## <p style="text-align: center;">Ingeniería del Software y Práctica Profesional (ISPP)</p>
+# <center>Título del Documento</center>
+## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
 <center><img src=".\img\Eventbride.png"></center>
+
+### Grupo 3: Eventbride
 
 ### Miembros:
 - Francisco Avilés Carrera
@@ -21,17 +23,17 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: PONER FECHA
+### Fecha: XX
 
-Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride ](https://github.com/ISPP-Eventbride/Eventbride)
+### Entregable: Sprint XX
 
 ---
 
 ### Historial de versiones
 
-|Fecha|Versión|Descripción|Entrega|
-|---|---|---|---|
-|10/03/2025|v1.0|Creación del documento y estructura básica|
+| Fecha      | Versión | Descripción                                | Entrega  | Contribuyente(s)                    |
+|------------|---------|--------------------------------------------|----------|-------------------------------------|
+| 10/03/2025 | v1.0    | Creación del documento y estructura básica | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)

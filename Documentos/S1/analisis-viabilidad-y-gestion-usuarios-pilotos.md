@@ -1,7 +1,9 @@
 # Análisis de viabilidad y gestión de usuarios pilotos
 ## Ingeniería del Software y Práctica Profesional (ISPP)
 
-<center><img src=".\img\Eventbride.png"></center>
+<center><img src="..\img\Eventbride.png"></center>
+
+### Grupo 3: Eventbride
 
 ### Miembros:
 - Francisco Avilés Carrera
@@ -24,7 +26,7 @@
 
 ### Fecha: 11/03/2025
 
-Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride](https://github.com/ISPP-Eventbride/Eventbride)
+### Entregable: Sprint 1
 
 ---
 
@@ -32,32 +34,26 @@ Repositorio GitHub: [https://github.com/ISPP-Eventbride/Eventbride](https://gith
 
 | Fecha      | Versión | Descripción                                     | Entrega  | Contribuyente/s                                         |
 |------------|---------|-------------------------------------------------|----------|---------------------------------------------------------|
-| 18/02/2025 | 1.0     | Creación del documento y redacción del mismo    | DP       | María de la Salud Carrera Talaverón y Sergio Pons López |
-| 19/02/2025 | 1.1     | Revisión y corrección de detalles menores       | DP       | María de la Salud Carrera Talaverón y Sergio Pons López |
-| 27/02/2025 | 2.0     | Adición de información más concreta sobre el análisis de viabilidad | Sprint 1 | María de la Salud Carrera Talaverón y Sergio Pons López |
-| 11/03/2025 | 3.0     | Redacción del documento en formato markdown | Sprint 1 | Ignacio Blanquero Blanco |
+| 18/02/2025 | v1.0     | Creación del documento y redacción del mismo    | DP       | María de la Salud Carrera Talaverón y Sergio Pons López |
+| 19/02/2025 | v1.1     | Revisión y corrección de detalles menores       | DP       | María de la Salud Carrera Talaverón y Sergio Pons López |
+| 27/02/2025 | v2.0     | Adición de información más concreta sobre el análisis de viabilidad | Sprint 1 | María de la Salud Carrera Talaverón y Sergio Pons López |
+| 11/03/2025 | v3.0     | Redacción del documento en formato markdown | Sprint 1 | Ignacio Blanquero Blanco |
 
 ## Contenido
-- [Análisis de viabilidad y gestión de usuarios pilotos](#análisis-de-viabilidad-y-gestión-de-usuarios-pilotos)
-  - [Ingeniería del Software y Práctica Profesional (ISPP)](#ingeniería-del-software-y-práctica-profesional-ispp)
-    - [Miembros:](#miembros)
-    - [Fecha: 11/03/2025](#fecha-11032025)
-    - [Historial de versiones](#historial-de-versiones)
-  - [Contenido](#contenido)
-  - [Introducción](#introducción)
-  - [Escenarios de prueba](#escenarios-de-prueba)
-    - [Empresas o proveedores:](#empresas-o-proveedores)
-    - [Clientes:](#clientes)
-  - [Recogida del feedback](#recogida-del-feedback)
-    - [Primera fase](#primera-fase)
-    - [Segunda fase](#segunda-fase)
-  - [¿Cómo nos comunicaremos con ellos?](#cómo-nos-comunicaremos-con-ellos)
-  - [Recompensas ofrecidas](#recompensas-ofrecidas)
-  - [Usuarios piloto recogidos](#usuarios-piloto-recogidos)
-    - [Proveedores](#proveedores)
-    - [Clientes](#clientes-1)
-  - [Conclusión](#conclusión)
-  - [Bibliografía](#bibliografía)
+1. [Introducción](#intro)
+2. [Escenarios de prueba](#escenarios-de-prueba)
+   1. [Empresas o proveedores](#empresas-o-proveedores)
+   2. [Clientes](#clientes)
+3. [Recogida del feedback](#recogida-del-feedback)
+   1. [Primera fase](#primera-fase)
+   2. [Segunda fase](#segunda-fase)
+4. [¿Cómo nos comunicaremos con ellos?](#como-nos-comunicaremos-con-ellos)
+5. [Recompensas ofrecidas](#recompensas-ofrecidas)
+6. [Usuarios piloto recogidos](#usuarios-piloto-recogidos)
+   1. [Proveedores](#proveedores)
+   2. [Clientes](#clientes-1)
+7. [Conclusión](#concl)
+8. [Bibliografía](#bib)
 
 <div id='intro'></div>
 
@@ -212,7 +208,7 @@ Los alumnos que serán usuarios pilotos de nuestra aplicación son:
 
 Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo para Daniel, Gonzalo Navas Remmers.
 
-<div id='conclusion'></div>
+<div id='concl'></div>
 
 ## Conclusión
 
@@ -222,7 +218,7 @@ Asimismo, se han definido los escenarios de prueba, diferenciando las funciones 
 
 Dado que el proyecto aún se encuentra en una fase temprana, este documento sirve como una planificación detallada de cómo se gestionará la relación con los usuarios piloto a lo largo del proceso. Su contribución será determinante para el éxito de la aplicación, asegurando que el producto final responda a las necesidades del mercado y proporcione una experiencia eficiente y satisfactoria para todos los usuarios.
 
-<div id='bibliografia'></div>
+<div id='bib'></div>
 
 ## Bibliografía
 
