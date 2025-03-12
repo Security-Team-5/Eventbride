@@ -3,7 +3,7 @@ name: Deploy to Google App Engine
 on:
   push:
     branches:
-      - feat/deploy
+      - master
 
 jobs:
   deploy:
@@ -67,5 +67,3 @@ jobs:
       - name: Deploy to App Engine
         run: |
           gcloud app deploy --quiet
-
-# Añadiendo permisos nuevos
