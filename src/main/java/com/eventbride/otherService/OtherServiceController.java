@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/other-services")
 public class OtherServiceController {
