@@ -80,6 +80,10 @@ public class UserService {
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
         user.setTelephone(userDetails.getTelephone());
+        user.setDni(userDetails.getDni());
+        user.setRole(userDetails.getRole());
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
     
         return userRepository.save(user);
     }
