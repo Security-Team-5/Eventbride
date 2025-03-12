@@ -55,7 +55,7 @@ function AdminEvents() {
   }
 
   function deleteEvent(eventId) {
-    fetch(`/api/events/${eventId}`, {
+    fetch(`/api/v1/events/${eventId}`, {
       headers: {
         "Content-Type": "application/json",
       },
