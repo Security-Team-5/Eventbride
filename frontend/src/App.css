@@ -24,14 +24,15 @@
 .bannerCompleto {
   position: relative;
   width: 100%;
-  height: 40vh;
+  height: 30vh;
   border-bottom: 3px solid white;
 }
 
 .imagenBanner {
   width: 100%;
-  height: 55vh;
+  height: 30vh;
   object-fit: cover;
+  border-bottom: 3px solid white;
 }
 
 .overlayBanner {
@@ -39,19 +40,16 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 50px;
+  bottom: 0%;
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 3px solid white;
-  height: 55vh;
 }
 
 .contenidoBanner {
   margin-top: 150px;
   text-align: center;
-  color: white;
   padding: 20px;
 }
 
