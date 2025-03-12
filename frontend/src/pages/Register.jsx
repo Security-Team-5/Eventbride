@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../apiClient";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -25,17 +25,17 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Formulario enviado:", form); 
+    console.log("Formulario enviado:", form);
 
     const role = 'proveedor' === form.role ? 'SUPPLIER' : 'CLIENT';
 
     try {
-      const response = await axios.post("http://localhost:8080/api/users/auth/register", {
+      const response = await apiClient.post("/api/users/auth/register", {
         firstName: form.firstName,
         lastName: form.lastName,
         username: form.username,
         email: form.email,
-        telephone: Number(form.telephone), 
+        telephone: Number(form.telephone),
         dni: form.dni,
         password: form.password,
         role: role,
@@ -48,7 +48,7 @@ const Register = () => {
       }
 
       console.log("Usuario registrado:", response.data);
-      navigate("/login"); 
+      navigate("/login");
     } catch (error) {
       console.error("Error en el registro:", error.response?.data || error.message);
       setError("Error al registrarse. Inténtalo de nuevo.");

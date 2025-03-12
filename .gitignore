@@ -45,4 +45,4 @@ logs/
 _site/
 
 #MariaDB password
-src/main/resources/application-mysql.properties
+src/main/resources/application-dev.properties

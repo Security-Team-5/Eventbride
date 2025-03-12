@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../apiClient';
 import "../static/resources/css/RegistrarServicio.css";
 
 const Servicios = () => {
@@ -12,7 +12,7 @@ const Servicios = () => {
         // Fetch the services of the provider
         const fetchServices = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/services/${currentUser.id}`);
+                const response = await apiClient.get(`/api/services/${currentUser.id}`);
                 setServices(response.data);
             } catch (error) {
                 console.error('Error fetching services:', error);
