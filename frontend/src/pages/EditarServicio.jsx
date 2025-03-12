@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 import "../static/resources/css/RegistrarServicio.css";
+import apiClient from '../apiClient';
 
 const EditarServicio = () => {
     const navigate = useNavigate()
@@ -40,7 +41,7 @@ const EditarServicio = () => {
         if (serviceType == 'venue') {
             const fetchVenue = async () => {
                 try {
-                    const response = await axios.get(`/api/venues/${id}`);
+                    const response = await apiClient.get(`/api/venues/${id}`);
                     setFormData({
                         name: response.data.name,
                         available: response.data.available,
@@ -70,7 +71,7 @@ const EditarServicio = () => {
         } else {
             const fetchOtherService = async () => {
                 try {
-                    const response = await axios.get(`/api/other-services/${id}`);
+                    const response = await apiClient.get(`/api/other-services/${id}`);
                     setFormData({
                         name: response.data.name,
                         available: response.data.available,
@@ -114,7 +115,7 @@ const EditarServicio = () => {
 
         if (serviceType == 'venue') {
             try {
-                const reponse = await axios.put(`/api/venues/${id}`, formData);
+                const reponse = await apiClient.put(`/api/venues/${id}`, formData);
                 navigate('/misservicios');
             }
             catch (error) {
@@ -122,7 +123,7 @@ const EditarServicio = () => {
             }
         } else {
             try {
-                const response = await axios.put(`/api/other-services/${id}`, formData);
+                const response = await apiClient.put(`/api/other-services/${id}`, formData);
                 navigate('/misservicios');
             }
             catch (error) {
