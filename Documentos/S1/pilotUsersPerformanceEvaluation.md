@@ -35,6 +35,7 @@
 |---|---|---|---|---|
 |12/02/2025 |v1.0|Creación del documento y redacción del mismo| Sprint 1 |Daniel Benito Hidalgo|
 |12/02/2025 |v1.1|Correcciones ortográficas y de redacción| Sprint 1 |Gonzalo Navas Remmers|
+|12/02/2025 |v1.1|Cambios en los criterios de evaluación| Sprint 1 |Gonzalo Navas Remmers|
 
 
 ## Contenido
@@ -57,10 +58,10 @@ El proceso de evaluación de los usuarios piloto será **realizado** tras el **r
 
 Para la **evaluación** de la labor del usuario piloto en relación a las encuestas asignadas se usarán 2 métricas principales:
 
-- **Tiempo de respuesta del usuario**: Para cada encuesta se ha establecido un **periodo de 5 días** para la resolución de esta, este periodo ha sido establecido en el **commitment agreement** que dichos **usuarios** han tenido que aceptar y es recordado en cada comunicación referente a las encuestas y feedback. Este aparatdo será **considerado** como **apto** en caso de que se realice la **entrega** del feedback **dentro** del **periodo** habilitado, en caso contrario se valorará como no apto.
+- **Tiempo de respuesta del usuario**: Para cada encuesta se ha establecido un **periodo de 5 días** para la resolución de esta, este periodo ha sido establecido en el **commitment agreement** que dichos **usuarios** han tenido que aceptar y es recordado en cada comunicación referente a las encuestas y feedback. Esta métrica se tendrá en cuenta en la evaluación según el número de **días de retraso (DR)** con los que responda el usuario.
 Ante **posibles cambios** en las fechas para la entrega se **actualziará** el **commitment agreement** de los usuarios piloto   para que estos los acepten.
 
-- **Resolución de encuesta**: Esta métrica será valorada como **apta** en caso de que la **encuesta** sea **realizada** respondiendo a las preguntas obligatorias. En caso de que existan **preguntas obligatorias de tipo comentario** o texto largo, se considerará como **apto** siempre que dichas **respuestas** ofrezcan **comentarios coherentes** en **relación** al objeto de la **pregunta**.
+- **Resolución de encuesta (R)**: Esta métrica será valorada como **apta (1)** en caso de que la **encuesta** sea **realizada** respondiendo a las preguntas obligatorias. En caso de que existan **preguntas obligatorias de tipo comentario** o texto largo, se considerará como **apto (1)** siempre que dichas **respuestas** ofrezcan **comentarios coherentes** en **relación** al objeto de la **pregunta**. En caso contrario se considerará como **no apto (0)**.
 
 Con estas **2 métricas** expresadas, pasamos a explicar como medimos la **calidad del feedback** proporcionado:
 
@@ -69,9 +70,18 @@ Para evaluar la calidad del feedback recibido hemos establecido 2 tipos de feedb
 
 - **Comentarios y justificaciones**: Esta categoria contiene las respuestas de texto largo de las encuestas y posibles comentarios recibidos por otros medios externos a la encuesta ( Reuniones, correos, comunicación informal...). Debido a que este tipo de respuestas puede ser analizada más en profundidad, se **valorará** la **justificación** de los comentarios enviados, así como la introducción de posibles **alternativas** o formas de resolver/mejorar el objeto de comentario. 
 
-Para el cálculo de la nota, en caso de que ambas evaluaciones ( tiempo de respueta y resolución de encuestas) sean valoradas como aptas, el usuario piloto recibirá un 4, siendo esta valoración aumentable en base al análisis del la calidad del feedback aportado.
+La calidad del feedback (Q) se calificará según la siguiente tabla:
 
-<div id='med'></div>
+| | 0 | 1-4 | 5-7 | 8-10 |
+|---|---|---|---|---|
+|Criterio | No se ha entregado feedback o no tiene relación con lo que se pedía. | El feedback entregado no está del todo relacionado, está incompleto o es poco específico. | El feedback entregado es útil pero podría ser más preciso, detallado o relevante. | El feedback entregado está bien detallado, justificado y es relevante y valioso para el equipo. |
+
+La fórmula que se usará para calcular la calificación individual de cada usuario es la siguiente:
+```math
+max(0, (R-0.3*DR)*Q)
+```
+
+<div id='eval'></div>
 
 ## Evaluación de usuarios piloto
 
