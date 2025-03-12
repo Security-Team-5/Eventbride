@@ -60,7 +60,8 @@ const EditarServicio = () => {
                         user: {
                             id: currentUser.id
                         }
-                    });
+                    })
+                    setLimitedBy(response.data.limitedByPricePerGuest ? "perGuest" : response.data.limitedByPricePerHour ? "perHour" : "fixed");
                 } catch (error) {
                     console.error('Error fetching the venue:', error);
                 }
@@ -86,7 +87,8 @@ const EditarServicio = () => {
                         user: {
                             id: currentUser.id
                         }
-                    });
+                    })
+                    setLimitedBy(response.data.limitedByPricePerGuest ? "perGuest" : response.data.limitedByPricePerHour ? "perHour" : "fixed");                    
                 } catch (error) {
                     console.error('Error fetching the other service:', error);
                 }
@@ -107,6 +109,9 @@ const EditarServicio = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        formData.limitedByPricePerGuest = limitedBy === "perGuest";
+        formData.limitedByPricePerHour = limitedBy === "perHour";
+
         if (serviceType == 'venue') {
             try {
                 const reponse = await axios.put(`/api/venues/${id}`, formData);

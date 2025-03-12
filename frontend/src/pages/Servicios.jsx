@@ -48,7 +48,7 @@ const Servicios = () => {
                         }
                         {
                             !service.limitedByPricePerHour && !service.limitedByPricePerGuest && (
-                                <p>Precio fijo: {service.servicePricePerHour}€</p>
+                                <p>Precio fijo: {service.fixedPrice}€</p>
                             )
                         }
                         <p>Descripción: {service.description}</p>
