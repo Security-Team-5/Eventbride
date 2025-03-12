@@ -3,7 +3,7 @@ name: Deploy to Google App Engine
 on:
   push:
     branches:
-      - master
+      - feat/deploy
 
 jobs:
   deploy:
@@ -44,8 +44,7 @@ jobs:
       #Compilar el backend con Maven
       - name: Build Backend with Maven
         run: |
-          cd backend
-          mvn clean install
+          mvnw clean install
 
       #Modificar el archivo application.properties para el perfil dev (si es necesario)
       - name: Modify application.properties for prod profile
