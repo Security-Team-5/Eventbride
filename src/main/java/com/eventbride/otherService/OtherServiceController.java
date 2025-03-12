@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.eventbride.dto.OtherServiceDTO;
-import com.eventbride.service.Service;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +31,33 @@ public class OtherServiceController {
 		return otherServiceService.getFilteredOtherServices(name, city, type);
 	}
 
-	@PostMapping
-	public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
-		try {
-			OtherService newOtherService = otherServiceService.createOtherService(otherService);
-			return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
-		} catch (RuntimeException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
+    @GetMapping("/{id}")
+    public ResponseEntity<OtherService> getOtherServiceById(@PathVariable Integer id) {
+        return otherServiceService.getOtherServiceById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<OtherServiceDTO> updateOtherService(@PathVariable Integer id, @RequestBody OtherService otherService) {
+        try {
+            OtherService updatedOtherService = otherServiceService.updateOtherService(id, otherService);
+            return ResponseEntity.ok(new OtherServiceDTO(updatedOtherService));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+
+    @PostMapping
+    public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
+        try {
+            OtherService newOtherService = otherServiceService.createOtherService(otherService);
+            return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {

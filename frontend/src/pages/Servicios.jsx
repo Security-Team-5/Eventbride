@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../apiClient';
 import "../static/resources/css/RegistrarServicio.css";
+import { useNavigate } from "react-router-dom";
 
 const Servicios = () => {
     const [services, setServices] = useState([]);
-
+    const navigate = useNavigate();
+    
     // Obtener datos user desde localStorage
     const currentUser = JSON.parse(localStorage.getItem("user"));
 
@@ -12,64 +14,45 @@ const Servicios = () => {
         // Fetch the services of the provider
         const fetchServices = async () => {
             try {
-                const response = await apiClient.get(`/api/services/${currentUser.id}`);
-                setServices(response.data);
+                const response = await apiClient.get(`/api/services/user/${currentUser.id}`);
+                console.log('Response:', response.data);
+                const otherServices = Array.isArray(response.data.otherServices) ? response.data.otherServices.map(otherService => ({ ...otherService, type: 'otherService' })) : [];
+                const venues = Array.isArray(response.data.venues) ? response.data.venues.map(venue => ({ ...venue, type: 'venue' })) : [];
+                setServices([ ...otherServices, ...venues ]);
             } catch (error) {
                 console.error('Error fetching services:', error);
             }
         };
-
         fetchServices();
-    }, []);
+    }, [currentUser.id]);
 
+    console.log('Services:', services);
     return (
         <div className="mis-servicios-container">
             <h2>Mis Servicios</h2>
             <div className="services-list">
-                {services.venues?.map(venue => (
-                    <div key={venue.id} className="service-item">
-                        <h3>{venue.name}</h3>
-                        <p>Disponible: {venue.available ? 'Sí' : 'No'}</p>
-                        <p>Ciudad: {venue.cityAvailable}</p>
+                {services?.map(service => (
+                    <div key={service.id} className="service-item">
+                        <h3>{service.name}</h3>
+                        <p>Disponible: {service.available ? 'Sí' : 'No'}</p>
+                        <p>Ciudad: {service.cityAvailable}</p>
                         {
-                            venue.limitedByPricePerGuest && (
-                                <p>Precio por invitado: {venue.servicePricePerGuest}€</p>
+                            service.limitedByPricePerGuest && (
+                                <p>Precio por invitado: {service.servicePricePerGuest}€</p>
                             )
                         }
                         {
-                            venue.limitedByPricePerHour && (
-                                <p>Precio por hora: {venue.servicePricePerHour}€</p>
+                            service.limitedByPricePerHour && (
+                                <p>Precio por hora: {service.servicePricePerHour}€</p>
                             )
                         }
                         {
-                            !venue.limitedByPricePerHour && !venue.limitedByPricePerGuest && (
-                                <p>Precio fijo: {venue.servicePricePerHour}€</p>
+                            !service.limitedByPricePerHour && !service.limitedByPricePerGuest && (
+                                <p>Precio fijo: {service.fixedPrice}€</p>
                             )
                         }
-                        <p>Descripción: {venue.description}</p>
-                    </div>
-                ))}
-                {services.otherServices?.map(otherService => (
-                    <div key={otherService.id} className="service-item">
-                        <h3>{otherService.name}</h3>
-                        <p>Disponible: {otherService.available ? 'Sí' : 'No'}</p>
-                        <p>Ciudad: {otherService.cityAvailable}</p>
-                        {
-                            otherService.limitedByPricePerGuest && (
-                                <p>Precio por invitado: {otherService.servicePricePerGuest}€</p>
-                            )
-                        }
-                        {
-                            otherService.limitedByPricePerHour && (
-                                <p>Precio por hora: {otherService.servicePricePerHour}€</p>
-                            )
-                        }
-                        {
-                            !otherService.limitedByPricePerHour && !otherService.limitedByPricePerGuest && (
-                                <p>Precio fijo: {otherService.servicePricePerHour}€</p>
-                            )
-                        }
-                        <p>Descripción: {otherService.description}</p>
+                        <p>Descripción: {service.description}</p>
+                        <button onClick={() => navigate(`/misservicios/editar/${service.type}/${service.id}/`, { id: service.id , serviceType: service.type })}>Editar</button>
                     </div>
                 ))}
             </div>
