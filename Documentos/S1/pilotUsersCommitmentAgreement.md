@@ -37,4 +37,3 @@ Yo, [Nombre del Usuario], me comprometo a participar activamente en el Programa 
 Al firmar este documento, confirmo mi compromiso de participar en el Programa de Usuarios Piloto y de cumplir con las responsabilidades aquí descritas, entendiendo que mi colaboración es esencial para la mejora continua de EventBride.
 
 **Firma del Usuario:**
-

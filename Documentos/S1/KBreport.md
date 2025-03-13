@@ -52,13 +52,15 @@ Este documento tiene como finalidad detallar las aportaciones realizadas al Know
 
 Para la obtención del feedback, los grupos de mañana trabajamos con la siguiente metodología. Varios grupos por semana deben recoger el feedback de todos los grupos en las semanas que les toque, hay una asignación de dichos grupos (siguiente imagen).
 
-![](..\img\Reparto_feedback_grupos.png)
+[![3BPKa7S.png](https://iili.io/3BPKa7S.png)](https://freeimage.host/es)
 
 Cuando nos toca a nuestro grupo recoger el feedback de todos los grupos, asignamos a tres miembros del equipo para que recojan el feedback de dos equipos cada uno. Dichos miembros se cambian en cada iteración y no se tienen en cuenta a aquellos miembros que presentan en el día. Independientemente de este método, todos los viernes debemos recoger nuestro propio feedback.
 
 <div id='id1'></div>
 
 ## Contenido Añadido al Knowledge Base 
+
+**ENLACE A LA BASE COMÚN DE CONOCIMIENTO:** https://github.com/ISPP-2425/BCC 
 
 ### **CAMYO** 
 
