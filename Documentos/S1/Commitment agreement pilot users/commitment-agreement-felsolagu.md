@@ -27,7 +27,7 @@
 
 ### Entregable: Sprint 1
 
-### Version:1.0
+### Versión :1.0
 
 **Nombre del Usuario**: Felipe Solís Agudo  
 **Fecha**: 10/03/2025
