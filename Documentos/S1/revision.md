@@ -65,7 +65,21 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
 
 ### Usuario Cliente
 
-1. **Crear evento (CC - 03)**
+1. **Solicitar contratar un servicio para un evento (CC - 01)**
+
+   *“Usuario cliente solicita servicio ofertado en la plataforma, para celebración. Unservicio también incluye a un recinto en este caso.”*
+
+   Mockup - Frontend en #S1
+
+   Una vez implementada la función, el usuario podrá solicitar el servicio para su evento realizando los siguientes pasos:
+
+- Establecer qué tipo de servicio que desea contratar siendo las opciones: “**Recintos**” o “**Otros servicios**” situados en el navbar. Donde “**Otros**” engloba cualquier servicio que no sea un local.
+
+- Una vez en la pagina que se haya escogido para contratar el servicio a desear, el usuario deberá seleccionar el botón de "**Añadir evento**" correspondiente al evento.
+
+- Una vez pulsado, aparecerá un modal con una lista de los eventos del usuario, donde deberá seleccionar el evento donde desea añadir el servicio escogido.
+
+2. **Crear evento (CC - 03)**
 
    *“El usuario quiere crear un evento.”*
 
@@ -76,11 +90,11 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
   Otra forma de realizarlo es darle a la opción “**Desde cero**” una vez haya pulsado “**Crear evento**” en el navbar.
 
 - Una vez en la pantalla “Crear evento” el usuario debe de realizar las siguientes acciones:
-  - Establecer qué tipo de evento desea crear siendo las opciones: “Boda”, “Bautizo” o “Comunión”.
+  - Establecer qué tipo de evento desea crear siendo las opciones: “**Boda**”, “**Bautizo**” o “**Comunión**”.
   - Introducir el número de invitados estimados para el evento.
   - Reflejar el presupuesto estimado para todo el evento.
   - Escoger la fecha del evento.
-- Ya introducidos todos los datos, pulsar el botón de “Crear evento”.
+- Ya introducidos todos los datos, pulsar el botón de “**Crear evento**”.
 
 <div id='id3'></div>
 
@@ -112,59 +126,59 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
 
 Para comenzar, al iniciar la aplicación se muestra un formulario de inicio de sesión el cual hay que completar para poder acceder a las funcionalidades de esta.
 
-![](..\img\login1.png)
+<center><img src="..\img\login1.png"></center>
 
 En caso de no tener cuenta, se puede acceder a la pestaña de registrarse y completar el formulario correspondiente para poder crearse una cuenta en el sistema.
 
-![](..\img\login2.png)
+<center><img src="..\img\login2.png"></center>
 
 Para cualquier tipo de usuario se puede ver una página de inicio que es la página siguiente donde nos presentamos y hay una breve descripción sobre lo que hacemos y como trabajamos.
 
-![](..\img\inicio.png)
+<center><img src="..\img\inicio.png"></center>
 
 Si iniciamos sesión con un usuario **cliente**, y accedemos a la sección de mis servicios, se pueden observar los servicios pertenecientes al usuario y sus respectivos datos.
 
-![](..\img\miseventos.png)
+<center><img src="..\img\miseventos.png"></center>
 
 Se puede entrar en detalles de los eventos para poder leer toda la información de los mismos y también se puede borrar el evento que se seleccione.
 
-![](..\img\detalleseventos.png)
+<center><img src="..\img\detalleseventos.png"></center>
 
 También se puede meter en la sección de crear evento donde se muestra un formulario a completar y se crea el evento. 
 
-![](..\img\crearevento.png)
+<center><img src="..\img\crearevento.png"></center>
 
 Y hasta el momento, también se puede acceder a la pestaña de términos y condiciones para poder leerlas.
 
-![](..\img\terminos.png)
+<center><img src="..\img\terminos.png"></center>
 
 Si iniciamos sesión con un usuario **proveedor** y se accede a la pestaña de mis servicios, se muestran los servicios pertenecientes al proveedor pudiéndose editar y crear nuevos servicios en la misma sección.
 
-![](..\img\misservicios.png)
+<center><img src="..\img\misservicios.png"></center>
 
 Dentro de editar un servicio, se muestra un formulario a modificar si se desea cambiar algún atributo del servicio.
 
-![](..\img\editarservicio.png)
+<center><img src="..\img\editarservicio.png"></center>
 
 Y de la misma forma si se quiere crear un servicio, se muestra el formulario correspondiente a completar.
 
-![](..\img\crearservicio.png)
+<center><img src="..\img\crearservicio.png"></center>
 
 Si iniciamos sesión con un usuario **admin**, y accedemos a administrar servicios, se muestran todos los servicios del sistema dando la opción de editar y eliminar. 
 
-![](..\img\administrarservicios.png)
+<center><img src="..\img\administrarservicios.png"></center>
 
 Si accedemos a la sección de editar, se nos muestra el formulario a rellenar.
 
-![](..\img\admineditarservicio.png)
+<center><img src="..\img\admineditarservicio.png"></center>
 
 Si accedemos a la sección de administrar usuarios, se encuentran todos los usuarios del sistema devolviéndolos directamente en forma de formulario y si se desea editar se modifica dicho formulario y se pulsa el botón de editar. También se pueden eliminar del sistema.
 
-![](..\img\administrarusuarios.png)
+<center><img src="..\img\administrarusuarios.png"></center>
 
 Por último, la sección de administrar eventos funciona de la misma manera que la anterior mencionada.
 
-![](..\img\administrareventos.png)
+<center><img src="..\img\administrareventos.png"></center>
 
 <div id='id5'></div>
 
@@ -204,14 +218,14 @@ Administrador:
 
 **Credenciales correo corporativo:**
 
-- Usuario: [**eventbride6@gmail.com](mailto:eventbride6@gmail.com)** Contraseña: **3vent\_Br1de**
+- Usuario: **[eventbride6@gmail.com](mailto:eventbride6@gmail.com)** Contraseña: **3vent\_Br1de**
 
 **Credenciales de Clockify:** cuando inicies sesión con clockify te pedirá un correo electrónico, meter el correo corporativo. Acto seguido te enviará una clave al correo corporativo.
 
 <div id='id6'></div>
 
 ## Requisitos para utilizar el sistema
-Todo lo relacionado para la puesta en marcha del proyecto viene indicado en el README del repositorio de GitHub.
+Todo lo relacionado para la puesta en marcha del proyecto viene indicado en el [README](../../README.md) del repositorio de GitHub.
 
 <div id='id7'></div>
 
