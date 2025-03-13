@@ -27,8 +27,7 @@
 
 ### Entregable: Sprint 1
 
-
-# Acuerdo de Participación en el Programa de Usuarios Piloto de EventBride - Curso 2024-2025
+### Version:1.0
 
 **Nombre del Usuario**: Felipe Solís Agudo  
 **Fecha**: 10/03/2025
