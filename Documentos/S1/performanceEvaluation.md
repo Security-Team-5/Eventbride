@@ -507,7 +507,7 @@ Cabe destacar que he asistido a todas las clases y reuniones realizadas durante 
 
 ### Torralba Lanzas, Lorenzo
 
-En este primer Sprint he desarrollado las siguientes tares: Tome parte en crear el documento de requisitos y en el documento de resumen de la IA. Por otra parte, estuve creando las tablas de entidades en el backend junto a varios compañeros. Junto con mi compañero Andrés Pizzano estuve creando el menú de home. Además, estuve ayudando a Natalia Olmos en el feature de crear eventos. Finalmente,, y tras muchos problemas, nuevamente junto con Andrés Pizzano hemos hecho el despliegue de la aplicación en AppEngine junto con la base de datos alojada también en los servicios de Google Cloud.
+En este primer Sprint he desarrollado las siguientes tares: Tome parte en crear el documento de requisitos y en el documento de resumen de la IA. Por otra parte, estuve creando las tablas de entidades en el backend junto a varios compañeros. Junto con mi compañero Andrés Pizzano estuve creando el menú de home. Además, estuve ayudando a Natalia Olmos en el feature de crear eventos. Por otro lado, y tras muchos problemas, nuevamente junto con Andrés Pizzano hemos hecho el despliegue de la aplicación en AppEngine junto con la base de datos alojada también en los servicios de Google Cloud. Finalmente, he actualizado el documento de Análisis de costes para introducir el desglose CAPEX y OPEX y he actualizado el documento de Monetización de la aplicación para introducir los gastos y beneficios estimados a corto y medio plazo.
 
 
 <div id='bib'></div>
