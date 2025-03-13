@@ -235,4 +235,4 @@ El video demo de la aplicación se encuentra en el siguiente [enlace](https://us
 <div id='id8'></div>
 
 ## Bibliografía
-Intencionalmente en blanco
+Intencionalmente en blanco.
