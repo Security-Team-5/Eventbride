@@ -36,6 +36,7 @@
 |16/02/2025 |1\.0 |Creación del documento y redacción del mismo |DP ||
 |08/03/2025 |2\.0 |Actualización requisitos |Sprint 1 |<p>Pablo Jesús Castellanos Compaña, </p><p>Natalia Olmo Villegas,</p><p> María de la Salud Carrera Talaverón </p>|
 |11/03/2025|v2.1|Pasar el documento a markdown| Sprint 1 | Sergio Pons López |
+|13/03/2025|v2.2|Introducir estimación de costes y beneficios| Sprint 1 | Lorenzo Torralba Lanzas |
 
 ## Contenido 
 
@@ -44,7 +45,8 @@
 3. [Funcionalidad por la que los usuarios estarían dispuestos a pagar](#id1)
 4. [Contacto con los proveedores ](#id2)
 5. [Ingresos de la aplicación  ](#id3)
-6. [Sistema de reembolso](#id4)
+5. [Estimación de costos e ingresos a corto y medio plazo](#id4)
+6. [Sistema de reembolso](#id5)
 7. [Bibliografía ](#bib)
 
 
@@ -149,6 +151,45 @@ Con este sistema, teniendo en cuenta sólo bodas, para amortizar la inversión i
 
 <div id='id4'></div>
 
+## Estimación de costos e ingresos a corto y medio plazo 
+
+### Costos
+
+Comenzando con los gastos y basándonos en el documento de análisis de costes, podremos hacer una estimación sobre los gastos a corto plazo (4-6) meses y a medio plazo (2 años).
+
+Para esta estimación usaremos el CAPEX y el OPEX.
+
+CAPEX Total: 96.120,34 €
+
+OPEX mensual: 2.218,29 €
+
+OPEX anual: 32.533,92€
+
+Teniendo en cuenta estos parametros, se podría estimar que el costo a corto plazo sería de unos 100.000 euros y el costo a medio plazo de unos 150.000€.
+
+### Ingresos
+
+A continuación haremos una estimación de los posibles beneficios. Para ello, tendré en cuenta las estimaciones hechas por los compañeros del costo de celebrar una boda[1], una comunión[2] y un bautizo[3]:
+
+<center><img src="..\img\costo_estimado_boda.png"></center>
+Imagen 1. Costo estimado de una boda
+
+<center><img src="..\img\costo_estimado_comunion.png"></center>
+Imagen 2. Costo estimado de una comunión
+
+<center><img src="..\img\costo_estimado_bautizo.png"></center>
+Imagen 3. Costo estimado de un bautizo
+
+
+Nos hemos visto obligados a calcular por separado los costes de los eventos ya que varían mucho de unos a otros
+
+Analizando estas tablas, podríamos calcular un beneficio aproximado, en el caso más esperado de 160.000€. Además, se puede observar que el mayor volumen de negocio lo haremos con las bodas, que es donde más dinero se gasta. El beneficio a corto plazo es más complejo de calcular ya que depende de como de bien funcione la aplicación en sus primeros meses de vida, lo que nos lleva a suposiciones y hace inservible cualquier estimación. 
+
+
+
+
+<div id='id5'></div>
+
 ## Sistema de reembolso por cancelación del cliente 
 
 En base a las estadísticas, el plazo para preparar los eventos es el siguiente.
@@ -177,5 +218,7 @@ Los gastos de gestión de la aplicación no serán devueltos en ningún caso.
 
 ## Bibliografía 
 
-Intencionalmente en blanco.
+[1] https://www.bodas.net/articulos/cuanto-cuesta-casarse--c841
+[2] https://www.cronoshare.com/cuanto-cuesta/primera-comunion-espana
+[3] https://www.bankinter.com/blog/finanzas-personales/cuanto-cuesta-un-bautizo-en-espana
 
