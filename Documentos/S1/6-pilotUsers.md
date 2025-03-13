@@ -238,7 +238,7 @@ Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo 
 
 ### Comentarios de Clientes
 
-- Claridad y usabilidad
+- **Claridad y usabilidad**
 
    - La pantalla principal de creación de eventos fue mencionada varias veces como confusa o desordenada.
 
@@ -246,7 +246,7 @@ Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo 
 
    - Sugieren que los servicios se muestren de forma más clara y con una mejor estructura.
 
-- Diseño visual
+- **Diseño visual**
 
    - Varios comentarios destacan que la interfaz parece monótona, con falta de color y dinamismo.
 
@@ -254,7 +254,7 @@ Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo 
 
    - Proponen agregar iconos en los botones y mejorar la tipografía.
 
-- Filtros y opciones adicionales
+- **Filtros y opciones adicionales**
 
    - En la selección de servicios, los usuarios sugieren añadir filtros por precio o valoración.
 
@@ -262,13 +262,56 @@ Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo 
 
    - Sugieren una opción para crear eventos personalizados, donde el usuario pueda describir el evento que quiere organizar.
 
-- Información y toma de decisiones
+- **Información y toma de decisiones**
 
    - Faltan detalles sobre los paquetes de servicios, ya que algunos usuarios no comprenden bien qué incluyen o cómo se configuran.
 
    - En la pantalla de detalles del servicio, falta información suficiente para que el cliente decida si añadirlo al carrito.
 
    - Sugieren una opción de comparación entre servicios para facilitar la decisión del cliente.
+
+### Comentarios de Proveedores
+
+- **Disponibilidad y reservas**
+   
+   - Se sugiere mostrar la disponibilidad del servicio para que los clientes sepan si pueden reservarlo en la fecha deseada.
+   
+   - Algunos comentarios mencionan la necesidad de un sistema de comunicación clara entre proveedor y cliente para concretar fechas y condiciones.
+
+- **Experiencia de usuario y engagement**
+   
+   - Se recomienda hacer la plataforma más atractiva visualmente**, ya que el sector de eventos requiere una presentación llamativa.
+   
+   - Se destaca que falta una conexión emocional con el cliente, sugiriendo mejorar el diseño para generar más confianza y entusiasmo.
+
+- **Interacción con clientes anteriores**
+   
+   - Se plantea la posibilidad de que los clientes puedan contactar con antiguos clientes para preguntar sobre un servicio antes de contratarlo.
+   
+   - Sugieren que las reseñas sean más visibles y que incluyan detalles como precio, ubicación y fecha del evento para mayor transparencia.
+
+- **Diferenciación de precios**
+   
+   - Preguntan si los proveedores podrán ofrecer diferentes precios según fecha o ubicación, ya que esto podría ser un factor clave en la contratación de servicios.
+
+### Propuestas de mejora
+
+- Mejorar la jerarquía y organización de la pantalla de creación de eventos.
+
+- Aumentar el atractivo visual con más colores, iconos y mejor tipografía.
+
+- Añadir filtros y opciones de ordenación en la selección de servicios.
+
+- Incorporar más información en los servicios, como disponibilidad y valoraciones.
+
+- Facilitar la comparación de servicios para que los clientes puedan elegir mejor.
+
+- Agregar un botón de favoritos para mejorar la experiencia del usuario.
+
+- Permitir que los clientes contacten con clientes anteriores para preguntar sobre un servicio.
+
+- Diferenciar los precios según fechas o ubicaciones si aplica.
+
 
 
 <div id='id4'></div>
