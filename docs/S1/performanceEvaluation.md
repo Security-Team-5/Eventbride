@@ -34,7 +34,7 @@
 | Fecha      | Versión | Descripción                                | Entrega  | Contribuyente(s)                    |
 |------------|---------|--------------------------------------------|----------|-------------------------------------|
 | 20/02/2025 | v1.0    | Creación del documento y redacción de las contribuciones de cada miembro para el entregable DP | DP | Ignacio Blanquero Blanco |
-| 13/03/2025 | v1.1    | Redacción de las contribuciones de cada miembro para el entregable S1 | Sprint 1 | Ignacio Blanquero Blanco |
+| 13/03/2025 | v1.1    | Redacción de las contribuciones de cada miembro para el entregable S1 | Sprint 1 | Ignacio Blanquero Blanco, Francisco Avilés Carrera |
 
 ---
 
