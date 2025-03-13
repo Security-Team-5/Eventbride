@@ -27,6 +27,7 @@
 
 ### Entregable: Sprint 1
 
+### Versión: 1.0
 
 **Nombre del Usuario**: Alba Ramos Vargas
 
