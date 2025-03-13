@@ -41,13 +41,14 @@
 ## Contenido
 1. [Introducción](#intro)
 2. [Concordancia con los casos de uso](#id1)
-    1. [Usuario Cliente](#id2)
-    2. [Usuario Proveedor](#id3)
-3. [Guía de la aplicación](#id4)
-4. [Información necesaria para utilizar todo lo relacionado con Eventbride](#id5)
-5. [Requisitos para utilizar el sistema](#id6)
-6. [Video demo de la aplicación](#id7)
-7. [Bibliografía](#id8)
+    1. [Usuario General](#id2)
+    2. [Usuario Cliente](#id3)
+    3. [Usuario Proveedor](#id4)
+3. [Guía de la aplicación](#id5)
+4. [Información necesaria para utilizar todo lo relacionado con Eventbride](#id6)
+5. [Requisitos para utilizar el sistema](#id7)
+6. [Video demo de la aplicación](#id8)
+7. [Bibliografía](#id9)
 
 <div id='intro'></div>
 
@@ -63,9 +64,31 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
 
 <div id='id2'></div>
 
+### Usuario General
+
+1. **Contactar con el servicio de atención al cliente (CU - 06)**
+
+   *“El usuario necesita ayuda o tiene una pregunta sobre la aplicación.”*
+
+   Mockup - Frontend en #S1
+
+2. **Recibir notificaciones (CU - 08)**
+
+   *“El usuario quiere recibir actualizaciones y notificaciones importantesrelacionadas con sus eventos, reservas o cuenta.”*
+
+   Mockup - Frontend en #S1
+
+<div id='id3'></div>
+
 ### Usuario Cliente
 
-1. **Crear evento (CC - 03)**
+1. **Solicitar contratar un servicio para un evento (CC - 01)**
+
+   *“Usuario cliente solicita servicio ofertado en la plataforma, para celebración. Unservicio también incluye a un recinto en este caso.”*
+
+   Mockup - Frontend en #S1
+
+2. **Crear evento (CC - 03)**
 
    *“El usuario quiere crear un evento.”*
 
@@ -82,7 +105,31 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
   - Escoger la fecha del evento.
 - Ya introducidos todos los datos, pulsar el botón de “Crear evento”.
 
-<div id='id3'></div>
+3. **Gestionar lista de invitados (CU - 04)**
+
+   *“El usuario cliente quiere crear y gestionar la lista de invitados a su evento.”*
+
+   Mockup - Frontend en #S1
+
+4. **Seguimiento del presupuesto del evento (CU - 05)**
+
+   *“El usuario quiere establecer un presupuesto para su evento y realizar unseguimiento de los gastos.”*
+
+   Mockup - Frontend en #S1
+
+5. **Revisar y calificar servicios (CU - 07)**
+
+   *“El usuario quiere dejar una reseña y calificación de un servicio que contrató.”*
+
+   Mockup - Frontend en #S1
+
+6. **Asistente de compra (CU - 09)**
+
+   *“Usuario cliente quiere organizar un evento mediante un asistente virtual parafiltrar resultados.”*
+
+   Mockup - Frontend en #S1
+
+<div id='id4'></div>
 
 ### Usuario Proveedor
 
@@ -106,7 +153,7 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
 
 - Ya introducidos todos los datos, pulsar el botón de “**Registrar otro servicio**”.
 
-<div id='id4'></div>
+<div id='id5'></div>
 
 ## Guía de la aplicación
 
@@ -166,7 +213,7 @@ Por último, la sección de administrar eventos funciona de la misma manera que 
 
 <center><img src="..\img\administrareventos.png"></center>
 
-<div id='id5'></div>
+<div id='id6'></div>
 
 ## Información necesaria para utilizar todo lo relacionado con Eventbride
 
@@ -204,21 +251,21 @@ Administrador:
 
 **Credenciales correo corporativo:**
 
-- Usuario: [**eventbride6@gmail.com](mailto:eventbride6@gmail.com)** Contraseña: **3vent\_Br1de**
+- Usuario: **[eventbride6@gmail.com](mailto:eventbride6@gmail.com)** Contraseña: **3vent\_Br1de**
 
 **Credenciales de Clockify:** cuando inicies sesión con clockify te pedirá un correo electrónico, meter el correo corporativo. Acto seguido te enviará una clave al correo corporativo.
 
-<div id='id6'></div>
+<div id='id7'></div>
 
 ## Requisitos para utilizar el sistema
-Todo lo relacionado para la puesta en marcha del proyecto viene indicado en el README del repositorio de GitHub.
+Todo lo relacionado para la puesta en marcha del proyecto viene indicado en el [README](../../README.md) del repositorio de GitHub.
 
-<div id='id7'></div>
+<div id='id8'></div>
 
 ## Video demo de la aplicación
 El video demo de la aplicación se encuentra en el siguiente [enlace](https://uses0-my.sharepoint.com/personal/natolmvil_alum_us_es/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fnatolmvil%5Falum%5Fus%5Fes%2FDocuments%2FISPP%2FSPRINT1%2FVideo%20demo&ga=1).
 
-<div id='id8'></div>
+<div id='id9'></div>
 
 ## Bibliografía
 Intencionalmente en blanco
