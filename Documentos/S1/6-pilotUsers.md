@@ -236,6 +236,41 @@ Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo 
 
 ## Resultados encuesta feedback Sprint 1 
 
+### Comentarios de Clientes
+
+- Claridad y usabilidad
+
+   - La pantalla principal de creación de eventos fue mencionada varias veces como confusa o desordenada.
+
+   - Algunos usuarios no entienden la sección "sigue buscando" y cómo se diferencia de otras opciones.
+
+   - Sugieren que los servicios se muestren de forma más clara y con una mejor estructura.
+
+- Diseño visual
+
+   - Varios comentarios destacan que la interfaz parece monótona, con falta de color y dinamismo.
+
+   - Se menciona la falta de una identidad de marca clara en el diseño.
+
+   - Proponen agregar iconos en los botones y mejorar la tipografía.
+
+- Filtros y opciones adicionales
+
+   - En la selección de servicios, los usuarios sugieren añadir filtros por precio o valoración.
+
+   - Proponen incluir un botón de "favoritos" para que los clientes guarden servicios de interés.
+
+   - Sugieren una opción para crear eventos personalizados, donde el usuario pueda describir el evento que quiere organizar.
+
+- Información y toma de decisiones
+
+   - Faltan detalles sobre los paquetes de servicios, ya que algunos usuarios no comprenden bien qué incluyen o cómo se configuran.
+
+   - En la pantalla de detalles del servicio, falta información suficiente para que el cliente decida si añadirlo al carrito.
+
+   - Sugieren una opción de comparación entre servicios para facilitar la decisión del cliente.
+
+
 <div id='id4'></div>
 
 ## Resultados encuesta feedback Sprint 2 
