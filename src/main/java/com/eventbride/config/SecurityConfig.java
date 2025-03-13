@@ -33,7 +33,24 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults()) // Desactiva CSRF para facilitar pruebas
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/api/users/auth/register","/api/users/auth/login", "/api/venues/**", "/api/users/auth/current-user", "/api/v1/events/**", "/api/other-services/**", "/api/other-services", "/api/venues/**", "/api/services/**").permitAll() // Permite el acceso a estas rutas
+                .requestMatchers("/api/auth/**", 
+                "/api/users", 
+                "/api/users/**",
+                "/api/users/auth/register",
+                "/api/users/auth/login", 
+                "/api/venues/**", 
+                "/api/users/auth/current-user", 
+                "/api/v1/events/**", 
+                "/api/other-services/**", 
+                "/api/other-services", 
+                "/api/venues/**", 
+                "/api/services/**").permitAll()
+                .requestMatchers("/api/services/admin",
+                "/api/users/**", 
+                "/api/**",
+                "/api/v1/events/DTO",
+                "/api/other-services/admin/**",
+                "/api/venues/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

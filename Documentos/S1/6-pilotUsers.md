@@ -39,6 +39,7 @@
 | 27/02/2025 | v2.0     | Adición de información más concreta sobre el análisis de viabilidad | Sprint 1 | María de la Salud Carrera Talaverón y Sergio Pons López |
 | 11/03/2025 | v3.0     | Redacción del documento en formato markdown | Sprint 1 | Ignacio Blanquero Blanco |
 |12/03/2025|v4.0|Reestructuración documento| Sprint 1 | María de la Salud Carrera Talaverón |
+|13/03/2025|v5.0|Resultados de la encuesta de feedback del S1| Sprint 1 | David Godoy Fernández y Gonzalo Navas Remmers |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -49,15 +50,17 @@
    1. [Primera fase](#primera-fase)
    2. [Segunda fase](#segunda-fase)
 4. [¿Cómo nos comunicaremos con ellos?](#como-nos-comunicaremos-con-ellos)
-5. [Recompensas ofrecidas](#recompensas-ofrecidas)
-6. [Usuarios piloto recogidos](#usuarios-piloto-recogidos)
+5. [¿Cómo trabajaremos con ellos?](#como-trabajaremos-con-ellos)
+6. [Gestión y recogida de feedback](#gestión-y-recogida-del-feedback)
+7. [Recompensas ofrecidas](#recompensas-ofrecidas)
+8. [Usuarios piloto recogidos](#usuarios-piloto-recogidos)
    1. [Proveedores](#proveedores)
    2. [Clientes](#clientes-1)
-7. [Resultados encuesta feedback Sprint 1](#id3)
-8. [Resultados encuesta feedback Sprint 2](#id4)
-9. [Resultados encuesta feedback Sprint 3](#id5)
-10. [Conclusión](#concl)
-11. [Bibliografía](#bib)
+9. [Resultados encuesta feedback Sprint 1](#id3)
+10. [Resultados encuesta feedback Sprint 2](#id4)
+11. [Resultados encuesta feedback Sprint 3](#id5)
+12. [Conclusión](#concl)
+13. [Bibliografía](#bib)
 
 <div id='intro'></div>
 
@@ -142,6 +145,24 @@ Por otro lado, las encuestas destinadas a los usuarios se difundieron a través 
 
 Por último, con los usuarios piloto que se ofrecieron voluntarios dentro de la asignatura se creó un grupo de WhatsApp para facilitar la comunicación con ellos.
 
+<div id='como-trabajaremos-con-ellos'></div>
+
+## ¿Cómo trabajaremos con ellos?
+
+Para plantear el funcionamiento del programa, hemos decidido trabajar principalmente mediante encuestas realizadas con Google forms, que eran enviadas en unas fechas establecidas y ahondarán en diferentes aspectos de la plataforma y su funcionamiento, dichas encuestas serán entregadas como se explica en el punto anterior, haciendo uso del correo corporativo o los canales habilitados para la comunicación con estos. En las encuestas realizadas, se intentará integrar junto a preguntas de respuesta rápida (selecciones, aportación de puntuaciones, etc) algunas preguntas que dejen mas libertad expresiva al usuario, con el fin de recibir información mas especifica y detallada
+
+Junto a las encuestas realizadas, se valorará la realización de reuniones con estos usuarios para aclarar posibles dudas surgidas o debatir algunas de las propuestas expresadas en los comentarios proporcionados.
+
+<div id='gestión-y-recogida-del-feedback'></div>
+
+## Gestión y recogida del feedback
+
+Partiendo de los puntos anteriores, al usar como herramienta Google Forms, permite conectar la información de las respuestas con una hoja de cálculo donde se puede recoger algunas métricas interesantes como el momento de recepción de la respuesta.
+
+Una vez que finalice el plazo de recogida de respuestas fijado, el equipo de gestión de usuarios piloto pasará la información de la hoja de cálculo a un documento que facilite analizar y estudiar el feedback recibido. Todo feedback cuya implementación sea valorada como una mejora al sistema actual pasará a entrar en el proyecto como una petición de cambio a estudiar por equipo de desarrollo o corrección de errores, según la índole del comentario.
+
+
+
 <div id='recompensas-ofrecidas'></div>
 
 ## Recompensas ofrecidas
@@ -215,6 +236,88 @@ Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo 
 <div id='id3'></div>
 
 ## Resultados encuesta feedback Sprint 1 
+
+### Calificaciones de los mockups
+
+Tras analizar las puntuaciones que han otorgado los usuarios piloto a los distintos mockups hemos extraído algunas tendencias que podrían ser valiosas a la hora de crear un producto atractivo y fácilmente comprensible. La vista peor puntuada ha sido la pantalla principal de creación de eventos con una media de 3.43 sobre 5, mientras que la vista mejor puntuada ha sido la pantalla de selección de evento con una media de 4.35 sobre 5. A partir de estos datos queda claro que los usuarios han demostrado predilección por diseños más simples y directos, con elementos claros y colores llamativos. Las vistas más sobrecargadas y con menos colorido han sido en general menos llamativas y como veremos más adelante en los comentarios, han resultado más confusas para los usuarios.
+
+### Comentarios de Clientes
+
+- **Claridad y usabilidad**
+
+   - La pantalla principal de creación de eventos fue mencionada varias veces como confusa o desordenada.
+
+   - Algunos usuarios no entienden la sección "sigue buscando" y cómo se diferencia de otras opciones.
+
+   - Sugieren que los servicios se muestren de forma más clara y con una mejor estructura.
+
+- **Diseño visual**
+
+   - Varios comentarios destacan que la interfaz parece monótona, con falta de color y dinamismo.
+
+   - Se menciona la falta de una identidad de marca clara en el diseño.
+
+   - Proponen agregar iconos en los botones y mejorar la tipografía.
+
+- **Filtros y opciones adicionales**
+
+   - En la selección de servicios, los usuarios sugieren añadir filtros por precio o valoración.
+
+   - Proponen incluir un botón de "favoritos" para que los clientes guarden servicios de interés.
+
+   - Sugieren una opción para crear eventos personalizados, donde el usuario pueda describir el evento que quiere organizar.
+
+- **Información y toma de decisiones**
+
+   - Faltan detalles sobre los paquetes de servicios, ya que algunos usuarios no comprenden bien qué incluyen o cómo se configuran.
+
+   - En la pantalla de detalles del servicio, falta información suficiente para que el cliente decida si añadirlo al carrito.
+
+   - Sugieren una opción de comparación entre servicios para facilitar la decisión del cliente.
+
+### Comentarios de Proveedores
+
+- **Disponibilidad y reservas**
+   
+   - Se sugiere mostrar la disponibilidad del servicio para que los clientes sepan si pueden reservarlo en la fecha deseada.
+   
+   - Algunos comentarios mencionan la necesidad de un sistema de comunicación clara entre proveedor y cliente para concretar fechas y condiciones.
+
+- **Experiencia de usuario y engagement**
+   
+   - Se recomienda hacer la plataforma más atractiva visualmente**, ya que el sector de eventos requiere una presentación llamativa.
+   
+   - Se destaca que falta una conexión emocional con el cliente, sugiriendo mejorar el diseño para generar más confianza y entusiasmo.
+
+- **Interacción con clientes anteriores**
+   
+   - Se plantea la posibilidad de que los clientes puedan contactar con antiguos clientes para preguntar sobre un servicio antes de contratarlo.
+   
+   - Sugieren que las reseñas sean más visibles y que incluyan detalles como precio, ubicación y fecha del evento para mayor transparencia.
+
+- **Diferenciación de precios**
+   
+   - Preguntan si los proveedores podrán ofrecer diferentes precios según fecha o ubicación, ya que esto podría ser un factor clave en la contratación de servicios.
+
+### Propuestas de mejora
+
+- Mejorar la jerarquía y organización de la pantalla de creación de eventos.
+
+- Aumentar el atractivo visual con más colores, iconos y mejor tipografía.
+
+- Añadir filtros y opciones de ordenación en la selección de servicios.
+
+- Incorporar más información en los servicios, como disponibilidad y valoraciones.
+
+- Facilitar la comparación de servicios para que los clientes puedan elegir mejor.
+
+- Agregar un botón de favoritos para mejorar la experiencia del usuario.
+
+- Permitir que los clientes contacten con clientes anteriores para preguntar sobre un servicio.
+
+- Diferenciar los precios según fechas o ubicaciones si aplica.
+
+
 
 <div id='id4'></div>
 

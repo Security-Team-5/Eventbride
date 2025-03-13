@@ -1,0 +1,35 @@
+runtime: java17
+instance_class: F2
+
+env_variables:
+  # Configuración de la base de datos MySQL en Cloud SQL
+  SPRING_DATASOURCE_URL: jdbc:mysql://google/eventbrideDB?cloudSqlInstance=ispp-2425-03:europe-west1:eventbrideserverdb&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&serverTimezone=UTC
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: root
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 5
+  target_cpu_utilization: 0.65
+
+handlers:
+  # Serve all API calls to Spring (para las API de tu backend)
+  - url: /api/.*  # Redirige todas las solicitudes API a tu backend
+    script: auto
+
+  # Serve calls to Swagger-UI (para la documentación de tu API)
+  - url: /v3/api-docs.*  # Redirige las solicitudes Swagger a tu backend
+    script: auto
+  - url: /swagger-ui.*  # Redirige Swagger UI a tu backend
+    script: auto
+
+  # Serve all static files with url ending with a file extension (para el frontend)
+  - url: /(.*\..+)$  # Sirve todos los archivos estáticos (JavaScript, CSS, etc.) del frontend
+    static_files: frontend/dist/\1
+    upload: frontend/dist/(.*\..+)$
+
+  # Catch all handler to index.html (redirige todas las solicitudes no API a tu archivo principal index.html del frontend)
+  - url: /.*  # Para cualquier otra solicitud que no sea API, se redirige a index.html
+    static_files: frontend/dist/index.html
+    upload: frontend/dist/index.html

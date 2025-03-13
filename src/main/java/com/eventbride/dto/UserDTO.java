@@ -12,8 +12,8 @@ import lombok.Setter;
 @Setter
 public class UserDTO {
     private Integer id;
-    private String lastname;
-    private String firstname;
+    private String lastName;
+    private String firstName;
     private String username;
     private String email;
     private Integer telephone;
@@ -25,8 +25,8 @@ public class UserDTO {
     // Constructor que toma la entidad User y la convierte a DTO
     public UserDTO(User user) {
         this.id = user.getId();
-        this.lastname = user.getLastName();
-        this.firstname = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.firstName = user.getFirstName();
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.telephone = user.getTelephone();

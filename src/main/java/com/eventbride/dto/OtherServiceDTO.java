@@ -3,6 +3,8 @@ package com.eventbride.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 
@@ -31,25 +33,25 @@ public class OtherServiceDTO {
 
 
     // Constructor para simplificar la creación del DTO
-    public OtherServiceDTO(OtherService otherService) {
-		this.id = otherService.getId();
-        this.name = otherService.getName();
-        this.available = otherService.getAvailable();
-        this.cityAvailable = otherService.getCityAvailable();
-        this.servicePricePerGuest = otherService.getServicePricePerGuest();
-        this.servicePricePerHour = otherService.getServicePricePerHour();
-        this.fixedPrice = otherService.getFixedPrice();
-        this.picture = otherService.getPicture();
-        this.description = otherService.getDescription();
-        this.limitedByPricePerGuest = otherService.getLimitedByPricePerGuest();
-        this.limitedByPricePerHour = otherService.getLimitedByPricePerHour();
-        this.otherServiceType = otherService.getOtherServiceType();
-        this.extraInformation = otherService.getExtraInformation();
-        if(otherService.getRatings() != null){
-            this.ratingsDTO = RatingDTO.fromEntities(otherService.getRatings());
+    public OtherServiceDTO(OtherService updated) {
+		this.id = updated.getId();
+        this.name = updated.getName();
+        this.available = updated.getAvailable();
+        this.cityAvailable = updated.getCityAvailable();
+        this.servicePricePerGuest = updated.getServicePricePerGuest();
+        this.servicePricePerHour = updated.getServicePricePerHour();
+        this.fixedPrice = updated.getFixedPrice();
+        this.picture = updated.getPicture();
+        this.description = updated.getDescription();
+        this.limitedByPricePerGuest = updated.getLimitedByPricePerGuest();
+        this.limitedByPricePerHour = updated.getLimitedByPricePerHour();
+        this.otherServiceType = updated.getOtherServiceType();
+        this.extraInformation = updated.getExtraInformation();
+        if(updated.getRatings() != null){
+            this.ratingsDTO = RatingDTO.fromEntities(updated.getRatings());
         }
-        if(otherService.getUser() != null){
-            this.userDTO = new UserDTO(otherService.getUser());
+        if(updated.getUser() != null){
+            this.userDTO = new UserDTO(updated.getUser());
         }
 
     }
