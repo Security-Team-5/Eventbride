@@ -39,6 +39,7 @@
 | 27/02/2025 | v2.0     | Adición de información más concreta sobre el análisis de viabilidad | Sprint 1 | María de la Salud Carrera Talaverón y Sergio Pons López |
 | 11/03/2025 | v3.0     | Redacción del documento en formato markdown | Sprint 1 | Ignacio Blanquero Blanco |
 |12/03/2025|v4.0|Reestructuración documento| Sprint 1 | María de la Salud Carrera Talaverón |
+|13/03/2025|v5.0|Resultados de la encuesta de feedback del S1| Sprint 1 | David Godoy Fernández y Gonzalo Navas Remmers |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -235,6 +236,88 @@ Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo 
 <div id='id3'></div>
 
 ## Resultados encuesta feedback Sprint 1 
+
+### Calificaciones de los mockups
+
+Tras analizar las puntuaciones que han otorgado los usuarios piloto a los distintos mockups hemos extraído algunas tendencias que podrían ser valiosas a la hora de crear un producto atractivo y fácilmente comprensible. La vista peor puntuada ha sido la pantalla principal de creación de eventos con una media de 3.43 sobre 5, mientras que la vista mejor puntuada ha sido la pantalla de selección de evento con una media de 4.35 sobre 5. A partir de estos datos queda claro que los usuarios han demostrado predilección por diseños más simples y directos, con elementos claros y colores llamativos. Las vistas más sobrecargadas y con menos colorido han sido en general menos llamativas y como veremos más adelante en los comentarios, han resultado más confusas para los usuarios.
+
+### Comentarios de Clientes
+
+- **Claridad y usabilidad**
+
+   - La pantalla principal de creación de eventos fue mencionada varias veces como confusa o desordenada.
+
+   - Algunos usuarios no entienden la sección "sigue buscando" y cómo se diferencia de otras opciones.
+
+   - Sugieren que los servicios se muestren de forma más clara y con una mejor estructura.
+
+- **Diseño visual**
+
+   - Varios comentarios destacan que la interfaz parece monótona, con falta de color y dinamismo.
+
+   - Se menciona la falta de una identidad de marca clara en el diseño.
+
+   - Proponen agregar iconos en los botones y mejorar la tipografía.
+
+- **Filtros y opciones adicionales**
+
+   - En la selección de servicios, los usuarios sugieren añadir filtros por precio o valoración.
+
+   - Proponen incluir un botón de "favoritos" para que los clientes guarden servicios de interés.
+
+   - Sugieren una opción para crear eventos personalizados, donde el usuario pueda describir el evento que quiere organizar.
+
+- **Información y toma de decisiones**
+
+   - Faltan detalles sobre los paquetes de servicios, ya que algunos usuarios no comprenden bien qué incluyen o cómo se configuran.
+
+   - En la pantalla de detalles del servicio, falta información suficiente para que el cliente decida si añadirlo al carrito.
+
+   - Sugieren una opción de comparación entre servicios para facilitar la decisión del cliente.
+
+### Comentarios de Proveedores
+
+- **Disponibilidad y reservas**
+   
+   - Se sugiere mostrar la disponibilidad del servicio para que los clientes sepan si pueden reservarlo en la fecha deseada.
+   
+   - Algunos comentarios mencionan la necesidad de un sistema de comunicación clara entre proveedor y cliente para concretar fechas y condiciones.
+
+- **Experiencia de usuario y engagement**
+   
+   - Se recomienda hacer la plataforma más atractiva visualmente**, ya que el sector de eventos requiere una presentación llamativa.
+   
+   - Se destaca que falta una conexión emocional con el cliente, sugiriendo mejorar el diseño para generar más confianza y entusiasmo.
+
+- **Interacción con clientes anteriores**
+   
+   - Se plantea la posibilidad de que los clientes puedan contactar con antiguos clientes para preguntar sobre un servicio antes de contratarlo.
+   
+   - Sugieren que las reseñas sean más visibles y que incluyan detalles como precio, ubicación y fecha del evento para mayor transparencia.
+
+- **Diferenciación de precios**
+   
+   - Preguntan si los proveedores podrán ofrecer diferentes precios según fecha o ubicación, ya que esto podría ser un factor clave en la contratación de servicios.
+
+### Propuestas de mejora
+
+- Mejorar la jerarquía y organización de la pantalla de creación de eventos.
+
+- Aumentar el atractivo visual con más colores, iconos y mejor tipografía.
+
+- Añadir filtros y opciones de ordenación en la selección de servicios.
+
+- Incorporar más información en los servicios, como disponibilidad y valoraciones.
+
+- Facilitar la comparación de servicios para que los clientes puedan elegir mejor.
+
+- Agregar un botón de favoritos para mejorar la experiencia del usuario.
+
+- Permitir que los clientes contacten con clientes anteriores para preguntar sobre un servicio.
+
+- Diferenciar los precios según fechas o ubicaciones si aplica.
+
+
 
 <div id='id4'></div>
 
