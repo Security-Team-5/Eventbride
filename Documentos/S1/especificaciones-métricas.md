@@ -24,7 +24,7 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: 11/03/2025
+### Fecha: 13/03/2025
 
 ### Entregable: Sprint 1
 
@@ -36,6 +36,7 @@
 |------------|---------|----------------------------------|----------|---------------------------------------------------------|
 | 26/02/2025 | v1.0     | Realización del documento       | Sprint 1 | Adrián Cabello Martín, Pablo Jesús Castellanos Compaña |
 | 11/03/2025 | v1.1     | Redacción de documento en formato markdown       | Sprint 1 | Ignacio Blanquero Blanco |
+| 13/03/2025 | v1.2     | Modificación líneas de código       | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 
@@ -62,7 +63,7 @@ Para el desarrollo correcto del proyecto se establecen distintas métricas y est
 <div id='lineas-de-codigo'></div>
 
 ### Líneas de código
-Cada desarrollador deberá tener un mínimo de 500 líneas de código realizadas al acabar el desarrollo del proyecto.
+Cada desarrollador deberá tener un mínimo de 500 líneas de código modificadas (añadidas y eliminadas) al acabar el desarrollo del proyecto.
 
 <div id='commits'></div>
 
