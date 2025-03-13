@@ -43,6 +43,8 @@
 | 12/03/2025 | v3.0    | Adición de nuevas tareas asignadas y reasignación de las anteriroes          | Sprint 1 | María de la Salud Carrera Talaverón |
 | 12/03/2025 | v3.1    | Análisis cualitativo actualizado                                             | Sprint 1 | María de la Salud Carrera Talaverón |
 | 12/03/2025 | v3.2    | Introducción y conclusión                                                    | Sprint 1 | María de la Salud Carrera Talaverón |
+| 13/03/2025 | v4.0    | Análisis cuantitativo                                                        | Sprint 1 | María de la Salud Carrera Talaverón |
+| 13/03/2025 | v4.1    | Análisis cualitativo                                                         | Sprint 1 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -63,29 +65,29 @@ El presente documento tiene como objetivo realizar un análisis tanto cuantitati
 
 ## Análisis cuantitativo
 
-El análisis cuantitativo se va a realizar en base a las métricas establecidas en el documento de Especificaciones métricas de este proyecto. También se comparará el número de horas totales esperadas con las que se llevan actualmente. Por persona, se esperan mínimo 500 líneas de código (LdC), 10 commits, 15 issues completadas con éxito, 5 pull requests revisadas, 5 tests y 150 horas. El fin del Sprint 1 supone aproximadamente el 43% del tiempo del proyecto. Por tanto, se espera que para el jueves día 13 de marzo de 2025 se lleven alrededor de 215 LdC, 4 commits, 6 issues completadas, 2 PR revisadas, 2 tests y 64,5 horas por persona. Si alguna de estas métricas aún no se ha cumplido, hay margen para compensarlas en sprints futuros (especialmente los tests, ya que no se han contemplado en la planificación aún). En la siguiente tabla se ve el progreso de cada desarrollador (en la rama `master` del proyecto), a día de 12 de marzo de 2025[^1]:
+El análisis cuantitativo se va a realizar en base a las métricas establecidas en el documento de Especificaciones métricas de este proyecto. También se comparará el número de horas totales esperadas con las que se llevan actualmente. Por persona, se esperan mínimo 500 líneas de código modificadas (LdC), 10 commits, 15 issues completadas con éxito, 5 pull requests (PR) revisadas, 5 tests y 150 horas. El fin del Sprint 1 supone aproximadamente el 43% del tiempo del proyecto. Por tanto, se espera que para el jueves día 13 de marzo de 2025 se lleven alrededor de 215 LdC, 4 commits, 6 issues completadas, 2 PR revisadas, 2 tests y 64.5 horas por persona. Si alguna de estas métricas aún no se ha cumplido, hay margen para compensarlas en sprints futuros (especialmente los tests, ya que no se han contemplado en la planificación aún). En la siguiente tabla se ve el progreso de cada desarrollador (en la rama `master` del proyecto), a día de 12 de marzo de 2025[^1]:
 
-| Desarrollador/a                     | LdC | Commits | Issues completadas  | PR revisadas | Tests | Horas |
-|-------------------------------------|-----|---------|---------------------|--------------|-------|-------|
-| Francisco Avilés Carrera            |     |         |                     |              |       |       |
-| Daniel Benito Hidalgo               |     |         |                     |              |       |       |
-| Ignacio Blanquero Blanco            |     |         |                     |              |       |       |
-| Adrián Cabello Martín               |     |         |                     |              |       |       |
-| María de la Salud Carrera Talaverón |     |         |                     |              |       |       |
-| Pablo Jesús Castellanos Compaña     |     |         |                     |              |       |       |
-| Fernando José de Celis Hurtado      |     |         |                     |              |       |       |
-| David Godoy Fernández               |     |         |                     |              |       |       |
-| Miguel Hernández Sánchez            |     |         |                     |              |       |       |
-| Antonio Montero López               |     |         |                     |              |       |       |
-| Gonzalo Navas Remmers               |     |         |                     |              |       |       |
-| Héctor Noguera González             |     |         |                     |              |       |       |
-| Natalia Olmo Villegas               |     |         |                     |              |       |       |
-| Manuel Pérez Vélez                  |     |         |                     |              |       |       |
-| Andrés Pizzano Cerrillos            |     |         |                     |              |       |       |
-| Sergio Pons López                   |     |         |                     |              |       |       |
-| Lorenzo Torralba Lanzas             |     |         |                     |              |       |       |
+| Desarrollador/a                     | LdC             | Commits | Issues completadas | PR revisadas | Tests | Horas    |
+|-------------------------------------|-----------------|---------|--------------------|--------------|-------|----------|
+| Francisco Avilés Carrera            | 715++ 163--     | 13      | 14                 | 6            | 0     | 61:29:38 |
+| Daniel Benito Hidalgo               | 2260++ 291--    | 14      | 13                 | 0            | 0     | 78:37:03 |
+| Ignacio Blanquero Blanco            | 2164++ 17--     | 52      | 9                  | 0            | 0     | 85:38:32 |
+| Adrián Cabello Martín               | 415488+++ 392-- | 9       | 11                 | 3            | 0     | 59:59:19 |
+| María de la Salud Carrera Talaverón | 1505++ 508--    | 22      | 16                 | 2            | 0     | 64:21:50 |
+| Pablo Jesús Castellanos Compaña     | 2548++ 1369--   | 53      | 21                 | 13           | 0     | 99:15:44 |
+| Fernando José de Celis Hurtado      | 148++ 43--      | 3       | 7                  | 0            | 0     | 58:58:43 |
+| David Godoy Fernández               | 1010++ 391--    | 13      | 13                 | 3            | 0     | 61:29:29 |
+| Miguel Hernández Sánchez            | 1202++ 533--    | 22      | 12                 | 3            | 0     | 60:30:23 |
+| Antonio Montero López               | 33++ 15--       | 4       | 7                  | 3            | 0     | 72:19:27 |
+| Gonzalo Navas Remmers               | 1512++ 888--    | 15      | 12                 | 0            | 0     | 66:12:41 |
+| Héctor Noguera González             | 16++ 4--        | 2       | 6                  | 3            | 0     | 63:58:10 |
+| Natalia Olmo Villegas               | 537++ 168--     | 8       | 16                 | 1            | 0     | 86:41:21 |
+| Manuel Pérez Vélez                  | 1188++ 606--    | 4       | 10                 | 1            | 0     | 74:09:05 |
+| Andrés Pizzano Cerrillos            | 1376++ 597--    | 18      | 12                 | 4            | 0     | 55:36:03 |
+| Sergio Pons López                   | 1195+++ 16--    | 13      | 8                  | 1            | 0     | 76:27:23 |
+| Lorenzo Torralba Lanzas             | 272++ 133--     | 8       | 13                 | 2            | 0     | 48:22:03 |
 
-Además del progreso de los miembros del equipo, se van a analizar también los costes del proyecto  que llevamos hasta ahora frente a los planificados.
+No se va a reflejar en este documento el análisis de los costes del proyecto hasta la fecha frente a los planificados para todo el proyecto, debido a que estos están reflejados en el documento correspondiente: `tiempos-y-costes-hasta-la-fecha-md`.
 
 <div id='id2'></div>
 
@@ -101,25 +103,25 @@ La labor de los desarrolladores y testers incluye:
 - **Comunicación:** informar de dificultades y problemas que se encuentren durante el desarrollo.
 - **Compromiso con la calidad:** asegurarse de que sus tareas cumplan con los estándares de calidad definidos por el equipo y la asignatura (uso de plantillas para la documentación, limpieza de código, buenas prácticas software, etc.).
 
-| Desarrollador/a                     | Esfuerzo | Finalización tareas  | Registro tiempo | Comunicación | Compromiso con la calidad |
-|-------------------------------------|----------|----------------------|-----------------|--------------|---------------------------|
-| Francisco Avilés Carrera            |          |      Sí              | Sí              |     Sí       | Sí                 |
-| Daniel Benito Hidalgo               |          |      Sí              | Sí              |     Sí       | Mejorable                 |
-| Ignacio Blanquero Blanco            |          |      Sí              | Sí              |     Sí       | Mejorable                 |
-| Adrián Cabello Martín               |          |      Sí              | Sí              |     Sí       | Mejorable                 |
-| María de la Salud Carrera Talaverón |          |      Sí              | Sí              |     Sí       | Sí                 |
-| Pablo Jesús Castellanos Compaña     |          |      Sí              | Sí              |     Sí       | Sí                 |
-| Fernando José de Celis Hurtado      |          |      Sí              | Sí              |     Sí       | Mejorable                 |
-| David Godoy Fernández               |          |      Sí              | Sí              |     Sí       | Mejorable                 |
-| Miguel Hernández Sánchez            |          |       Sí             | Sí              |     Sí       | Mejorable                 |
-| Antonio Montero López               |          |       Sí             | Sí              |     Sí       | Sí                 |
-| Gonzalo Navas Remmers               |          |       Sí             | Sí              |     Sí       | Mejorable                 |
-| Héctor Noguera González             |          |       Sí             | Sí              |     Sí       | Mejorable                 |
-| Natalia Olmo Villegas               |          |       Sí             | Sí              |     Sí       | Sí                 |
-| Manuel Pérez Vélez                  |          |       Sí             | Sí              |     Sí       | Sí                 |
-| Andrés Pizzano Cerrillos            |          |       Sí             | Sí              |     Sí       | Mejorable                 |
-| Sergio Pons López                   |          |       Sí             | Sí              |     Sí       | Mejorable                 |
-| Lorenzo Torralba Lanzas             |          |       Sí             | Sí              |     Sí       | Mejorable                 |
+| Desarrollador/a                     | Esfuerzo   | Finalización tareas | Registro tiempo | Comunicación | Compromiso con la calidad |
+|-------------------------------------|------------|---------------------|-----------------|--------------|---------------------------|
+| Francisco Avilés Carrera            | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Daniel Benito Hidalgo               | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Ignacio Blanquero Blanco            | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Adrián Cabello Martín               | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| María de la Salud Carrera Talaverón | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Pablo Jesús Castellanos Compaña     | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Fernando José de Celis Hurtado      | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| David Godoy Fernández               | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Miguel Hernández Sánchez            | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Antonio Montero López               | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Gonzalo Navas Remmers               | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Héctor Noguera González             | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Natalia Olmo Villegas               | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Manuel Pérez Vélez                  | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Andrés Pizzano Cerrillos            | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Sergio Pons López                   | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Lorenzo Torralba Lanzas             | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
 
 En cuanto a los miembros del grupo con roles extra, se van a comentar las responsabilidades de cada uno según el rol que tengan. La Project Manager (PM) debe asegurar la correcta gestión del proyecto (lo que se traduce en la planificación del sprint y la asignación de tareas), facilitando la comunicación y coordinación del equipo, así como el cumplimiento de plazos y objetivos. Los Jefes de Desarrollo (JD) deben cumplir la misma función pero únicamente sobre el subgrupo de trabajo que gestionan, además de apoyar a la PM en su labor.
 
