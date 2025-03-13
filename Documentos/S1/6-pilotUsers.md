@@ -236,6 +236,10 @@ Se encargará de la comunicación con ellos Daniel Benito Hidalgo y, como apoyo 
 
 ## Resultados encuesta feedback Sprint 1 
 
+### Calificaciones de los mockups
+
+Tras analizar las puntuaciones que han otorgado los usuarios piloto a los distintos mockups hemos extraído algunas tendencias que podrían ser valiosas a la hora de crear un producto atractivo y fácilmente comprensible. La vista peor puntuada ha sido la pantalla principal de creación de eventos con una media de 3.43 sobre 5, mientras que la vista mejor puntuada ha sido la pantalla de selección de evento con una media de 4.35 sobre 5. A partir de estos datos queda claro que los usuarios han demostrado predilección por diseños más simples y directos, con elementos claros y colores llamativos. Las vistas más sobrecargadas y con menos colorido han sido en general menos llamativas y como veremos más adelante en los comentarios, han resultado más confusas para los usuarios.
+
 ### Comentarios de Clientes
 
 - **Claridad y usabilidad**
