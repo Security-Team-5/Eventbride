@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import apiClient from '../apiClient';
 import "../App.css";
 
@@ -117,7 +117,7 @@ const VenuesScreen = () => {
                             <p>Dirección: {venue.address}</p>
                             <p>Capacidad máxima: {venue.maxGuests} personas</p>
                             <p>Superficie: {venue.surface} m²</p>
-                            <p>Ciudad: {venue.city}</p>
+                            <p>Ciudad: {venue.cityAvailable}</p>
                             <p>Ubicación: {venue.coordinates}</p>
                             <p>Código Postal: {venue.postalCode}</p>
                         </li>

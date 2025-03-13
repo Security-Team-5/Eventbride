@@ -37,7 +37,7 @@ function Navbar() {
         </div>
         )}
           </p>
-          <p className="navbar-list"><a href="/lugares">Recintos</a></p>
+          <p className="navbar-list"><a href="/venues">Recintos</a></p>
           <p className="navbar-list"><a href="/proveedores">Otros servicios</a></p>
           <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
           <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
