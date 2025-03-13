@@ -36,6 +36,7 @@
 |12/02/2025 |v1.0|Creación del documento y redacción del mismo| Sprint 1 |Daniel Benito Hidalgo|
 |12/02/2025 |v1.1|Correcciones ortográficas y de redacción| Sprint 1 |Gonzalo Navas Remmers|
 |12/02/2025 |v1.1|Cambios en los criterios de evaluación| Sprint 1 |Gonzalo Navas Remmers|
+|13/02/2025 |v2.0|Estudiantes calificados| Sprint 1 | David Godoy Fernández y Gonzalo Navas Remmers|
 
 
 ## Contenido
