@@ -87,7 +87,7 @@ El análisis cuantitativo se va a realizar en base a las métricas establecidas 
 | Sergio Pons López                   | 1195+++ 16--    | 13      | 8                  | 1            | 0     | 76:27:23 |
 | Lorenzo Torralba Lanzas             | 272++ 133--     | 8       | 13                 | 2            | 0     | 48:22:03 |
 
-No se va a reflejar en este documento el análisis de los costes del proyecto hasta la fecha frente a los planificados para todo el proyecto, debido a que estos están reflejados en el documento correspondiente: `tiempos-y-costes-hasta-la-fecha-md`.
+No se va a reflejar en este documento el análisis de los costes del proyecto hasta la fecha frente a los planificados para todo el proyecto, debido a que estos están reflejados en el documento correspondiente: `costsAnalysis.md`.
 
 <div id='id2'></div>
 
