@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eventbride.event.Event;
+
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,11 +55,12 @@ public class EventPropertiesController {
         return new ResponseEntity<>(savedEventProperties, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{eventId}/add-otherservice/{otherServiceId}")
-    public ResponseEntity<String> addOtherServiceToEvent(@PathVariable Integer eventId, @PathVariable Integer otherServiceId) {
-        eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId);
-        return ResponseEntity.ok("Servicio añadido al evento correctamente");
+    @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
+    public ResponseEntity<Event> addOtherServiceToEvent(@PathVariable Integer eventId, @PathVariable Integer otherServiceId) {
+        Event updatedEvent = eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId);
+        return ResponseEntity.ok(updatedEvent);
     }
+    
 
     @PostMapping("/{eventId}/add-otherservice-hours")
     public ResponseEntity<String> addOtherServiceToEventWithHours(@PathVariable Integer eventId, @PathVariable Integer otherServiceId, @PathVariable Integer hours) {
