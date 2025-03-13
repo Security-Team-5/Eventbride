@@ -1,6 +1,6 @@
 # <center>Performance Evaluation</center>
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
-<center><img src=".\img\Eventbride.png"></center>
+<center><img src="https://iili.io/3BcQ3YJ.md.png" alt="Event Image"></center>
 
 ### Grupo 3: Eventbride
 
@@ -33,8 +33,8 @@
 
 | Fecha      | Versión | Descripción                                | Entrega  | Contribuyente(s)                    |
 |------------|---------|--------------------------------------------|----------|-------------------------------------|
-| 20/02/2025 | v1.0    | Creación del documento y redacción de las contribuciones de cada miembros para el entregable DP | DP | Ignacio Blanquero Blanco |
-| 13/03/2025 | v1.1    | Creación del documento y redacción de las contribuciones de cada miembros | Sprint 1 | Ignacio Blanquero Blanco |
+| 20/02/2025 | v1.0    | Creación del documento y redacción de las contribuciones de cada miembro para el entregable DP | DP | Ignacio Blanquero Blanco |
+| 13/03/2025 | v1.1    | Redacción de las contribuciones de cada miembro para el entregable S1 | Sprint 1 | Ignacio Blanquero Blanco |
 
 ---
 
@@ -47,7 +47,6 @@
     - [Entregable: Sprint 1](#entregable-sprint-1)
     - [Historial de versiones](#historial-de-versiones)
   - [Contenido](#contenido)
-  - [Introducción](#introducción)
   - [Tabla Evaluación de Desempeño Individual Acordada](#tabla-evaluación-de-desempeño-individual-acordada)
   - [Devising a Project (DP)](#devising-a-project-dp)
     - [Avilés Carrera, Francisco](#avilés-carrera-francisco)
@@ -88,12 +87,6 @@
   - [Bibliografía](#bibliografía)
 
 
-<div id='intro'></div>
-
-## Introducción
-
-Introducción.
-
 <div id='id1'></div>
 
 ## Tabla Evaluación de Desempeño Individual Acordada
@@ -119,6 +112,19 @@ Introducción.
 | Torralba Lanzas, Lorenzo             | 10   | 10  |     |     |      |      |       |      |
 | **TOTAL**                             | 170  | 170 |     |     |      |      |       |      |
 
+Como se mencionó previamente en el documento titulado *retrospectiva-mitad-sprint-S1*, "todos aquellos cuyo porcentaje de completitud sea **mayor al 80%** se considerará que han rendido bien y recibirán un **10** como nota en la retrospectiva."
+
+Para calcular dicho porcentaje, se ha utilizado la siguiente fórmula:
+
+((NcP0\*3 + NcP1\*2 + NcP2\*1) / (NeP0\*3 + NeP1\*2 + NeP2\*1)) \*100
+
+Donde:
+
+- **Nc**: Número de tareas completadas
+- **Ne**: Número de tareas estimadas
+- **P0**: Tarea que debe estar terminada en el sprint.
+- **P1**: Tarea idealmente realizada en el sprint, aunque puede retrasar el flujo del proyecto, no es tan crítica.
+- **P2**: Tarea que puede dejarse para el siguiente sprint.
 
 <div id='id2'></div>
 
@@ -501,6 +507,23 @@ También he recogido cada semana el feedback de diferentes grupos.
 <div id='id55'></div>
 
 ### Pizzano Cerrillos, Andrés
+
+Durante este sprint, he contribuido activamente al desarrollo del proyecto mediante la ejecución de diversas tareas clave en diseño, desarrollo y despliegue. 
+
+Diseñé el diagrama UML del sistema, definiendo la arquitectura y estructura del proyecto de acuerdo con los requisitos previamente establecidos (tarea realizada junto a Francisco Avilés). 
+
+Revisé y corregí los casos de uso core de la aplicación, asegurando su alineación con los requisitos del sistema y mejorando su precisión (tarea realizada junto a Adrián Cabello). 
+
+En el frontend, desarrollé la pantalla Home Page de la web, garantizando una interfaz funcional y estéticamente acorde a los mockups diseñados (tarea realizada junto a Lorenzo Torralba). 
+
+Modelé el esquema de la base de datos, definiendo su estructura y relaciones de acuerdo con el diseño UML realizado (schema.sql). 
+
+En el backend, modifiqué la función de eliminación de eventos en el controlador, corrigiendo errores de dependencia con otras entidades para permitir la implementación de la pantalla de eliminación. Además, diseñé un modal de confirmación, facilitando una experiencia más intuitiva y segura para los usuarios al eliminar eventos (tarea realizada junto a Natalia Olmo). 
+
+Configuré el despliegue en App Engine y Cloud SQL, estableciendo un entorno de producción estable basado en versiones y siguiendo la guía de enseñanza virtual (tarea realizada junto a Lorenzo Torralba). 
+
+Finalmente, creé un workflow automatizado en GitHub Actions, permitiendo que cada push a la rama main desencadene automáticamente un proceso de despliegue, mejorando la eficiencia del desarrollo. 
+
 
 <div id='id56'></div>
 
