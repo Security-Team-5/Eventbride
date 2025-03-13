@@ -112,59 +112,59 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
 
 Para comenzar, al iniciar la aplicación se muestra un formulario de inicio de sesión el cual hay que completar para poder acceder a las funcionalidades de esta.
 
-![](..\img\login1.png)
+<center><img src="..\img\login1.png"></center>
 
 En caso de no tener cuenta, se puede acceder a la pestaña de registrarse y completar el formulario correspondiente para poder crearse una cuenta en el sistema.
 
-![](..\img\login2.png)
+<center><img src="..\img\login2.png"></center>
 
 Para cualquier tipo de usuario se puede ver una página de inicio que es la página siguiente donde nos presentamos y hay una breve descripción sobre lo que hacemos y como trabajamos.
 
-![](..\img\inicio.png)
+<center><img src="..\img\inicio.png"></center>
 
 Si iniciamos sesión con un usuario **cliente**, y accedemos a la sección de mis servicios, se pueden observar los servicios pertenecientes al usuario y sus respectivos datos.
 
-![](..\img\miseventos.png)
+<center><img src="..\img\miseventos.png"></center>
 
 Se puede entrar en detalles de los eventos para poder leer toda la información de los mismos y también se puede borrar el evento que se seleccione.
 
-![](..\img\detalleseventos.png)
+<center><img src="..\img\detalleseventos.png"></center>
 
 También se puede meter en la sección de crear evento donde se muestra un formulario a completar y se crea el evento. 
 
-![](..\img\crearevento.png)
+<center><img src="..\img\crearevento.png"></center>
 
 Y hasta el momento, también se puede acceder a la pestaña de términos y condiciones para poder leerlas.
 
-![](..\img\terminos.png)
+<center><img src="..\img\terminos.png"></center>
 
 Si iniciamos sesión con un usuario **proveedor** y se accede a la pestaña de mis servicios, se muestran los servicios pertenecientes al proveedor pudiéndose editar y crear nuevos servicios en la misma sección.
 
-![](..\img\misservicios.png)
+<center><img src="..\img\misservicios.png"></center>
 
 Dentro de editar un servicio, se muestra un formulario a modificar si se desea cambiar algún atributo del servicio.
 
-![](..\img\editarservicio.png)
+<center><img src="..\img\editarservicio.png"></center>
 
 Y de la misma forma si se quiere crear un servicio, se muestra el formulario correspondiente a completar.
 
-![](..\img\crearservicio.png)
+<center><img src="..\img\crearservicio.png"></center>
 
 Si iniciamos sesión con un usuario **admin**, y accedemos a administrar servicios, se muestran todos los servicios del sistema dando la opción de editar y eliminar. 
 
-![](..\img\administrarservicios.png)
+<center><img src="..\img\administrarservicios.png"></center>
 
 Si accedemos a la sección de editar, se nos muestra el formulario a rellenar.
 
-![](..\img\admineditarservicio.png)
+<center><img src="..\img\admineditarservicio.png"></center>
 
 Si accedemos a la sección de administrar usuarios, se encuentran todos los usuarios del sistema devolviéndolos directamente en forma de formulario y si se desea editar se modifica dicho formulario y se pulsa el botón de editar. También se pueden eliminar del sistema.
 
-![](..\img\administrarusuarios.png)
+<center><img src="..\img\administrarusuarios.png"></center>
 
 Por último, la sección de administrar eventos funciona de la misma manera que la anterior mencionada.
 
-![](..\img\administrareventos.png)
+<center><img src="..\img\administrareventos.png"></center>
 
 <div id='id5'></div>
 
