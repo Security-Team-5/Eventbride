@@ -1,4 +1,4 @@
-# <p style="text-align: center;">Título del Documento</p>
+# <p style="text-align: center;">Casos de uso</p>
 ## <p style="text-align: center;">Ingeniería del Software y Práctica Profesional (ISPP)</p>
 <center><img src="../img/Eventbride.png"></center>
 
@@ -39,6 +39,7 @@
 |10/03/2025 |v1.3 |Actualización y revisión | Sprint 1 |Pablo Jesús Castellanos Compaña y Natalia Olmo Villegas|
 |10/03/2025 |v1.4 |Pasar a formato Markdown | Sprint 1 |Daniel Benito Hidalgo|
 |12/03/2025 |v1.5 |Adición de información requerida en la plantilla | Sprint 1 |María de la Salud Carrera Talaverón|
+|13/03/2025 |v1.6 |Corrección del título del documento | Sprint 1 |Fernando José de Celis Hurtado|
 
 ## Contenido
 1. [Casos de uso Core](#intro)
