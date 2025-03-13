@@ -1,4 +1,33 @@
-# Acuerdo de Participación en el Programa de Usuarios Piloto de EventBride - Curso 2024-2025
+# <center>Acuerdo de Participación en el Programa de Usuarios Piloto de EventBride - Curso 2024-2025</center>
+## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
+<center><img src="..\..\img\Eventbride.png"></center>
+
+### Grupo 3: Eventbride
+
+### Miembros:
+- Francisco Avilés Carrera
+- Daniel Benito Hidalgo
+- Ignacio Blanquero Blanco
+- Adrián Cabello Martín
+- María de la Salud Carrera Talaverón
+- Pablo Jesús Castellanos Compaña
+- Fernando José de Celis Hurtado
+- David Godoy Fernández
+- Miguel Hernández Sánchez
+- Antonio Montero López
+- Gonzalo Navas Remmers
+- Héctor Noguera González
+- Natalia Olmo Villegas
+- Manuel Pérez Vélez
+- Andrés Pizzano Cerrillos
+- Sergio Pons López
+- Lorenzo Torralba Lanzas
+
+### Fecha: 13/03/2025
+
+### Entregable: Sprint 1
+
+### Versión :1.0
 
 **Nombre del Usuario**: Felipe Solís Agudo  
 **Fecha**: 10/03/2025

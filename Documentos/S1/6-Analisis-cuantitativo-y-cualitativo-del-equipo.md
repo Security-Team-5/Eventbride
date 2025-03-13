@@ -27,7 +27,6 @@
 
 ### Entregable: Sprint 1
 
----
 
 ### Historial de versiones
 
