@@ -41,14 +41,13 @@
 ## Contenido
 1. [Introducción](#intro)
 2. [Concordancia con los casos de uso](#id1)
-    1. [Usuario General](#id2)
-    2. [Usuario Cliente](#id3)
-    3. [Usuario Proveedor](#id4)
-3. [Guía de la aplicación](#id5)
-4. [Información necesaria para utilizar todo lo relacionado con Eventbride](#id6)
-5. [Requisitos para utilizar el sistema](#id7)
-6. [Video demo de la aplicación](#id8)
-7. [Bibliografía](#id9)
+    1. [Usuario Cliente](#id2)
+    2. [Usuario Proveedor](#id3)
+3. [Guía de la aplicación](#id4)
+4. [Información necesaria para utilizar todo lo relacionado con Eventbride](#id5)
+5. [Requisitos para utilizar el sistema](#id6)
+6. [Video demo de la aplicación](#id7)
+7. [Bibliografía](#id8)
 
 <div id='intro'></div>
 
@@ -64,22 +63,6 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
 
 <div id='id2'></div>
 
-### Usuario General
-
-1. **Contactar con el servicio de atención al cliente (CU - 06)**
-
-   *“El usuario necesita ayuda o tiene una pregunta sobre la aplicación.”*
-
-   Mockup - Frontend en #S1
-
-2. **Recibir notificaciones (CU - 08)**
-
-   *“El usuario quiere recibir actualizaciones y notificaciones importantesrelacionadas con sus eventos, reservas o cuenta.”*
-
-   Mockup - Frontend en #S1
-
-<div id='id3'></div>
-
 ### Usuario Cliente
 
 1. **Solicitar contratar un servicio para un evento (CC - 01)**
@@ -87,6 +70,14 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
    *“Usuario cliente solicita servicio ofertado en la plataforma, para celebración. Unservicio también incluye a un recinto en este caso.”*
 
    Mockup - Frontend en #S1
+
+   Una vez implementada la función, el usuario podrá solicitar el servicio para su evento realizando los siguientes pasos:
+
+- Establecer qué tipo de servicio que desea contratar siendo las opciones: “**Recintos**” o “**Otros servicios**” situados en el navbar. Donde “**Otros**” engloba cualquier servicio que no sea un local.
+
+- Una vez en la pagina que se haya escogido para contratar el servicio a desear, el usuario deberá seleccionar el botón de "**Añadir evento**" correspondiente al evento.
+
+- Una vez pulsado, aparecerá un modal con una lista de los eventos del usuario, donde deberá seleccionar el evento donde desea añadir el servicio escogido.
 
 2. **Crear evento (CC - 03)**
 
@@ -99,37 +90,13 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
   Otra forma de realizarlo es darle a la opción “**Desde cero**” una vez haya pulsado “**Crear evento**” en el navbar.
 
 - Una vez en la pantalla “Crear evento” el usuario debe de realizar las siguientes acciones:
-  - Establecer qué tipo de evento desea crear siendo las opciones: “Boda”, “Bautizo” o “Comunión”.
+  - Establecer qué tipo de evento desea crear siendo las opciones: “**Boda**”, “**Bautizo**” o “**Comunión**”.
   - Introducir el número de invitados estimados para el evento.
   - Reflejar el presupuesto estimado para todo el evento.
   - Escoger la fecha del evento.
-- Ya introducidos todos los datos, pulsar el botón de “Crear evento”.
+- Ya introducidos todos los datos, pulsar el botón de “**Crear evento**”.
 
-3. **Gestionar lista de invitados (CU - 04)**
-
-   *“El usuario cliente quiere crear y gestionar la lista de invitados a su evento.”*
-
-   Mockup - Frontend en #S1
-
-4. **Seguimiento del presupuesto del evento (CU - 05)**
-
-   *“El usuario quiere establecer un presupuesto para su evento y realizar unseguimiento de los gastos.”*
-
-   Mockup - Frontend en #S1
-
-5. **Revisar y calificar servicios (CU - 07)**
-
-   *“El usuario quiere dejar una reseña y calificación de un servicio que contrató.”*
-
-   Mockup - Frontend en #S1
-
-6. **Asistente de compra (CU - 09)**
-
-   *“Usuario cliente quiere organizar un evento mediante un asistente virtual parafiltrar resultados.”*
-
-   Mockup - Frontend en #S1
-
-<div id='id4'></div>
+<div id='id3'></div>
 
 ### Usuario Proveedor
 
@@ -153,7 +120,7 @@ Este manual de usuario le guiará a través de las funcionalidades principales d
 
 - Ya introducidos todos los datos, pulsar el botón de “**Registrar otro servicio**”.
 
-<div id='id5'></div>
+<div id='id4'></div>
 
 ## Guía de la aplicación
 
@@ -213,7 +180,7 @@ Por último, la sección de administrar eventos funciona de la misma manera que 
 
 <center><img src="..\img\administrareventos.png"></center>
 
-<div id='id6'></div>
+<div id='id5'></div>
 
 ## Información necesaria para utilizar todo lo relacionado con Eventbride
 
@@ -255,17 +222,17 @@ Administrador:
 
 **Credenciales de Clockify:** cuando inicies sesión con clockify te pedirá un correo electrónico, meter el correo corporativo. Acto seguido te enviará una clave al correo corporativo.
 
-<div id='id7'></div>
+<div id='id6'></div>
 
 ## Requisitos para utilizar el sistema
 Todo lo relacionado para la puesta en marcha del proyecto viene indicado en el [README](../../README.md) del repositorio de GitHub.
 
-<div id='id8'></div>
+<div id='id7'></div>
 
 ## Video demo de la aplicación
 El video demo de la aplicación se encuentra en el siguiente [enlace](https://uses0-my.sharepoint.com/personal/natolmvil_alum_us_es/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fnatolmvil%5Falum%5Fus%5Fes%2FDocuments%2FISPP%2FSPRINT1%2FVideo%20demo&ga=1).
 
-<div id='id9'></div>
+<div id='id8'></div>
 
 ## Bibliografía
 Intencionalmente en blanco
