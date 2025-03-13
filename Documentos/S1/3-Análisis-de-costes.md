@@ -182,7 +182,8 @@ CAPEX
 | Licencias iniciales (GitHub Enterprise, Copilot, Codacy, APIs externas) | 2.866,16  |
 | Infraestructura inicial (Google Cloud, oficinas)            | 3.061,24  |
 | Plan de contingencia (10% del CI)                           | 7.472,94  |
-| Total CAPEX                                                 | 91.800,34 |
+| Coste usuarios piloto                                        | 4.320,00  |
+| Total CAPEX                                                 | 96.120,34 |
 
 OPEX
 
