@@ -87,14 +87,14 @@ max(0, (R-0.3*DR)*Q)
 
 Una vez explicados los diferentes criterios y prácticas que rigen el proceso de evaluación de los usuarios piloto de EventBride, se procederá a calificarlos:
 
-|Alumno|Sprint 1(Mockups)|Nota asignada|Justificación|
+|Alumno|Sprint|Nota asignada|Justificación|
 |---|---|---|---|
-|Alumno 1 |Sprint 1(Mockups)| 10 | Han aportado feedback útil para el desarrollo, no se han expresado criterios por lo que se tendrán en cuenta la calidad del feeback en esta evaluación  |
-|Alumno 2 |Sprint 1(Mockups)| 10 | Han aportado feedback útil para el desarrollo, no se han expresado criterios por lo que se tendrán en cuenta la calidad del feeback en esta evaluación  |
-|Alumno 3 |Sprint 1(Mockups)| 10 | Han aportado feedback útil para el desarrollo, no se han expresado criterios por lo que se tendrán en cuenta la calidad del feeback en esta evaluación  |
-|Alumno 4 |Sprint 1(Mockups)| 10 | Han aportado feedback útil para el desarrollo, no se han expresado criterios por lo que se tendrán en cuenta la calidad del feeback en esta evaluación  |
-|Alumno 5 |Sprint 1(Mockups)| 10 | Han aportado feedback útil para el desarrollo, no se han expresado criterios por lo que se tendrán en cuenta la calidad del feeback en esta evaluación  |
-|Alumno 6 |Sprint 1(Mockups)| 10 | Han aportado feedback útil para el desarrollo, no se han expresado criterios por lo que se tendrán en cuenta la calidad del feeback en esta evaluación  |
+|Alba Ramos Vargas |Sprint 1| 10 | Al no haberse declarado los criterios de evaluación al momento de aportarse el feedback, se ha tenido en cuenta que aportar feedback útil supone la máxima calificación  |
+|Felipe Solís Agudo |Sprint 1| 10 | Al no haberse declarado los criterios de evaluación al momento de aportarse el feedback, se ha tenido en cuenta que aportar feedback útil supone la máxima calificación  |
+|Hugo Borrero Ángulo |Sprint 1| 10 | Al no haberse declarado los criterios de evaluación al momento de aportarse el feedback, se ha tenido en cuenta que aportar feedback útil supone la máxima calificación  |
+|Jorge Muñoz Rodríguez |Sprint 1| 10 | Al no haberse declarado los criterios de evaluación al momento de aportarse el feedback, se ha tenido en cuenta que aportar feedback útil supone la máxima calificación  |
+|Luis Mellado Díaz |Sprint 1| 10 | Al no haberse declarado los criterios de evaluación al momento de aportarse el feedback, se ha tenido en cuenta que aportar feedback útil supone la máxima calificación  |
+|Ramón Vergara Garrido |Sprint 1| 10 | Al no haberse declarado los criterios de evaluación al momento de aportarse el feedback, se ha tenido en cuenta que aportar feedback útil supone la máxima calificación  |
 
 
 <div id='bib'></div>
