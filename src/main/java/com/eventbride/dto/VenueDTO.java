@@ -1,6 +1,7 @@
 package com.eventbride.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.eventbride.venue.Venue;
@@ -27,6 +28,8 @@ public class VenueDTO {
     private String address;
     private int maxGuests;
     private double surface;
+    private LocalTime earliestTime;
+    private LocalTime latestTime;
     private UserDTO userDTO;
 
 
@@ -49,6 +52,8 @@ public class VenueDTO {
         this.address = venue.getAddress();
         this.maxGuests = venue.getMaxGuests();
         this.surface = venue.getSurface();
+        this.earliestTime = venue.getEarliestTime();
+        this.latestTime = venue.getLatestTime();
         if(venue.getUser() != null){
             this.userDTO = new UserDTO(venue.getUser());
         }

@@ -18,6 +18,14 @@ const EditarServicio = () => {
         picture: '',
         description: '',
         otherServiceType: 'CATERING',
+        postalCode: '',
+        coordinates: '',
+        address: '',
+        maxGuests: '',
+        surface: '',
+        earliestTime: '',
+        latestTime: '',
+        extraInformation: ''
     })
 
     const [formData, setFormData] = useState({
@@ -32,6 +40,14 @@ const EditarServicio = () => {
         limitedByPricePerGuest: false,
         limitedByPricePerHour: false,
         otherServiceType: 'CATERING',
+        postalCode: '',
+        coordinates: '',
+        address: '',
+        maxGuests: 0,
+        surface: 0,
+        earliestTime: '',
+        latestTime: '',
+        extraInformation: '',
         user: {
             id: currentUser.id
         }
@@ -58,6 +74,8 @@ const EditarServicio = () => {
                         address: response.data.address,
                         maxGuests: response.data.maxGuests,
                         surface: response.data.surface,
+                        earliestTime: response.data.earliestTime,
+                        latestTime: response.data.latestTime,
                         user: {
                             id: currentUser.id
                         }
@@ -115,7 +133,7 @@ const EditarServicio = () => {
 
         if (serviceType == 'venue') {
             try {
-                const reponse = await apiClient.put(`/api/venues/${id}`, formData);
+                const response = await apiClient.put(`/api/venues/${id}`, formData);
                 navigate('/misservicios');
             }
             catch (error) {
@@ -264,7 +282,7 @@ const EditarServicio = () => {
                             onChange={handleChange}
                             required
                             minLength="1"
-                            maxLength="250"
+                            maxLength="1000"
                         />
                     </div>
                     {serviceType == "venue" ? (
@@ -338,6 +356,30 @@ const EditarServicio = () => {
                                     min="1"
                                 />
                             </div>
+                            <div className="form-group">
+                                <label htmlFor="earliestTime">Hora de apertura:</label>
+                                <p className="error-title">{errors.earliestTime}</p>
+                                <input
+                                    type="time"
+                                    id="earliestTime"
+                                    name="earliestTime"
+                                    value={formData.earliestTime}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="latestTime">Hora de cierre:</label>
+                                <p className="error-title">{errors.latestTime}</p>
+                                <input
+                                    type="time"
+                                    id="latestTime"
+                                    name="latestTime"
+                                    value={formData.latestTime}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         </div>
                     ) : (
                         <div className="form-section">
@@ -367,7 +409,7 @@ const EditarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="250"
+                                    maxLength="1000"
                                 />
                             </div>
                         </div>

@@ -136,10 +136,6 @@ function AdminServices() {
                                                 <input type="number" name="fixedPrice" value={editingService.fixedPrice} onChange={handleInputChange} />
                                             </div>
                                             <div className="form-group">
-                                                <label htmlFor="hours"><strong>Horas:</strong></label>
-                                                <input type="number" name="hours" value={editingService.hours} onChange={handleInputChange} />
-                                            </div>
-                                            <div className="form-group">
                                                 <label htmlFor="limitedByPricePerGuest"><strong>Limitado por Precio por Invitado:</strong></label>
                                                 <select name="limitedByPricePerGuest" value={editingService.limitedByPricePerGuest} onChange={handleInputChange}>
                                                     <option value={true}>Sí</option>
@@ -173,9 +169,9 @@ function AdminServices() {
 
                                             <div className="form-group">
                                                 <label htmlFor="picture"><strong>Enlace de la Imagen:</strong></label>
-                                                <input style={{fontSize: "16px"}} type="text" name="picture" value={editingService.picture} onChange={handleInputChange} />
+                                                <input style={{ fontSize: "16px" }} type="text" name="picture" value={editingService.picture} onChange={handleInputChange} />
                                             </div>
-                                            {service.type === "venue" && (
+                                            {service.type === "venues" && (
                                                 <>
                                                     <div className="form-group">
                                                         <label htmlFor="postalCode"><strong>Código Postal:</strong></label>
@@ -197,20 +193,53 @@ function AdminServices() {
                                                         <label htmlFor="surface"><strong>Superficie:</strong></label>
                                                         <input type="number" name="surface" value={editingService.surface} onChange={handleInputChange} />
                                                     </div>
+                                                    <div className="form-group">
+                                                        <label htmlFor="earliestTime"><strong>Hora de apertura:</strong></label>
+                                                        <input type="time" name="earliestTime" value={editingService.earliestTime} onChange={handleInputChange} />
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <label htmlFor="latestTime"><strong>Hora de cierre:</strong></label>
+                                                        <input type="time" name="latestTime" value={editingService.latestTime} onChange={handleInputChange} />
+                                                    </div>
                                                 </>
                                             )}
-                                            {service.type === "other-service" && (
+                                            {service.type === "other-services" && (
                                                 <>
                                                     <div className="form-group">
                                                         <label htmlFor="otherServiceType"><strong>Tipo de Servicio:</strong></label>
-                                                        <input type="text" name="otherServiceType" value={editingService.otherServiceType} onChange={handleInputChange} />
+                                                        <select
+                                                            id="otherServiceType"
+                                                            name="otherServiceType"
+                                                            value={editingService.otherServiceType}
+                                                            onChange={handleInputChange}
+                                                            required
+                                                        >
+                                                            <option value="CATERING">Catering</option>
+                                                            <option value="ENTERTAINMENT">Entretenimiento</option>
+                                                            <option value="DECORATION">Decoración</option>
+                                                        </select>
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="extraInformation"><strong>Información Extra:</strong></label>
-                                                        <input type="text" name="extraInformation" value={editingService.extraInformation} onChange={handleInputChange} />
+                                                        <input
+                                                            type="text"
+                                                            id="extraInformation"
+                                                            name="extraInformation"
+                                                            value={editingService.extraInformation}
+                                                            onChange={handleInputChange}
+                                                            required
+                                                            minLength="1"
+                                                            maxLength="1000"
+                                                        />
                                                     </div>
                                                 </>
                                             )}
+                                            <img
+                                                src={service.picture}
+                                                alt={service.name}
+                                                className="service-image"
+                                                style={{ cursor: "pointer", paddingBottom: "0.5rem" }}
+                                            />
                                             <button type="submit" className="submit-button">Guardar</button>
                                         </form>
                                     </div>
@@ -230,7 +259,6 @@ function AdminServices() {
                                             <strong>Precio Fijo:</strong>{" "}
                                             {service.fixedPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                                         </p>
-                                        <p><strong>Horas:</strong> {service.hours}</p>
                                         <p>
                                             <strong>Limitado por Precio por Invitado:</strong> {service.limitedByPricePerGuest ? "Sí" : "No"}
                                         </p>
@@ -238,16 +266,18 @@ function AdminServices() {
                                             <strong>Limitado por Precio por Hora:</strong> {service.limitedByPricePerHour ? "Sí" : "No"}
                                         </p>
                                         <p><strong>Descripción:</strong> {service.description}</p>
-                                        {service.type === "venue" && (
+                                        {service.type === "venues" && (
                                             <>
                                                 <p><strong>Código Postal:</strong> {service.postalCode}</p>
                                                 <p><strong>Coordenadas:</strong> {service.coordinates}</p>
                                                 <p><strong>Dirección:</strong> {service.address}</p>
                                                 <p><strong>Capacidad Máxima:</strong> {service.maxGuests}</p>
                                                 <p><strong>Superficie:</strong> {service.surface} m²</p>
+                                                <p><strong>Hora de apertura:</strong> {service.earliestTime}</p>
+                                                <p><strong>Hora de cierre:</strong> {service.latestTime}</p>
                                             </>
                                         )}
-                                        {service.type === "other-service" && (
+                                        {service.type === "other-services" && (
                                             <>
                                                 <p><strong>Tipo de Servicio:</strong> {service.otherServiceType}</p>
                                                 <p><strong>Información Extra:</strong> {service.extraInformation}</p>
@@ -256,13 +286,14 @@ function AdminServices() {
                                     </div>
                                 )}
                             </div>
-                            <img
-                                src={service.picture}
-                                alt={service.name}
-                                className="service-image"
-                                onClick={() => navigate(`/service/${service.id}`)}
-                                style={{ cursor: "pointer" }}
-                            />
+                            {!editingService && (
+                                <img
+                                    src={service.picture}
+                                    alt={service.name}
+                                    className="service-image"
+                                    style={{ cursor: "pointer"}}
+                                />
+                            )}
                             <div className="button-container">
                                 {editingService?.id !== service.id && (
                                     <button className="edit-btn" onClick={() => handleEdit(service)}>Editar</button>
