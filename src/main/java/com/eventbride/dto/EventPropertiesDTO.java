@@ -18,8 +18,6 @@ public class EventPropertiesDTO {
     
     // Constructor para simplificar la creación del DTO
     public EventPropertiesDTO(EventProperties eventProperties) {
-        this.approved = eventProperties.getApproved();
-        this.requestDate = eventProperties.getRequestDate();
         if(eventProperties.getVenue() != null){
             this.venueDTO = new VenueDTO(eventProperties.getVenue());
         }

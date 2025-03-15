@@ -46,8 +46,6 @@ public class EventPropertiesController {
         BeanUtils.copyProperties(eventProperties, newEventProperties, "id");
         newEventProperties.setOtherService(eventProperties.getOtherService());
         newEventProperties.setVenue(eventProperties.getVenue());
-        newEventProperties.setApproved(eventProperties.getApproved());
-        newEventProperties.setRequestDate(eventProperties.getRequestDate());
         EventProperties savedEventProperties;
         savedEventProperties = this.eventPropertiesService.save(newEventProperties);
         return new ResponseEntity<>(savedEventProperties, HttpStatus.CREATED);
@@ -62,8 +60,6 @@ public class EventPropertiesController {
         } else {
             updateEventProperties.setOtherService(eventProperties.getOtherService());
             updateEventProperties.setVenue(eventProperties.getVenue());
-            updateEventProperties.setApproved(eventProperties.getApproved());
-            updateEventProperties.setRequestDate(eventProperties.getRequestDate());
             return new ResponseEntity<>(this.eventPropertiesService.updateEventProperties(updateEventProperties, eventPropertiesId), HttpStatus.OK);
         }
     }

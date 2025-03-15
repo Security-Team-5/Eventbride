@@ -1,6 +1,6 @@
 package com.eventbride.event_properties;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.eventbride.model.BaseEntity;
 import com.eventbride.otherService.OtherService;
@@ -23,17 +23,11 @@ public class EventProperties extends BaseEntity {
     @JoinColumn(name = "venue_id", nullable = true)
     private Venue venue;
 
-    @Column(name = "approved", nullable = true)
-    private Boolean approved;
-
-    @Column(name = "request_date", nullable = true)
-    private LocalDate requestDate;
-
     @Column(name = "start_time", nullable = true)
-    private LocalDate startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time", nullable = true)
-    private LocalDate endTime;
+    private LocalDateTime endTime;
 
     @Column(name = "status", nullable = true) 
     private Status status;
