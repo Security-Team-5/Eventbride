@@ -4,12 +4,7 @@ import com.eventbride.model.BaseEntity;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -36,4 +31,12 @@ public class Rating extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
+
+	@ManyToOne
+	@JoinColumn(name = "other_service_id", nullable = true)
+	private OtherService otherService;
+
+	@ManyToOne
+	@JoinColumn(name = "venue_id", nullable = true)
+	private Venue venue;
 }

@@ -27,7 +27,6 @@ public class VenueDTO {
     private String address;
     private int maxGuests;
     private double surface;
-    private List<RatingDTO> ratingsDTO;
     private UserDTO userDTO;
 
 
@@ -50,9 +49,6 @@ public class VenueDTO {
         this.address = venue.getAddress();
         this.maxGuests = venue.getMaxGuests();
         this.surface = venue.getSurface();
-        if(venue.getRatings() != null){
-            this.ratingsDTO = RatingDTO.fromEntities(venue.getRatings());
-        }
         if(venue.getUser() != null){
             this.userDTO = new UserDTO(venue.getUser());
         }

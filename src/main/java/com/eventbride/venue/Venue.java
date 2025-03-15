@@ -50,10 +50,6 @@ public class Venue extends Service {
     @DecimalMin("0.0")
     private double surface;
 
-    @OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "venue_id")
-    private List<Rating> ratings;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
