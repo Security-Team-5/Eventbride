@@ -2,9 +2,11 @@ package com.eventbride.event_properties;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.eventbride.model.BaseEntity;
 import com.eventbride.otherService.OtherService;
+import com.eventbride.payment.Payment;
 import com.eventbride.venue.Venue;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -44,11 +46,13 @@ public class EventProperties extends BaseEntity {
     @Column(name ="book_date", nullable=false)
     private LocalDateTime bookDateTime;
 
+    @OneToMany(mappedBy = "eventProperties", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Payment> payments;
+
     public enum Status {
         PENDING,
         APPROVED,
-        REJECTED,
-        DEPOSIT_PAID, 
+        DEPOSIT_PAID,
         COMPLETED
     }
 
