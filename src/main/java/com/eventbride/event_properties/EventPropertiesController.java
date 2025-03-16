@@ -50,8 +50,8 @@ public class EventPropertiesController {
         return ResponseEntity.ok(updatedEvent);
     }
 
-    @PostMapping("/{eventId}/add-venue/{venueId}")
-    public ResponseEntity<Event> addVenueToEvent(@PathVariable Integer eventId, @PathVariable Integer venueId, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
+    @PutMapping("/{eventId}/add-venue/{venueId}")
+    public ResponseEntity<Event> addVenueToEvent(@PathVariable Integer eventId, @PathVariable Integer venueId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
         Event updatedEvent = eventPropertiesService.addVenueToEvent(eventId, venueId, startDate, endDate);
         return ResponseEntity.ok(updatedEvent);
     }
