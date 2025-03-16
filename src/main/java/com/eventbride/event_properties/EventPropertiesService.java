@@ -1,5 +1,7 @@
 package com.eventbride.event_properties;
+
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +28,8 @@ public class EventPropertiesService {
     private EventRepository eventRepository;
 
     @Autowired
-    public EventPropertiesService(EventPropertiesRepository eventPropertiesRepository, EventRepository eventRepository) {
+    public EventPropertiesService(EventPropertiesRepository eventPropertiesRepository,
+            EventRepository eventRepository) {
         this.eventPropertiesRepository = eventPropertiesRepository;
         this.eventRepository = eventRepository;
 
@@ -34,7 +37,7 @@ public class EventPropertiesService {
 
     @Autowired
     OtherServiceRepository otherServiceRepository;
-    
+
     @Autowired
     VenueRepository venueRepository;
 
@@ -77,7 +80,8 @@ public class EventPropertiesService {
     }
 
     @Transactional
-    public Event addOtherServiceToEvent(Integer eventId, Integer otherServiceId, LocalDateTime startDate, LocalDateTime endDate) {
+    public Event addOtherServiceToEvent(Integer eventId, Integer otherServiceId, LocalDateTime startDate,
+            LocalDateTime endDate) {
         Optional<Event> event = eventRepository.findById(eventId);
         if (event.isEmpty()) {
             throw new RuntimeException("Evento no encontrado");
@@ -88,8 +92,8 @@ public class EventPropertiesService {
         if (eventPropertiesEvent == null) {
             eventPropertiesEvent = new ArrayList<>();
         }
-        for(EventProperties e: eventPropertiesEvent){
-            if(e.getOtherService() !=null && e.getOtherService().getId()==otherServiceId){
+        for (EventProperties e : eventPropertiesEvent) {
+            if (e.getOtherService() != null && e.getOtherService().getId() == otherServiceId) {
                 throw new RuntimeException("Este servicio ya está asociado a este evento");
             }
         }
@@ -99,16 +103,18 @@ public class EventPropertiesService {
         eventProperties.setStartTime(startDate);
         eventProperties.setEndTime(endDate);
         eventProperties.setStatus(EventProperties.Status.PENDING);
-        eventProperties.setDepositAmount(0.0);
+        eventProperties.setDepositAmount(null);
         eventProperties.setBookDateTime(LocalDateTime.now());
         BigDecimal priceService;
-        if(service.getLimitedByPricePerGuest()!= null && service.getLimitedByPricePerGuest()){
+        if (service.getLimitedByPricePerGuest() != null && service.getLimitedByPricePerGuest()) {
             priceService = BigDecimal.valueOf(event.get().getGuests()).multiply(service.getServicePricePerGuest());
-        }else if (service.getLimitedByPricePerHour() != null && service.getLimitedByPricePerHour()) {
-            Integer hours = (int) Duration.between(startDate, endDate).toHours();
-            priceService = BigDecimal.valueOf(hours).multiply(service.getServicePricePerHour());
+        } else if (service.getLimitedByPricePerHour() != null && service.getLimitedByPricePerHour()) {
+            long totalMinutes = Duration.between(startDate, endDate).toMinutes();
+            BigDecimal hoursDecimal = BigDecimal.valueOf(totalMinutes)
+                    .divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
+            priceService = hoursDecimal.multiply(service.getServicePricePerHour());
         } else {
-            priceService= service.getFixedPrice();
+            priceService = service.getFixedPrice();
         }
         eventProperties.setPricePerService(priceService);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
@@ -123,9 +129,9 @@ public class EventPropertiesService {
         Venue service = venueRepository.findById(venueId)
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
         List<EventProperties> eventPropertiesEvent = event.get().getEventProperties();
-        for(EventProperties e: eventPropertiesEvent){
-            if(e.getVenue()!= null && e.getVenue().getId()==venueId){
-                throw new RuntimeException("Este servicio ya está asociado a este evento");
+        for (EventProperties e : eventPropertiesEvent) {
+            if (e.getVenue() != null){
+                throw new RuntimeException("Este evento ya tiene un servicio asociado.");
             }
         }
         EventProperties eventProperties = new EventProperties();
@@ -137,13 +143,15 @@ public class EventPropertiesService {
         eventProperties.setDepositAmount(0.0);
         eventProperties.setBookDateTime(LocalDateTime.now());
         BigDecimal priceService;
-        if(service.getLimitedByPricePerGuest()){
+        if (service.getLimitedByPricePerGuest()) {
             priceService = BigDecimal.valueOf(event.get().getGuests()).multiply(service.getServicePricePerGuest());
-        }else if (service.getLimitedByPricePerHour()) {
-            Integer hours = (int) Duration.between(startDate, endDate).toHours();
-            priceService = BigDecimal.valueOf(hours).multiply(service.getServicePricePerHour());
+        } else if (service.getLimitedByPricePerHour()) {
+            long totalMinutes = Duration.between(startDate, endDate).toMinutes();
+            BigDecimal hoursDecimal = BigDecimal.valueOf(totalMinutes)
+                    .divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
+            priceService = hoursDecimal.multiply(service.getServicePricePerHour());
         } else {
-            priceService= service.getFixedPrice();
+            priceService = service.getFixedPrice();
         }
         eventProperties.setPricePerService(priceService);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
@@ -152,9 +160,9 @@ public class EventPropertiesService {
         return event.get();
     }
 
-	@Transactional
-	public void deleteEventProperties(int id) throws DataAccessException {
-		eventPropertiesRepository.deleteById(id);
-	}
+    @Transactional
+    public void deleteEventProperties(int id) throws DataAccessException {
+        eventPropertiesRepository.deleteById(id);
+    }
 
 }

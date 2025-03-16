@@ -8,6 +8,8 @@ import com.eventbride.model.BaseEntity;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.payment.Payment;
 import com.eventbride.venue.Venue;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
@@ -32,10 +34,11 @@ public class EventProperties extends BaseEntity {
     @Column(name = "end_time", nullable = true)
     private LocalDateTime endTime;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = true) 
     private Status status;
 
-    @Column(name = "deposit_amount", nullable = false)
+    @Column(name = "deposit_amount", nullable = true)
     @DecimalMin("0.0")
     private Double depositAmount;
 
@@ -46,6 +49,7 @@ public class EventProperties extends BaseEntity {
     @Column(name ="book_date", nullable=false)
     private LocalDateTime bookDateTime;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "eventProperties", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Payment> payments;
 
