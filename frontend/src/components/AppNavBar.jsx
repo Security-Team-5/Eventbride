@@ -50,6 +50,7 @@ function Navbar() {
         <div className="navbar-flex">
           <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
           <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
+          <p className="navbar-list"><a href="/solicitudes">Solicitudes</a></p>
         </div>
       );
     }

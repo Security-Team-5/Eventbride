@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import OtherServiceScreen from "./pages/OtherServiceScreen";
 import Servicios from "./pages/Servicios";
 import RegistrarServicio from "./pages/RegistrarServicio";
+import RequestService from "./pages/RequestService";
 import VenuesScreen from "./pages/VenuesScreen";
 import EditarServicio from "./pages/EditarServicio";
 import "./App.css";
@@ -37,6 +38,7 @@ function App() {
             <Route path="/login" element={<Login setUser={setCurrentUser} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/other-services" element={<OtherServiceScreen />} />
+            <Route path="/solicitudes" element={<RequestService />} />
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
             <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio/>} />

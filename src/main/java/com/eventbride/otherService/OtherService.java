@@ -1,7 +1,6 @@
 package com.eventbride.otherService;
 import com.eventbride.service.Service;
 import com.eventbride.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

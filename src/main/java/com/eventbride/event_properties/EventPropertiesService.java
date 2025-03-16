@@ -38,7 +38,6 @@ public class EventPropertiesService {
     @Autowired
     VenueRepository venueRepository;
 
-
     @Transactional(readOnly = true)
     public List<EventProperties> findAll() {
         return eventPropertiesRepository.findAll();
@@ -68,13 +67,13 @@ public class EventPropertiesService {
     }
 
     @Transactional(readOnly = true)
-    public EventProperties findEventPropertiesByOtherService(Event event) {
-        return eventPropertiesRepository.findEventPropertiesByOtherService(event);
+    public List<EventProperties> findEventPropertiesByOtherService(Integer otherServiceId) {
+        return eventPropertiesRepository.findEventPropertiesByOtherServiceId(otherServiceId);
     }
 
     @Transactional(readOnly = true)
-    public EventProperties findEventPropertiesByVenue(Event event) {
-        return eventPropertiesRepository.findEventPropertiesByVenue(event);
+    public List<EventProperties> findEventPropertiesByVenue(Integer venueId) {
+        return eventPropertiesRepository.findEventPropertiesByVenueId(venueId);
     }
 
     @Transactional
@@ -157,4 +156,5 @@ public class EventPropertiesService {
 	public void deleteEventProperties(int id) throws DataAccessException {
 		eventPropertiesRepository.deleteById(id);
 	}
+
 }
