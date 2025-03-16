@@ -152,4 +152,9 @@ public class EventPropertiesService {
         eventRepository.save(event.get());
         return event.get();
     }
+
+	@Transactional
+	public void deleteEventProperties(int id) throws DataAccessException {
+		eventPropertiesRepository.deleteById(id);
+	}
 }

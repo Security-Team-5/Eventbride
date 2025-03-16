@@ -86,7 +86,7 @@ INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comm
 (21, 1, 6, null, 4, 'Great service, would recommend!');
 
 INSERT IGNORE INTO event_properties (id, event_id, other_service_id, venue_id, start_time, end_time, status, deposit_amount, price_per_service, book_date) VALUES
-(1, 1, 1, null, '2026-12-31 13:00:00', '2026-12-31 22:00:00', 'DEPOSIT_PAID', 200.00, 200.0, '2025-02-12 22:00:00'),
+(1, 1, 1, null, '2026-12-31 13:00:00', '2026-12-31 22:00:00', 'PENDING', 200.00, 200.0, '2025-02-12 22:00:00'),
 (2, 1, 2, null, '2026-12-31 13:00:00', '2026-12-31 15:00:00', 'DEPOSIT_PAID', 100.00, 200.0, '2025-02-12 22:00:00'),
 (3, 1, null, 1, '2026-12-31 12:00:00', '2026-12-31 23:00:00', 'DEPOSIT_PAID', 500.00, 200.0, '2025-02-12 22:00:00'),
 

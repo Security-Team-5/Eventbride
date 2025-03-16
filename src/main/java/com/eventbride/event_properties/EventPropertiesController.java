@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.event.Event;
 
-import jakarta.validation.Valid;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
@@ -58,17 +56,27 @@ public class EventPropertiesController {
 
     @PutMapping("/{eventPropertiesId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<EventProperties> update(@PathVariable("eventPropertiesId") Integer eventPropertiesId,
-            @RequestBody @Valid EventProperties eventProperties) {
+    public ResponseEntity<EventProperties> acceptService(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
         EventProperties updateEventProperties = eventPropertiesService.findById(eventPropertiesId);
         if (updateEventProperties == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            updateEventProperties.setOtherService(eventProperties.getOtherService());
-            updateEventProperties.setVenue(eventProperties.getVenue());
+            updateEventProperties.setStatus(EventProperties.Status.APPROVED);
             return new ResponseEntity<>(
                     this.eventPropertiesService.updateEventProperties(updateEventProperties, eventPropertiesId),
                     HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping("/{eventPropertiesId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void rejectService(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
+        EventProperties eventProperties = eventPropertiesService.findById(eventPropertiesId);
+        if (eventProperties != null) {
+            eventProperties.setOtherService(null);
+            eventProperties.setVenue(null);
+            EventProperties eventPropertiesSaved = eventPropertiesService.save(eventProperties);
+            eventPropertiesService.deleteEventProperties(eventPropertiesSaved.getId());
         }
     }
 
