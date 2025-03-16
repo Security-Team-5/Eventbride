@@ -1,13 +1,9 @@
 package com.eventbride.dto;
 
-import com.eventbride.event.Event;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.venue.Venue;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

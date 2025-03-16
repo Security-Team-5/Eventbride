@@ -1,8 +1,8 @@
 package com.eventbride.event_properties;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/eventProperties")
+@RequestMapping("/api/event-properties")
 public class EventPropertiesController {
 
     private final EventPropertiesService eventPropertiesService;
@@ -41,35 +42,18 @@ public class EventPropertiesController {
         return eventPropertiesService.findById(id);
     }
 
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<EventProperties> create(@RequestBody @Valid EventProperties eventProperties) {
-        EventProperties newEventProperties = new EventProperties();
-        BeanUtils.copyProperties(eventProperties, newEventProperties, "id");
-        newEventProperties.setOtherService(eventProperties.getOtherService());
-        newEventProperties.setVenue(eventProperties.getVenue());
-        EventProperties savedEventProperties;
-        savedEventProperties = this.eventPropertiesService.save(newEventProperties);
-        return new ResponseEntity<>(savedEventProperties, HttpStatus.CREATED);
-    }
-
     @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
-    public ResponseEntity<Event> addOtherServiceToEvent(@PathVariable Integer eventId, @PathVariable Integer otherServiceId) {
-        Event updatedEvent = eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId);
+    public ResponseEntity<Event> addOtherServiceToEvent(@PathVariable Integer eventId, @PathVariable Integer otherServiceId,         
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
+        Event updatedEvent = eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId, startDate, endDate);
         return ResponseEntity.ok(updatedEvent);
     }
-    
 
-    @PostMapping("/{eventId}/add-otherservice-hours")
-    public ResponseEntity<String> addOtherServiceToEventWithHours(@PathVariable Integer eventId, @PathVariable Integer otherServiceId, @PathVariable Integer hours) {
-        eventPropertiesService.addOtherServiceToEventWithHours(eventId, otherServiceId, hours);
-        return ResponseEntity.ok("Servicio añadido al evento correctamente");
-    }
-
-    @PostMapping("/{eventId}/add-venue")
-    public ResponseEntity<String> addVenueToEvent(@PathVariable Integer eventId, @PathVariable Integer venueId, @PathVariable Integer hours) {
-        eventPropertiesService.addVenueToEvent(eventId, venueId, hours);
-        return ResponseEntity.ok("Servicio añadido al evento correctamente");
+    @PostMapping("/{eventId}/add-venue/{venueId}")
+    public ResponseEntity<Event> addVenueToEvent(@PathVariable Integer eventId, @PathVariable Integer venueId, @RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
+        Event updatedEvent = eventPropertiesService.addVenueToEvent(eventId, venueId, startDate, endDate);
+        return ResponseEntity.ok(updatedEvent);
     }
 
     @PutMapping("/{eventPropertiesId}")

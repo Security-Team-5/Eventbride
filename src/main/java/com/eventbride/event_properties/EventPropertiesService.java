@@ -1,6 +1,8 @@
 package com.eventbride.event_properties;
-
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,48 +78,77 @@ public class EventPropertiesService {
     }
 
     @Transactional
-    public Event addOtherServiceToEvent(Integer eventId, Integer otherServiceId) {
+    public Event addOtherServiceToEvent(Integer eventId, Integer otherServiceId, LocalDateTime startDate, LocalDateTime endDate) {
         Optional<Event> event = eventRepository.findById(eventId);
+        if (event.isEmpty()) {
+            throw new RuntimeException("Evento no encontrado");
+        }
         OtherService service = otherServiceRepository.findById(otherServiceId)
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
-
+        List<EventProperties> eventPropertiesEvent = event.get().getEventProperties();
+        if (eventPropertiesEvent == null) {
+            eventPropertiesEvent = new ArrayList<>();
+        }
+        for(EventProperties e: eventPropertiesEvent){
+            if(e.getOtherService() !=null && e.getOtherService().getId()==otherServiceId){
+                throw new RuntimeException("Este servicio ya está asociado a este evento");
+            }
+        }
         EventProperties eventProperties = new EventProperties();
         eventProperties.setOtherService(service);
         eventProperties.setVenue(null);
-        eventPropertiesRepository.save(eventProperties);
-        event.get().getEventProperties().add(eventProperties);
+        eventProperties.setStartTime(startDate);
+        eventProperties.setEndTime(endDate);
+        eventProperties.setStatus(EventProperties.Status.PENDING);
+        eventProperties.setDepositAmount(0.0);
+        eventProperties.setBookDateTime(LocalDateTime.now());
+        BigDecimal priceService;
+        if(service.getLimitedByPricePerGuest()!= null && service.getLimitedByPricePerGuest()){
+            priceService = BigDecimal.valueOf(event.get().getGuests()).multiply(service.getServicePricePerGuest());
+        }else if (service.getLimitedByPricePerHour() != null && service.getLimitedByPricePerHour()) {
+            Integer hours = (int) Duration.between(startDate, endDate).toHours();
+            priceService = BigDecimal.valueOf(hours).multiply(service.getServicePricePerHour());
+        } else {
+            priceService= service.getFixedPrice();
+        }
+        eventProperties.setPricePerService(priceService);
+        EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
+        event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
         return event.get();
     }
 
     @Transactional
-    public Event addOtherServiceToEventWithHours(Integer eventId, Integer otherServiceId, Integer hours) {
-        Optional<Event> event = eventRepository.findById(eventId);
-        OtherService service = otherServiceRepository.findById(otherServiceId)
-                .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
-        Boolean servicePerHour = service.getLimitedByPricePerHour();
-
-        EventProperties eventProperties = new EventProperties();
-        eventProperties.setOtherService(service);
-        eventProperties.setVenue(null);
-        eventPropertiesRepository.save(eventProperties);
-        event.get().getEventProperties().add(eventProperties);
-        eventRepository.save(event.get());
-        return event.get();
-    }
-
-    @Transactional
-    public Event addVenueToEvent(Integer eventId, Integer venueId, Integer hours) {
+    public Event addVenueToEvent(Integer eventId, Integer venueId, LocalDateTime startDate, LocalDateTime endDate) {
         Optional<Event> event = eventRepository.findById(eventId);
         Venue service = venueRepository.findById(venueId)
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
-        Boolean servicePerHour = service.getLimitedByPricePerHour();
-
+        List<EventProperties> eventPropertiesEvent = event.get().getEventProperties();
+        for(EventProperties e: eventPropertiesEvent){
+            if(e.getVenue()!= null && e.getVenue().getId()==venueId){
+                throw new RuntimeException("Este servicio ya está asociado a este evento");
+            }
+        }
         EventProperties eventProperties = new EventProperties();
+        eventProperties.setOtherService(null);
         eventProperties.setVenue(service);
-        eventProperties.setVenue(null);
-        eventPropertiesRepository.save(eventProperties);
-        event.get().getEventProperties().add(eventProperties);
+        eventProperties.setStartTime(startDate);
+        eventProperties.setEndTime(endDate);
+        eventProperties.setStatus(EventProperties.Status.PENDING);
+        eventProperties.setDepositAmount(0.0);
+        eventProperties.setBookDateTime(LocalDateTime.now());
+        BigDecimal priceService;
+        if(service.getLimitedByPricePerGuest()){
+            priceService = BigDecimal.valueOf(event.get().getGuests()).multiply(service.getServicePricePerGuest());
+        }else if (service.getLimitedByPricePerHour()) {
+            Integer hours = (int) Duration.between(startDate, endDate).toHours();
+            priceService = BigDecimal.valueOf(hours).multiply(service.getServicePricePerHour());
+        } else {
+            priceService= service.getFixedPrice();
+        }
+        eventProperties.setPricePerService(priceService);
+        EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
+        event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
         return event.get();
     }

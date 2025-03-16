@@ -3,6 +3,7 @@ package com.eventbride.venue;
 import java.time.LocalTime;
 import com.eventbride.service.Service;
 import com.eventbride.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,7 +52,7 @@ public class Venue extends Service {
 
     @Column(name = "latest_time", nullable = false)
     private LocalTime latestTime;
-    
+ 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

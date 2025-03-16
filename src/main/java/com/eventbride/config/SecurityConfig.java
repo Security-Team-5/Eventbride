@@ -39,6 +39,7 @@ public class SecurityConfig {
                 "/api/users/auth/register",
                 "/api/users/auth/login", 
                 "/api/venues/**", 
+                "/api/event-properties/**",
                 "/api/users/auth/current-user", 
                 "/api/v1/events/**", 
                 "/api/other-services/**", 

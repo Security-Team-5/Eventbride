@@ -3,7 +3,6 @@ package com.eventbride.service;
 import com.eventbride.dto.ServiceDTO;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceService;
-import com.eventbride.user.UserService;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,6 @@ public class ServiceController {
 
 	@Autowired
 	private VenueService venueService;
-	@Autowired
-	private UserService userService;
 
 	@GetMapping("/user/{id}")
 	public ResponseEntity<ServiceDTO> getServicesByUserId(@PathVariable Integer id) {

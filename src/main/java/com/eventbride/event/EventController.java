@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.dto.EventDTO;
-import com.eventbride.dto.UserDTO;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.invitation.Invitation;
-import com.eventbride.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +28,12 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
-    private final UserService userService;
     private final EventPropertiesService eventPropertiesService;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService,
+    public EventController(EventService eventService,
             EventPropertiesService eventPropertiesService) {
         this.eventService = eventService;
-        this.userService = userService;
         this.eventPropertiesService = eventPropertiesService;
     }
 

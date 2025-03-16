@@ -1,5 +1,6 @@
 package com.eventbride.event_properties;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.eventbride.model.BaseEntity;
@@ -35,6 +36,13 @@ public class EventProperties extends BaseEntity {
     @Column(name = "deposit_amount", nullable = false)
     @DecimalMin("0.0")
     private Double depositAmount;
+
+    @Column(name= "price_per_service", nullable = false)
+    @DecimalMin("0.0")
+    private BigDecimal pricePerService;
+
+    @Column(name ="book_date", nullable=false)
+    private LocalDateTime bookDateTime;
 
     public enum Status {
         PENDING,
