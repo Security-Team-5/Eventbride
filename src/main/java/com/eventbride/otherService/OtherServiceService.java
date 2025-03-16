@@ -8,6 +8,8 @@ import com.eventbride.user.User;
 import com.eventbride.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.BeanUtils;
+
 
 import com.eventbride.otherService.OtherService.OtherServiceType;
 
@@ -16,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 import java.util.List;
 
-
+import com.eventbride.event_properties.EventPropertiesRepository;
 
 @Service
 public class OtherServiceService {
@@ -29,6 +31,9 @@ public class OtherServiceService {
 
 	@Autowired
 	private ServiceService serviceService;
+
+    @Autowired
+    private EventPropertiesRepository eventPropertiesRepository;
 
     @Transactional
     public List<OtherService> getAllOtherServices() {
@@ -92,30 +97,32 @@ public class OtherServiceService {
     public OtherService updateOtherService(Integer id, OtherService otherServ){
         OtherService otherService = otherServiceRepo.findById(id).orElseThrow(() -> new RuntimeException("No se ha encontrado ningun servicio con esa Id"));
 
-        // Actualizar las propiedades heredadas de Service
-        otherService.setName(otherServ.getName());
-        otherService.setAvailable(otherServ.getAvailable());
-        otherService.setCityAvailable(otherServ.getCityAvailable());
-        otherService.setServicePricePerGuest(otherServ.getServicePricePerGuest());
-        otherService.setServicePricePerHour(otherServ.getServicePricePerHour());
-        otherService.setFixedPrice(otherServ.getFixedPrice());
-        otherService.setPicture(otherServ.getPicture());
-        otherService.setDescription(otherServ.getDescription());
-        otherService.setLimitedByPricePerGuest(otherServ.getLimitedByPricePerGuest());
-        otherService.setLimitedByPricePerHour(otherServ.getLimitedByPricePerHour());
-
-        // Actualizar las propiedades específicas de OtherService
-        otherService.setOtherServiceType(otherServ.getOtherServiceType());
-        otherService.setExtraInformation(otherServ.getExtraInformation());
-
+        BeanUtils.copyProperties(otherServ, otherService, "id");
+        
         return otherServiceRepo.save(otherService);
 
     }
 
+	@Transactional
+	public void deleteOtherService(Integer id) {
+		OtherService otherService = otherServiceRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("OtherService not found"));
+
+        // Elimina EventProperties asociadas para evitar fallos con la foreign key
+        eventPropertiesRepository.deleteByOtherService(otherService);
+
+        // Elimina OtherService
+        otherServiceRepo.delete(otherService);
+	}
 
     @Transactional
     public void deleteUser(Integer id) {
         otherServiceRepo.deleteById(id);
+    }
+
+    @Transactional
+    public void saveAll(List<OtherService> otherServices) {
+        otherServiceRepo.saveAll(otherServices);
     }
 
 

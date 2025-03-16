@@ -1,9 +1,11 @@
 package com.eventbride.otherService;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.eventbride.dto.OtherServiceDTO;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -13,13 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/other-services")
 public class OtherServiceController {
@@ -87,6 +91,39 @@ public class OtherServiceController {
 		}
 
 		return ResponseEntity.badRequest().body(errorDetails);
+	}
+
+	@PutMapping("/admin/{id}")
+	public ResponseEntity<?> updateService(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		if (roles.contains("ADMIN")) {
+			try {
+				Optional<OtherService> existingServiceOptional = otherServiceService.getOtherServiceById(id);
+				if (existingServiceOptional.isEmpty()) {
+					return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
+				}
+				updatedService.setId(id);
+				OtherService savedService = otherServiceService.updateOtherService(id, updatedService);
+				return new ResponseEntity<>(new OtherServiceDTO(savedService), HttpStatus.OK);
+			} catch (RuntimeException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+
+	@DeleteMapping("/admin/{id}")
+	public ResponseEntity<?> deleteService(@PathVariable Integer id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		if (roles.contains("ADMIN")) {
+			otherServiceService.deleteOtherService(id);
+			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 
 }

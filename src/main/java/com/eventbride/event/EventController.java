@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.dto.EventDTO;
+import com.eventbride.dto.UserDTO;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.invitation.Invitation;
@@ -45,6 +46,17 @@ public class EventController {
         return eventService.findAll();
     }
 
+    @GetMapping("/DTO")
+    public ResponseEntity<?> findAllEventsDTO() {
+		try{
+			List<EventDTO> events = eventService.getAllEventsDTO();
+			return ResponseEntity.ok(events);
+		}
+		catch(Exception e){
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
+    }
+
     @GetMapping("/{id}")
     public EventDTO findById(@PathVariable("id") Integer id) {
         return new EventDTO(eventService.findById(id));
@@ -71,20 +83,27 @@ public class EventController {
 
     @PutMapping("/{eventId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Event> update(@PathVariable("eventId") Integer eventId, @RequestBody @Valid Event event) {
-        Event updateEvent = eventService.findById(eventId);
-        if (updateEvent == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            updateEvent.setEventType(event.getEventType());
-            updateEvent.setGuests(event.getGuests());
-            updateEvent.setBudget(event.getBudget());
-            updateEvent.setEventDate(event.getEventDate());
-            updateEvent.setUser(event.getUser());
-            updateEvent.setInvitations(event.getInvitations());
-            updateEvent.setEventProperties(event.getEventProperties());
-            return new ResponseEntity<>(this.eventService.updateEvent(updateEvent, eventId), HttpStatus.OK);
-        }
+    public ResponseEntity<?> update(@PathVariable("eventId") Integer eventId, @RequestBody @Valid Event event) {
+        try {
+			Event updateEvent = eventService.findById(eventId);
+			if (updateEvent == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			} else {
+				updateEvent.setEventType(event.getEventType());
+				updateEvent.setGuests(event.getGuests());
+				updateEvent.setBudget(event.getBudget());
+				updateEvent.setEventDate(event.getEventDate());
+				updateEvent.setUser(event.getUser());
+				updateEvent.setInvitations(event.getInvitations());
+
+				Event e = this.eventService.updateEvent(updateEvent, eventId);
+				return new ResponseEntity<>(new EventDTO(e), HttpStatus.OK);
+			}
+		}
+		catch (Exception e) {
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
+
     }
 
 	@DeleteMapping("/{eventId}")

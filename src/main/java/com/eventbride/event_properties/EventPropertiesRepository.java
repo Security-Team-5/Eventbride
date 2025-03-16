@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.eventbride.event.Event;
+import com.eventbride.otherService.OtherService;
+import com.eventbride.venue.Venue;
 
 public interface EventPropertiesRepository extends CrudRepository<EventProperties, Integer>{
 
@@ -18,4 +20,8 @@ public interface EventPropertiesRepository extends CrudRepository<EventPropertie
 
     @Query("SELECT DISTINCT ep FROM EventProperties ep WHERE ep.venue=?1")
 	public EventProperties findEventPropertiesByVenue(Event event);
+
+    void deleteByOtherService(OtherService otherService);
+
+    void deleteByVenue(Venue venue);
 }

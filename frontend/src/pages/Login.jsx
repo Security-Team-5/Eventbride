@@ -2,9 +2,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../static/resources/css/Login.css"; 
+import "../static/resources/css/Login.css";
 import { getCurrentUser } from "../utils/api";
+import apiClient from "../apiClient";
 
 function Login({ setUser }) {
   const [form, setForm] = useState({ username: "", password: "" });
@@ -18,9 +18,9 @@ function Login({ setUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/users/auth/login", form);
+      const response = await apiClient.post("/api/users/auth/login", form);
       const token = response.data.token;
-      const data = await getCurrentUser({token});
+      const data = await getCurrentUser({ token });
       window.localStorage.setItem("user", JSON.stringify(data.user));
       window.localStorage.setItem("jwt", response.data.token);
       setUser(data.user);

@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import apiClient from '../apiClient';
+import axios from 'axios';
+import "../App.css"; 
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../static/resources/css/OtherService.css";
 
+// Componente para filtrar y mostrar los OtherServices por categoría
 const OtherServiceScreen = () => {
   const [otherServices, setOtherServices] = useState([]);
   const [category, setCategory] = useState(null);

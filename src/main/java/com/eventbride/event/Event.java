@@ -49,7 +49,7 @@ public class Event extends BaseEntity {
     private LocalDate eventDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     @OneToMany(fetch = FetchType.EAGER)

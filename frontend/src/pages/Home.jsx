@@ -10,14 +10,11 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 function Home({ user }) {
   return (
     <main className="contenedorPrincipal">
-      <div className="bannerCompleto">
+      <div className="bannerCompleto" >
         <img src="https://t4.ftcdn.net/jpg/04/10/98/29/360_F_410982967_TiQ653hlfXQrI4vuLpEBwMpLOYR013fK.jpg" alt="Banner principal" className="imagenBanner" />
         <div className="overlayBanner">
           <div className="contenidoBanner">
-            <img src={logo} alt="Eventbride Logo" className="logo-home" />
-            <p className="subtituloBanner">Eventbride. 
-              <br></br>
-              Eventos que brillan, recuerdos que perduran.</p>
+            <img src={logo} alt="Eventbride Logo" className="logo-home" style={{ marginTop: "20%"}} />
           </div>
         </div>
       </div>
@@ -28,6 +25,12 @@ function Home({ user }) {
             <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"></link>
             <h2 className="tituloSeccion">Bienvenidos</h2>
             <div className="separador"></div>
+            <p className="textoDescriptivo">
+              Eventbride 
+              <br></br>
+              Eventos que brillan, recuerdos que perduran.              
+            </p>
+            <div className="separador" style={{ marginTop: "3%"}}></div>
             <p className="textoDescriptivo">
               ¡Bienvenido a Eventbride, donde cada momento especial se convierte en una celebración única y sin preocupaciones!
             </p>

@@ -1,5 +1,6 @@
 package com.eventbride.service;
 
+import com.eventbride.dto.OtherServiceDTO;
 import com.eventbride.dto.ServiceDTO;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceRepository;
