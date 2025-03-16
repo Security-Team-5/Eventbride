@@ -114,7 +114,16 @@ function EventDetails() {
                 <div key={i} className="venue-card">
                   <p><strong>Nombre:</strong> {decodeText(prop.venueDTO.name)}</p>
                   <p><strong>Ubicación:</strong> {decodeText(prop.venueDTO.address)}</p>
+                  <div style={{ textAlign: "center" }}>
+                    <img style={{ maxWidth: "80%" }} src={prop.venueDTO.picture} alt="Venue" />
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <button className="payment-buttom" onClick={() => navigate(`/payment/${prop.id}`)}>
+                      Pagar señal
+                    </button>
+                  </div>
                 </div>
+
               ) : null
             )}
           </div>
@@ -125,7 +134,15 @@ function EventDetails() {
               prop.otherServiceDTO ? (
                 <div key={i} className="service-card">
                   <p><strong>Servicio:</strong> {decodeText(prop.otherServiceDTO.name)}</p>
+                  <div style={{ textAlign: "center" }}>
+                    <img style={{ maxWidth: "80%" }} src={prop.otherServiceDTO.picture} alt="Other-service" />
+                  </div>
                   <p><strong>Descripción:</strong> {decodeText(prop.otherServiceDTO.description)}</p>
+                  <div style={{ textAlign: "center" }}>
+                    <button className="payment-buttom" onClick={() => navigate(`/payment/${prop.id}`)}>
+                      Pagar señal
+                    </button>
+                  </div>
                 </div>
               ) : null
             )}

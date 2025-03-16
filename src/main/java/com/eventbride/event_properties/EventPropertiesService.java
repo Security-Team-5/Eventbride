@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.otherService.OtherService;
@@ -41,6 +42,12 @@ public class EventPropertiesService {
     @Transactional(readOnly = true)
     public List<EventProperties> findAll() {
         return eventPropertiesRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public EventPropertiesDTO findByIdDTO(int id) throws DataAccessException {
+        Optional<EventProperties> g = eventPropertiesRepository.findById(id);
+        return EventPropertiesDTO.fromEntity(g.get());
     }
 
     @Transactional(readOnly = true)

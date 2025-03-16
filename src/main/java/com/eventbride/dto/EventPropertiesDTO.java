@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EventPropertiesDTO {
+    private Integer id;
     private Boolean approved;
     private LocalDate requestDate;
     private VenueDTO venueDTO;
@@ -18,6 +19,7 @@ public class EventPropertiesDTO {
     
     // Constructor para simplificar la creación del DTO
     public EventPropertiesDTO(EventProperties eventProperties) {
+        this.id = eventProperties.getId();
         if(eventProperties.getVenue() != null){
             this.venueDTO = new VenueDTO(eventProperties.getVenue());
         }
@@ -32,4 +34,9 @@ public class EventPropertiesDTO {
                 .map(EventPropertiesDTO::new)
                 .toList();
     }
+
+    public static EventPropertiesDTO fromEntity(EventProperties eventProperty) {
+        return new EventPropertiesDTO(eventProperty);
+    }
+    
 }

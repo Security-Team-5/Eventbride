@@ -1,0 +1,23 @@
+  .paypal-button-container {
+    width: 100% !important; 
+    display: flex;
+    justify-content: center; 
+    max-width: 100%;
+  }
+  .paypal-button-row {
+    width: 100% !important;
+  }
+  .paypal-button {
+    width: 100% !important;
+  }
+
+  .paypal-button.paypal-button-shape-rect {
+    border-radius: 4px;
+    max-width: 100%;
+    width: 100% !important;
+  }
+  
+  .paypal-button.paypal-button-shape-rect {
+    border-radius: 4px;
+    width: 100% !important;
+  }

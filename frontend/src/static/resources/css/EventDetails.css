@@ -15,6 +15,16 @@
   margin-bottom: 4%;
 }
 
+.payment-buttom{
+  padding: 10px;
+  background-color: #d9be75;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  justify-content: center;
+}
+
 .event-title {
   font-size: 2rem;
   color: #333;
