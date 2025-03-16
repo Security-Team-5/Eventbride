@@ -83,10 +83,7 @@ public class EventPropertiesService {
 
         EventProperties eventProperties = new EventProperties();
         eventProperties.setOtherService(service);
-        eventProperties.setApproved(true);
         eventProperties.setVenue(null);
-        eventProperties.setHours(null);
-        eventProperties.setRequestDate(LocalDate.now());
         eventPropertiesRepository.save(eventProperties);
         event.get().getEventProperties().add(eventProperties);
         eventRepository.save(event.get());
@@ -102,14 +99,7 @@ public class EventPropertiesService {
 
         EventProperties eventProperties = new EventProperties();
         eventProperties.setOtherService(service);
-        eventProperties.setApproved(true);
         eventProperties.setVenue(null);
-        if (servicePerHour) {
-            eventProperties.setHours(hours);
-        } else {
-            eventProperties.setHours(null);
-        }
-        eventProperties.setRequestDate(LocalDate.now());
         eventPropertiesRepository.save(eventProperties);
         event.get().getEventProperties().add(eventProperties);
         eventRepository.save(event.get());
@@ -125,14 +115,7 @@ public class EventPropertiesService {
 
         EventProperties eventProperties = new EventProperties();
         eventProperties.setVenue(service);
-        eventProperties.setApproved(true);
         eventProperties.setVenue(null);
-        if (servicePerHour) {
-            eventProperties.setHours(hours);
-        } else {
-            eventProperties.setHours(null);
-        }
-        eventProperties.setRequestDate(LocalDate.now());
         eventPropertiesRepository.save(eventProperties);
         event.get().getEventProperties().add(eventProperties);
         eventRepository.save(event.get());
