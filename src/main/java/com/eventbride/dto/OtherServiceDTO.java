@@ -27,7 +27,6 @@ public class OtherServiceDTO {
     private Boolean limitedByPricePerHour;
     private OtherServiceType otherServiceType;
     private String extraInformation;
-    private List<RatingDTO> ratingsDTO;
     private UserDTO userDTO;
 
 
@@ -47,9 +46,6 @@ public class OtherServiceDTO {
         this.limitedByPricePerHour = updated.getLimitedByPricePerHour();
         this.otherServiceType = updated.getOtherServiceType();
         this.extraInformation = updated.getExtraInformation();
-        if(updated.getRatings() != null){
-            this.ratingsDTO = RatingDTO.fromEntities(updated.getRatings());
-        }
         if(updated.getUser() != null){
             this.userDTO = new UserDTO(updated.getUser());
         }

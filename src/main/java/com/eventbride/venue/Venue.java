@@ -1,17 +1,13 @@
 package com.eventbride.venue;
 
-import java.util.List;
-
-import com.eventbride.rating.Rating;
+import java.time.LocalTime;
 import com.eventbride.service.Service;
 import com.eventbride.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -50,10 +46,12 @@ public class Venue extends Service {
     @DecimalMin("0.0")
     private double surface;
 
-    @OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "venue_id")
-    private List<Rating> ratings;
+    @Column(name = "earliest_time", nullable = false)
+    private LocalTime earliestTime;
 
+    @Column(name = "latest_time", nullable = false)
+    private LocalTime latestTime;
+    
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

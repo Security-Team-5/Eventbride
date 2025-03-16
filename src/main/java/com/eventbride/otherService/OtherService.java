@@ -43,10 +43,6 @@ public class OtherService extends Service {
         DECORATION
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "other_service_id")
-    private List<Rating> ratings;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
