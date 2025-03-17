@@ -147,6 +147,7 @@ Este análisis permitirá evaluar la eficacia del uso de la IA dentro del proyec
 |14|Introducción análisis mercado|María de la Salud Carrera Talaverón |10/03/2025 |[Introducción](https://chatgpt.com/share/67cf3624-ef2c-8008-b3bb-594877884cf7)|Sprint 1 |
 |15|Arreglo de índices de contenido y generación de tablas en documentos en markdown|María de la Salud Carrera Talaverón |12/03/2025 |Sugerencias de código de GitHub Copilot --> No procede|Sprint 1 |
 |16|Introducción y conclusión Análisis cualitativo y cuantitativo|María de la Salud Carrera Talaverón |12/03/2025 | [Chat con ChatGPT](https://chatgpt.com/share/67d1bfba-5144-8008-aaa9-e15ed1919c67) |Sprint 1 |
+|17|Ayuda para generar el documento de implicaciones legales | Fernando José de Celis Hurtado |17/03/2025 | GitHub Copilot --> No procede | Sprint 2 |
 
 <div id='id8'></div>
 
@@ -170,6 +171,7 @@ Este análisis permitirá evaluar la eficacia del uso de la IA dentro del proyec
 |14 |1 |Sí |Sí |10 minutos |
 |15 |10 |Sí |Sí |1 hora |
 |16 |1 |Sí |No |10 minutos|
+|17 |2 |Sí |Sí |20 minutos|
 
 <div id='concl'></div>
 
