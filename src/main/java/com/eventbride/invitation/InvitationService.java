@@ -5,8 +5,11 @@ import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.task.TaskExecutionProperties.Simple;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +22,10 @@ public class InvitationService {
 
 	@Autowired
 	private EventRepository eventRepository;
+
+	@Autowired
+	private JavaMailSender mailSender;
+
 
 	@Transactional(readOnly = true)
 	public Invitation createVoidInvitation(Integer eventId) throws Exception{
@@ -53,6 +60,14 @@ public class InvitationService {
 		BeanUtils.copyProperties(invitation, existingInvitation, "id", "event", "invitationType");
 		existingInvitation.setInvitationType(Invitation.InvitationType.RECEIVED);
 		// ENVIAR CORREO
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setFrom("eventbride6@gmail.com");
+		mailMessage.setTo(existingInvitation.getEmail());
+		mailMessage.setSubject("Invitación a evento");
+		mailMessage.setText("Hola " + existingInvitation.getFirstName() + " " + existingInvitation.getLastName() + ", has sido invitado al evento " + "Esto se debe cambiar en un futuro, por el tipo de evento y el nombre de quien es el evento" + ". Por favor, confirma tu asistencia en el siguiente enlace: http://localhost:8080/api/invitation/confirm/" + existingInvitation.getId() + ". Gracias!");
+		
+		mailSender.send(mailMessage);;
+
 		return invitationRepository.save(existingInvitation);
 	}
 
