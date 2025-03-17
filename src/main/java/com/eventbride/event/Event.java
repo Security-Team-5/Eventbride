@@ -52,10 +52,6 @@ public class Event extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "event_id")
-    private List<Invitation> invitations;
-
     public enum EventType {
         WEDDING,
         CHRISTENING,

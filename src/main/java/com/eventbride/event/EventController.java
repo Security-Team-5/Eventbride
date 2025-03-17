@@ -76,7 +76,6 @@ public class EventController {
         newEvent.setBudget(event.getBudget());
         newEvent.setEventDate(event.getEventDate());
         newEvent.setUser(event.getUser());
-        newEvent.setInvitations(invitations);
         newEvent.setEventProperties(eventProperties);
         Event savedEvent;
         savedEvent = this.eventService.save(newEvent);
@@ -96,7 +95,6 @@ public class EventController {
 				updateEvent.setBudget(event.getBudget());
 				updateEvent.setEventDate(event.getEventDate());
 				updateEvent.setUser(event.getUser());
-				updateEvent.setInvitations(event.getInvitations());
 
 				Event e = this.eventService.updateEvent(updateEvent, eventId);
 				return new ResponseEntity<>(new EventDTO(e), HttpStatus.OK);
