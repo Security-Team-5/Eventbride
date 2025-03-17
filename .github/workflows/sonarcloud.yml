@@ -1,0 +1,30 @@
+name: SonarCloud Analysis
+
+on:
+  push:
+    branches:
+      - main  # O la rama que prefieras
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sonarcloud:
+    name: Run SonarCloud Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Configuración de JDK 17
+      - name: Setup JDK 17 (si usas Java 17)
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v1
+        with:
+          organization: ispp-eventbride  # El nombre de tu organización en SonarCloud
+          token: ${{ secrets.SONAR_TOKEN }}  # Token de SonarCloud en los secretos de GitHub
