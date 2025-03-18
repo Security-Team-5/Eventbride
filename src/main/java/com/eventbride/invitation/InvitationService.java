@@ -27,7 +27,7 @@ public class InvitationService {
 	private JavaMailSender mailSender;
 
 
-	@Transactional(readOnly = true)
+	@Transactional()
 	public Invitation createVoidInvitation(Integer eventId) throws Exception{
 		Invitation invitation = new Invitation();
 		Optional<Event> event = eventRepository.findById(eventId);
@@ -65,7 +65,7 @@ public class InvitationService {
 		mailMessage.setTo(existingInvitation.getEmail());
 		mailMessage.setSubject("Invitación a evento");
 		mailMessage.setText("Hola " + existingInvitation.getFirstName() + " " + existingInvitation.getLastName() + ", has sido invitado al evento " + "Esto se debe cambiar en un futuro, por el tipo de evento y el nombre de quien es el evento" + ". Por favor, confirma tu asistencia en el siguiente enlace: http://localhost:8080/api/invitation/confirm/" + existingInvitation.getId() + ". Gracias!");
-		
+
 		mailSender.send(mailMessage);;
 
 		return invitationRepository.save(existingInvitation);

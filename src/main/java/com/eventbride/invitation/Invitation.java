@@ -22,12 +22,10 @@ import java.util.List;
 public class Invitation extends BaseEntity{
 
     @Column(name = "first_name")
-    @NotBlank
     @Size(min = 1, max = 40)
     private String firstName;
 
     @Column(name = "last_name")
-    @NotBlank
 	@Size(min = 1, max = 40)
     private String lastName;
 
@@ -35,12 +33,10 @@ public class Invitation extends BaseEntity{
 	private Integer numberOfGuests;
 
     @Column(name = "telephone")
-    @NotNull
 	@Digits(integer = 9, fraction = 0)
     private Integer telephone;
 
     @Column(name = "email", unique = true)
-    @NotBlank
 	@Email
     private String email;
 

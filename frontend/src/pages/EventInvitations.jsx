@@ -30,6 +30,33 @@ function EventInvitations() {
         getInvitations();
       }, []);
 
+    const copyLink = (link) => {
+        navigator.clipboard.writeText(link)
+            .then(() => {
+                alert("Link copiado: " + link);
+            })
+            .catch(err => {
+                console.error("Error al copiar: ", err);
+            });
+    }
+
+    const createInvitation = () => {
+        fetch(`/api/invitation/create/${currentEventId}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(!data.error){
+                    copyLink("https://ispp-2425-03.ew.r.appspot.com/")
+                    alert("Link a la invitación copiada al portapeles")
+                }
+            })
+            .catch(error => console.error("Error obteniendo las invitaciones de este evento:", error));
+    }
+
       return (
         <>
           {invitaciones.length > 0 ? (
@@ -41,6 +68,7 @@ function EventInvitations() {
                     <p className="invitation-name">Invitados de su parte: {invitacion.numberOfGuests}</p>
                   </div>
                 </div>
+
               </div>
             ))
           ) : (
@@ -48,6 +76,7 @@ function EventInvitations() {
               <p>No hay invitaciones disponibles para este evento.</p>
             </div>
           )}
+            <button onClick={createInvitation}>Crear invitación</button>
         </>
       )
 

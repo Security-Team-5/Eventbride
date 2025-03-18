@@ -19,8 +19,8 @@ public class InvitationController {
 	@Autowired
 	private InvitationService invitationService;
 
-	@GetMapping("/create/{eventId}")
-	public ResponseEntity<?> createInvitation(@RequestParam int id) {
+	@GetMapping("/create/{id}")
+	public ResponseEntity<?> createInvitation(@PathVariable int id) {
 		try {
 			Invitation res = invitationService.createVoidInvitation(id);
 			return new ResponseEntity<>(res, HttpStatus.CREATED);
@@ -53,8 +53,13 @@ public class InvitationController {
 
 	@PostMapping
 	public ResponseEntity<?> fillInvitation(@RequestBody @Valid Invitation invitation) {
-		Invitation res = invitationService.fillInvitation(invitation);
-		return new ResponseEntity<>(res, HttpStatus.CREATED);
+		try {
+			Invitation res = invitationService.fillInvitation(invitation);
+			return new ResponseEntity<>(res, HttpStatus.CREATED);
+		}
+		catch (Exception e){
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	// Cambiar la url para que sea única y no predecible
