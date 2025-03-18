@@ -3,8 +3,6 @@ package com.eventbride.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 

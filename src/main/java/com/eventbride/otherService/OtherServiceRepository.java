@@ -13,7 +13,8 @@ import com.eventbride.otherService.OtherService.OtherServiceType;
 @Repository
 public interface OtherServiceRepository extends JpaRepository<OtherService, Integer> {
 
-    Optional<OtherService> findById(Integer id);
+    @Query("SELECT o FROM OtherService o WHERE o.id = :id")
+    Optional<OtherService> findByIdUsingQuery(@Param("id") Integer id);
 
     Optional<OtherService> findByName(String serviceName);
 

@@ -95,21 +95,6 @@ public class UserController {
         }
     }
 
-    /**
-     * Actualizar un usuario existente.
-     */
-    /*
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Integer id, @Valid @RequestBody User userDetails) {
-        try {
-            User updatedUser = userService.updateUser(id, userDetails);
-            return updatedUser;
-        } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-    */
-
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
 		try {
@@ -144,8 +129,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Integer id) {
         if (userService.getUserById(id) != null) {
-            Optional<User> user = userService.getUserById(id);
-
             List<Event> events = eventService.findEventsByUserId(id);
             for (Event e : events) {
                 e.setUser(null);
