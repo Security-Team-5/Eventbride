@@ -8,6 +8,8 @@ export default function Payment() {
   const [eventProp, setEventProp] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [price, setPrice] = useState(0)
+  const [status, setStatus] = useState("CARGANDO")
   const { id } = useParams()
 
   useEffect(() => {
@@ -36,6 +38,15 @@ export default function Payment() {
         const data = await response.json()
         console.log("Event propertie obtenido:", data)
         setEventProp(data)
+
+        if (data.status === "APPROVED") {
+          setStatus("DEPOSITO PARA RESERVA")
+          setPrice(data.depositAmount)
+        } else {
+          setStatus("CANTIDAD RESTANTE")
+          setPrice(data.pricePerService - data.depositAmount)
+        }
+
       } catch (error) {
         console.error("Error obteniendo evento:", error)
         setError("No se pudo cargar la información del evento. Inténtelo de nuevo más tarde.")
@@ -45,7 +56,7 @@ export default function Payment() {
     }
 
     getEventProp()
-  }, [id])
+  }, [id, status, price])
 
   if (error) {
     return (
@@ -97,12 +108,13 @@ export default function Payment() {
               {/* Payment Summary */}
               <div className="payment-summary">
                 <h3 className="summary-title">Resumen del Pago</h3>
+                <h3 className="summary-title">Tipo de pago: {status}</h3>
                 <div className="summary-card">
                   <div className="summary-content">
                     <div className="summary-item">
                       <span>Precio base</span>
                       <span className="price">
-                        {eventProp.venueDTO?.fixedPrice || eventProp.otherServiceDTO?.fixedPrice || 0}€
+                        {price}€
                       </span>
                     </div>
 
@@ -110,7 +122,7 @@ export default function Payment() {
 
                     <div className="summary-item total">
                       <span>Total</span>
-                      <span>{eventProp.venueDTO?.fixedPrice || eventProp.otherServiceDTO?.fixedPrice || 0}€</span>
+                      <span>{price}€</span>
                     </div>
                   </div>
                 </div>
@@ -119,7 +131,7 @@ export default function Payment() {
 
             <div className="card-footer">
               <div className="payment-button-container">
-                <PaypalButtom />
+                <PaypalButtom amount={price} />
               </div>
               <p className="terms-text">Al completar el pago, acepta nuestros términos y condiciones de servicio.</p>
             </div>

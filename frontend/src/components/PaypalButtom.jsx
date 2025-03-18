@@ -13,7 +13,7 @@ function PaypalButton({ amount }) {
               return actions.order.create({
                 purchase_units: [
                   {
-                    amount: { value: "10.00" },
+                    amount: { value: amount },
                   },
                 ],
               });
