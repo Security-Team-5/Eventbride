@@ -33,21 +33,21 @@ public class EventProperties extends BaseEntity {
     private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = true) 
+    @Column(name = "status", nullable = true)
     private Status status;
 
     @Column(name = "deposit_amount", nullable = false)
     @DecimalMin("0.0")
     private Double depositAmount;
 
-    @Column(name= "price_per_service", nullable = false)
+    @Column(name = "price_per_service", nullable = false)
     @DecimalMin("0.0")
     private BigDecimal pricePerService;
 
-    @Column(name ="book_date", nullable=false)
+    @Column(name = "book_date", nullable = false)
     private LocalDateTime bookDateTime;
 
-    @OneToMany(mappedBy = "eventProperties", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "eventProperties", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Payment> payments;
 
     public enum Status {
