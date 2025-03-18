@@ -101,7 +101,7 @@ public class EventPropertiesService {
         }
         for (EventProperties e : eventPropertiesEvent) {
             if (e.getOtherService() != null && e.getOtherService().getId() == otherServiceId) {
-                throw new RuntimeException("Este servicio ya está asociado a este evento");
+                throw new RuntimeException("Este servicio ya estÃ¡ asociado a este evento");
             }
         }
         EventProperties eventProperties = new EventProperties();
@@ -110,7 +110,6 @@ public class EventPropertiesService {
         eventProperties.setStartTime(startDate);
         eventProperties.setEndTime(endDate);
         eventProperties.setStatus(EventProperties.Status.PENDING);
-        eventProperties.setDepositAmount(null);
         eventProperties.setBookDateTime(LocalDateTime.now());
         BigDecimal priceService;
         if (service.getLimitedByPricePerGuest() != null && service.getLimitedByPricePerGuest()) {
@@ -124,6 +123,7 @@ public class EventPropertiesService {
             priceService = service.getFixedPrice();
         }
         eventProperties.setPricePerService(priceService);
+        eventProperties.setDepositAmount(priceService.doubleValue() * 0.35);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
         event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
@@ -137,7 +137,7 @@ public class EventPropertiesService {
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
         List<EventProperties> eventPropertiesEvent = event.get().getEventProperties();
         for (EventProperties e : eventPropertiesEvent) {
-            if (e.getVenue() != null){
+            if (e.getVenue() != null) {
                 throw new RuntimeException("Este evento ya tiene un servicio asociado.");
             }
         }
@@ -147,7 +147,6 @@ public class EventPropertiesService {
         eventProperties.setStartTime(startDate);
         eventProperties.setEndTime(endDate);
         eventProperties.setStatus(EventProperties.Status.PENDING);
-        eventProperties.setDepositAmount(0.0);
         eventProperties.setBookDateTime(LocalDateTime.now());
         BigDecimal priceService;
         if (service.getLimitedByPricePerGuest()) {
@@ -161,6 +160,7 @@ public class EventPropertiesService {
             priceService = service.getFixedPrice();
         }
         eventProperties.setPricePerService(priceService);
+        eventProperties.setDepositAmount(priceService.doubleValue() * 0.35);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
         event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
