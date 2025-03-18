@@ -12,7 +12,7 @@ function PaypalButton() {
               return actions.order.create({
                 purchase_units: [
                   {
-                    amount: { value: "10.00" },
+                    amount: { value: "10.00" }, //Esto hay que cambiarlo por el valor correspondiente
                   },
                 ],
               });
@@ -30,7 +30,7 @@ function PaypalButton() {
     }
   }, []);
 
-  return <div style={{maxWidth: "100%"}} id="paypal-button-container"></div>;
+  return <div style={{ maxWidth: "100%" }} id="paypal-button-container"></div>;
 }
 
 export default PaypalButton;

@@ -119,8 +119,20 @@ function EventDetails() {
                     <img style={{ maxWidth: "80%" }} src={prop.venueDTO.picture} alt="Venue" />
                   </div>
                   <div style={{ textAlign: "center" }}>
-                    <button className="payment-buttom" onClick={() => navigate(`/payment/${prop.id}`)}>
-                      Pagar señal
+                    <button
+                      className="payment-buttom"
+                      disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
+                      onClick={() => navigate(`/payment/${prop.id}`)}
+                    >
+                      {prop.status === "PENDING"
+                        ? "Pendiente de aprobación"
+                        : prop.status === "APPROVED"
+                          ? "Pagar señal"
+                          : prop.status === "DEPOSIT_PAID"
+                            ? "Pago Final"
+                            : prop.status === "COMPLETED"
+                              ? "Servicio pagado"
+                              : "Pagar"}
                     </button>
                   </div>
                 </div>
@@ -145,15 +157,15 @@ function EventDetails() {
                       disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
                       onClick={() => navigate(`/payment/${prop.id}`)}
                     >
-                        {prop.status === "PENDING"
+                      {prop.status === "PENDING"
                         ? "Pendiente de aprobación"
-                        : prop.status === "APROVED"
-                        ? "Pagar señal"
-                        : prop.status === "DEPOSIT_PAID"
-                        ? "Pago Final"
-                        : prop.status === "COMPLETED"
-                        ? "Servicio pagado"
-                        : "Pagar"}
+                        : prop.status === "APPROVED"
+                          ? "Pagar señal"
+                          : prop.status === "DEPOSIT_PAID"
+                            ? "Pago Final"
+                            : prop.status === "COMPLETED"
+                              ? "Servicio pagado"
+                              : "Pagar"}
                     </button>
                   </div>
                 </div>
