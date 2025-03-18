@@ -7,6 +7,7 @@ function Payment() {
   const [eventProp, setEventProp] = useState(null);
   const { id } = useParams();
   const jwt = localStorage.getItem("jwt");
+  const [amount, setAmount] = useState(null);
 
   function getEventProp() {
     fetch(`/api/event-properties/DTO/${id}`, {
@@ -20,6 +21,7 @@ function Payment() {
       .then(data => {
         console.log("Event propertie obtenido:", data);
         setEventProp(data);
+        setAmount(data.depositAmount);
       })
       .catch(error => console.error("Error obteniendo evento:", error));
   }
@@ -115,7 +117,7 @@ function Payment() {
             )}
 
             <div style={{ textAlign: "center" }}>
-              <PaypalButtom/>
+              <PaypalButtom amount={amount} />
             </div>
           </>
         ) : (

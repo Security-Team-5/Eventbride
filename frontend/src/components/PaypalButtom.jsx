@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useEffect } from "react";
 import "../static/resources/css/Paypal.css";
 
-function PaypalButton() {
+function PaypalButton({ amount }) {
   useEffect(() => {
     // Evitar renderizar el botón más de una vez
     if (!document.getElementById("paypal-button-container").hasChildNodes()) {
@@ -12,7 +13,7 @@ function PaypalButton() {
               return actions.order.create({
                 purchase_units: [
                   {
-                    amount: { value: "10.00" },
+                    amount: { value: amount },
                   },
                 ],
               });
@@ -28,7 +29,7 @@ function PaypalButton() {
         console.error("PayPal SDK no se ha cargado correctamente.");
       }
     }
-  }, []);
+  }, [amount]);
 
   return <div style={{maxWidth: "100%"}} id="paypal-button-container"></div>;
 }

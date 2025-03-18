@@ -18,6 +18,7 @@ public class EventPropertiesDTO {
     private VenueDTO venueDTO;
     private OtherServiceDTO otherServiceDTO;
     private Status status;
+    private Double depositAmount;
 
     
     // Constructor para simplificar la creación del DTO
@@ -25,6 +26,7 @@ public class EventPropertiesDTO {
         this.id = eventProperties.getId();
         this.status = eventProperties.getStatus();
         this.requestDate = eventProperties.getStartTime().toLocalDate();
+        this.depositAmount = eventProperties.getDepositAmount();
         if(eventProperties.getVenue() != null){
             this.venueDTO = new VenueDTO(eventProperties.getVenue());
         }
