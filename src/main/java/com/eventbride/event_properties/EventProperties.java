@@ -32,6 +32,7 @@ public class EventProperties extends BaseEntity {
     @Column(name = "end_time", nullable = true)
     private LocalDateTime endTime;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = true) 
     private Status status;
 

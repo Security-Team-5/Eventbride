@@ -67,7 +67,12 @@ function Payment() {
                 </div>
 
                 <div className="venue-image mt-4" style={{ textAlign: "center" }}>
-                  <img src={eventProp.venueDTO.picture} alt={eventProp.venueDTO.name} className="w-full max-w-lg rounded-xl shadow-lg" />
+                  <img 
+                    style={{ maxWidth: "100%" }}
+                    src={eventProp.venueDTO.picture} 
+                    alt={eventProp.venueDTO.name} 
+                    className="w-full max-w-lg rounded-xl shadow-lg" 
+                  />
                 </div>
               </div>
             ) : eventProp.otherServiceDTO ? (
@@ -98,6 +103,7 @@ function Payment() {
 
                 <div className="service-image mt-4" style={{ textAlign: "center" }}>
                   <img 
+                    style={{ maxWidth: "100%" }}
                     src={eventProp.otherServiceDTO.picture} 
                     alt={eventProp.otherServiceDTO.name} 
                     className="w-full max-w-lg rounded-xl shadow-lg" 

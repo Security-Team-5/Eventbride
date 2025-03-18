@@ -89,6 +89,7 @@ function EventDetails() {
       return text;
     }
   };
+  console.log
 
   return (
     <>
@@ -139,8 +140,20 @@ function EventDetails() {
                   </div>
                   <p><strong>Descripción:</strong> {decodeText(prop.otherServiceDTO.description)}</p>
                   <div style={{ textAlign: "center" }}>
-                    <button className="payment-buttom" onClick={() => navigate(`/payment/${prop.id}`)}>
-                      Pagar señal
+                    <button
+                      className="payment-buttom"
+                      disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
+                      onClick={() => navigate(`/payment/${prop.id}`)}
+                    >
+                        {prop.status === "PENDING"
+                        ? "Pendiente de aprobación"
+                        : prop.status === "APROVED"
+                        ? "Pagar señal"
+                        : prop.status === "DEPOSIT_PAID"
+                        ? "Pago Final"
+                        : prop.status === "COMPLETED"
+                        ? "Servicio pagado"
+                        : "Pagar"}
                     </button>
                   </div>
                 </div>

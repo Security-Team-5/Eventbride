@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.eventbride.event_properties.EventProperties;
+import com.eventbride.event_properties.EventProperties.Status;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,10 +17,14 @@ public class EventPropertiesDTO {
     private LocalDate requestDate;
     private VenueDTO venueDTO;
     private OtherServiceDTO otherServiceDTO;
+    private Status status;
+
     
     // Constructor para simplificar la creación del DTO
     public EventPropertiesDTO(EventProperties eventProperties) {
         this.id = eventProperties.getId();
+        this.status = eventProperties.getStatus();
+        this.requestDate = eventProperties.getStartTime().toLocalDate();
         if(eventProperties.getVenue() != null){
             this.venueDTO = new VenueDTO(eventProperties.getVenue());
         }
