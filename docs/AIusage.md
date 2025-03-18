@@ -37,6 +37,7 @@
 |20/02/2025 |v1.1 |Actualización del documento |DP | - |
 |10/03/2025 |v1.2 |Pasar a formato Markdown |Sprint 1 | - |
 |12/03/2025 |v1.3 |Actualizar con usos del sprint 1 |Sprint 1 | María de la Salud Carrera Talaverón |
+|18/03/2025 |v1.4 |Actualizar con usos del sprint 2 |Sprint 2 | Pablo Jesús Castellanos Compaña |
 
 ---
 
@@ -148,6 +149,8 @@ Este análisis permitirá evaluar la eficacia del uso de la IA dentro del proyec
 |15|Arreglo de índices de contenido y generación de tablas en documentos en markdown|María de la Salud Carrera Talaverón |12/03/2025 |Sugerencias de código de GitHub Copilot --> No procede|Sprint 1 |
 |16|Introducción y conclusión Análisis cualitativo y cuantitativo|María de la Salud Carrera Talaverón |12/03/2025 | [Chat con ChatGPT](https://chatgpt.com/share/67d1bfba-5144-8008-aaa9-e15ed1919c67) |Sprint 1 |
 |17|Ayuda para generar el documento de implicaciones legales | Fernando José de Celis Hurtado |17/03/2025 | GitHub Copilot --> No procede | Sprint 2 |
+|18|Ayuda para generar una entidad nueva| Pablo Jesús Castellanos Compaña |15/03/2025|[Chat con ChatGPT](https://chatgpt.com/c/67d6b8bd-aa88-8008-84d5-33a5432950ab)| Sprint 2|
+|19|Ayuda para generar una entidad nueva| Pablo Jesús Castellanos Compaña |16/03/2025|[Chat con ChatGPT](https://chatgpt.com/c/67d7210b-dbd0-8008-998a-655981e7134f)| Sprint 2|
 
 <div id='id8'></div>
 
@@ -172,6 +175,8 @@ Este análisis permitirá evaluar la eficacia del uso de la IA dentro del proyec
 |15 |10 |Sí |Sí |1 hora |
 |16 |1 |Sí |No |10 minutos|
 |17 |2 |Sí |Sí |20 minutos|
+|18 |2 |Sí |No procede |15 minutos|
+|19 |1 |Sí |Sí |30 minutos|
 
 <div id='concl'></div>
 
