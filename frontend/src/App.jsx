@@ -17,6 +17,8 @@ import EventDetails from "./pages/EventDetails";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminUsers from "./pages/admin/AdminUsers";
+import Invitations from "./pages/Invitations";
+import EventInvitations from "./pages/EventInvitations";
 
 
 function App() {
@@ -46,6 +48,8 @@ function App() {
             <Route path="/events" element={<MyEvents />} />
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
+            <Route path="/invitaciones" element={<Invitations />} />
+            <Route path="/invitaciones/:currentEventId" element={<EventInvitations />} />
             {currentUser && currentUser.role == "ADMIN" &&
               <>
                 <Route path="/admin-events" element={<AdminEvents/>} />

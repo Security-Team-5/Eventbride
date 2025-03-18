@@ -3,6 +3,8 @@ package com.eventbride.invitation;
 import com.eventbride.event.Event;
 import com.eventbride.otherService.OtherService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,17 @@ public class InvitationController {
 		try{
 			Invitation invitation = invitationService.getInvitationById(id);
 			return new ResponseEntity<>(invitation, HttpStatus.OK);
+		}
+		catch (Exception e){
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/eventInvitations/{eventId}")
+	public ResponseEntity<?> getInvitationsByEvent(@PathVariable int eventId){
+		try{
+			List<Invitation> invitations = invitationService.getInvitationByEventId(eventId);
+			return new ResponseEntity<>(invitations, HttpStatus.OK);
 		}
 		catch (Exception e){
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

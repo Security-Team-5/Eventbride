@@ -84,4 +84,15 @@ public class InvitationService {
 		}
 	}
 
+	@Transactional(readOnly = true)
+	public List<Invitation> getInvitationByEventId(Integer eventId){
+		List<Invitation> invitations = invitationRepository.findByEventId(eventId);
+		if (!invitations.isEmpty()) {
+			return invitations;
+		}
+		else {
+			throw new RuntimeException("Invitations not found");
+		}
+	}
+
 }

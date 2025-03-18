@@ -44,7 +44,8 @@ public class SecurityConfig {
                 "/api/other-services/**", 
                 "/api/other-services", 
                 "/api/venues/**", 
-                "/api/services/**").permitAll()
+                "/api/services/**",
+                "/api/invitation/eventInvitations/**").permitAll()
                 .requestMatchers("/api/services/admin",
                 "/api/users/**", 
                 "/api/**",
