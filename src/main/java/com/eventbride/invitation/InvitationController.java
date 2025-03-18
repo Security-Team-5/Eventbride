@@ -19,10 +19,10 @@ public class InvitationController {
 	@Autowired
 	private InvitationService invitationService;
 
-	@GetMapping("/create/{id}")
-	public ResponseEntity<?> createInvitation(@PathVariable int id) {
+	@PostMapping("/create/{id}")
+	public ResponseEntity<?> createInvitation(@PathVariable int id, @RequestBody int maxGuests) {
 		try {
-			Invitation res = invitationService.createVoidInvitation(id);
+			Invitation res = invitationService.createVoidInvitation(id, maxGuests);
 			return new ResponseEntity<>(res, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

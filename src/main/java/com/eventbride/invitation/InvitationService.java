@@ -28,8 +28,11 @@ public class InvitationService {
 
 
 	@Transactional()
-	public Invitation createVoidInvitation(Integer eventId) throws Exception{
+	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests) throws Exception{
 		Invitation invitation = new Invitation();
+		invitation.setMaxGuests(maxGuests);
+		String randomEmail = "randomEmail" + Math.random() + "@gmail.com";
+		invitation.setEmail(randomEmail);
 		Optional<Event> event = eventRepository.findById(eventId);
 
 		if (event.isPresent()) {
