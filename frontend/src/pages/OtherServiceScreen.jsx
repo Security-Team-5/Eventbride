@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import apiClient from '../apiClient';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import "../App.css"; 
-import { useNavigate } from "react-router-dom";
+import "../App.css";
 import "../static/resources/css/OtherService.css";
 
 const OtherServiceScreen = () => {
@@ -18,8 +16,7 @@ const OtherServiceScreen = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [selectedOtherServiceId, setSelectedOtherServiceId] = useState(null);
   const [serviceDetails, setServiceDetails] = useState(null);
-  const [hours, setHours] = useState(0);
-  const navigate = useNavigate();
+  const [venueTimes, setVenueTimes] = useState({});
 
   const currentUser = JSON.parse(localStorage.getItem("user"));
 
@@ -89,6 +86,20 @@ const OtherServiceScreen = () => {
     setModalVisible(true);
   };
 
+  const handleTimeChange = (eventObj, field, value) => {
+    setVenueTimes(prevTimes => ({
+      ...prevTimes,
+      [eventObj]: {
+        ...prevTimes[eventObj],
+        [field]: value
+      }
+    }));
+  };
+
+  const toggleFilters = () => {
+    setFiltersVisible(!filtersVisible);
+  };
+
   const tipoDeEvento = (type) => {
     switch (type) {
       case "WEDDING":
@@ -102,13 +113,30 @@ const OtherServiceScreen = () => {
     }
   };
 
-  const handleConfirmService = async (eventId, selectedOtherServiceId, hours = 0) => {
+  const combineDateAndTime = (eventDate, time) => {
+    const dateObj = new Date(eventDate);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    // time es un string tipo "HH:mm", se le añade ":00" para segundos
+    return `${year}-${month}-${day} ${time}:00`;
+  };
+
+
+  const handleConfirmService = async (eventObj, selectedOtherServiceId) => {
+    const times = venueTimes[eventObj.id] || {};
+    if (!times.startTime || !times.endTime) {
+      alert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.");
+      return;
+    }
+    // Combinar la fecha del evento con la hora que indicó el usuario
+    const startDate = combineDateAndTime(eventObj.eventDate, times.startTime);
+    const endDate = combineDateAndTime(eventObj.eventDate, times.endTime);
     try {
-      if (hours > 0) {
-        await axios.post(`/api/v1/eventProperties/${eventId}/add-otherservice-hours/${selectedOtherServiceId}/${hours}`);
-      } else {
-        await axios.post(`/api/v1/eventProperties/${eventId}/add-otherservice/${selectedOtherServiceId}`);
-      }
+      await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`,
+        null,
+        { params: { startDate, endDate } }
+      );
       alert("¡Operación realizada con éxito!");
       setModalVisible(false);
     } catch (error) {
@@ -128,6 +156,7 @@ const OtherServiceScreen = () => {
     }
   }, [type, name, city]);
 
+
   return (
     <div className="other-service-container">
       <h1 className="title">Categorías de servicios</h1>
@@ -136,15 +165,43 @@ const OtherServiceScreen = () => {
         <button onClick={() => handleCategoryClick("CATERING")}>Catering</button>
         <button onClick={() => handleCategoryClick("ENTERTAINMENT")}>Entretenimiento</button>
         <button onClick={() => handleCategoryClick("DECORATION")}>Decoración</button>
+
       </div>
+      <div className="filters-toggle">
+        <button onClick={toggleFilters}>
+          {filtersVisible ? "Ocultar filtros" : "Mostrar filtros"}
+        </button>
+      </div>
+
+      {filtersVisible && (
+         <div className="filters-container">
+           <h2>Filtros disponibles</h2>
+           <input
+             type="text"
+             placeholder="Nombre del servicio"
+             value={name}
+             onChange={(e) => setName(e.target.value)}
+           />
+           <input
+             type="text"
+             placeholder="Ciudad en la que buscas"
+             value={city}
+             onChange={(e) => setCity(e.target.value)}
+           />
+           <button onClick={getFilteredOtherServices}>Aplicar filtros</button>
+         </div>
+       )}
+ 
+       <h2 className="category-title">Servicios disponibles en la categoría: {category}</h2>
+
 
       <div className="services-grid">
         {otherServices.map((service) => (
           <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
             <h3 className="service-title">{service.name}</h3>
-            <p><strong>Precio:</strong> {service.limitedByPricePerGuest ? `${service.servicePricePerGuest} € por invitado` : 
-              service.limitedByPricePerHour ? `${service.servicePricePerHour} € por hora` : 
-              `${service.fixedPrice} €`}</p>
+            <p><strong>Precio:</strong> {service.limitedByPricePerGuest ? `${service.servicePricePerGuest} € por invitado` :
+              service.limitedByPricePerHour ? `${service.servicePricePerHour} € por hora` :
+                `${service.fixedPrice} €`}</p>
             <button
               className="confirm-button"
               onClick={(e) => handleAddServiceClick(e, service.id)}
@@ -162,23 +219,34 @@ const OtherServiceScreen = () => {
             {events.length === 0 ? (
               <p>No tienes eventos disponibles.</p>
             ) : (
-              events.map((event) => (
-                <div key={event.id}>
-                  <p><strong>Tipo de evento:</strong> {tipoDeEvento(event.eventType)}</p>
-                  <p><strong>Fecha del evento:</strong> {new Date(event.eventDate).toLocaleDateString()}</p>
-                  <p><strong>Invitados:</strong> {event.guests}</p>
-                  {selectedService.limitedByPricePerHour && (
+              events.map((eventObj) => (
+                <div key={eventObj.id}>
+                  <p><strong>Tipo de evento:</strong> {tipoDeEvento(eventObj.eventType)}</p>
+                  <p><strong>Fecha del evento:</strong> {new Date(eventObj.eventDate).toLocaleDateString()}</p>
+                  <p><strong>Invitados:</strong> {eventObj.guests}</p>
+                  {/* Hora de inicio del service */}
+                  <div>
+                    <label>Hora de inicio del venue: </label>
                     <input
-                      type="number"
-                      value={hours}
-                      onChange={(e) => setHours(e.target.value)}
-                      placeholder="Horas"
+                      type="time"
+                      value={venueTimes[eventObj.id]?.startTime || ""}
+                      onChange={(e) => handleTimeChange(eventObj.id, 'startTime', e.target.value)}
                     />
-                  )}
-                  <button onClick={() => handleConfirmService(event.id, selectedOtherServiceId, hours)}>
+                  </div>
+
+                  {/* Hora de fin del service */}
+                  <div>
+                    <label>Hora de fin del venue: </label>
+                    <input
+                      type="time"
+                      value={venueTimes[eventObj.id]?.endTime || ""}
+                      onChange={(e) => handleTimeChange(eventObj.id, 'endTime', e.target.value)}
+                    />
+                  </div>
+                  <button onClick={() => handleConfirmService(eventObj, selectedOtherServiceId)}>
                     Confirmar
                   </button>
-                  <button className="close-button" onClick={() => setModalVisible(false)}>Cerrar</button> 
+                  <button className="close-button" onClick={() => setModalVisible(false)}>Cerrar</button>
                 </div>
               ))
             )}

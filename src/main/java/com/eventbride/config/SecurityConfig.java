@@ -40,13 +40,16 @@ public class SecurityConfig {
                                 "/api/users/auth/login",
                                 "/api/venues/**",
                                 "/api/event-properties/**",
-                                "/api/event-properties/DTO/**",
                                 "/api/users/auth/current-user",
                                 "/api/v1/events/**",
                                 "/api/other-services/**",
+                                "/api/other-services/add-otherservice/**",
                                 "/api/other-services",
-                                "/api/payment/**",
                                 "/api/venues/**",
+                                "/api/event-properties/DTO/**",
+                                "/api/payment/**",
+                                "/api/venues/add-venue/**",
+                                "/api/venues/{eventId}/add-venue/{venueId}/**",
                                 "/api/services/**")
                         .permitAll()
                         .requestMatchers("/api/services/admin",

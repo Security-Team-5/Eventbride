@@ -8,6 +8,8 @@ import com.eventbride.model.BaseEntity;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.payment.Payment;
 import com.eventbride.venue.Venue;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
@@ -36,7 +38,7 @@ public class EventProperties extends BaseEntity {
     @Column(name = "status", nullable = true)
     private Status status;
 
-    @Column(name = "deposit_amount", nullable = false)
+    @Column(name = "deposit_amount", nullable = true)
     @DecimalMin("0.0")
     private Double depositAmount;
 
