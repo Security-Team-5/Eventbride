@@ -55,7 +55,7 @@ public class Invitation extends BaseEntity{
     }
 
 	@ManyToOne()
-	@JoinColumn(name = "invitation_id")
+	@JoinColumn(name = "event_id")
 	private Event event;
 
 }
