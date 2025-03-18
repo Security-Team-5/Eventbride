@@ -1,129 +1,286 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import "../static/resources/css/EventDetails.css";
+import "../static/resources/css/Payment.css";
 import PaypalButtom from "../components/PaypalButtom";
 
-function Payment() {
-  const [eventProp, setEventProp] = useState(null);
-  const { id } = useParams();
-  const jwt = localStorage.getItem("jwt");
-
-  function getEventProp() {
-    fetch(`/api/event-properties/DTO/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${jwt}`
-      },
-      method: "GET",
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log("Event propertie obtenido:", data);
-        setEventProp(data);
-      })
-      .catch(error => console.error("Error obteniendo evento:", error));
-  }
+export default function Payment() {
+  const [eventProp, setEventProp] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const { id } = useParams()
 
   useEffect(() => {
-    console.log("Event prop", eventProp);
-    getEventProp();
-  }, []);
+    const jwt = localStorage.getItem("jwt")
+    if (!jwt) {
+      setError("No se ha encontrado la sesión. Por favor, inicie sesión de nuevo.")
+      setLoading(false)
+      return
+    }
+
+    async function getEventProp() {
+      try {
+        setLoading(true)
+        const response = await fetch(`/api/event-properties/DTO/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+          method: "GET",
+        })
+
+        if (!response.ok) {
+          throw new Error("Error al obtener los datos del evento")
+        }
+
+        const data = await response.json()
+        console.log("Event propertie obtenido:", data)
+        setEventProp(data)
+      } catch (error) {
+        console.error("Error obteniendo evento:", error)
+        setError("No se pudo cargar la información del evento. Inténtelo de nuevo más tarde.")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    getEventProp()
+  }, [id])
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="error-card">
+          <div className="card-header">
+            <h2 className="card-title">Error</h2>
+            <p className="card-description">{error}</p>
+          </div>
+          <div className="card-footer">
+            <button className="btn btn-primary" onClick={() => window.history.back()}>
+              Volver
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="event-contain" style={{ maxWidth: "35%" }}>
-      <div className="event-details">
-        <h1 className="event-title">Pago del servicio</h1>
+    <div className="payment-container">
+      <div className="payment-card">
+        <div className="card-header">
+          <h1 className="card-title">Pago del Servicio</h1>
+          <p className="card-description">Complete el pago para confirmar su reserva</p>
+        </div>
 
-        {eventProp ? (
+        {loading ? (
+          <div className="card-content">
+            <LoadingState />
+          </div>
+        ) : eventProp ? (
           <>
-            {eventProp.venueDTO ? (
-              <div className="venue-info">
-                <h2 className="text-xl font-semibold">{eventProp.venueDTO.name}</h2>
-                <p>📅 Fecha solicitada: {eventProp.requestDate ? eventProp.requestDate : "Nada"}</p>
+            <div className="card-content">
+              {/* Service Information */}
+              <div className="service-info">
+                {eventProp.venueDTO ? (
+                  <VenueDetails venue={eventProp.venueDTO} requestDate={eventProp.requestDate} />
+                ) : eventProp.otherServiceDTO ? (
+                  <ServiceDetails service={eventProp.otherServiceDTO} requestDate={eventProp.requestDate} />
+                ) : (
+                  <div className="no-info">
+                    <div className="icon-container">ℹ️</div>
+                    <p>No hay información disponible para este servicio.</p>
+                  </div>
+                )}
+              </div>
 
-                <p>📍 Dirección: {eventProp.venueDTO.address}, {eventProp.venueDTO.cityAvailable} ({eventProp.venueDTO.postalCode})</p>
-                <p>🌍 Coordenadas: {eventProp.venueDTO.coordinates}</p>
+              {/* Payment Summary */}
+              <div className="payment-summary">
+                <h3 className="summary-title">Resumen del Pago</h3>
+                <div className="summary-card">
+                  <div className="summary-content">
+                    <div className="summary-item">
+                      <span>Precio base</span>
+                      <span className="price">
+                        {eventProp.venueDTO?.fixedPrice || eventProp.otherServiceDTO?.fixedPrice || 0}€
+                      </span>
+                    </div>
 
-                <p>📏 Superficie: {eventProp.venueDTO.surface} m²</p>
-                <p>👥 Capacidad máxima: {eventProp.venueDTO.maxGuests} invitados</p>
+                    <div className="separator"></div>
 
-                <div className="pricing-info">
-                  <h3 className="font-semibold mt-4">Tarifas</h3>
-                  <p>💰 Precio fijo: {eventProp.venueDTO.fixedPrice}€</p>
-                  <p>👤 Precio por invitado: {eventProp.venueDTO.servicePricePerGuest}€</p>
-                  <p>⏳ Precio por hora: {eventProp.venueDTO.servicePricePerHour}€</p>
-                </div>
-
-                <div className="schedule-info">
-                  <h3 className="font-semibold mt-4">Horario Disponible</h3>
-                  <p>🕒 Apertura: {eventProp.venueDTO.earliestTime}</p>
-                  <p>🌙 Cierre: {eventProp.venueDTO.latestTime}</p>
-                </div>
-
-                <div className="status-info mt-4" style={{ textAlign: "center" }}>
-                  <span className={`px-3 py-1 rounded-full text-white text-sm ${eventProp.venueDTO.available ? 'bg-green-500' : 'bg-red-500'}`}>
-                    {eventProp.venueDTO.available ? "✅ Disponible" : "❌ No Disponible"}
-                  </span>
-                </div>
-
-                <div className="venue-image mt-4" style={{ textAlign: "center" }}>
-                  <img 
-                    style={{ maxWidth: "100%" }}
-                    src={eventProp.venueDTO.picture} 
-                    alt={eventProp.venueDTO.name} 
-                    className="w-full max-w-lg rounded-xl shadow-lg" 
-                  />
+                    <div className="summary-item total">
+                      <span>Total</span>
+                      <span>{eventProp.venueDTO?.fixedPrice || eventProp.otherServiceDTO?.fixedPrice || 0}€</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ) : eventProp.otherServiceDTO ? (
-              <div className="other-service-info">
-                <h2 className="text-xl font-semibold">{eventProp.otherServiceDTO.name}</h2>
-                <p>📅 Fecha solicitada: {eventProp.requestDate ? eventProp.requestDate : "Nada"}</p>
+            </div>
 
-                <p className="text-gray-600">{eventProp.otherServiceDTO.description}</p>
-
-                <p><strong>🛠 Servicio:</strong> {eventProp.otherServiceDTO.extraInformation}</p>
-
-                <p><strong>📍 Disponible en:</strong> {eventProp.otherServiceDTO.cityAvailable}</p>
-
-                <p><strong>📌 Tipo de servicio:</strong> {eventProp.otherServiceDTO.otherServiceType}</p>
-
-                <div className="pricing-info bg-gray-50 p-4 rounded-xl shadow-md mt-4">
-                  <h3 className="text-lg font-semibold">Tarifas</h3>
-                  <p><strong>💰 Precio fijo:</strong> {eventProp.otherServiceDTO.fixedPrice}€</p>
-                  <p><strong>👤 Precio por invitado:</strong> {eventProp.otherServiceDTO.servicePricePerGuest}€</p>
-                  <p><strong>⏳ Precio por hora:</strong> {eventProp.otherServiceDTO.servicePricePerHour}€</p>
-                </div>
-
-                <div className="limits-info bg-gray-50 p-4 rounded-xl shadow-md mt-4">
-                  <h3 className="text-lg font-semibold">Restricciones</h3>
-                  <p>🔹 Limitado por invitado: {eventProp.otherServiceDTO.limitedByPricePerGuest ? "✅ Sí" : "❌ No"}</p>
-                  <p>🔹 Limitado por hora: {eventProp.otherServiceDTO.limitedByPricePerHour ? "✅ Sí" : "❌ No"}</p>
-                </div>
-
-                <div className="service-image mt-4" style={{ textAlign: "center" }}>
-                  <img 
-                    style={{ maxWidth: "100%" }}
-                    src={eventProp.otherServiceDTO.picture} 
-                    alt={eventProp.otherServiceDTO.name} 
-                    className="w-full max-w-lg rounded-xl shadow-lg" 
-                  />
-                </div>
+            <div className="card-footer">
+              <div className="payment-button-container">
+                <PaypalButtom />
               </div>
-            ) : (
-              <p className="text-center text-gray-500">⚠ No hay información disponible.</p>
-            )}
-
-            <div style={{ textAlign: "center" }}>
-              <PaypalButtom/>
+              <p className="terms-text">Al completar el pago, acepta nuestros términos y condiciones de servicio.</p>
             </div>
           </>
         ) : (
-          <p className="text-center text-gray-500">⏳ Cargando información...</p>
+          <div className="card-content empty-content">
+            <div className="icon-container">ℹ️</div>
+            <p>No se encontró información para este servicio.</p>
+          </div>
         )}
       </div>
     </div>
-  );
+  )
 }
 
-export default Payment;
+function VenueDetails({ venue, requestDate }) {
+  return (
+    <div className="venue-details">
+      <div className="venue-header">
+        <h2 className="venue-title">{venue.name}</h2>
+        <div className="date-info">
+          <span className="icon">📅</span>
+          <span>Fecha solicitada: {requestDate || "No especificada"}</span>
+        </div>
+      </div>
+
+      <div className="venue-image">
+        <img src={venue.picture || "https://via.placeholder.com/600x400"} alt={venue.name} />
+      </div>
+
+      <div className="venue-details-grid">
+        <div className="details-column">
+          <div className="detail-item">
+            <span className="icon">📍</span>
+            <span>
+              {venue.address}, {venue.cityAvailable} ({venue.postalCode})
+            </span>
+          </div>
+          <div className="detail-item">
+            <span className="icon">👥</span>
+            <span>Capacidad máxima: {venue.maxGuests} invitados</span>
+          </div>
+          <div className="detail-item">
+            <span className="icon">📏</span>
+            <span>Superficie: {venue.surface} m²</span>
+          </div>
+        </div>
+
+        <div className="details-column">
+          <div className="detail-item">
+            <span className="icon">🕒</span>
+            <span>
+              Horario: {venue.earliestTime} - {venue.latestTime}
+            </span>
+          </div>
+          <div className="detail-item">
+            <span className="icon">💰</span>
+            <span>Precio por invitado: {venue.servicePricePerGuest}€</span>
+          </div>
+          <div className="detail-item">
+            <span className="icon">💰</span>
+            <span>Precio por hora: {venue.servicePricePerHour}€</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="availability-badge">
+        <span className={venue.available ? "badge-success" : "badge-error"}>
+          {venue.available ? "✅ Disponible" : "❌ No Disponible"}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function ServiceDetails({ service, requestDate }) {
+  return (
+    <div className="service-details">
+      <div className="service-header">
+        <h2 className="service-title">{service.name}</h2>
+        <div className="date-info">
+          <span className="icon">📅</span>
+          <span>Fecha solicitada: {requestDate || "No especificada"}</span>
+        </div>
+        <p className="service-description">{service.description}</p>
+      </div>
+
+      <div className="service-image">
+        <img src={service.picture || "https://via.placeholder.com/600x400"} alt={service.name} />
+      </div>
+
+      <div className="service-details-grid">
+        <div className="details-column">
+          <div className="detail-item">
+            <span className="icon">ℹ️</span>
+            <span>{service.extraInformation}</span>
+          </div>
+          <div className="detail-item">
+            <span className="icon">📍</span>
+            <span>Disponible en: {service.cityAvailable}</span>
+          </div>
+          <div className="detail-item">
+            <span className="icon">🏷️</span>
+            <span>Tipo: {service.otherServiceType}</span>
+          </div>
+        </div>
+
+        <div className="details-column">
+          <div className="detail-item">
+            <span className="icon">💰</span>
+            <span>Precio fijo: {service.fixedPrice}€</span>
+          </div>
+          <div className="detail-item">
+            <span className="icon">💰</span>
+            <span>Precio por invitado: {service.servicePricePerGuest}€</span>
+          </div>
+          <div className="detail-item">
+            <span className="icon">💰</span>
+            <span>Precio por hora: {service.servicePricePerHour}€</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="limits-grid">
+        <div className="limit-item">
+          <span>Limitado por invitado:</span>
+          <span className="badge-outline">{service.limitedByPricePerGuest ? "✅ Sí" : "❌ No"}</span>
+        </div>
+        <div className="limit-item">
+          <span>Limitado por hora:</span>
+          <span className="badge-outline">{service.limitedByPricePerHour ? "✅ Sí" : "❌ No"}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LoadingState() {
+  return (
+    <div className="loading-state">
+      <div className="loading-header">
+        <div className="skeleton skeleton-title"></div>
+        <div className="skeleton skeleton-subtitle"></div>
+      </div>
+
+      <div className="skeleton skeleton-image"></div>
+
+      <div className="loading-details-grid">
+        <div className="loading-column">
+          <div className="skeleton skeleton-text"></div>
+          <div className="skeleton skeleton-text"></div>
+          <div className="skeleton skeleton-text"></div>
+        </div>
+        <div className="loading-column">
+          <div className="skeleton skeleton-text"></div>
+          <div className="skeleton skeleton-text"></div>
+          <div className="skeleton skeleton-text"></div>
+        </div>
+      </div>
+
+      <div className="skeleton skeleton-button"></div>
+    </div>
+  )
+}
