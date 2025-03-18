@@ -43,29 +43,25 @@ function Payment() {
                 <h2 className="text-xl font-semibold">{eventProp.venueDTO.name}</h2>
                 <p>📅 Fecha solicitada: {eventProp.requestDate ? eventProp.requestDate : "Nada"}</p>
 
-                <p>📍 Dirección: {eventProp.venueDTO.address}, {eventProp.venueDTO.cityAvailable} ({eventProp.venueDTO.postalCode})</p>
-                <p>🌍 Coordenadas: {eventProp.venueDTO.coordinates}</p>
-
                 <p>📏 Superficie: {eventProp.venueDTO.surface} m²</p>
                 <p>👥 Capacidad máxima: {eventProp.venueDTO.maxGuests} invitados</p>
 
                 <div className="pricing-info">
-                  <h3 className="font-semibold mt-4">Tarifas</h3>
-                  <p>💰 Precio fijo: {eventProp.venueDTO.fixedPrice}€</p>
-                  <p>👤 Precio por invitado: {eventProp.venueDTO.servicePricePerGuest}€</p>
-                  <p>⏳ Precio por hora: {eventProp.venueDTO.servicePricePerHour}€</p>
+                  <h3 className="font-semibold mt-4">Tarifa</h3>
+                  {(eventProp.venueDTO.limitedByPricePerGuest == false  && eventProp.venueDTO.limitedByPricePerHour == false)  && (
+                    <p>💰 Precio fijo: {eventProp.venueDTO.fixedPrice}€</p>
+                  )}
+                  {(eventProp.venueDTO.limitedByPricePerGuest == true && eventProp.venueDTO.limitedByPricePerHour == false) && (
+                    <p>👤 Precio por invitado: {eventProp.venueDTO.servicePricePerGuest}€</p>
+                  )}
+                  {(eventProp.venueDTO.limitedByPricePerGuest == false && eventProp.venueDTO.limitedByPricePerHour == true) && (
+                    <p>⏳ Precio por hora: {eventProp.venueDTO.servicePricePerHour}€</p>
+                  )}
                 </div>
-
                 <div className="schedule-info">
-                  <h3 className="font-semibold mt-4">Horario Disponible</h3>
-                  <p>🕒 Apertura: {eventProp.venueDTO.earliestTime}</p>
-                  <p>🌙 Cierre: {eventProp.venueDTO.latestTime}</p>
-                </div>
-
-                <div className="status-info mt-4" style={{ textAlign: "center" }}>
-                  <span className={`px-3 py-1 rounded-full text-white text-sm ${eventProp.venueDTO.available ? 'bg-green-500' : 'bg-red-500'}`}>
-                    {eventProp.venueDTO.available ? "✅ Disponible" : "❌ No Disponible"}
-                  </span>
+                  <h3 className="font-semibold mt-4">Horario de la reserva</h3>
+                  <p>🕒 Apertura: {eventProp.startTime}</p>
+                  <p>🌙 Cierre: {eventProp.finishTime}</p>
                 </div>
 
                 <div className="venue-image mt-4" style={{ textAlign: "center" }}>
@@ -86,21 +82,19 @@ function Payment() {
 
                 <p><strong>🛠 Servicio:</strong> {eventProp.otherServiceDTO.extraInformation}</p>
 
-                <p><strong>📍 Disponible en:</strong> {eventProp.otherServiceDTO.cityAvailable}</p>
-
                 <p><strong>📌 Tipo de servicio:</strong> {eventProp.otherServiceDTO.otherServiceType}</p>
 
-                <div className="pricing-info bg-gray-50 p-4 rounded-xl shadow-md mt-4">
-                  <h3 className="text-lg font-semibold">Tarifas</h3>
-                  <p><strong>💰 Precio fijo:</strong> {eventProp.otherServiceDTO.fixedPrice}€</p>
-                  <p><strong>👤 Precio por invitado:</strong> {eventProp.otherServiceDTO.servicePricePerGuest}€</p>
-                  <p><strong>⏳ Precio por hora:</strong> {eventProp.otherServiceDTO.servicePricePerHour}€</p>
-                </div>
-
-                <div className="limits-info bg-gray-50 p-4 rounded-xl shadow-md mt-4">
-                  <h3 className="text-lg font-semibold">Restricciones</h3>
-                  <p>🔹 Limitado por invitado: {eventProp.otherServiceDTO.limitedByPricePerGuest ? "✅ Sí" : "❌ No"}</p>
-                  <p>🔹 Limitado por hora: {eventProp.otherServiceDTO.limitedByPricePerHour ? "✅ Sí" : "❌ No"}</p>
+                <div className="pricing-info">
+                  <h3 className="font-semibold mt-4">Tarifa</h3>
+                  {(eventProp.otherServiceDTO.limitedByPricePerGuest == false  && eventProp.otherServiceDTO.limitedByPricePerHour == false)  && (
+                    <p>💰 Precio fijo: {eventProp.otherServiceDTO.fixedPrice}€</p>
+                  )}
+                  {(eventProp.otherServiceDTO.limitedByPricePerGuest == true && eventProp.otherServiceDTO.limitedByPricePerHour == false) && (
+                    <p>👤 Precio por invitado: {eventProp.otherServiceDTO.servicePricePerGuest}€</p>
+                  )}
+                  {(eventProp.otherServiceDTO.limitedByPricePerGuest == false && eventProp.otherServiceDTO.limitedByPricePerHour == true) && (
+                    <p>⏳ Precio por hora: {eventProp.otherServiceDTO.servicePricePerHour}€</p>
+                  )}
                 </div>
 
                 <div className="service-image mt-4" style={{ textAlign: "center" }}>

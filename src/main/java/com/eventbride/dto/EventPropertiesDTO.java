@@ -1,6 +1,8 @@
 package com.eventbride.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.eventbride.event_properties.EventProperties;
@@ -19,6 +21,8 @@ public class EventPropertiesDTO {
     private OtherServiceDTO otherServiceDTO;
     private Status status;
     private Double depositAmount;
+    private LocalTime startTime;
+    private LocalTime finishTime;
 
     
     // Constructor para simplificar la creación del DTO
@@ -26,6 +30,8 @@ public class EventPropertiesDTO {
         this.id = eventProperties.getId();
         this.status = eventProperties.getStatus();
         this.requestDate = eventProperties.getStartTime().toLocalDate();
+        this.startTime = eventProperties.getStartTime().toLocalTime();
+        this.finishTime = eventProperties.getEndTime().toLocalTime();
         this.depositAmount = eventProperties.getDepositAmount();
         if(eventProperties.getVenue() != null){
             this.venueDTO = new VenueDTO(eventProperties.getVenue());
