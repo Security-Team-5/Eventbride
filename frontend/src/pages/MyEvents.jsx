@@ -127,22 +127,20 @@ function MyEvents() {
 
       {eventos.length > 0 ? (
         
-        eventos.map((evento, index) => {
-          // Calcular el coste acumulado para este evento
-          const calcularCosteEvento = () => {
-            if (!evento || !evento.eventPropertiesDTO) return 0;
-
-            let total = 0;
-            for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
-              const prop = evento.eventPropertiesDTO[i];
-              total += (prop.setPricePerService || 0) + (prop.depositAmount || 0);
-            }
-            return total;
-          };
-
         <div className="events-grid">
           {eventos.map((evento, index) => {
             const diasRestantes = calcularDiasRestantes(evento.eventDate);
+
+            const calcularCosteEvento = () => {
+              if (!evento || !evento.eventPropertiesDTO) return 0;
+  
+              let total = 0;
+              for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
+                const prop = evento.eventPropertiesDTO[i];
+                total += (prop.setPricePerService || 0) + (prop.depositAmount || 0);
+              }
+              return total;
+            };
 
             return (
               <div

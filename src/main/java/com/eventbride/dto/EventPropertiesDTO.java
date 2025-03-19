@@ -19,7 +19,6 @@ public class EventPropertiesDTO {
     private Boolean approved;
     private LocalDate requestDate;
     private BigDecimal setPricePerService;
-    private Double depositAmount;
     private VenueDTO venueDTO;
     private OtherServiceDTO otherServiceDTO;
     private Status status;

@@ -10,6 +10,8 @@ function EventDetails() {
   const [isCostBreakdownModalOpen, setIsCostBreakdownModalOpen] = useState(false); // Nuevo estado para el modal de desglose
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true)
+
 
 
 
@@ -196,123 +198,126 @@ function EventDetails() {
             </button>
           </div>
 
-          {/* Modificar la sección de información del evento para formato horizontal */}
-          <div className="event-info-card">
-            <div className="event-info">
-              <div className="info-item">
-                <span className="info-label">Fecha:</span>
-                <p className="event-date">{formatearFecha(evento?.eventDate)}</p>
+          
+                <div className="event-info-card">
+                <div className="event-info">
+                  <div className="info-item">
+                  <span className="info-label">Fecha:</span>
+                  <p className="event-date">{formatearFecha(evento?.eventDate)}</p>
+                  </div>
+                  <div className="info-item">
+                  <span className="info-label">Invitados:</span>
+                  <p className="event-guests">{evento?.guests}</p>
+                  </div>
+                  <div className="info-item">
+                  <span className="info-label">Coste acumulado:</span>
+                  <p className="event-budget">
+                    <u
+                    style={{ cursor: "pointer", color: "blue" }}
+                    onClick={openCostBreakdownModal}
+                    >
+                    {sumaCosteTotalDeposit().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                    </u>
+                  </p>
+                  </div>
+                </div>
+                </div>
               </div>
-              <div className="info-item">
-                <span className="info-label">Invitados:</span>
-                <p className="event-guests">{evento?.guests}</p>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Presupuesto:</span>
-                <p className="event-budget">
-                  <u>
-                    Coste acumulado: {sumaCosteTotalDeposit().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                  </u>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div className="event-properties-container">
-          <div className="event-venues">
-            <h3 className="section-title">Recinto contratado</h3>
-            {evento?.eventPropertiesDTO?.some((prop) => prop.venueDTO) ? (
-              evento?.eventPropertiesDTO?.map((prop, i) =>
-                prop.venueDTO ? (
-                  <div key={i} className="venue-card">
+              <div className="event-properties-container">
+                <div className="event-venues">
+                <h3 className="section-title">Recinto contratado</h3>
+                {evento?.eventPropertiesDTO?.some((prop) => prop.venueDTO) ? (
+                  evento?.eventPropertiesDTO?.map((prop, i) =>
+                  prop.venueDTO ? (
+                    <div key={i} className="venue-card">
                     <div className="card-header">
                       <h4 className="venue-name">{decodeText(prop.venueDTO.name)}</h4>
                     </div>
                     <div className="venue-image-container">
                       <img
-                        className="venue-image"
-                        src={prop.venueDTO.picture || "/placeholder.svg"}
-                        alt={prop.venueDTO.name}
+                      className="venue-image"
+                      src={prop.venueDTO.picture || "/placeholder.svg"}
+                      alt={prop.venueDTO.name}
                       />
                     </div>
                     <div className="venue-details">
                       <p className="venue-address">
-                        <span className="detail-label">Ubicación:</span>
-                        {decodeText(prop.venueDTO.address)}
+                      <span className="detail-label">Ubicación:</span>
+                      {decodeText(prop.venueDTO.address)}
                       </p>
                     </div>
                     <div className="payment-container">
                       <button
-                        className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
-                        disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                        onClick={() => navigate(`/payment/${prop.id}`)}
+                      className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
+                      disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
+                      onClick={() => navigate(`/payment/${prop.id}`)}
                       >
-                        {getPaymentStatusText(prop.status)}
+                      {getPaymentStatusText(prop.status)}
                       </button>
                       <div className="status-indicator">
-                        <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
-                        <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
+                      <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
+                      <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
                       </div>
                     </div>
+                    </div>
+                  ) : null,
+                  )
+                ) : (
+                  <div className="empty-state">
+                  <p>No hay recintos contratados</p>
                   </div>
-                ) : null,
-              )
-            ) : (
-              <div className="empty-state">
-                <p>No hay recintos contratados</p>
-              </div>
-            )}
-          </div>
+                )}
+                </div>
 
-          <div className="event-services">
-            <h3 className="section-title">Otros servicios contratados</h3>
-            {evento?.eventPropertiesDTO?.some((prop) => prop.otherServiceDTO) ? (
-              evento?.eventPropertiesDTO?.map((prop, i) =>
-                prop.otherServiceDTO ? (
-                  <div key={i} className="service-card">
+                <div className="event-services">
+                <h3 className="section-title">Otros servicios contratados</h3>
+                {evento?.eventPropertiesDTO?.some((prop) => prop.otherServiceDTO) ? (
+                  evento?.eventPropertiesDTO?.map((prop, i) =>
+                  prop.otherServiceDTO ? (
+                    <div key={i} className="service-card">
                     <div className="card-header">
                       <h4 className="service-name">{decodeText(prop.otherServiceDTO.name)}</h4>
                     </div>
                     <div className="service-image-container">
                       <img
-                        className="service-image"
-                        src={prop.otherServiceDTO.picture || "/placeholder.svg"}
-                        alt={prop.otherServiceDTO.name}
+                      className="service-image"
+                      src={prop.otherServiceDTO.picture || "/placeholder.svg"}
+                      alt={prop.otherServiceDTO.name}
                       />
                     </div>
                     <div className="service-details">
                       <p className="service-description">
-                        <span className="detail-label">Descripción:</span>
-                        {decodeText(prop.otherServiceDTO.description)}
+                      <span className="detail-label">Descripción:</span>
+                      {decodeText(prop.otherServiceDTO.description)}
                       </p>
                     </div>
                     <div className="payment-container">
                       <button
-                        className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
-                        disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                        onClick={() => navigate(`/payment/${prop.id}`)}
+                      className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
+                      disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
+                      onClick={() => navigate(`/payment/${prop.id}`)}
                       >
-                        {getPaymentStatusText(prop.status)}
+                      {getPaymentStatusText(prop.status)}
                       </button>
                       <div className="status-indicator">
-                        <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
-                        <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
+                      <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
+                      <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
                       </div>
                     </div>
+                    </div>
+                  ) : null,
+                  )
+                ) : (
+                  <div className="empty-state">
+                  <p>No hay servicios adicionales contratados</p>
                   </div>
-                ) : null,
-              )
-            ) : (
-              <div className="empty-state">
-                <p>No hay servicios adicionales contratados</p>
+                )}
+                </div>
               </div>
-            )}
-          </div>
-        </div>
-      </div>
+              </div>
 
-      {/* Modal de desglose de precios */}
+              {/* Modal de desglose de precios */}
       {isCostBreakdownModalOpen && (
         <div className="modal-overlay">
           <div className="modal-container">
