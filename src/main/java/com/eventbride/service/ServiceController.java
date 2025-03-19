@@ -1,9 +1,10 @@
 package com.eventbride.service;
 
 import com.eventbride.dto.ServiceDTO;
+import com.eventbride.event_properties.EventProperties;
+import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceService;
-import com.eventbride.user.UserService;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
@@ -29,8 +31,9 @@ public class ServiceController {
 
 	@Autowired
 	private VenueService venueService;
+
 	@Autowired
-	private UserService userService;
+	private EventPropertiesService eventPropertiesService;
 
 	@GetMapping("/user/{id}")
 	public ResponseEntity<ServiceDTO> getServicesByUserId(@PathVariable Integer id) {
@@ -38,7 +41,6 @@ public class ServiceController {
 		List<Venue> venues = venueService.getVenuesByUserId(id);
 		return new ResponseEntity<>(new ServiceDTO(otherServices, venues), HttpStatus.OK);
 	}
-
 
 	@GetMapping("/admin")
     public ResponseEntity<List<ServiceDTO>> getAllServices() {
@@ -70,4 +72,39 @@ public class ServiceController {
 
 		return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
 	}
+
+	@GetMapping("/solicitudes/{id}")
+	public ResponseEntity<ServiceDTO> getRequestsPerSupplierService(@PathVariable Integer id) {
+		List<OtherService> otherServices = otherServiceService.getOtherServiceByUserId(id);
+		List<Venue> venues = venueService.getVenuesByUserId(id);
+		List<EventProperties> pendingEventProperties = new ArrayList<>();
+		
+		pendingEventProperties.addAll(
+			otherServices.stream()
+				.flatMap(o -> eventPropertiesService.findEventPropertiesByOtherService(o.getId()).stream())
+				.filter(ep -> ep.getStatus() == EventProperties.Status.PENDING)
+				.collect(Collectors.toList())
+		);
+	
+		pendingEventProperties.addAll(
+			venues.stream()
+				.flatMap(v -> eventPropertiesService.findEventPropertiesByVenue(v.getId()).stream())
+				.filter(ep -> ep.getStatus() == EventProperties.Status.PENDING)
+				.collect(Collectors.toList())
+		);
+		List<Venue> requestVenues = pendingEventProperties.stream()
+			.map(EventProperties::getVenue)
+			.filter(Objects::nonNull)
+			.distinct()
+			.collect(Collectors.toList());
+	
+		List<OtherService> requestOtherServices = pendingEventProperties.stream()
+			.map(EventProperties::getOtherService)
+			.filter(Objects::nonNull)
+			.distinct()
+			.collect(Collectors.toList());
+	
+		return ResponseEntity.ok(new ServiceDTO(requestOtherServices, requestVenues));
+	}
+	
 }

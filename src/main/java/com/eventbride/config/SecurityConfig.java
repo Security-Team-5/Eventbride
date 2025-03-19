@@ -47,7 +47,11 @@ public class SecurityConfig {
                 "/api/services/**",
                 "/api/invitation/eventInvitations/**",
 				"/api/invitation/**",
-				"/api/invitation/create/**").permitAll()
+				"/api/invitation/create/**",
+                "/api/event-properties/DTO/**",
+                "/api/payment/**",
+                "/api/venues/add-venue/**",
+                "/api/venues/{eventId}/add-venue/{venueId}/**").permitAll()
                 .requestMatchers("/api/services/admin",
                 "/api/users/**",
                 "/api/**",
@@ -66,7 +70,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsSer);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -74,12 +78,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }

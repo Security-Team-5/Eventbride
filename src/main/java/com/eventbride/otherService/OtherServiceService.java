@@ -1,7 +1,4 @@
 package com.eventbride.otherService;
-
-import com.eventbride.config.jwt.services.UserManagementService;
-import com.eventbride.dto.ReqRes;
 import com.eventbride.dto.ServiceDTO;
 import com.eventbride.service.ServiceService;
 import com.eventbride.user.User;

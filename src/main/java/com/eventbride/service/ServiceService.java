@@ -1,18 +1,12 @@
 package com.eventbride.service;
-
-import com.eventbride.dto.OtherServiceDTO;
 import com.eventbride.dto.ServiceDTO;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceRepository;
-import com.eventbride.otherService.OtherServiceService;
-import com.eventbride.user.UserService;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueRepository;
-import com.eventbride.venue.VenueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import OtherServiceScreen from "./pages/OtherServiceScreen";
 import Servicios from "./pages/Servicios";
 import RegistrarServicio from "./pages/RegistrarServicio";
+import RequestService from "./pages/RequestService";
 import VenuesScreen from "./pages/VenuesScreen";
 import EditarServicio from "./pages/EditarServicio";
 import "./App.css";
@@ -22,6 +23,8 @@ import EventInvitations from "./pages/EventInvitations";
 import RegisterInvitation from "./pages/RegisterInvitation";
 import ConfirmEmailInvitation from "./pages/ConfirmEmailInvitation.jsx";
 
+import InformationService from "./pages/InformationService";
+import Payment from "./pages/Payment";
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -41,6 +44,7 @@ function App() {
             <Route path="/login" element={<Login setUser={setCurrentUser} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/other-services" element={<OtherServiceScreen />} />
+            <Route path="/solicitudes" element={<RequestService />} />
             <Route path="/misservicios" element={<Servicios/>} />
             <Route path="/misservicios/registrar" element={<RegistrarServicio/>} />
             <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio/>} />
@@ -54,6 +58,8 @@ function App() {
             <Route path="/invitaciones/:currentEventId" element={<EventInvitations />} />
               <Route path="/invitaciones/registro/:invitationId" element={<RegisterInvitation />} />
               <Route path="/invitaciones/confirmar/:invitationId" element={<ConfirmEmailInvitation />} />
+            <Route path="/payment/:id" element={<Payment/>} />
+            <Route path="/other-services/information/:id" element={<InformationService />} />
             {currentUser && currentUser.role == "ADMIN" &&
               <>
                 <Route path="/admin-events" element={<AdminEvents/>} />
