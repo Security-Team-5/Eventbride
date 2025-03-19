@@ -5,15 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.eventbride.dto.EventDTO;
-import com.eventbride.dto.UserDTO;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.invitation.Invitation;
-import com.eventbride.user.User;
-import com.eventbride.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,14 +28,12 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
-    private final UserService userService;
     private final EventPropertiesService eventPropertiesService;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService,
+    public EventController(EventService eventService,
             EventPropertiesService eventPropertiesService) {
         this.eventService = eventService;
-        this.userService = userService;
         this.eventPropertiesService = eventPropertiesService;
     }
 
@@ -108,7 +102,6 @@ public class EventController {
 
     }
 
-
 	@DeleteMapping("/{eventId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable("eventId") int eventId) {
@@ -128,7 +121,6 @@ public class EventController {
             eventService.deleteEvent(eventId);
         }
     }
-
 
     /*
      * public ResponseEntity<EventDTO> getNextEvent(@PathVariable Integer userId) {

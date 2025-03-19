@@ -15,13 +15,19 @@ public interface EventPropertiesRepository extends CrudRepository<EventPropertie
 	@Query("SELECT ep FROM Event e JOIN e.eventProperties ep WHERE e = :event")
     public List<EventProperties> findEventPropertiesByEvent(Event event);
 
-    @Query("SELECT DISTINCT ep FROM EventProperties ep WHERE ep.otherService=?1")
-	public EventProperties findEventPropertiesByOtherService(Event event);
+    @Query("SELECT ep FROM EventProperties ep WHERE ep.otherService.id=?1")
+	public List<EventProperties> findEventPropertiesByOtherServiceId(Integer otherServiceId);
 
-    @Query("SELECT DISTINCT ep FROM EventProperties ep WHERE ep.venue=?1")
-	public EventProperties findEventPropertiesByVenue(Event event);
+    @Query("SELECT ep FROM EventProperties ep WHERE ep.venue.id=?1")
+	public List<EventProperties> findEventPropertiesByVenueId(Integer venueId);
 
     void deleteByOtherService(OtherService otherService);
 
     void deleteByVenue(Venue venue);
+
+    @Query("SELECT ep FROM EventProperties ep WHERE ep.otherService=?1 AND ep.status=?2")
+    List<EventProperties> findByOtherServiceAndStatus(OtherService otherService, EventProperties.Status status);
+
+    @Query("SELECT ep FROM EventProperties ep WHERE ep.venue=?1 AND ep.status=?2")
+    List<EventProperties> findByVenueAndStatus(Venue venue, EventProperties.Status status);
 }
