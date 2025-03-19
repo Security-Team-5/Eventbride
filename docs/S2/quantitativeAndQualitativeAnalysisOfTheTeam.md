@@ -23,7 +23,7 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: 20/03/2025
+### Fecha: 19/03/2025
 
 ### Entregable: Sprint 2
 
@@ -47,6 +47,7 @@
 | 13/03/2025 | v4.1    | Análisis cualitativo                                                         | Sprint 1 | María de la Salud Carrera Talaverón |
 | 19/03/2025 | v5.0    | Actualización del documento para el Sprint 2                                 | Sprint 2 | María de la Salud Carrera Talaverón |
 | 19/03/2025 | v5.1    | Análisis cuantitativo mitad Sprint 2                                         | Sprint 2 | María de la Salud Carrera Talaverón |
+| 19/03/2025 | v5.2    | Análisis cualitativo mitad Sprint 2, Reestimación del Sprint                 | Sprint 2 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -95,7 +96,7 @@ No se va a reflejar en este documento el análisis de los costes del proyecto ha
 
 ## Análisis cualitativo
 
-Para el análisis cuantitativo, se utilizará como base el Commitment Agreement v3, que han firmado todos los desarrolladores para el Sprint 1, y que detalla lo que se espera de cada miembro del grupo según sus roles. En ese documento se mencionan también métricas cuantitativas a cumplir; éstas no serán analizadas en este apartado.
+Para el análisis cuantitativo, se utilizará como base el Commitment Agreement v3, que firmaron todos los desarrolladores durante el Sprint 1, y que detalla lo que se espera de cada miembro del grupo según sus roles. En ese documento se mencionan también métricas cuantitativas a cumplir; éstas no serán analizadas en este apartado.
 
 La labor de los desarrolladores y testers incluye:
 
@@ -108,89 +109,56 @@ La labor de los desarrolladores y testers incluye:
 | Desarrollador/a                     | Esfuerzo   | Finalización tareas | Registro tiempo | Comunicación | Compromiso con la calidad |
 |-------------------------------------|------------|---------------------|-----------------|--------------|---------------------------|
 | Francisco Avilés Carrera            | No procede | Sí                  | Sí              | Sí           | Sí                        |
-| Daniel Benito Hidalgo               | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
-| Ignacio Blanquero Blanco            | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
-| Adrián Cabello Martín               | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Daniel Benito Hidalgo               | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Ignacio Blanquero Blanco            | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Adrián Cabello Martín               | No procede | Sí                  | Sí              | Sí           | Sí                        |
 | María de la Salud Carrera Talaverón | No procede | Sí                  | Sí              | Sí           | Sí                        |
 | Pablo Jesús Castellanos Compaña     | No procede | Sí                  | Sí              | Sí           | Sí                        |
-| Fernando José de Celis Hurtado      | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
-| David Godoy Fernández               | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
-| Miguel Hernández Sánchez            | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Fernando José de Celis Hurtado      | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| David Godoy Fernández               | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Miguel Hernández Sánchez            | No procede | Sí                  | Sí              | Sí           | Sí                        |
 | Antonio Montero López               | No procede | Sí                  | Sí              | Sí           | Sí                        |
-| Gonzalo Navas Remmers               | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
-| Héctor Noguera González             | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Gonzalo Navas Remmers               | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Héctor Noguera González             | No procede | Sí                  | Sí              | Sí           | Sí                        |
 | Natalia Olmo Villegas               | No procede | Sí                  | Sí              | Sí           | Sí                        |
 | Manuel Pérez Vélez                  | No procede | Sí                  | Sí              | Sí           | Sí                        |
-| Andrés Pizzano Cerrillos            | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
-| Sergio Pons López                   | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
-| Lorenzo Torralba Lanzas             | No procede | Sí                  | Sí              | Sí           | Mejorable                 |
+| Andrés Pizzano Cerrillos            | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Sergio Pons López                   | No procede | Sí                  | Sí              | Sí           | Sí                        |
+| Lorenzo Torralba Lanzas             | No procede | Sí                  | Sí              | Sí           | Sí                        |
 
 En cuanto a los miembros del grupo con roles extra, se van a comentar las responsabilidades de cada uno según el rol que tengan. La Project Manager (PM) debe asegurar la correcta gestión del proyecto (lo que se traduce en la planificación del sprint y la asignación de tareas), facilitando la comunicación y coordinación del equipo, así como el cumplimiento de plazos y objetivos. Los Jefes de Desarrollo (JD) deben cumplir la misma función pero únicamente sobre el subgrupo de trabajo que gestionan, además de apoyar a la PM en su labor.
 
-| Jefe                                | Gestión del proyecto | Mantiene y facilita la comunicación con el equipo | Coordina al grupo | Supervisa el cumplimiento de plazos |
-|-------------------------------------|----------------------|--------------------------------------------------|-------------------|-------------------------------------|
-| Francisco Avilés Carrera (JD3)      | Sí                   | Sí                                               | Sí                | Sí                                  |
-| María de la Salud Carrera Talaverón (JD1) | Sí               | Sí                                               | Sí                | Sí                                  |
-| Pablo Jesús Castellanos Compaña (JD2) | Sí                  | Sí                                               | Sí                | Sí                                  |
-| Natalia Olmo Villegas (PM)          | Sí                   | Sí                                               | Sí                | Sí                                  |
+| Jefe                                      | Gestión del proyecto | Mantiene y facilita la comunicación con el equipo | Coordina al grupo | Supervisa el cumplimiento de plazos |
+|-------------------------------------------|----------------------|---------------------------------------------------|-------------------|-------------------------------------|
+| Francisco Avilés Carrera (JD3)            | Sí                   | Sí                                                | Sí                | Sí                                  |
+| María de la Salud Carrera Talaverón (JD1) | Sí                   | Sí                                                | Sí                | Sí                                  |
+| Pablo Jesús Castellanos Compaña (JD2)     | Sí                   | Sí                                                | Sí                | Sí                                  |
+| Natalia Olmo Villegas (PM)                | Sí                   | Sí                                                | Sí                | Sí                                  |
 
-Los aseguradores de la calidad (QA) deben velar por la calidad del trabajo entregado, asegurando que los estándares definidos sean cumplidos en cada fase del desarrollo. Esto se traduce en revisar documentación, comprobando que no falta ningún documento y que éstos tienen todo el contenido requerido. Los QA son Antonio Montero López y Manuel Pérez Vélez. Durante el Sprint 1, han estado cumpliendo con su función, pero a pequeña escala; esto se debe a que la planificación del sprint no fue óptima y muchas tareas no fueron completadas hasta los días anteriores a la entrega. Por este motivo, sólo pudieron revisar algunos documentos, los que fueron terminados con más antelación.
+Los aseguradores de la calidad (QA) deben velar por la calidad del trabajo entregado, asegurando que los estándares definidos sean cumplidos en cada fase del desarrollo. Esto se traduce en revisar documentación, comprobando que no falta ningún documento y que éstos tienen todo el contenido requerido. Los QA son Antonio Montero López y Manuel Pérez Vélez. Durante lo que llevamos del Sprint 2, han estado cumpliendo con su función, revisando documentación y redactando las directrices a seguir de ahora en adelante para la revisión de documentos y código.
 
-El siguiente rol es el de secretario; esta función la cumplen Ignacio Balnquero Blanco y Pablo Jesús Castellanos Compaña. Se encargan de registrar y documentar reuniones, acuerdos y decisiones clave, manteniendo organizada la información del proyecto. Ambos secretarios han cumplido con sus responsabilidades en este sprint.
+El siguiente rol es el de secretario; esta función la cumplen Ignacio Balnquero Blanco y Pablo Jesús Castellanos Compaña. Se encargan de registrar y documentar reuniones, acuerdos y decisiones clave, manteniendo organizada la información del proyecto. Ambos secretarios están cumpliendo con sus responsabilidades en este sprint.
 
-Héctor Noguera González es el Policy Manager, que se encarga de garantizar que las reglas de trabajo en equipo se cumplan, fomentando un ambiente colaborativo y respetuoso. Durante este sprint, no ha podido cumplir con su función debido a que se encontraba de viaje. Compensará con un trabajo intensivo en los sprints siguientes. El resto de los miembros del grupo lo han sustituido dentro de sus posibilidades.
+Héctor Noguera González es el Policy Manager, que se encarga de garantizar que las reglas de trabajo en equipo se cumplan, fomentando un ambiente colaborativo y respetuoso. Durante este sprint, no ha sido necesaria su intervención: el ambiente de trabajo ha sido bueno y no ha habido ningún problema entre miembros del grupo. Así, las tareas pendientes se han ido complteando con normalidad.
 
 Daniel Benito Hidalgo es el encargado de diseño, cuya función es desarrollar y validar aspectos visuales y de experiencia de usuario, asegurando alineación con los requerimientos del equipo. En la práctica, se ha estado encargando de definir la imagen de la marca Eventbride, coordinando el diseño de los mockups y de las presentaciones de clase. De ahora en adelante, supervisará que se siga la temática establecida tanto en la aplicación como en las presentaciones.
 
-En cuanto a la gestión de los usuarios piloto, se designó a un miembro del grupo para coordinarse con ellos y a otro para apoyarlo en sus tareas cuando lo necesitase; estos miembros son Daniel Benito Hidalgo y Gonzalo Navas Remmers, respectivamente. Su responsabilidades incluyen gestionar la comunicación entre el equipo de desarrollo y los usuarios piloto, recopilando sus comentarios, resolviendo dudas y ayudando a que los usuarios piloto se adapten al software de forma sencilla y sin complicaciones, además de analizar el feedback para mejorar el producto. Durante este Sprint, les han hecho llegar la primera encuesta de feedback, dándoles un plazo razonable para contestar, y han analizado las respuestas obtenidas.
+En cuanto a la gestión de los usuarios piloto, se designó a un miembro del grupo para coordinarse con ellos y a otro para apoyarlo en sus tareas cuando lo necesitase; estos miembros son Daniel Benito Hidalgo y Gonzalo Navas Remmers, respectivamente. Su responsabilidades incluyen gestionar la comunicación entre el equipo de desarrollo y los usuarios piloto, recopilando sus comentarios, resolviendo dudas y ayudando a que los usuarios piloto se adapten al software de forma sencilla y sin complicaciones, además de analizar el feedback para mejorar el producto. Durante este Sprint, les han hecho llegar la correspondiente encuesta de feedback, dándoles un plazo razonable para contestar, y han analizado las respuestas obtenidas.
 
-Por último, Pablo Jesús Castellanos Compaña es el coordinador de tiempos. Su labor consiste en revisar que los tiempos asignados a las actividades sean razonables y acordes a las responsabilidades de cada miembro del equipo. Utilizando Clockify, analiza los registros de tiempo para asegurar que los plazos sean realistas y las tareas realizadas correspondan con las que cada miembro del equipo tenga asignadas. En este primer sprint, ha cumplido con su función adecuadamente. Ha recibido ayuda de los otros JDs y de la PM, especialmente durante el Sprint Planning y la reestimación del sprint.
+Por último, Pablo Jesús Castellanos Compaña es el coordinador de tiempos. Su labor consiste en revisar que los tiempos asignados a las actividades sean razonables y acordes a las responsabilidades de cada miembro del equipo. Utilizando Clockify, analiza los registros de tiempo para asegurar que los plazos sean realistas y las tareas realizadas correspondan con las que cada miembro del equipo tenga asignadas. En este primer sprint, ha cumplido con su función adecuadamente. Ha recibido ayuda de los otros JDs y de la PM, especialmente durante el Sprint Planning.
 
 
 <div id='id3'></div>
 
 ##  Reestimación del Sprint
 
-La reestimación de la planificación del Sprint 1 se realizó el día 08/03/2025. Participaron en ella la Project Manager y los Jefes de Desarrollo de los grupos 1 y 2. El Jefe de Desarrollo del grupo 3 dio el visto bueno a las tareas repartidas en su grupo. Esta reestimación está sujeta a cambios si surgen conflictos durante el desarrollo del sprint o si algún miembro del grupo se da cuenta de que falta alguna tarea o requisito pedido por los profesores de la asignatura.
-
-Se reasignaron las tareas que estaban pendientes y sin empezar. Aquellas que ya se habían empezado no fueron reasignadas, a excepción de la tarea correspondiente a la elaboración de este documento, a la que se asignó una nueva persona además de la que ya estaba asignada. La nueva distribución de tareas se hizo teniendo en cuenta las horas de trabajo que llevaba cada desarrollador, los roles que desempeña cada uno y compatibilidades de horarios. Se buscó que las personas que trabajan juntas en una tarea lo hicieran también en otras, para que se minimice el número de personas con las que un miembro del equipo debe cuadrar sus horarios de trabajo, ya que esto fue uno de los factores que retrasó el desarrollo de las tareas. De esta forma, el nuevo Sprint Backlog quedó así (a día 12 de marzo de 2025[^2]):
-
-| Tarea | Tiempo estimado (horas) | Asignados |
-|-------|-------------------------|-----------|
-| [FEATURE] Registro de Servicios | 9 | Sergio Pons, Miguel Hernández y Gonzalo Navas |
-| [FEATURE] Pestaña “Mis Eventos” | 9 | Pablo Jesús Castellanos, Miguel Hernández y Francisco Avilés |
-| [FEATURE] Solicitud de reserva de contratación de servicios y página de detalles del servicio | 12 | Héctor Noguera, Sergio Pons, Natalia Olmo y Manuel Pérez |
-| [FEATURE] Editar servicios | 4 | David Godoy |
-| Análisis cuantitativo y cualitativo del equipo | 4 | María de la Salud Carrera y Miguel Hernández |
-| Controlar tiempos Clockify | 3 | Pablo Jesús Castellanos |
-| [CHANGE] Poner la UI acorde | 6 | Pablo Jesús Castellanos y Miguel Hernández |
-| Revisar documento Deliverable Failure Conditions | 4 | Francisco Avilés, María de la Salud Carrera, Pablo Jesús Castellanos y Natalia Olmo |
-| Elaborar presentación | 12 | Daniel Benito y Gonzalo Navas |
-| Revisar documentos | 9 | Manuel Pérez, Antonio Montero, Pablo Jesús Castellanos y María de la Salud Carrera |
-| [FEATURE] Cambiar modelos | 16 | Miguel Hernández, Pablo Jesús Castellanos, Fran Avilés y Andrés Pizzano |
-| Gestionar feedback de usuarios piloto Sprint 1 | 4 | Daniel Benito y Gonzalo Navas |
-| Pasar pdfs y words a markdown | 6 | Ignacio Blanquero, Sergio Pons, Daniel Benito, Manuel Pérez y María de la Salud Carrera |
-| Intro de la presentación | 12 | Natalia Olmo, Daniel Benito, David Godoy y Miguel Hernández |
-| Actualizar los documentos "Análisis de costes" y "Monetización de la aplicación" | 4 | Lorenzo Torralba y Antonio Montero |
-| Documento retrospectiva | 4 | David Godoy y Andrés Pizzano |
-| Manual de usuario | 12 | Fernando José de Celis y Antonio Montero |
-| Desplegar la aplicación | 4 | Lorenzo Torralba y Andrés Pizzano |
-| [DOC] Informe de Contribuciones al Knowledge Base | 3 | Fernando de Celis Hurtado y Sergio Pons |
-| [DOC] Commitment Agreement Usuarios Piloto | 4 | Daniel Benito y Gonzalo Navas |
-| [DOC] Evaluación usuarios piloto | 3 | Daniel Benito y Gonzalo Navas |
-| [FEATURE] Añadir usuario admin | 15 | Adrián Cabello, Gonzalo Navas, Natalia Olmo, Pablo Jesús Castellano, Miguel Hernández, Fernando José de Celis |
-| [DOC] Vídeo demo aplicación | 7 | Fernando José de Celis y Adrián Cabello |
-| [DOC] Pasar commitment agreements v3 a md | 4 | Ignacio Blanquero y Antonio Montero |
-| [DOC] Pasar informe de IA a md | 3 | María de la Salud Carrera |
-| [DOC] Time Effort Report | 3 | Ignacio Blanquero |
-| [DOC] Documento Performance Evaluation | 2 | Francisco Avilés |
-| [CHANGE] Problema con gitignore | 1 | Lorenzo Torralba |
+A día de 19 de marzo de 2025, no se ha realizado ningua reestimación del Sprint 2. El reparto de tareas inicial se puede consultar en el documento `sprint-planning.md` de este mismo directorio.
 
 <div id='concl'></div>
 
 ## Conclusiones
 
-En conclusión, el análisis del Sprint 1 de "Eventbride" ha permitido observar tanto los logros como las áreas que requieren ajustes en la ejecución del proyecto. El equipo ha demostrado un buen compromiso con las tareas asignadas, aunque algunos aspectos, como la gestión del tiempo y la comunicación, han mostrado oportunidades de mejora. Este análisis no solo refleja el rendimiento actual, sino que también establece una base sólida para la mejora continua en los siguientes sprints, con el objetivo de cumplir de manera eficiente con los plazos y expectativas del proyecto.
+En conclusión, el análisis del Sprint 2 de "Eventbride" ha permitido observar tanto los logros como las áreas que requieren ajustes en la ejecución del proyecto. El equipo ha demostrado un buen compromiso con las tareas asignadas, aunque algunos aspectos, como la gestión del tiempo y la comunicación, han mostrado oportunidades de mejora. Este análisis no solo refleja el rendimiento actual, sino que también establece una base sólida para la mejora continua en los siguientes sprints, con el objetivo de cumplir de manera eficiente con los plazos y expectativas del proyecto.
 
 <div id='bib'></div>
 
