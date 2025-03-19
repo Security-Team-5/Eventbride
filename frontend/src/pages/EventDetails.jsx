@@ -5,8 +5,11 @@ import "../static/resources/css/EventDetails.css";
 function EventDetails() {
   const [evento, setEvento] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isCostBreakdownModalOpen, setIsCostBreakdownModalOpen] = useState(false); // Nuevo estado para el modal de desglose
   const { id } = useParams();
   const navigate = useNavigate();
+
+
 
   // Obtener la lista de evento
   function getEvents() {
@@ -55,9 +58,19 @@ function EventDetails() {
     setIsDeleteModalOpen(false);
   };
 
+  const openCostBreakdownModal = () => {
+    setIsCostBreakdownModalOpen(true);
+  };
+
+  // Cerrar modal de desglose de precios
+  const closeCostBreakdownModal = () => {
+    setIsCostBreakdownModalOpen(false);
+  };
+
   // Cargar evento al montar el componente
   useEffect(() => {
     console.log("eventoId", id);
+    console.log(evento);
     getEvents();
   }, []);
 
@@ -90,6 +103,38 @@ function EventDetails() {
     }
   };
 
+  const calcularCosteServicios = () => {
+    if (!evento || !evento.eventPropertiesDTO) return 0;
+
+    let total = 0;
+    for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
+      const prop = evento.eventPropertiesDTO[i];
+      total += (prop.setPricePerService || 0);
+    }
+    return total;
+  };
+  const calcularDepositServicios = () => {
+    if (!evento || !evento.eventPropertiesDTO) return 0;
+
+    let total = 0;
+    for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
+      const prop = evento.eventPropertiesDTO[i];
+      total += (prop.depositAmount || 0);
+    }
+    return total;
+  };
+
+  const sumaCosteTotalDeposit = () => {
+    if (!evento || !evento.eventPropertiesDTO) return 0;
+
+    let total = 0;
+    for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
+      const prop = evento.eventPropertiesDTO[i];
+      total += (prop.setPricePerService || 0) + (prop.depositAmount || 0);
+    }
+    return total;
+  };
+
   return (
     <>
       <div className="event-contain">
@@ -101,8 +146,10 @@ function EventDetails() {
           <div className="event-info">
             <p className="event-date">Fecha: {formatearFecha(evento?.eventDate)}</p>
             <p className="event-guests">Invitados: {evento?.guests}</p>
-            <p className="event-budget">
-              Presupuesto: {evento?.budget?.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+            <p style={{ cursor: "pointer" }} className="event-budget" onClick={openCostBreakdownModal}>
+              <u>
+                Coste acumulado: {sumaCosteTotalDeposit().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+              </u>
             </p>
           </div>
         </div>
@@ -132,6 +179,40 @@ function EventDetails() {
           </div>
         </div>
       </div>
+
+      {/* Modal de desglose de precios */}
+      {isCostBreakdownModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Desglose de precios</h3>
+            </div>
+
+            <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>Costes servicios: {calcularCosteServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h2>
+            <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
+              {evento?.eventPropertiesDTO?.map((prop, i) => (
+                <div key={i} className="price-breakdown-item">
+                  <p><strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}:</strong> {prop.setPricePerService?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "N/A"}</p>
+                </div>
+              ))}
+            </div>
+            <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>Señales: {calcularDepositServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h2>
+            <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
+              {evento?.eventPropertiesDTO?.map((prop, i) => (
+                <div key={i} className="price-breakdown-item">
+                  <p><strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}:</strong> {prop.depositAmount?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "null"}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <button className="close-button" onClick={closeCostBreakdownModal}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal de confirmación */}
       {isDeleteModalOpen && (

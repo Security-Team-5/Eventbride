@@ -1,5 +1,6 @@
 package com.eventbride.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import lombok.Setter;
 public class EventPropertiesDTO {
     private Boolean approved;
     private LocalDate requestDate;
+    private BigDecimal setPricePerService;
+    private Double depositAmount;
     private VenueDTO venueDTO;
     private OtherServiceDTO otherServiceDTO;
     
@@ -24,6 +27,8 @@ public class EventPropertiesDTO {
         if(eventProperties.getOtherService() != null){
             this.otherServiceDTO = new OtherServiceDTO(eventProperties.getOtherService());
         }
+        this.setPricePerService = eventProperties.getPricePerService();
+        this.depositAmount = eventProperties.getDepositAmount();
     }
 
     // Método estático para crear una lista de DTOs a partir de una lista de entidades
