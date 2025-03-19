@@ -80,36 +80,11 @@ function EventInvitations() {
   };
 
   return (
-    <>
-      {invitaciones.length > 0 ? (
-        invitaciones.map((invitacion, index) => (
-          <div key={index} className="event-container-i">
-            <div>
-              <div className="event-info-i">
-                <p className="invitation-name">
-                  Nombre del invitado:{" "}
-                  {invitacion.firstName + " " + invitacion.lastName}
-                </p>
-                <p className="invitation-name">
-                  Invitados de su parte: {invitacion.numberOfGuests}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))
-      ) : (
-        <div className="no-invitation">
-          <p>No hay invitaciones disponibles para este evento.</p>
-        </div>
-      )}
-      <button onClick={handleCreateInvitation}>Crear invitación</button>
-
+    <div className="event-invitations-container">
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <h3>
-              Ingresa el número máximo de invitados por invitación
-            </h3>
+            <h3>Ingresa el número máximo de invitados por invitación</h3>
             <input
               type="number"
               value={maxGuests}
@@ -121,7 +96,33 @@ function EventInvitations() {
           </div>
         </div>
       )}
-    </>
+
+      {invitaciones.length > 0 ? (
+        <>
+          {invitaciones.map((invitacion, index) => (
+            <div key={index} className="event-container-i">
+              <div>
+                <div className="event-info-i">
+                  <p className="invitation-name">
+                    Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
+                  </p>
+                  <p className="invitation-name">
+                    Invitados de su parte: {invitacion.numberOfGuests}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      ) : (
+        <div className="no-invitation">
+          <p>No hay invitaciones disponibles para este evento.</p>
+        </div>
+      )}
+      <button className="boton-crear-invitacion" onClick={handleCreateInvitation}>
+        Crear invitación
+      </button>
+    </div>
   );
 }
 

@@ -1,78 +1,99 @@
+.event-invitations-container {
+  text-align: center; /* Centrar el contenido dentro del contenedor */
+}
+
 .event-container-i {
-    width: 40%;
-    max-width: 50%;
-    margin: 0 auto;
-    padding: 2%;
-    background-color: #f390de;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 5%;
+  width: 40%;
+  max-width: 50%;
+  margin: 0 auto;
+  padding: 2%;
+  background-color: #ffffff; /* Cambiar el fondo a blanco */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5%;
+}
 
-  }
-  
-  .event-title-i {
-    font-size: 2rem;
-    color: #ffffff;
-    margin-bottom: 4%;
-    margin-top: -5%;
-    text-align: center;
-    font-family: 'Playfair Display', serif;
+.event-title-i {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 4%;
+  margin-top: -5%;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: bold; /* Hacer las letras en negrita */
+}
 
-  }
-  
-  .event-info-i {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: -1%;
-  }
-  
-  .event-info p {
-    font-size: 1.1rem;
-    margin: -1%;
-    min-width: 150px;
-  }
+.event-info-i {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: -1%;
+}
 
-  .event-date-i, 
-  .event-guests-i {
-    font-weight: bold;
-    color: #ffffff;
-  }
-  
-  .no-invitation,
-  .no-event {
-    text-align: center;
-    font-size: 1.2rem;
-  }
+.event-info-i p {
+  font-size: 1.1rem;
+  margin: -1%;
+  min-width: 150px;
+  font-weight: bold; /* Hacer las letras en negrita */
+}
 
-  .boton-editar {
-    display: block; /* Para que ocupe todo el ancho disponible */
-    width: 100%; /* Hace que el botón sea más ancho */
-    max-width: 300px; /* Evita que sea demasiado ancho en pantallas grandes */
-    background-color: rgb(251, 159, 229);
-    color: white;
-    font-weight: bold;
-    padding: 12px 20px; /* Hace el botón más alargado */
-    border-radius: 8px;
-    margin: 40px auto 0; /* Agrega más separación hacia abajo y lo centra horizontalmente */
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-    text-align: center;
-  }
-  
-  .boton-editar:hover {
-    background-color: blue;
-  }
+.event-date-i,
+.event-guests-i {
+  font-weight: bold; /* Hacer las letras en negrita */
+}
 
-  .invitation-name {
-    font-weight: bold;
-    color: #ffffff;
+.no-invitation {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold; /* Hacer las letras en negrita */
+}
 
-  }
+.boton-editar {
+  display: block; /* Para que ocupe todo el ancho disponible */
+  width: 100%; /* Hace que el botón sea más ancho */
+  max-width: 300px; /* Evita que sea demasiado ancho en pantallas grandes */
+  background-color: rgb(251, 159, 229);
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px; /* Hace el botón más alargado */
+  border-radius: 8px;
+  margin: 40px auto 0; /* Agrega más separación hacia abajo y lo centra horizontalmente */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  text-align: center;
+}
 
-  /* Estilo para el backdrop del modal */
+.boton-editar:hover {
+  background-color: blue;
+}
+
+.boton-crear-invitacion {
+  display: inline-block;
+  width: 200px;
+  background-color: green; /* Cambiar el fondo a verde */
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 20px auto; /* Centrar el botón horizontalmente */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  text-align: center;
+}
+
+.boton-crear-invitacion:hover {
+  background-color: darkgreen;
+}
+
+.invitation-name {
+  font-weight: bold;
+  color: #333; /* Cambiar el color del texto a un tono oscuro */
+}
+
+/* Estilo para el backdrop del modal */
 .modal {
   position: fixed;
   top: 0;
