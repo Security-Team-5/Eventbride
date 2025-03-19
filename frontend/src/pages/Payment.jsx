@@ -96,9 +96,9 @@ export default function Payment() {
               {/* Service Information */}
               <div className="service-info">
                 {eventProp.venueDTO ? (
-                  <VenueDetails venue={eventProp.venueDTO} requestDate={eventProp.requestDate} />
+                  <VenueDetails venue={eventProp.venueDTO} eventProp={eventProp} requestDate={eventProp.requestDate} />
                 ) : eventProp.otherServiceDTO ? (
-                  <ServiceDetails service={eventProp.otherServiceDTO} requestDate={eventProp.requestDate} />
+                  <ServiceDetails service={eventProp.otherServiceDTO} eventProp={eventProp} requestDate={eventProp.requestDate} />
                 ) : (
                   <div className="no-info">
                     <div className="icon-container">ℹ️</div>
@@ -151,7 +151,7 @@ export default function Payment() {
   )
 }
 
-function VenueDetails({ venue, requestDate }) {
+function VenueDetails({ venue, eventProp,requestDate }) {
   return (
     <div className="venue-details">
       <div className="venue-header">
@@ -188,30 +188,28 @@ function VenueDetails({ venue, requestDate }) {
           <div className="detail-item">
             <span className="icon">🕒</span>
             <span>
-              Horario: {venue.earliestTime} - {venue.latestTime}
+              Horario: {eventProp.startTime} - {eventProp.finishTime}
             </span>
           </div>
-          <div className="detail-item">
-            <span className="icon">💰</span>
-            <span>Precio por invitado: {venue.servicePricePerGuest}€</span>
-          </div>
-          <div className="detail-item">
-            <span className="icon">💰</span>
-            <span>Precio por hora: {venue.servicePricePerHour}€</span>
+          <div className="detail-item" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+            <span style={{ fontWeight: "bold" }}>Tarifa</span>
+            {(eventProp.venueDTO.limitedByPricePerGuest == false  && eventProp.venueDTO.limitedByPricePerHour == false)  && (
+              <span>💰 Precio fijo: {eventProp.venueDTO.fixedPrice}€</span>
+            )}
+            {(eventProp.venueDTO.limitedByPricePerGuest == true && eventProp.venueDTO.limitedByPricePerHour == false) && (
+              <span>👤 Precio por invitado: {eventProp.venueDTO.servicePricePerGuest}€</span>
+            )}
+            {(eventProp.venueDTO.limitedByPricePerGuest == false && eventProp.venueDTO.limitedByPricePerHour == true) && (
+              <span>⏳ Precio por hora: {eventProp.venueDTO.servicePricePerHour}€</span>
+            )}
           </div>
         </div>
-      </div>
-
-      <div className="availability-badge">
-        <span className={venue.available ? "badge-success" : "badge-error"}>
-          {venue.available ? "✅ Disponible" : "❌ No Disponible"}
-        </span>
       </div>
     </div>
   )
 }
 
-function ServiceDetails({ service, requestDate }) {
+function ServiceDetails({ service, eventProp, requestDate }) {
   return (
     <div className="service-details">
       <div className="service-header">
@@ -245,28 +243,23 @@ function ServiceDetails({ service, requestDate }) {
 
         <div className="details-column">
           <div className="detail-item">
-            <span className="icon">💰</span>
-            <span>Precio fijo: {service.fixedPrice}€</span>
+            <span className="icon">🕒</span>
+            <span>
+              Horario: {eventProp.startTime} - {eventProp.finishTime}
+            </span>
           </div>
-          <div className="detail-item">
-            <span className="icon">💰</span>
-            <span>Precio por invitado: {service.servicePricePerGuest}€</span>
+          <div className="detail-item" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+          <span style={{ fontWeight: "bold" }}>Tarifa</span>
+          {(eventProp.otherServiceDTO.limitedByPricePerGuest == false  && eventProp.otherServiceDTO.limitedByPricePerHour == false)  && (
+            <span>💰 Precio fijo: {eventProp.otherServiceDTO.fixedPrice}€</span>
+          )}
+          {(eventProp.otherServiceDTO.limitedByPricePerGuest == true && eventProp.otherServiceDTO.limitedByPricePerHour == false) && (
+            <span>👤 Precio por invitado: {eventProp.otherServiceDTO.servicePricePerGuest}€</span>
+          )}
+          {(eventProp.otherServiceDTO.limitedByPricePerGuest == false && eventProp.otherServiceDTO.limitedByPricePerHour == true) && (
+            <span>⏳ Precio por hora: {eventProp.otherServiceDTO.servicePricePerHour}€</span>
+          )}
           </div>
-          <div className="detail-item">
-            <span className="icon">💰</span>
-            <span>Precio por hora: {service.servicePricePerHour}€</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="limits-grid">
-        <div className="limit-item">
-          <span>Limitado por invitado:</span>
-          <span className="badge-outline">{service.limitedByPricePerGuest ? "✅ Sí" : "❌ No"}</span>
-        </div>
-        <div className="limit-item">
-          <span>Limitado por hora:</span>
-          <span className="badge-outline">{service.limitedByPricePerHour ? "✅ Sí" : "❌ No"}</span>
         </div>
       </div>
     </div>
