@@ -31,43 +31,49 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults()) // Desactiva CSRF para facilitar pruebas
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", 
-                "/api/users", 
-                "/api/users/**",
-                "/api/users/auth/register",
-                "/api/users/auth/login", 
-                "/api/venues/**", 
-                "/api/event-properties/**",
-                "/api/users/auth/current-user", 
-                "/api/v1/events/**", 
-                "/api/other-services/**",
-                "/api/other-services/add-otherservice/**",
-                "/api/other-services", 
-                "/api/venues/**",
-                "/api/venues/add-venue/**", 
-                "/api/venues/{eventId}/add-venue/{venueId}/**",
-                "/api/services/**").permitAll()
-                .requestMatchers("/api/services/admin",
-                "/api/users/**", 
-                "/api/**",
-                "/api/v1/events/DTO",
-                "/api/other-services/admin/**",
-                "/api/venues/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider()).addFilterBefore(
-                jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            /* .formLogin(login -> login.disable()) // Desactiva el formulario de login por defecto
-            .httpBasic(httpBasic -> httpBasic.disable())*/; // Desactiva la autenticación HTTP básica
+                .csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults()) // Desactiva CSRF para facilitar pruebas
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**",
+                                "/api/users",
+                                "/api/users/**",
+                                "/api/users/auth/register",
+                                "/api/users/auth/login",
+                                "/api/venues/**",
+                                "/api/event-properties/**",
+                                "/api/users/auth/current-user",
+                                "/api/v1/events/**",
+                                "/api/other-services/**",
+                                "/api/other-services/add-otherservice/**",
+                                "/api/other-services",
+                                "/api/venues/**",
+                                "/api/event-properties/DTO/**",
+                                "/api/payment/**",
+                                "/api/venues/add-venue/**",
+                                "/api/venues/{eventId}/add-venue/{venueId}/**",
+                                "/api/services/**")
+                        .permitAll()
+                        .requestMatchers("/api/services/admin",
+                                "/api/users/**",
+                                "/api/**",
+                                "/api/v1/events/DTO",
+                                "/api/other-services/admin/**",
+                                "/api/venues/admin/**")
+                        .hasRole("ADMIN")
+                        .anyRequest().authenticated())
+                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider()).addFilterBefore(
+                        jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        /*
+         * .formLogin(login -> login.disable()) // Desactiva el formulario de login por
+         * defecto
+         * .httpBasic(httpBasic -> httpBasic.disable())
+         */; // Desactiva la autenticación HTTP básica
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsSer);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -75,12 +81,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }

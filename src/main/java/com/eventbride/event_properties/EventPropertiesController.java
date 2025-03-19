@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,10 +35,11 @@ public class EventPropertiesController {
         return eventPropertiesService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public EventProperties findById(@PathVariable("id") Integer id) {
-        return eventPropertiesService.findById(id);
+    @GetMapping("/DTO/{id}")
+    public EventPropertiesDTO findById(@PathVariable("id") Integer id) {
+        return eventPropertiesService.findByIdDTO(id);
     }
+    
 
     @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
     public ResponseEntity<Event> addOtherServiceToEvent(@PathVariable Integer eventId, @PathVariable Integer otherServiceId,         

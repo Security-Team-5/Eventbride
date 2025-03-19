@@ -19,6 +19,7 @@ import AdminEvents from "./pages/admin/AdminEvents";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminUsers from "./pages/admin/AdminUsers";
 import InformationService from "./pages/InformationService";
+import Payment from "./pages/Payment";
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -48,6 +49,7 @@ function App() {
             <Route path="/events" element={<MyEvents />} />
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
+            <Route path="/payment/:id" element={<Payment/>} />
             <Route path="/other-services/information/:id" element={<InformationService />} />
             {currentUser && currentUser.role == "ADMIN" &&
               <>
