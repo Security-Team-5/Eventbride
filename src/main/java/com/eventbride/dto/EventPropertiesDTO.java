@@ -1,5 +1,6 @@
 package com.eventbride.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,10 +22,10 @@ public class EventPropertiesDTO {
     private OtherServiceDTO otherServiceDTO;
     private Status status;
     private Double depositAmount;
+    private BigDecimal pricePerService;
     private LocalTime startTime;
     private LocalTime finishTime;
 
-    
     // Constructor para simplificar la creación del DTO
     public EventPropertiesDTO(EventProperties eventProperties) {
         this.id = eventProperties.getId();
@@ -33,15 +34,17 @@ public class EventPropertiesDTO {
         this.startTime = eventProperties.getStartTime().toLocalTime();
         this.finishTime = eventProperties.getEndTime().toLocalTime();
         this.depositAmount = eventProperties.getDepositAmount();
-        if(eventProperties.getVenue() != null){
+        this.pricePerService = eventProperties.getPricePerService();
+        if (eventProperties.getVenue() != null) {
             this.venueDTO = new VenueDTO(eventProperties.getVenue());
         }
-        if(eventProperties.getOtherService() != null){
+        if (eventProperties.getOtherService() != null) {
             this.otherServiceDTO = new OtherServiceDTO(eventProperties.getOtherService());
         }
     }
 
-    // Método estático para crear una lista de DTOs a partir de una lista de entidades
+    // Método estático para crear una lista de DTOs a partir de una lista de
+    // entidades
     public static List<EventPropertiesDTO> fromEntities(List<EventProperties> eventProperties) {
         return eventProperties.stream()
                 .map(EventPropertiesDTO::new)
@@ -51,5 +54,5 @@ public class EventPropertiesDTO {
     public static EventPropertiesDTO fromEntity(EventProperties eventProperty) {
         return new EventPropertiesDTO(eventProperty);
     }
-    
+
 }
