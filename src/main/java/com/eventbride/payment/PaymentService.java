@@ -58,4 +58,49 @@ public class PaymentService {
     }
 
     // FALTA FUNCIONES PARA PAGO RESTANTE
+    public Payment payRemaining(Integer eventPropertiesId, Integer userId) {
+        EventProperties e = eventPropertiesRepository.findById(eventPropertiesId).orElse(null);
+        Payment p;
+
+        Double precioTotal = e.getPricePerService().doubleValue();
+        Double comision = precioTotal * 0.02;
+        Double precioConComision = precioTotal + comision;
+
+        Payment depositPayment = paymentRepository.filterByEventPropertiesId(eventPropertiesId);
+
+        if (depositPayment != null && e != null) {
+            e.setStatus(Status.COMPLETED);
+            eventPropertiesRepository.save(e);
+
+            // Payment de usuario cliente
+            p = new Payment();
+
+            p.setAmount(precioConComision - depositPayment.getAmount());
+            p.setDateTime(LocalDateTime.now());
+            p.setPaymentType(PaymentType.REMAINING);
+            p.setEventProperties(e);
+            User user = userRepository.findById(userId).orElse(null);
+
+            if (user == null)
+                return null;
+
+            p.setUser(user);
+            paymentRepository.save(p);
+
+            // Payment que se realiza a Eventbride
+            Payment p2 = new Payment();
+
+            p2.setAmount(comision);
+            p2.setDateTime(LocalDateTime.now());
+            p2.setPaymentType(PaymentType.COMMISSION);
+            p2.setEventProperties(e);
+            User adminUser = userRepository.findById(15).get();// Usuario administrador que representa la cuenta de la
+                                                               // empresa
+            p2.setUser(adminUser);
+            paymentRepository.save(p2);
+        } else {
+            p = null;
+        }
+        return p;
+    }
 }
