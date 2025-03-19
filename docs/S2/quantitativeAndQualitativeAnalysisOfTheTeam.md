@@ -45,7 +45,8 @@
 | 12/03/2025 | v3.2    | Introducción y conclusión                                                    | Sprint 1 | María de la Salud Carrera Talaverón |
 | 13/03/2025 | v4.0    | Análisis cuantitativo                                                        | Sprint 1 | María de la Salud Carrera Talaverón |
 | 13/03/2025 | v4.1    | Análisis cualitativo                                                         | Sprint 1 | María de la Salud Carrera Talaverón |
-| 19/03/2025 | v5.0    | Actualización del documento para el Sprint 2                                 | Sprint 1 | María de la Salud Carrera Talaverón |
+| 19/03/2025 | v5.0    | Actualización del documento para el Sprint 2                                 | Sprint 2 | María de la Salud Carrera Talaverón |
+| 19/03/2025 | v5.1    | Análisis cuantitativo mitad Sprint 2                                         | Sprint 2 | María de la Salud Carrera Talaverón |
 
 ## Contenido
 1. [Introducción](#intro)
@@ -66,27 +67,27 @@ El presente documento tiene como objetivo realizar un análisis tanto cuantitati
 
 ## Análisis cuantitativo
 
-El análisis cuantitativo se va a realizar en base a las métricas establecidas en el documento de Especificaciones métricas de este proyecto. También se comparará el número de horas totales esperadas con las que se llevan actualmente. Por persona, se esperan mínimo 500 líneas de código modificadas (LdC), 10 commits, 15 issues completadas con éxito, 5 pull requests (PR) revisadas, 5 tests y 150 horas. La mitad del Sprint 2 supone aproximadamente el 50% del tiempo del proyecto. Por tanto, se espera que para el jueves día 13 de marzo de 2025 se lleven alrededor de 225 LdC, 5 commits, 7 u 8 issues completadas, 2 o 3 PR revisadas, 2 o 3 tests y 75 horas por persona. Si alguna de estas métricas aún no se ha cumplido, hay margen para compensarlas en sprints futuros (especialmente los tests, ya que no se han contemplado en la planificación aún). En la siguiente tabla se ve el progreso de cada desarrollador (en la rama `master`[^1] del proyecto), a día de 19 de marzo de 2025 (al mediodía)[^2]:
+El análisis cuantitativo se va a realizar en base a las métricas establecidas en el documento de Especificaciones métricas de este proyecto. También se comparará el número de horas totales esperadas con las que se llevan actualmente. Por persona, se esperan mínimo 500 líneas de código modificadas (LdC), 10 commits, 15 issues completadas con éxito, 5 pull requests (PR) revisadas, 5 tests y 150 horas. La mitad del Sprint 2 supone aproximadamente el 50% del tiempo del proyecto. Por tanto, se espera que para el jueves día 20 de marzo de 2025 se lleven alrededor de 225 LdC, 5 commits, 7 u 8 issues completadas, 2 o 3 PR revisadas, 2 o 3 tests y 75 horas por persona. Si alguna de estas métricas aún no se ha cumplido, hay margen para compensarlas en sprints futuros (especialmente los tests, ya que no se han contemplado en la planificación aún). En la siguiente tabla se ve el progreso de cada desarrollador (en la rama `master`[^1] o `develop` del proyecto), a día de 19 de marzo de 2025 (al mediodía)[^2]:
 
-| Desarrollador/a                     | LdC             | Commits | Issues completadas | PR revisadas | Tests | Horas    |
-|-------------------------------------|-----------------|---------|--------------------|--------------|-------|----------|
-| Francisco Avilés Carrera            | 715++ 163--     | 13      | 14                 | 6            | 0     | 61:29:38 |
-| Daniel Benito Hidalgo               | 2260++ 291--    | 14      | 13                 | 0            | 0     | 78:37:03 |
-| Ignacio Blanquero Blanco            | 4520++ 582--    | 66      | 9                  | 0            | 0     | 85:38:32 |
-| Adrián Cabello Martín               | 415488+++ 392-- | 9       | 11                 | 3            | 0     | 59:59:19 |
-| María de la Salud Carrera Talaverón | 1505++ 508--    | 22      | 16                 | 2            | 0     | 64:21:50 |
-| Pablo Jesús Castellanos Compaña     | 2548++ 1369--   | 53      | 21                 | 13           | 0     | 99:15:44 |
-| Fernando José de Celis Hurtado      | 148++ 43--      | 3       | 7                  | 0            | 0     | 58:58:43 |
-| David Godoy Fernández               | 1010++ 391--    | 13      | 13                 | 3            | 0     | 61:29:29 |
-| Miguel Hernández Sánchez            | 1202++ 533--    | 22      | 12                 | 3            | 0     | 60:30:23 |
-| Antonio Montero López               | 33++ 15--       | 4       | 7                  | 3            | 0     | 72:19:27 |
-| Gonzalo Navas Remmers               | 1512++ 888--    | 15      | 12                 | 0            | 0     | 66:12:41 |
-| Héctor Noguera González             | 16++ 4--        | 2       | 6                  | 3            | 0     | 63:58:10 |
-| Natalia Olmo Villegas               | 537++ 168--     | 8       | 16                 | 1            | 0     | 86:41:21 |
-| Manuel Pérez Vélez                  | 1188++ 606--    | 4       | 10                 | 1            | 0     | 74:09:05 |
-| Andrés Pizzano Cerrillos            | 1376++ 597--    | 18      | 12                 | 4            | 0     | 55:36:03 |
-| Sergio Pons López                   | 1195+++ 16--    | 13      | 8                  | 1            | 0     | 76:27:23 |
-| Lorenzo Torralba Lanzas             | 272++ 133--     | 8       | 13                 | 2            | 0     | 48:22:03 |
+| Desarrollador/a                     | LdC             | Commits | Issues completadas | PR revisadas | Tests | Horas     |
+|-------------------------------------|-----------------|---------|--------------------|--------------|-------|-----------|
+| Francisco Avilés Carrera            | 6768++ 9036--   | 14      | 15                 | 7            | 0     | 75:53:30  |
+| Daniel Benito Hidalgo               | 2260++ 291--    | 14      | 15                 | 4            | 0     | 92:14:26  |
+| Ignacio Blanquero Blanco            | 4520++ 582--    | 66      | 11                 | 1            | 0     | 96:13:19  |
+| Adrián Cabello Martín               | 416127++ 424--  | 25      | 13                 | 3            | 0     | 73:14:34  |
+| María de la Salud Carrera Talaverón | 10650++ 9634--  | 33      | 18                 | 9            | 0     | 74:33:36  |
+| Pablo Jesús Castellanos Compaña     | 2551++ 1372--   | 54      | 27                 | 14           | 0     | 119:54:18 |
+| Fernando José de Celis Hurtado      | 925++ 506--     | 9       | 10                 | 2            | 0     | 67:11:49  |
+| David Godoy Fernández               | 1010++ 391--    | 13      | 15                 | 4            | 0     | 73:47:39  |
+| Miguel Hernández Sánchez            | 1202++ 533--    | 22      | 16                 | 3            | 0     | 75:10:51  |
+| Antonio Montero López               | 118++ 86--      | 6       | 9                  | 4            | 0     | 79:50:40  |
+| Gonzalo Navas Remmers               | 1512++ 888--    | 15      | 16                 | 0            | 0     | 80:38:19  |
+| Héctor Noguera González             | 16++ 4--        | 2       | 10                 | 4            | 0     | 71:29:43  |
+| Natalia Olmo Villegas               | 537++ 168--     | 8       | 21                 | 3            | 0     | 106:42:21 |
+| Manuel Pérez Vélez[^3]              | 1188++ 606--    | 4       | 13                 | 1            | 0     | 82:28:10  |
+| Andrés Pizzano Cerrillos            | 1476++ 597--    | 19      | 13                 | 4            | 0     | 68:51:51  |
+| Sergio Pons López                   | 1432++ 34--     | 14      | 9                  | 1            | 0     | 82:35:03  |
+| Lorenzo Torralba Lanzas             | 554++ 136--     | 10      | 14                 | 2            | 0     | 58:18:14  |
 
 No se va a reflejar en este documento el análisis de los costes del proyecto hasta la fecha frente a los planificados para todo el proyecto, debido a que estos están reflejados en el documento correspondiente: `costsAnalysis.md`.
 
@@ -200,3 +201,5 @@ No procede.
 [^1]: GitHub no ofrece _insights_ sobre otra rama que no sea la `master` del proyecto, por lo que el número de commits y las LdC de cada desarrollador reflejadas en la tabla corresponderán a la última _release_ lanzada anteriormente a la elaboración de este documento y no a las contribuciones hechas en la rama `develop` del repositorio. En este caso, ambas métricas corresponden a la release `v1.0.0` del 13 de marzo de 2025.
 
 [^2]: Se ha realizado a fecha de un día anterior a la finalización de la primera semana del Sprint 2 para poder redactar el documento con margen suficiente antes de la elaboración de la presentación. Si algún miembro del equipo no cumple con alguno de los mínimos establecidos en esa fecha, es posible que se haya puesto al día posteriormente a la elaboración de este documento y antes de la finalización de la semana que se está analizando.
+
+[^3]: Manuel Pérez Velez está contribuyendo al repositorio de GitHub de Eventbride con dos cuentas de GitHub diferentes. Sus métricas de LdC, commits, issues, PRs y tests se calcularán sumando las contribuciones hechas desde ambas cuentas.
