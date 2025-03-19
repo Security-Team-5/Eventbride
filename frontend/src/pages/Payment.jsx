@@ -11,6 +11,7 @@ export default function Payment() {
   const [price, setPrice] = useState(0)
   const [status, setStatus] = useState("CARGANDO")
   const { id } = useParams()
+  const [comision, setComision] = useState(0)
 
 
   useEffect(() => {
@@ -45,9 +46,9 @@ export default function Payment() {
           setPrice(data.depositAmount)
         } else {
           setStatus("CANTIDAD RESTANTE")
-          setPrice(data.pricePerService - data.depositAmount)
+          setComision((data.depositAmount + data.pricePerService) * 0.02)
+          setPrice(data.pricePerService - data.depositAmount + comision)
         }
-
       } catch (error) {
         console.error("Error obteniendo evento:", error)
         setError("No se pudo cargar la información del evento. Inténtelo de nuevo más tarde.")
@@ -57,7 +58,7 @@ export default function Payment() {
     }
 
     getEventProp()
-  }, [id, status, price])
+  }, [id, status, price, comision])
 
   if (error) {
     return (
@@ -115,7 +116,7 @@ export default function Payment() {
                     <div className="summary-item">
                       <span>Precio base</span>
                       <span className="price">
-                        {price}€
+                        {price - comision}€
                       </span>
                     </div>
 
@@ -124,6 +125,8 @@ export default function Payment() {
                     <div className="summary-item total">
                       <span>Total</span>
                       <span>{price}€</span>
+                      <b></b>
+                      {comision !== 0 ? <span>Se añadió una comisión de {comision}€ por gastos de gestión</span> : ''}
                     </div>
                   </div>
                 </div>
