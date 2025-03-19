@@ -4,25 +4,45 @@ import "../static/resources/css/MyEvents.css";
 
 function MyEvents() {
   const [eventos, setEventos] = useState([]);
-  const navigate = useNavigate(); // Hook para redirigir
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
 
   // Obtener la lista de eventos
   function getEvents() {
+    setIsLoading(true);
+    setError(null);
+
+    if (!currentUser || !currentUser.id) {
+      setError("No se ha encontrado información del usuario");
+      setIsLoading(false);
+      return;
+    }
+
     fetch(`/api/v1/events/next/${currentUser.id}`, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "GET",
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Error al obtener los eventos");
+        }
+        return response.json();
+      })
       .then(data => {
         console.log("Eventos obtenidos:", data);
-        setEventos(data); // Guardamos la lista de eventos en el estado
+        setEventos(data);
+        setIsLoading(false);
       })
-      .catch(error => console.error("Error obteniendo eventos:", error));
+      .catch(error => {
+        console.error("Error obteniendo eventos:", error);
+        setError("No se pudieron cargar los eventos. Por favor, inténtalo de nuevo más tarde.");
+        setIsLoading(false);
+      });
   }
 
   // Cargar eventos al montar el componente
@@ -50,20 +70,63 @@ function MyEvents() {
     return new Date(fecha).toLocaleDateString("es-ES", opciones);
   };
 
-  // Decodificar caracteres especiales en caso de problemas de codificación
-  /*
-  const decodeText = (text) => {
-    try {
-      return decodeURIComponent(escape(text));
-    } catch {
-      return text;
+  // Obtener imagen según tipo de evento
+  const getEventImage = (eventType) => {
+    switch (eventType) {
+      case "WEDDING":
+        return 'https://imgix.bustle.com/uploads/image/2023/3/24/09d2b351-99fd-49eb-a5b1-9e4ad742109f-24350248-f965-4ac2-8cd5-687c79fac92b.jpeg?w=414&h=275&fit=crop&crop=focalpoint&dpr=2&fp-x=0.356&fp-y=0.3052';
+      case "COMMUNION":
+        return 'https://media.istockphoto.com/id/2046030661/es/foto/comuni%C3%B3n-santo-grial-con-panes-sin-levadura-y-c%C3%A1liz-de-vino-%C3%BAltima-cena-con-corpus-christi-de.jpg?s=612x612&w=0&k=20&c=tVRw3ZhhEY8FIhZWybDC1-J3hB74tkI2LURJq-2Gjto=';
+      case "CHRISTENING":
+        return 'https://cdn.pixabay.com/photo/2016/04/20/23/35/religion-1342376_1280.jpg';
+      default:
+        return 'https://via.placeholder.com/400x250';
     }
   };
-  */
+
+  // Calcular días restantes hasta el evento
+  const calcularDiasRestantes = (fecha) => {
+    const hoy = new Date();
+    const fechaEvento = new Date(fecha);
+    const diferencia = fechaEvento.getTime() - hoy.getTime();
+    const dias = Math.ceil(diferencia / (1000 * 3600 * 24));
+    return dias;
+  };
+
+  // Renderizar estado de carga
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Cargando eventos...</p>
+      </div>
+    );
+  }
+
+  // Renderizar mensaje de error
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="error-icon">!</div>
+        <p>{error}</p>
+        <button className="retry-button" onClick={getEvents}>
+          Reintentar
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <>
+    <div className="events-page">
+      <div className="events-header">
+        <h1 className="page-title">Mis Eventos</h1>
+        <button className="new-event-button" onClick={() => navigate("/new-event")}>
+          Nuevo Evento
+        </button>
+      </div>
+
       {eventos.length > 0 ? (
+        
         eventos.map((evento, index) => {
           // Calcular el coste acumulado para este evento
           const calcularCosteEvento = () => {
@@ -77,51 +140,75 @@ function MyEvents() {
             return total;
           };
 
-          return (
-            <div key={index} className="event-container">
-              <div>
-                <h2 className="event-title">{tipoDeEvento(evento.eventType)}</h2>
-                <div className="event-info">
-                  <p className="event-date">Fecha: {formatearFecha(evento.eventDate)}</p>
-                  <p className="event-guests">Invitados: {evento.guests}</p>
-                  <p className="event-budget">
-                      Coste acumulado: {calcularCosteEvento().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                  </p>
+        <div className="events-grid">
+          {eventos.map((evento, index) => {
+            const diasRestantes = calcularDiasRestantes(evento.eventDate);
+
+            return (
+              <div
+                key={index}
+                className="event-card"
+                onClick={() => navigate(`/event/${evento.id}`)}
+              >
+                <div className="event-image-container">
+                  <img
+                    src={getEventImage(evento.eventType) || "/placeholder.svg"}
+                    alt={tipoDeEvento(evento.eventType)}
+                    className="event-image"
+                  />
+                  <div className="event-type-badge">
+                    {tipoDeEvento(evento.eventType)}
+                  </div>
+                  {diasRestantes > 0 && (
+                    <div className="days-remaining">
+                      <span className="days-number">{diasRestantes}</span>
+                      <span className="days-text">días</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="event-content">
+                  <h2 className="event-title">{tipoDeEvento(evento.eventType)}</h2>
+
+                  <div className="event-details">
+                    <div className="detail-item">
+                      <span className="detail-icon">📅</span>
+                      <span className="detail-text">{formatearFecha(evento.eventDate)}</span>
+                    </div>
+
+                    <div className="detail-item">
+                      <span className="detail-icon">👥</span>
+                      <span className="detail-text">{evento.guests} invitados</span>
+                    </div>
+
+                    <div className="detail-item">
+                      <span className="detail-icon">💰</span>
+                      <span className="detail-text">
+                        Coste acumulado: {calcularCosteEvento().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="event-footer">
+                    <span className="view-details">Ver detalles</span>
+                  </div>
                 </div>
               </div>
-              {evento.eventType === "WEDDING" && (
-                <img
-                  onClick={() => navigate(`/event/${evento.id}`)}
-                  src={'https://imgix.bustle.com/uploads/image/2023/3/24/09d2b351-99fd-49eb-a5b1-9e4ad742109f-24350248-f965-4ac2-8cd5-687c79fac92b.jpeg?w=414&h=275&fit=crop&crop=focalpoint&dpr=2&fp-x=0.356&fp-y=0.3052'}
-                  alt="Boda"
-                  className="foto"
-                />
-              )}
-              {evento.eventType === "COMMUNION" && (
-                <img
-                  onClick={() => navigate(`/event/${evento.id}`)}
-                  src={'https://media.istockphoto.com/id/2046030661/es/foto/comuni%C3%B3n-santo-grial-con-panes-sin-levadura-y-c%C3%A1liz-de-vino-%C3%BAltima-cena-con-corpus-christi-de.jpg?s=612x612&w=0&k=20&c=tVRw3ZhhEY8FIhZWybDC1-J3hB74tkI2LURJq-2Gjto='}
-                  alt="Comunión"
-                  className="foto"
-                />
-              )}
-              {evento.eventType === "CHRISTENING" && (
-                <img
-                  onClick={() => navigate(`/event/${evento.id}`)}
-                  src={'https://cdn.pixabay.com/photo/2016/04/20/23/35/religion-1342376_1280.jpg'}
-                  alt="Bautizo"
-                  className="foto"
-                />
-              )}
-            </div>
-          );
-        })
+            );
+          })}
+        </div>
+
       ) : (
-        <div className="no-event">
-          <p>No hay eventos disponibles en este momento.</p>
+        <div className="no-events-container">
+          <div className="no-events-icon">📅</div>
+          <h2>No hay eventos disponibles</h2>
+          <p>No tienes eventos programados en este momento.</p>
+          <button className="create-event-button" onClick={() => navigate("/new-event")}>
+            Crear mi primer evento
+          </button>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
