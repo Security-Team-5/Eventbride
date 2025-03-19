@@ -38,6 +38,7 @@
 |10/03/2025 |v1.2 |Pasar a formato Markdown |Sprint 1 | - |
 |12/03/2025 |v1.3 |Actualizar con usos del sprint 1 |Sprint 1 | María de la Salud Carrera Talaverón |
 |18/03/2025 |v1.4 |Actualizar con usos del sprint 2 |Sprint 2 | Pablo Jesús Castellanos Compaña |
+|19/03/2025 |v1.5 |Actualizar con alucinaciones de la IA del Sprint 2 |Sprint 2 | Ignacio Blanquero Blanco |
 
 ---
 
@@ -52,15 +53,16 @@
 7. [Ejemplo de Análisis de Uso](#id6)
 8. [Registro de Uso](#id7)
 9. [Análisis de Uso](#id8)
-10. [Conclusiones](#concl)
-11. [Bibliografía](#bib)
+10. [Alucinaciones de la IA](#alucinaciones)
+11. [Conclusiones](#concl)
+12. [Bibliografía](#bib)
 
 
 <div id='intro'></div>
 
 ## Introducción 
 
-Este documento tiene como objetivo establecer las políticas y el uso de herramientas de inteligencia artificial dentro del desarrollo del proyecto de organización de eventos. Se detallarán  las  Inteligencias  Artificiales  permitidas,  los  métodos  de  registro  de  uso  y ejemplos de aplicación en el proceso de desarrollo.
+Este documento tiene como finalidad definir las políticas y directrices para el uso de herramientas de inteligencia artificial en el desarrollo del proyecto de organización de eventos. En él se especificarán las inteligencias artificiales autorizadas, los procedimientos para el registro de su utilización y ejemplos de aplicación en el proceso de desarrollo. Asimismo, se abordará el fenómeno de las alucinaciones de la IA y el porcentaje de incidencia de estas.
 
 <div id='id1'></div>
 
@@ -154,7 +156,7 @@ Este análisis permitirá evaluar la eficacia del uso de la IA dentro del proyec
 
 <div id='id8'></div>
 
-## Análisis de Uso 
+## Análisis de Uso
 
 |ID |Intentos hasta respuesta válida |¿Cumplió con lo esperado? |¿Se editó la información? |Tiempo ahorrado |
 | - | :- | :-: | :- | :- |
@@ -178,6 +180,14 @@ Este análisis permitirá evaluar la eficacia del uso de la IA dentro del proyec
 |18 |2 |Sí |No procede |15 minutos|
 |19 |1 |Sí |Sí |30 minutos|
 
+<div id='alucinaciones'></div>
+
+## Alucinaciones de la IA
+
+Tras el análisis exhaustivo de las conversaciones identificadas con los IDs 18 y 19, correspondientes al Sprint 2, se concluye que la Inteligencia Artificial no incurrió en alucinaciones. En ambos casos, las respuestas emitidas se ajustaron a los parámetros de coherencia y cumplimiento de expectativas preestablecidos. No obstante, en lo concerniente a la conversación con ID 17, la ausencia del enlace correspondiente impide la evaluación de posibles alucinaciones de la IA.
+
+En consecuencia, el porcentaje de alucinaciones registradas para las conversaciones analizadas del Sprint 2 es del 0%. Este resultado sugiere que la precisión observada podría estar directamente relacionada con la meticulosidad en la formulación de los mensajes proporcionados a la IA, lo cual habría contribuido a la obtención de respuestas precisas y libres de alucinaciones.
+
 <div id='concl'></div>
 
 ## Conclusiones
@@ -188,10 +198,8 @@ Aun así, la IA no ha reemplazado por completo al humano en las tareas que ha co
 
 En definitiva, la IA ha sido un recurso valioso que nos ha permitido avanzar con más rapidez, sin perder el control sobre el proceso.
 
-
 <div id='bib'></div>
 
-## Bibliografía 
+## Bibliografía
 
 Intencionadamente en blanco.
-
