@@ -30,7 +30,7 @@ public class InvitationController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getInvitation(@RequestParam int id) {
+	public ResponseEntity<?> getInvitation(@PathVariable int id) {
 		try{
 			Invitation invitation = invitationService.getInvitationById(id);
 			return new ResponseEntity<>(invitation, HttpStatus.OK);

@@ -20,6 +20,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import Invitations from "./pages/Invitations";
 import EventInvitations from "./pages/EventInvitations";
 import RegisterInvitation from "./pages/RegisterInvitation";
+import ConfirmEmailInvitation from "./pages/ConfirmEmailInvitation.jsx";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
             <Route path="/invitaciones" element={<Invitations />} />
             <Route path="/invitaciones/:currentEventId" element={<EventInvitations />} />
               <Route path="/invitaciones/registro/:invitationId" element={<RegisterInvitation />} />
+              <Route path="/invitaciones/confirmar/:invitationId" element={<ConfirmEmailInvitation />} />
             {currentUser && currentUser.role == "ADMIN" &&
               <>
                 <Route path="/admin-events" element={<AdminEvents/>} />

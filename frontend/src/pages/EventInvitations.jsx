@@ -67,7 +67,8 @@ function EventInvitations() {
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-          copyLink("https://ispp-2425-03.ew.r.appspot.com/");
+            const id = data.id
+          copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${id}`);
           alert("Link a la invitación copiado al portapapeles");
         }
       })

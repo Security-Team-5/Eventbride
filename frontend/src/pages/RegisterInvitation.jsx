@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import apiClient from "../apiClient";
 
@@ -17,7 +17,24 @@ const Register = () => {
   });
 
   const [error, setError] = useState(null);
+  const [invitation, setInvitation] = useState(null);
   const navigate = useNavigate();
+
+    useEffect(() => {
+        fetch(`/api/invitation/${invitationId}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "GET",
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setInvitation(data);
+            })
+            .catch((error) =>
+                console.error("Error obteniendo las invitaciones de este evento:", error)
+            );
+    }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,6 +43,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Formulario enviado:", form);
+
     try {
       const response = await apiClient.post("/api/invitation", {
           id: invitationId,
@@ -55,7 +73,7 @@ const Register = () => {
         <form onSubmit={handleSubmit}>
           <input type="text" name="firstName" placeholder="Nombre" value={form.firstName} onChange={handleChange} required />
           <input type="text" name="lastName" placeholder="Apellido" value={form.lastName} onChange={handleChange} required />
-          <input type="number" min="0" max="100" step="1" name="numberOfGuests" placeholder="1" value={form.username} onChange={handleChange} required />
+          <input type="number" min="0" max={invitation?.maxGuests} step="1" name="numberOfGuests" placeholder="0" value={form.username} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Correo electrónico" value={form.email} onChange={handleChange} required />
           <input type="tel" name="telephone" placeholder="Teléfono" value={form.telephone} onChange={handleChange} required />
           <button type="submit">Registrarse</button>

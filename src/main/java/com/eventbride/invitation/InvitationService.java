@@ -58,8 +58,14 @@ public class InvitationService {
 	}
 
 	@Transactional
-	public Invitation fillInvitation(Invitation invitation) {
+	public Invitation fillInvitation(Invitation invitation) throws Exception {
+
 		Invitation existingInvitation = invitationRepository.findById(invitation.getId()).orElse(null);
+
+		if(invitation.getNumberOfGuests() > existingInvitation.getMaxGuests() ) {
+			throw new Exception("Se supera el límite de invitados");
+		}
+
 		BeanUtils.copyProperties(invitation, existingInvitation, "id", "event", "invitationType");
 		existingInvitation.setInvitationType(Invitation.InvitationType.RECEIVED);
 		// ENVIAR CORREO
@@ -67,7 +73,7 @@ public class InvitationService {
 		mailMessage.setFrom("eventbride6@gmail.com");
 		mailMessage.setTo(existingInvitation.getEmail());
 		mailMessage.setSubject("Invitación a evento");
-		mailMessage.setText("Hola " + existingInvitation.getFirstName() + " " + existingInvitation.getLastName() + ", has sido invitado al evento " + "Esto se debe cambiar en un futuro, por el tipo de evento y el nombre de quien es el evento" + ". Por favor, confirma tu asistencia en el siguiente enlace: http://localhost:8080/api/invitation/confirm/" + existingInvitation.getId() + ". Gracias!");
+		mailMessage.setText("Hola " + existingInvitation.getFirstName() + " " + existingInvitation.getLastName() + ", has sido invitado al evento " + "Esto se debe cambiar en un futuro, por el tipo de evento y el nombre de quien es el evento" + ". Por favor, confirma tu asistencia en el siguiente enlace: https://ispp-2425-03.ew.r.appspot.com/invitaciones/confirmar/" + existingInvitation.getId() + ". Gracias!");
 
 		mailSender.send(mailMessage);;
 
