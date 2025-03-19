@@ -120,7 +120,7 @@ function MyEvents() {
     <div className="events-page">
       <div className="events-header">
         <h1 className="page-title">Mis Eventos</h1>
-        <button className="new-event-button" onClick={() => navigate("/new-event")}>
+        <button className="new-event-button" onClick={() => navigate("/create-events")}>
           Nuevo Evento
         </button>
       </div>
