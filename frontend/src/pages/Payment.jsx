@@ -12,6 +12,7 @@ export default function Payment() {
   const [status, setStatus] = useState("CARGANDO")
   const { id } = useParams()
 
+
   useEffect(() => {
     const jwt = localStorage.getItem("jwt")
     if (!jwt) {
@@ -131,7 +132,7 @@ export default function Payment() {
 
             <div className="card-footer">
               <div className="payment-button-container">
-                <PaypalButtom amount={price} />
+                <PaypalButtom amount={price} paymentType={status} eventProp={eventProp} />
               </div>
               <p className="terms-text">Al completar el pago, acepta nuestros términos y condiciones de servicio.</p>
             </div>
