@@ -1,10 +1,9 @@
 name: Codacy Analysis
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-      - feat/workflow
 
 jobs:
   codacy-analysis:
