@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import apiClient from "../apiClient";
 
 const Register = () => {
@@ -18,47 +18,50 @@ const Register = () => {
 
   const [error, setError] = useState(null);
   const [invitation, setInvitation] = useState(null);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-    useEffect(() => {
-        fetch(`/api/invitation/${invitationId}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "GET",
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setInvitation(data);
-            })
-            .catch((error) =>
-                console.error("Error obteniendo las invitaciones de este evento:", error)
-            );
-    }, []);
+  useEffect(() => {
+    fetch(`/api/invitation/${invitationId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setInvitation(data);
+      })
+      .catch((error) =>
+        console.error("Error obteniendo las invitaciones de este evento:", error)
+      );
+  }, [error]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
+    setSuccess(true);
     e.preventDefault();
     console.log("Formulario enviado:", form);
 
     try {
-      const response = await apiClient.post("/api/invitation", {
-          id: invitationId,
-          firstName: form.firstName,
-          lastName: form.lastName,
-          numberOfGuests: form.numberOfGuests,
-          email: form.email,
-          telephone: form.telephone,
+      const response = await apiClient.put("/api/invitation", {
+        id: invitationId,
+        maxGuests: invitation.maxGuests,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        numberOfGuests: form.numberOfGuests,
+        email: form.email,
+        telephone: form.telephone,
       });
 
       if (response.data.error) {
         setError("Error: " + response.data.error);
         return;
       }
-      navigate("/");
+      navigate(`/invitaciones/confirmar/${invitationId}`);
     } catch (error) {
       console.error("Error en el registro:", error.response?.data || error.message);
       setError("Error al registrarse. Inténtalo de nuevo.");
@@ -73,13 +76,17 @@ const Register = () => {
         <form onSubmit={handleSubmit}>
           <input type="text" name="firstName" placeholder="Nombre" value={form.firstName} onChange={handleChange} required />
           <input type="text" name="lastName" placeholder="Apellido" value={form.lastName} onChange={handleChange} required />
-          <input type="number" min="0" max={invitation?.maxGuests} step="1" name="numberOfGuests" placeholder="0" value={form.username} onChange={handleChange} required />
+          <input type="number" min="0" max={invitation?.maxGuests} step="1" name="numberOfGuests" placeholder="Nº Acompañantes" value={form.username} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Correo electrónico" value={form.email} onChange={handleChange} required />
           <input type="tel" name="telephone" placeholder="Teléfono" value={form.telephone} onChange={handleChange} required />
-          <button type="submit">Registrarse</button>
-        </form>
-      </div>
+          {success==false && 
+            <button type="submit">Aceptar Invitación</button>
+          }{success==true &&
+            <button type="submit" disabled>Invitación Aceptada</button>
+          }
+      </form>
     </div>
+    </div >
   );
 };
 

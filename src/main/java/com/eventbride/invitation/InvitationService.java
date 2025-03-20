@@ -29,19 +29,25 @@ public class InvitationService {
 
 	@Transactional()
 	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests) throws Exception{
-		Invitation invitation = new Invitation();
-		invitation.setMaxGuests(maxGuests);
-		String randomEmail = "randomEmail" + Math.random() + "@gmail.com";
-		invitation.setEmail(randomEmail);
+		
+		//Comprobamos que en las eventpropeties del evento exista una venue
 		Optional<Event> event = eventRepository.findById(eventId);
-
 		if (event.isPresent()) {
-			invitation.setEvent(event.get());
-			invitation.setInvitationType(Invitation.InvitationType.SENT);
+			boolean hasVenue = event.get().getEventProperties().stream()
+					.anyMatch(eventProperties -> eventProperties.getVenue() != null);
+			if (!hasVenue) {
+				throw new Exception("No se puede crear una invitación para un evento sin venue");
+			}
 		}
 		else {
 			throw new Exception("Event not found");
 		}
+		Invitation invitation = new Invitation();
+		invitation.setMaxGuests(maxGuests);
+		String randomEmail = "randomEmail" + Math.random() + "@gmail.com";
+		invitation.setEmail(randomEmail);
+		invitation.setEvent(event.get());
+		invitation.setInvitationType(Invitation.InvitationType.SENT);
 
 		return invitationRepository.save(invitation);
 	}
@@ -67,30 +73,22 @@ public class InvitationService {
 		}
 
 		BeanUtils.copyProperties(invitation, existingInvitation, "id", "event", "invitationType");
-		existingInvitation.setInvitationType(Invitation.InvitationType.RECEIVED);
+		existingInvitation.setInvitationType(Invitation.InvitationType.ACCEPTED);
 		// ENVIAR CORREO
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setFrom("eventbride6@gmail.com");
 		mailMessage.setTo(existingInvitation.getEmail());
 		mailMessage.setSubject("Invitación a evento");
-		mailMessage.setText("Hola " + existingInvitation.getFirstName() + " " + existingInvitation.getLastName() + ", has sido invitado al evento " + "Esto se debe cambiar en un futuro, por el tipo de evento y el nombre de quien es el evento" + ". Por favor, confirma tu asistencia en el siguiente enlace: https://ispp-2425-03.ew.r.appspot.com/invitaciones/confirmar/" + existingInvitation.getId() + ". Gracias!");
+		mailMessage.setText("Hola " + existingInvitation.getFirstName() + " " + existingInvitation.getLastName() + 
+		". \nHas confirmado tu asistencia al evento: " + "existingInvitation.getEvent().getName()" +
+		". \nEl evento se llevará a cabo en la fecha: " + existingInvitation.getEvent().getEventDate() +
+		", en " + existingInvitation.getEvent().getEventProperties().stream().filter(eventProperties -> eventProperties.getVenue() != null).findFirst().get().getVenue().getName() +
+		", con dirección " + existingInvitation.getEvent().getEventProperties().stream().filter(eventProperties -> eventProperties.getVenue() != null).findFirst().get().getVenue().getAddress() +
+		". \nMuchas gracias!");
 
 		mailSender.send(mailMessage);;
 
 		return invitationRepository.save(existingInvitation);
-	}
-
-	@Transactional
-	public Invitation confirmInvitation(Integer invitationId) throws Exception{
-		Optional<Invitation> invitationOptional = invitationRepository.findById(invitationId);
-		if (invitationOptional.isPresent()) {
-			Invitation invitation = invitationOptional.get();
-			invitation.setInvitationType(Invitation.InvitationType.ACCEPTED);
-			return invitationRepository.save(invitation);
-		}
-		else {
-			throw new Exception("Invitation not found");
-		}
 	}
 
 	@Transactional(readOnly = true)

@@ -8,6 +8,7 @@ import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class InvitationController {
 		}
 	}
 
-	@PostMapping
+	@PutMapping
 	public ResponseEntity<?> fillInvitation(@RequestBody @Valid Invitation invitation) {
 		try {
 			Invitation res = invitationService.fillInvitation(invitation);
@@ -62,16 +63,4 @@ public class InvitationController {
 		}
 	}
 
-	// Cambiar la url para que sea única y no predecible
-	// Cambiar una vez que funciona la lógica
-	@GetMapping("/confirm/{id}")
-	public ResponseEntity<?> confirmInvitation(@PathVariable int id) {
-		try {
-			Invitation res = invitationService.confirmInvitation(id);
-			return new ResponseEntity<>(res, HttpStatus.OK);
-		}
-		catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
 }
