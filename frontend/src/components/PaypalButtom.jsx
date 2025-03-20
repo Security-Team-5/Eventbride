@@ -15,7 +15,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
           const currentUser = JSON.parse(localStorage.getItem("user"))
           const response = await axios.post(`/api/payment/${eventProp.id}/pay-deposit/${currentUser.id}`);
           console.log(response.data);
-          navigate("/events")
+          navigate(`/events`)
 
         } catch (error) {
           alert('Error al crear el evento');
@@ -23,6 +23,16 @@ function PaypalButton({ amount, paymentType, eventProp }) {
         }
       } else {
         //INTRODUCIR LÓGICA DE PAGO RESTANTE
+        try {
+          const currentUser = JSON.parse(localStorage.getItem("user"))
+          const response = await axios.post(`/api/payment/${eventProp.id}/pay-remaining/${currentUser.id}`);
+          console.log(response.data);
+          navigate(`/events`)
+
+        } catch (error) {
+          alert('Error al crear el evento');
+          console.error(error);
+        }
       }
     }
 
