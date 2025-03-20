@@ -299,7 +299,7 @@
 }
 
 .status-approved {
-  background-color: #3b82f6;
+  background-color: rgba(247, 217, 227, 0.96);
 }
 
 .status-deposit_paid {
