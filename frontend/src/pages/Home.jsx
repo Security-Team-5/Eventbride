@@ -31,9 +31,6 @@ export default function HomePage() {
               Eventos que brillan, recuerdos que perduran
             </h1>
             <br></br>
-            <button className="primary-button">
-              Crea tu primer evento
-            </button>
           </div>
         </div>
       </section>
@@ -179,9 +176,6 @@ export default function HomePage() {
           <p className="cta-description">
             Comienza hoy mismo a planificar tu boda, bautizo o comunión con Eventbride
           </p>
-          <button className="secondary-button">
-            Comenzar ahora
-          </button>
         </div>
       </section>
     </main>
