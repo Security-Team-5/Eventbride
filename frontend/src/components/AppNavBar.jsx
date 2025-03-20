@@ -55,7 +55,7 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("user");
-    navigate("/");
+    navigate("/login");
   };
 
   const renderNavItems = () => {
