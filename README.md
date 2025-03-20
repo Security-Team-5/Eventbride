@@ -41,7 +41,9 @@ Eventbride es una plataforma dedicada a la contratación de servicios ver con ev
     spring.datasource.username=${MYSQL_USER:TUUSUARIO}
     spring.datasource.password=${MYSQL_PASS:TUCONTRASEÑA}
 ```
-**IMPORTANTE: no pongas el user y contraseña entre comillas, sigue la estructura literal, por ejemplo:**
+> [!IMPORTANT]
+> No pongas el user y contraseña entre comillas, sigue la estructura literal, por ejemplo:**
+
 ```
     spring.datasource.username=${MYSQL_USER:RyanGosling}
     spring.datasource.password=${MYSQL_PASS:lalaland}
@@ -64,17 +66,23 @@ Eventbride es una plataforma dedicada a la contratación de servicios ver con ev
 ```
 
 Con las siguientes credenciales deberías poder acceder al sistema correctamente:
+```
     - user: alice123
     - pass: 1234
+```
 
 ¡Ya puedes empezar a realizar cambios!
 
 ## Participantes
 
-Damos las gracias a todos los participantes de este proyecto. Gracias a ellos ha sido posible.
+Estos son todos los participantes de este proyecto. Gracias a ellos ha sido posible.
 
-[[Contribute](https://github.com/ISPP-Eventbride/Eventbride/graphs/contributors)].
+[[Contribuidores](https://github.com/ISPP-Eventbride/Eventbride/graphs/contributors)].
 
 ## Contacto
 
-eventbride6@gmail.com   |  [Instagram](https://www.instagram.com/eventbride_sevilla/)
+- Email: eventbride6@gmail.com   
+
+- [Instagram](https://www.instagram.com/eventbride_sevilla/)
+
+- [GitHub issues](https://github.com/ISPP-Eventbride/Eventbride/issues)
