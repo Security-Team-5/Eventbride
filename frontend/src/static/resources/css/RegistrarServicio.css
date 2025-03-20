@@ -1,133 +1,189 @@
+/* Estilos generales */
+.service-registration-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    padding-top: 100px;
+    /* Espacio para el navbar */
+}
+
+.service-registration-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.service-registration-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-family: "Playfair Display", serif;
+}
+
+.service-registration-subtitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-family: "Playfair Display", serif;
+}
+
+/* Selector de tipo de servicio */
+.service-type-select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: #d9be75;
+    transition: all 0.2s ease;
+}
+
+.service-type-select:focus {
+    outline: none;
+    border-color: #d9be75;
+    box-shadow: 0 0 0 3px rgba(217, 190, 117, 0.2);
+}
+
 .hidden-option {
     display: none;
 }
 
-.mis-servicios-container {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+/* Contenedor del formulario */
+.form-container {
+    background-color: #f4f4f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.services-list {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 70%;
-    align-self: center;
-
-}
-
-.service-item {
-    margin-bottom: 20px;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-}
-
-.create-service-button {
-    background-color: green;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.create-service-button:hover {
-    background-color: darkgreen;
-}
-
-.registrar-servicio-container {
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: black; /* Cambiar el color del texto a negro */
-}
-
-h2, h3 {
-    text-align: center;
-    color: black; /* Cambiar el color del texto a negro */
-}
-
-select, input[type="text"], input[type="number"], input[type="checkbox"] {
-    width: calc(100% - 20px); /* Reducir el ancho para añadir espacio */
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: black; /* Cambiar el color del texto a negro */
-    background-color: white; /* Cambiar el fondo a blanco */
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
+/* Secciones del formulario */
 .form-section {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #fff; /* Cambiar el fondo a blanco */
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: rgb(0, 0, 0); /* Cambiar el color del texto a negro */
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.submit-button {
-    background-color: green;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.form-section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-family: "Playfair Display", serif;
+    border-bottom: 1px solid rgba(217, 190, 117, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+/* Grupos de campos */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
     display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
     width: 100%;
-    margin-top: 20px;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #d9be75;
+    box-shadow: 0 0 0 3px rgba(217, 190, 117, 0.2);
+}
+
+.form-select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+    transition: all 0.2s ease;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #d9be75;
+    box-shadow: 0 0 0 3px rgba(217, 190, 117, 0.2);
+}
+
+/* Checkbox personalizado */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-checkbox {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+    accent-color: #d9be75;
+}
+
+/* Mensajes de error */
+.error-message {
+    color: #e53e3e;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Botones */
+.submit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    background-color: #d9be75;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1.5rem;
 }
 
 .submit-button:hover {
-    background-color: darkgreen;
+    background-color: #c5ad69;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(217, 190, 117, 0.2);
 }
 
-.error-title {
-    color: red;
-    text-align: start
+/* Responsive */
+@media (min-width: 768px) {
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
 }
 
-.service-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
+@media (min-width: 1024px) {
+    .form-row-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
 }
-
-.accept-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
-    border-radius: 5px;
-}
-
-.reject-button {
-    background-color: #FF4C4C;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
-    border-radius: 5px;
-}
-
-.accept-button:hover {
-    background-color: #45A049;
-}
-
-.reject-button:hover {
-    background-color: #D43F3F;
-}
-
