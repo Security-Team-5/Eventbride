@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react"
 import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom"
-import { MapPin, DollarSign, Users, Clock, Check, X, Plus, Info, Package, CheckCircle } from "lucide-react"
+import { MapPin, DollarSign, Users, Clock, Check, X, Plus, Info, Package, CheckCircle, ServerIcon, Calendar } from "lucide-react"
 import "../static/resources/css/RequestService.css"
 
 const Servicios = () => {
-    const [services, setServices] = useState([])
+    const [eventProps, setEventProps] = useState([])
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
@@ -17,15 +17,9 @@ const Servicios = () => {
         const fetchServices = async () => {
             try {
                 setLoading(true)
-                const response = await apiClient.get(`/api/services/solicitudes/${currentUser.id}`)
-                console.log("Response:", response.data)
-                const otherServices = Array.isArray(response.data.otherServices)
-                    ? response.data.otherServices.map((otherService) => ({ ...otherService, type: "otherService" }))
-                    : []
-                const venues = Array.isArray(response.data.venues)
-                    ? response.data.venues.map((venue) => ({ ...venue, type: "venue" }))
-                    : []
-                setServices([...otherServices, ...venues])
+                const response = await apiClient.get(`/api/event-properties/pending/${currentUser.id}`)
+                setEventProps(response.data)
+                console.log(response.data)
             } catch (error) {
                 console.error("Error fetching services:", error)
             } finally {
@@ -33,12 +27,13 @@ const Servicios = () => {
             }
         }
         fetchServices()
-    }, [currentUser.id])
+    }, [])
 
     const handleAccept = async (id) => {
         try {
+            // SE LE ESTÁ METIENDO EL ID DE UN SERVICIO NO DE UN EVENTPROPERTIES
             await apiClient.put(`/api/event-properties/${id}`)
-            setServices(services.filter((service) => service.id !== id)) // Eliminar del estado local
+            setEventProps(eventProps.filter((service) => service.id !== id)) // Eliminar del estado local
         } catch (error) {
             console.error("Error al aceptar el servicio:", error)
         }
@@ -47,7 +42,7 @@ const Servicios = () => {
     const handleReject = async (id) => {
         try {
             await apiClient.delete(`/api/event-properties/${id}`)
-            setServices(services.filter((service) => service.id !== id)) // Eliminar del estado local
+            setEventProps(eventProps.filter((service) => service.id !== id)) // Eliminar del estado local
         } catch (error) {
             console.error("Error al rechazar el servicio:", error)
         }
@@ -81,113 +76,125 @@ const Servicios = () => {
                         <div className="loading-spinner"></div>
                         <p>Cargando solicitudes...</p>
                     </div>
-                ) : services.length === 0 ? (
+                ) : eventProps.length === 0 ? (
                     <div className="empty-state">
                         <Info size={48} className="empty-icon" />
                         <h2 className="empty-title">No tienes solicitudes pendientes</h2>
                         <p className="empty-text">Cuando recibas solicitudes para tus servicios, aparecerán aquí.</p>
                     </div>
                 ) : (
-                    services.map((service) => (
-                        <div key={service.id} className="solicitud-card">
-                            <h3 className="solicitud-title">{service.name}</h3>
-                            <span className="solicitud-badge">{formatServiceType(service.type, service.otherServiceType)}</span>
+                    eventProps.map((eventProp) => {
+                        const service = eventProp.otherServiceDTO !== null ? eventProp.otherServiceDTO : eventProp.venueDTO
 
-                            <div className="solicitud-details">
-                                <div className="solicitud-detail">
-                                    <MapPin size={18} className="detail-icon" />
-                                    <div>
-                                        <span className="detail-label">Ciudad:</span>
-                                        <span className="detail-value">{service.cityAvailable}</span>
-                                    </div>
-                                </div>
+                        return (
+                            service ? <div key={eventProp.id} className="solicitud-card">
+                                <h3 className="solicitud-title">{service.name}</h3>
+                                <span className="solicitud-badge">{formatServiceType(service.type, service.otherServiceType)}</span>
 
-                                <div className="solicitud-detail">
-                                    <CheckCircle size={18} className="detail-icon" />
-                                    <div>
-                                        <span className="detail-label">Disponible:</span>
-                                        <span className="detail-value">{service.available ? "Sí" : "No"}</span>
-                                    </div>
-                                </div>
-
-                                {service.limitedByPricePerGuest && (
+                                <div className="solicitud-details">
                                     <div className="solicitud-detail">
-                                        <Users size={18} className="detail-icon" />
+                                        <Calendar size={18} className="detail-icon" />
                                         <div>
-                                            <span className="detail-label">Precio por invitado:</span>
-                                            <span className="detail-value">{service.servicePricePerGuest}€</span>
+                                            <span className="detail-label">Fecha solicitada:</span>
+                                            <span className="detail-value">{eventProp.requestDate}</span>
                                         </div>
                                     </div>
-                                )}
 
-                                {service.limitedByPricePerHour && (
                                     <div className="solicitud-detail">
-                                        <Clock size={18} className="detail-icon" />
+                                        <MapPin size={18} className="detail-icon" />
                                         <div>
-                                            <span className="detail-label">Precio por hora:</span>
-                                            <span className="detail-value">{service.servicePricePerHour}€</span>
+                                            <span className="detail-label">Ciudad:</span>
+                                            <span className="detail-value">{service.cityAvailable}</span>
                                         </div>
                                     </div>
-                                )}
 
-                                {!service.limitedByPricePerHour && !service.limitedByPricePerGuest && (
                                     <div className="solicitud-detail">
-                                        <DollarSign size={18} className="detail-icon" />
+                                        <CheckCircle size={18} className="detail-icon" />
                                         <div>
-                                            <span className="detail-label">Precio fijo:</span>
-                                            <span className="detail-value">{service.fixedPrice}€</span>
+                                            <span className="detail-label">Disponible:</span>
+                                            <span className="detail-value">{service.available ? "Sí" : "No"}</span>
                                         </div>
                                     </div>
-                                )}
 
-                                {service.type === "venue" && (
-                                    <>
+                                    {service.limitedByPricePerGuest && (
                                         <div className="solicitud-detail">
                                             <Users size={18} className="detail-icon" />
                                             <div>
-                                                <span className="detail-label">Capacidad:</span>
-                                                <span className="detail-value">{service.maxGuests} personas</span>
+                                                <span className="detail-label">Precio por invitado:</span>
+                                                <span className="detail-value">{service.servicePricePerGuest}€</span>
                                             </div>
                                         </div>
+                                    )}
 
+                                    {service.limitedByPricePerHour && (
                                         <div className="solicitud-detail">
-                                            <Package size={18} className="detail-icon" />
+                                            <Clock size={18} className="detail-icon" />
                                             <div>
-                                                <span className="detail-label">Superficie:</span>
-                                                <span className="detail-value">{service.surface} m²</span>
+                                                <span className="detail-label">Precio por hora:</span>
+                                                <span className="detail-value">{service.servicePricePerHour}€</span>
                                             </div>
                                         </div>
-                                    </>
-                                )}
+                                    )}
 
-                                {service.type === "otherService" && service.extraInformation && (
-                                    <div className="solicitud-detail">
-                                        <Info size={18} className="detail-icon" />
-                                        <div>
-                                            <span className="detail-label">Info adicional:</span>
-                                            <span className="detail-value">{service.extraInformation}</span>
+                                    {!service.limitedByPricePerHour && !service.limitedByPricePerGuest && (
+                                        <div className="solicitud-detail">
+                                            <DollarSign size={18} className="detail-icon" />
+                                            <div>
+                                                <span className="detail-label">Precio fijo:</span>
+                                                <span className="detail-value">{service.fixedPrice}€</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
-                            </div>
+                                    )}
 
-                            <div className="solicitud-description">
-                                <span className="description-label">Descripción:</span>
-                                <p className="description-text">{service.description}</p>
-                            </div>
+                                    {service.type === "venue" && (
+                                        <>
+                                            <div className="solicitud-detail">
+                                                <Users size={18} className="detail-icon" />
+                                                <div>
+                                                    <span className="detail-label">Capacidad:</span>
+                                                    <span className="detail-value">{service.maxGuests} personas</span>
+                                                </div>
+                                            </div>
 
-                            <div className="solicitud-actions">
-                                <button className="accept-button" onClick={() => handleAccept(service.id)}>
-                                    <Check size={18} />
-                                    Confirmar
-                                </button>
-                                <button className="reject-button" onClick={() => handleReject(service.id)}>
-                                    <X size={18} />
-                                    Rechazar
-                                </button>
-                            </div>
-                        </div>
-                    ))
+                                            <div className="solicitud-detail">
+                                                <Package size={18} className="detail-icon" />
+                                                <div>
+                                                    <span className="detail-label">Superficie:</span>
+                                                    <span className="detail-value">{service.surface} m²</span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {service.type === "otherService" && service.extraInformation && (
+                                        <div className="solicitud-detail">
+                                            <Info size={18} className="detail-icon" />
+                                            <div>
+                                                <span className="detail-label">Info adicional:</span>
+                                                <span className="detail-value">{service.extraInformation}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="solicitud-description">
+                                    <span className="description-label">Descripción:</span>
+                                    <p className="description-text">{service.description}</p>
+                                </div>
+
+                                <div className="solicitud-actions">
+                                    <button className="accept-button" onClick={() => handleAccept(eventProp.id)}>
+                                        <Check size={18} />
+                                        Confirmar
+                                    </button>
+                                    <button className="reject-button" onClick={() => handleReject(eventProp.id)}>
+                                        <X size={18} />
+                                        Rechazar
+                                    </button>
+                                </div>
+                            </div> : ''
+                        )
+                    })
                 )}
             </div>
 
@@ -197,7 +204,7 @@ const Servicios = () => {
                     Crear nuevo servicio
                 </button>
             </div>
-        </div>
+        </div >
     )
 }
 
