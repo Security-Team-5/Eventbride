@@ -36,7 +36,8 @@
 |16/02/2025 |1\.0 |Creación del documento y redacción del mismo |DP ||
 |08/03/2025 |2\.0 |Actualización requisitos |Sprint 1 |<p>Pablo Jesús Castellanos Compaña, </p><p>Natalia Olmo Villegas,</p><p> María de la Salud Carrera Talaverón </p>|
 |11/03/2025|v2.1|Pasar el documento a markdown| Sprint 1 | Sergio Pons López |
-|13/03/2025|v2.2|Introducir estimación de costes y beneficios| Sprint 1 | Lorenzo Torralba Lanzas |
+|13/03/2025|v2.2|Introducir estimación de costos y beneficios| Sprint 1 | Lorenzo Torralba Lanzas |
+|20/03/2025|v2.1|Ajustar estimación de costos a nuevos CAPEX y OPEX | Sprint 1 | Francisco Avilés Carrera y Pablo Jesús Castellanos Compaña |
 
 ## Contenido 
 
@@ -155,17 +156,17 @@ Con este sistema, teniendo en cuenta sólo bodas, para amortizar la inversión i
 
 ### Costos
 
-Comenzando con los gastos y basándonos en el documento de análisis de costes, podremos hacer una estimación sobre los gastos a corto plazo (4-6) meses y a medio plazo (2 años).
+Comenzando con los gastos y basándonos en el documento de análisis de costes, podremos hacer una estimación sobre los gastos a corto plazo (6 meses, con dos meses de la aplicación en producción) y a medio plazo (2 años).
 
 Para esta estimación usaremos el CAPEX y el OPEX.
 
-CAPEX Total: 96.120,34 €
+CAPEX Total: 86.520,34 €
 
-OPEX mensual: 2.218,29 €
+OPEX mensual: 2.668,29 €
 
-OPEX anual: 32.533,92€
+OPEX anual: 32.019,48 €
 
-Teniendo en cuenta estos parametros, se podría estimar que el costo a corto plazo sería de unos 100.000 euros y el costo a medio plazo de unos 150.000€.
+Teniendo en cuenta estos parametros, se podría estimar que el costo a corto plazo sería de unos 91.856,92 euros (86.520,34 + 2.668,29 x 2) euros y el costo a medio plazo de unos 139.886,14 euros (86.520,34 + 2.668,29 x 20).
 
 ### Ingresos
 
