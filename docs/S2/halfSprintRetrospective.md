@@ -33,7 +33,7 @@
 
 |Fecha|Versión|Descripción|Entrega|Contribuyentes|
 |---|---|---|---|---|
-|19/03/2025|v1.1|Creación y relleno del documento en markdown | S2 | Sergio Pons López |
+|19/03/2025|v1.1| Creación y relleno del documento | S2 | Sergio Pons López |
 
 
 
@@ -70,23 +70,24 @@ A continuación, se detallarán todas las tareas realizadas durante la primera m
 
 | Nombre                                 | Acciones realizadas |
 |----------------------------------------|---------------------|
-| Adrián Cabello Martín                  | Reserva de contratación de servicios  |
-| Andrés Pizzano Cerrillos               | Reserva de contratación de servicios  |
-| Antonio Montero López                  | Dibujar story board  |
-| Daniel Benito Hidalgo                  | Dibujar story board, Análisis Sonarqube  |
-| David Godoy Fernández                  |   |
-| Fernando José de Celis Hurtado         |   |
+| Adrián Cabello Martín                  | Reserva de contratación de servicios, Vídeo demo 1/2 Sprint, Implementar plataforma de pago  |
+| Andrés Pizzano Cerrillos               | Reserva de contratación de servicios, Workflows, Poner la UI acorde  |
+| Antonio Montero López                  | Pensar story board, Dibujar story board, Elaborar presentación, Contenido a redes sociales, Documento cómo se hacen las revisiones de las tareas
+  |
+| Daniel Benito Hidalgo                  | Pensar story board, Dibujar story board, Análisis Sonarqube, Elaborar presentación, Contenido a redes sociales, Gestión de usuarios pilotos  |
+| David Godoy Fernández                  | Elaborar presentación, Gestión de usuarios pilotos, Creación y gestión de listas de invitados  |
+| Fernando José de Celis Hurtado         | Vídeo demo 1/2 Sprint, Implicaciones legales, Creación y gestión de listas de invitados |
 | Francisco Avilés Carrera               | Reserva de contratación de servicios, Análisis Sonarqube  |
-| Gonzalo Navas Remmers                  | Modificar relación Rating-Service y Usuario-Service, Arreglar forms en frontend, Reserva de contratación de servicios  |
+| Gonzalo Navas Remmers                  | Gestión de usuarios pilotos, Modificar relación Rating-Service y Usuario-Service, Arreglar forms en frontend, Reserva de contratación de servicios  |
 | Héctor Noguera González                |  Solicitud de reserva de contratación de servicios y página de detalles del servicio backend, Actualizar problems.md, Código de conducta |
 | Ignacio Blanquero Blanco               | Pasar feedback del viernes a md, Documento uso de la IA  |
-| Lorenzo Torralba Lanzas                |   |
-| Manuel Pérez Vélez                     |  Solicitud de reserva de contratación de servicios y página de detalles del servicio backend |
+| Lorenzo Torralba Lanzas                | Creación y gestión de listas de invitados, Workflows  |
+| Manuel Pérez Vélez                     |  Solicitud de reserva de contratación de servicios y página de detalles del servicio backend, Crear invitaciones para intro presentación |
 | María de la Salud Carrera Talaverón    | Crear rama Develop, Actualizar Commitment Agreement, |
-| Miguel Hernández Sánchez               | Modificar relación Rating-Service y Usuario-Service  |
-| Natalia Olmo Villegas                  | Sprint planning, Solicitud de reserva de contratación de servicios y página de detalles del servicio backend |
-| Pablo Jesús Castellanos Compaña        | Solicitud de reserva de contratación de servicios y página de detalles del servicio backend, Modificar relación Rating-Service y Usuario-Service, Arreglar forms en frontend, Coste total evento, Actualizar datos de la base de datos  |
-| Sergio Pons López                      | Coste total evento  |
+| Miguel Hernández Sánchez               | Creación y gestión de listas de invitados, Modificar relación Rating-Service y Usuario-Service  |
+| Natalia Olmo Villegas                  | Pensar story board, Sprint planning, Solicitud de reserva de contratación de servicios y página de detalles del servicio backend |
+| Pablo Jesús Castellanos Compaña        | Pensar story board, Solicitud de reserva de contratación de servicios y página de detalles del servicio backend, Modificar relación Rating-Service y Usuario-Service, Arreglar forms en frontend, Coste total evento, Actualizar datos de la base de datos, Elaborar presentación, Evaluación rendimiento  |
+| Sergio Pons López                      | Coste total evento, Evaluación rendimiento, Retrospectiva 1/2 Sprint 2, Modificar README  |
 
 <div id='id2'></div>
 
@@ -97,9 +98,9 @@ Se va a evaluar el rendimiento del rendimiento en base a los siguientes indicado
 <div id='id3'></div>
 
 ### Tiempo estimado vs. tiempo real
-En esta ocasión, el tiempo estimado de trabajo ha sido **220 horas** para el sprint completo. A mitad de sprint ya se han registrado **105 horas**, lo que puede indicar una buena planificación de las horas de trabajo. Están excluidas las horas de clase y las horas de reunión.
+En esta ocasión, el tiempo estimado de trabajo ha sido **220 horas** para el sprint completo, sin tener en cuenta las horas de clase ni las horas de reunión. A mitad de sprint ya se han registrado **147 horas**, lo que puede indicar una mínima desviación de las horas de trabajo. 
 
-Contando con las horas de reunión y las horas de clase, el tiempo estimados sería **424 horas** y el trabajo realizado hasta ahora sería **194 horas**.
+Contando con las horas de reunión y las horas de clase, el tiempo estimados sería **424 horas** y el trabajo realizado hasta ahora sería **242 horas**, lo que supone un **57%** de las horas totales.
 
 En este sprint hemos separado mejor las tareas intentando controlar mejor las tareas de código y siguiendo mejor el **Pair Programming**, reduciendo los grupos y siendo más eficaces en el trabajo.
 
@@ -107,8 +108,9 @@ En este sprint hemos separado mejor las tareas intentando controlar mejor las ta
 
 ### Porcentaje de tareas completadas a tiempo y análisis de la carga de trabajo
 
-Se han completado un total de **10 tareas sobre 45**, lo que supone un **22%** del total de tareas a realizar. De las **35 tareas restantes**, **4 se encuentran en review** y **17 están en progreso** (*in progress*). Esto supondría un total de **14 tareas en "To Do"**. A priori puede parecer preocupante ya que tan solo el 22 % de tareas están completadas hasta la fecha, la gran mayoría de tareas en la columna *in progress* están casi acabadas.
-Una de las causas principales de la bajada de rendimiento es que en esta semana que hay muchos miembros del grupo que han tenido examen de otras asignaturas, por lo que han podido dedicar algo menos de tiempo al proyecto,  lo que también ha podido ser una causa de la bajada de rendimiento.
+Se han completado un total de **18 tareas sobre 45**, lo que supone un **40%** del total de tareas a realizar. De las **27 tareas restantes**, **7 se encuentran en review** y **9 están en progreso** (*in progress*). Esto supondría un total de **11 tareas en "To Do"**(todas pertenecientes a la semana dos). Incluso se han empezado a realizar algunas tareas de la semana 2 lo que indicaa que la planificación ha sido buena, y haciendo la revisión de las 7 tareas que se encuentran en la columna "On review" habrían hechas el **56% de las tareas estimadas** para este sprint.
+
+Podemos observar una **ligera bajada de rendimiento** con respecto al **sprint anterior**. Una de las principales causas es que hemos tenido **una semana menos** antes de la mitad de este sprint (en el sprint 1 hubo 2 semanas por el puente y en este tan solo 1). Otra de las causas puede ser que en esta semana que hay muchos miembros del grupo que han tenido examen de otras asignaturas, por lo que han podido dedicar algo menos de tiempo al proyecto.
 
 <div id='id5'></div>
 
@@ -131,8 +133,8 @@ La fórmula concreta que se usará para calcular este porcentaje será: ((NcP0\*
 
 Donde:
 
-- **Nc**: Número de tareas completadas  
-- **Ne**: Número de tareas estimadas
+- **Nc**: Número de tareas completadas.
+- **Ne**: Número de tareas estimadas.
 
 <div id='id7'></div>
 
@@ -155,23 +157,23 @@ La siguiente tabla representa las horas trabajadas por cada uno de los miembros 
 
 | Nombre | Horas trabajadas antes del Sprint 2 | Carga de trabajo de la mitad del Sprint 2 | Horas trabajadas hasta la mitad del Sprint 2 (14/03 - 21/03) | Porcentaje de completitud tareas de mitad del Sprint 2|
 |--|-----|-----|----|------|
-| Adrián Cabello Martín          | 62h 22min | XXh XXmin | XXh XXmin | XX% |
-| Andrés Pizzano Cerrillos       | 57h 08min | XXh XXmin | XXh XXmin | XX% |
-| Antonio Montero López          | 76h 00min | XXh XXmin | XXh XXmin | XX% |
-| Daniel Benito Hidalgo          | 84h 01min | XXh XXmin | XXh XXmin | XX% |
-| David Godoy Fernández          | 65h 29min | XXh XXmin | XXh XXmin | XX% |
-| Fernando José de Celis Hurtado | 62h 35min | XXh XXmin | XXh XXmin | XX% |
-| Francisco Avilés Carrera       | 64h 11min | XXh XXmin | XXh XXmin | XX% |
-| Gonzalo Navas Remmers          | 69h 21min | XXh XXmin | XXh XXmin | XX% |
-| Héctor Noguera González        | 65h 08min | XXh XXmin | XXh XXmin | XX% |
-| Ignacio Blanquero Blanco       | 87h 59min | XXh XXmin | XXh XXmin | XX% |
-| Lorenzo Torralba Lanzas        | 51h 37min | XXh XXmin | XXh XXmin | XX% |
-| Manuel Pérez Vélez             | 74h 09min | XXh XXmin | XXh XXmin | XX% |
-| María de la Salud Carrera Talaverón| 68h 01min | XXh XXmin | XXh XXmin | XX% |
-| Miguel Hernández Sánchez           | 64h 55min | XXh XXmin | XXh XXmin | XX% |
-| Natalia Olmo Villegas              | 89h 58min | XXh XXmin | XXh XXmin | XX% |
-| Pablo Jesús Castellanos Compaña    | 101h 04min| XXh XXmin | XXh XXmin | XX% |
-| Sergio Pons López                  | 76h 27min | XXh XXmin | XXh XXmin | XX% |
+| Adrián Cabello Martín          | 62h 22min | 13h | 14h 35min | 75% |
+| Andrés Pizzano Cerrillos       | 57h 08min | 14h | 20h 56min | 75% |
+| Antonio Montero López          | 76h 00min | 16h | 7h 45min | 80% |
+| Daniel Benito Hidalgo          | 84h 01min | 11h | 16h 50min | 83% |
+| David Godoy Fernández          | 65h 29min | 10h | 12h 46min | 75% |
+| Fernando José de Celis Hurtado | 62h 35min | 15h | 12h 12min | 100% |
+| Francisco Avilés Carrera       | 64h 11min | 12h | 15h 21min | 80% |
+| Gonzalo Navas Remmers          | 69h 21min | 13h | 13h 47min | 80% |
+| Héctor Noguera González        | 65h 08min | 15h | 9h 02min | 100% |
+| Ignacio Blanquero Blanco       | 87h 59min | 11h | 10h 05min | 100% |
+| Lorenzo Torralba Lanzas        | 51h 37min | 14h | 11h 38min | 83% |
+| Manuel Pérez Vélez             | 74h 09min | 10h | 10h 17min | 100% |
+| María de la Salud Carrera Talaverón| 68h 01min | 8h  | 8h 48min | 65% |
+| Miguel Hernández Sánchez           | 64h 55min | 11h  | 14h 57min | 75% |
+| Natalia Olmo Villegas              | 89h 58min | 8h  | 22h 49min | 100% |
+| Pablo Jesús Castellanos Compaña    | 101h 04min| 12h  | 27h 47min | 100% |
+| Sergio Pons López                  | 76h 27min | 8h  | 12h 37min | 100% |
 
 <div id='id9'></div>
 
@@ -200,7 +202,7 @@ El feedback sobre cómo perciben el trabajo asignado permitirá medir la product
 
 <div id='id12'></div>
 
-#### ¿Qué cosas buenas han pasado?
+### ¿Qué cosas buenas han pasado?
 
 - **Mejor gestión de tareas**: Se mejoró la gestión de tareas mediante una distribución más clara de responsabilidades. Esto permitió optimizar los tiempos de ejecución.  
 - **Gestión de usuarios piloto**: Hemos tenido una buena gestión de usuarios piloto, tanto enviando la encuesta en el plazo propuesto y tomando su feedback de la semana anterior.  
@@ -209,7 +211,7 @@ El feedback sobre cómo perciben el trabajo asignado permitirá medir la product
 
 <div id='id13'></div>
 
-#### ¿Qué cosas se pueden empezar a hacer?  
+### ¿Qué cosas se pueden empezar a hacer?  
 
 - **Dar avisos si fuera necesario**: Empezar a dar avisos a las personas que no hagan su trabajo en los plazos indicados, pudiendo llegar a bajar la nota en caso de que no haya una reacción a tiempo. 
 - **Asignar a dos personas como mucho a una tarea de código**: Para hacer más efectivo el Pair Programming y para evitar que haya varias personas mirando cómo otra persona haga código.
@@ -218,7 +220,7 @@ El feedback sobre cómo perciben el trabajo asignado permitirá medir la product
 
 <div id='id14'></div>
 
-#### ¿Qué podría haber ido mejor?  
+### ¿Qué podría haber ido mejor?  
 
 - **Leer la descripción de las tareas**: Cuando se va a empezar una tarea, algunos miembros no  leen la descripción de las tareas que aparecen en el tablero del *project* de GitHub.  
 - **Reducir el tiempo de las reuniones**: Las reuniones duran algo más de una hora y queremos reducir el tiempo de las mismas a al menos una hora.  
@@ -229,9 +231,8 @@ El feedback sobre cómo perciben el trabajo asignado permitirá medir la product
 
 <div id='id15'></div>
 
-#### Lecciones aprendidas  
+### Lecciones aprendidas  
 
-- **Importancia de una mejor planificación del tiempo**: La necesidad de anticiparse a períodos de alta carga académica para evitar retrasos en el desarrollo.
 - **Optimización de reuniones y comunicación**: Reducir la duración de las reuniones y fomentar la lectura previa de descripciones de tareas mejora la eficiencia del equipo.
 - **Evitar la procrastinación**: Es fundamental iniciar tareas clave con suficiente antelación para prevenir bloqueos y facilitar entregas a tiempo.
 - **Revisión constante de la calidad**: Se requiere mejorar la evaluación de código y documentación para asegurar la coherencia y efectividad del trabajo.
@@ -244,11 +245,11 @@ El feedback sobre cómo perciben el trabajo asignado permitirá medir la product
 
 A mitad del sprint 2, hemos logrado avances importantes en la implementación de funcionalidades clave, con una mejor distribución del trabajo y una mayor adopción del **Pair Programming**, lo que ha permitido mejorar la eficiencia en el desarrollo. La **comunicación dentro del equipo** ha sido efectiva, asegurando que todos los miembros estén alineados con los objetivos del sprint y facilitando la resolución de **bloqueos técnicos**.
 
-Sin embargo, el progreso general se ha visto afectado por la carga académica de algunos miembros, lo que ha limitado la disponibilidad de tiempo para el proyecto y ralentizado la ejecución de ciertas tareas. Aunque el **22%** de las tareas han sido **completadas** hasta la fecha, **muchas tareas** en progreso están **cerca de finalizarse**, lo que indica que, si se mantiene el ritmo actual, se podrá alcanzar un buen nivel de entrega al cierre del sprint.
+Sin embargo, la alta carga académica y la reducción en una semana de esta mitad de sprint pueden llevarnos a una conclusión negativa si nos fijamos solo en el porcentaje de tareas acabadas, un **40%** hasta la fecha, pero si nos fijamos bien, vemos que hay **muchas tareas** finalizadas a esperas de una revisión y hay muchas en progreso que están **cerca de finalizarse**, lo que indica que, si se mantiene el ritmo actual, se podrá llegar bien a la entrega.
 
 También hemos observado que la preparación de la presentación se deja para el último momento, lo que puede afectar su calidad y claridad.
 
-Para la segunda mitad del sprint, es crucial mejorar la gestión del tiempo y la asignación de recursos, asegurando que las tareas críticas se aborden con prioridad y que se mantenga un equilibrio en la carga de trabajo de cada miembro. Además, se deben reforzar las revisiones de calidad y continuar optimizando la estructura de las reuniones para hacerlas más eficientes. 
+Para la segunda mitad del sprint, es crucial **mejorar la gestión del tiempo** y la asignación de recursos, asegurando que las tareas críticas se aborden con antelación y que se mantenga un equilibrio en la carga de trabajo de cada miembro. Además, se deben reforzar las revisiones de calidad y continuar optimizando la estructura de las reuniones para hacerlas más eficientes. 
 
 <div id='bib'></div>
 
