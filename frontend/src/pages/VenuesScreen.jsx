@@ -212,7 +212,7 @@ const VenuesScreen = () => {
               />
             </div>
             <div className="input-group">
-              <label className="input-label">Máximo de invitados</label>
+              <label className="input-label">Mínimo de invitados</label>
               <input
                 type="number"
                 className="input-field"
