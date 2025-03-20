@@ -131,3 +131,16 @@ select, input[type="text"], input[type="number"], input[type="checkbox"] {
     background-color: #D43F3F;
 }
 
+.delete-service-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-service-button:hover {
+    background-color: darkred;
+}

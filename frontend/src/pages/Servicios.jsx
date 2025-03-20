@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import apiClient from '../apiClient';
 import "../static/resources/css/RegistrarServicio.css";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,41 @@ const Servicios = () => {
         };
         fetchServices();
     }, [currentUser.id]);
+
+    const handleDelete = async (serviceId, serviceType) => {
+        try {
+            const token = localStorage.getItem('jwt');
+            const userRole = currentUser.role;
+            
+            let endpoint;
+            if (serviceType === 'venue') {
+                endpoint = `/api/venues/delete/${serviceId}`;
+            } else if (serviceType === 'otherService') {
+                endpoint = `/api/other-services/delete/${serviceId}`;
+            }
+            
+            const response = await fetch(endpoint, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`,
+                    'User-Role': userRole 
+                }
+            });
+            
+            if (response.ok) {
+                console.log("Servicio eliminado correctamente");
+                setServices(prevServices => prevServices.filter(service => service.id !== serviceId));
+            } else {
+                console.error("Error al eliminar el servicio", response.status);
+                const text = await response.text();
+                console.error("Detalles:", text);
+            }
+        } catch (error) {
+            console.error("Error eliminando servicio:", error);
+        }
+      };
+
 
     console.log('Services:', services);
     return (
@@ -53,6 +88,7 @@ const Servicios = () => {
                         }
                         <p>Descripción: {service.description}</p>
                         <button onClick={() => navigate(`/misservicios/editar/${service.type}/${service.id}/`, { id: service.id , serviceType: service.type })}>Editar</button>
+                        <button className="delete-service-button" onClick={() => handleDelete(service.id, service.type)}>Eliminar</button>
                     </div>
                 ))}
             </div>
