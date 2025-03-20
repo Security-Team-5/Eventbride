@@ -31,14 +31,14 @@
 
 ### Historial de versiones
 
-| Fecha      | Versión | Descripción                                | Entrega  |
-|------------|---------|--------------------------------------------|----------|
-| 05/02/2025 | v1.0    | Creación del documento y redacción del mismo | DP |
-| 11/02/2025 | v1.1    | Corrección feedback semana 1 | DP |
-| 16/02/2025 | v1.2    | Corrección feedback semana 2 | DP |
-| 19/02/2025 | v1.3    | Revisión y finalización del documento | DP |
-| 13/03/2025 | v1.4    | Desglose en CAPEX y OPEX | Sprint 1 |
-
+| Fecha      | Versión | Descripción                                | Entrega  | Contribuyente(s) |
+|------------|---------|--------------------------------------------|----------|------------------|
+| 05/02/2025 | v1.0    | Creación del documento y redacción del mismo | DP | |
+| 11/02/2025 | v1.1    | Corrección feedback semana 1 | DP | |
+| 16/02/2025 | v1.2    | Corrección feedback semana 2 | DP | | 
+| 19/02/2025 | v1.3    | Revisión y finalización del documento | DP | |
+| 13/03/2025 | v1.4    | Desglose en CAPEX y OPEX | Sprint 1 | |
+| 20/03/2025 | v1.5    | Retoques en CAPEX y OPEX y adición de punto Costes estimados vs Costes reales | Sprint 1 | Francisco Avilés Carrera, Pablo Jesús Castellanos Compaña y Sergio Pons López |
 ---
 
 ## Contenido
@@ -50,8 +50,9 @@
 6. [Total Cost of Ownership (TCO)](#id5)
 7. [Costes de Recompensa de Usuarios Piloto](#id6)
 8. [Desglose de Gastos en CAPEX y OPEX](#id7)
-9. [Conclusiones](#concl)
-10. [Bibliografía](#bib)
+9. [Costes estimados vs Costes reales](#id8)
+10. [Conclusiones](#concl)
+11. [Bibliografía](#bib)
 
 
 <div id='intro'></div>
@@ -112,7 +113,7 @@ A continuación, se detallan los costes mensuales asociados a los distintos serv
 
 ## Coste Inicial Total
 
-El coste inicial total (CI) se define como la suma de los costes de desarrollo, los costes asociados a la seguridad social de los trabajadores y los costes de infraestructuras y licencias.
+El coste inicial total (CI) se define como la suma de los costes de desarrollo y los costes de infraestructuras y licencias.
 
 Asimismo, considerando un plan de contingencia del 10%, el CI asciende a 82.200,14 € brutos.
 
@@ -127,7 +128,7 @@ Asimismo, considerando un plan de contingencia del 10%, el CI asciende a 82.200,
 | 3.2  | Google Cloud      | 315,31 €      | 1        | 1     | 315,31 €  |
 | 3.3  | GitHub Enterprise | 20,01 €       | 3        | 1     | 60,03 €   |
 | 3.4  | GitHub Copilot    | 9’53€        | 3        | 1     | 28’59€    |
-| 3.5  | Codacy            | 14,29 €       | 1        | 1     | 57,16 €   |
+| 3.5  | Codacy            | 14,29 €       | 1        | 1     | 14,29 €   |
 | 3.6  | APIs externas     | 200,07 €      | 1        | 1     | 200,07 €  |
 
 Tabla 3.1. Costes de Mantenimiento Mensuales
@@ -178,12 +179,11 @@ CAPEX
 | Concepto                                                    | Coste (€) |
 |-------------------------------------------------------------|-----------|
 | Desarrollo del software (salarios de equipo de desarrollo) | 68.800,00 |
-| Diseño gráfico                                              | 9.600,00  |
 | Licencias iniciales (GitHub Enterprise, Copilot, Codacy, APIs externas) | 2.866,16  |
-| Infraestructura inicial (Google Cloud, oficinas)            | 3.061,24  |
-| Plan de contingencia (10% del CI)                           | 7.472,94  |
+| Infraestructura inicial (Google Cloud, oficina)            | 3.061,24  |
+| Plan de contingencia (10% del CI)                           | 7.472,74  |
 | Coste usuarios piloto                                        | 4.320,00  |
-| Total CAPEX                                                 | 96.120,34 |
+| Total CAPEX                                                 | 86.520,14 |
 
 OPEX
 
@@ -191,8 +191,89 @@ OPEX
 |---------------------------------------------------|-------------------|-----------------|
 | Mantenimiento de software (salarios técnicos de soporte) | 1.600,00          | 19.200,00         |
 | Infraestructura (Google Cloud, oficina)           | 765,31            | 9.183,72          |
-| Licencias operativas (GitHub Enterprise, Copilot, Codacy, APIs externas) | 345,85            | 4.150,20          |
-| Total OPEX                                        | 2.218,29          | 32.533,92         |
+| Licencias operativas (GitHub Enterprise, Copilot, Codacy, APIs externas) | 302,98           | 3.635,76         |
+| Total OPEX                                        | 2.668,29          | 32.019,48         |
+
+
+<div id='id8'></div>
+
+## Costes estimados vs Costes reales
+En este apartado vamos a comparar los costes estimados con los costes reales en cada Sprint. Es importante recordar que estos costes forman parte del CAPEX, ya que incluyen todos los gastos de los primeros cuatro meses de desarrollo de la aplicación.
+
+Además, hay que tener en cuenta que algunos costes, como licencias, infraestructura o suscripciones mensuales, solo se contabilizan al final de cada mes. Esto significa que si analizamos un periodo que no coincide con el cierre de mes, esos gastos no aparecerán reflejados en ese momento.
+
+### Sprint 1 (hasta Sprint 1, 31/01/25 - 13/03/25)
+
+| Concepto                      | Coste Estimado (€) | Coste Real (€) | Información Adicional |
+|--------------------------------|--------------------|----------------|-----------------------|
+| Desarrollo de software         | 27.735,00          | 33.980,00      | Salarios del equipo de desarrollo hasta el momento (teniendo en cuenta las horas) |
+| Licencias iniciales            | 716,54             | 716,54         | (GitHub Enterprise, Copilot, Codacy, APIs externas) - Mes de febrero |
+| Infraestructura inicial        | 765,31             | 765,31         | Google Cloud, oficinas - Mes de febrero |
+| Plan de contingencia           | 7.472,74           | 7.472,74       | 10% del coste inicial - Entero |
+| Coste usuarios piloto          | 720,00 (8 usuarios) | 540,00 (6 usuarios) | Mes de febrero |
+| **Total**                      | **36.409,59**      | **43.474,59**  | **Diferencia: -7.065,00** |
+
+
+
+| Nombre                          | Horas | Rol                   | Coste por hora (€) | Coste (€)  |
+|---------------------------------|-------|----------------------|------------------|-----------|
+| Natalia Olmo Villegas           | 90    | Jefe de proyecto     | 40               | 3.600     |
+| Francisco Avilés Carrera        | 64    | Jefe de subgrupo     | 30               | 1.920     |
+| María de la Salud Carrera Talaverón | 68  | Jefe de subgrupo     | 30               | 2.040     |
+| Pablo Jesús Castellanos Compaña | 101   | Jefe de subgrupo     | 30               | 3.030     |
+| Daniel Benito Hidalgo           | 84    | Programador web      | 20               | 1.680     |
+| Ignacio Blanquero Blanco        | 88    | Programador web      | 20               | 1.760     |
+| Adrián Cabello Martín           | 62    | Programador web      | 20               | 1.240     |
+| Fernando José de Celis Hurtado  | 63    | Programador web      | 20               | 1.260     |
+| David Godoy Fernández           | 65    | Programador web      | 20               | 1.300     |
+| Miguel Hernández Sánchez        | 64    | Programador web      | 20               | 1.280     |
+| Antonio Montero López           | 76    | Programador web      | 20               | 1.520     |
+| Gonzalo Navas Remmers           | 69    | Programador web      | 20               | 1.380     |
+| Héctor Noguera González         | 65    | Programador web      | 20               | 1.300     |
+| Manuel Pérez Vélez              | 74    | Analista programador | 30               | 2.220     |
+| Andrés Pizzano Cerrillos        | 57    | Analista programador | 30               | 1.710     |
+| Sergio Pons López               | 76    | Diseñador gráfico    | 30               | 2.280     |
+| Lorenzo Torralba Lanzas         | 52    | Diseñador gráfico    | 30               | 1.560     |
+| **TOTAL**                       |       |                      |                   | **33.980** |
+
+
+
+
+### Sprint 2 (hasta mitad Sprint 2, 14/03/25 - 20/03/25)
+
+| Concepto                      | Coste Estimado (€) | Coste Real (€) | Información Adicional |
+|--------------------------------|--------------------|----------------|-----------------------|
+| Desarrollo de software         | 4.515,00           | 6.420,00       | Salarios del equipo de desarrollo hasta el momento (teniendo en cuenta las horas) |
+| Licencias iniciales            | 0                  | 0              | - |
+| Infraestructura inicial        | 0                  | 0              | - |
+| Plan de contingencia           | 0                  | 0              | - |
+| Coste usuarios piloto          | 0                  | 0              | - |
+| **Total**                      | **4.515,00**       | **6.420,00**   | **Diferencia: -1.905,00** |
+
+
+
+| Nombre                          | Horas | Rol                   | Coste por hora (€) | Coste (€)  |
+|---------------------------------|-------|----------------------|------------------|-----------|
+| Natalia Olmo Villegas           | 23    | Jefe de proyecto     | 40               | 920       |
+| Francisco Avilés Carrera        | 15    | Jefe de subgrupo     | 30               | 450       |
+| María de la Salud Carrera Talaverón | 9  | Jefe de subgrupo     | 30               | 270       |
+| Pablo Jesús Castellanos Compaña | 28    | Jefe de subgrupo     | 30               | 840       |
+| Daniel Benito Hidalgo           | 17    | Programador web      | 20               | 340       |
+| Ignacio Blanquero Blanco        | 10    | Programador web      | 20               | 200       |
+| Adrián Cabello Martín           | 15    | Programador web      | 20               | 300       |
+| Fernando José de Celis Hurtado  | 12    | Programador web      | 20               | 240       |
+| David Godoy Fernández           | 13    | Programador web      | 20               | 260       |
+| Miguel Hernández Sánchez        | 15    | Programador web      | 20               | 300       |
+| Antonio Montero López           | 8     | Programador web      | 20               | 160       |
+| Gonzalo Navas Remmers           | 14    | Programador web      | 20               | 280       |
+| Héctor Noguera González         | 9     | Programador web      | 20               | 180       |
+| Manuel Pérez Vélez              | 10    | Analista programador | 30               | 300       |
+| Andrés Pizzano Cerrillos        | 21    | Analista programador | 30               | 630       |
+| Sergio Pons López               | 13    | Diseñador gráfico    | 30               | 390       |
+| Lorenzo Torralba Lanzas         | 12    | Diseñador gráfico    | 30               | 360       |
+| **TOTAL**                       |       |                      |                   | **6.420** |
+
+
 
 
 <div id='concl'></div>
