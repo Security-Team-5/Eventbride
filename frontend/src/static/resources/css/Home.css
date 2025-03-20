@@ -323,7 +323,7 @@ body {
 .icon {
     width: 48px;
     height: 48px;
-    color: rgba(247, 217, 227, 0.96);
+    color: #333;
 }
 
 /* Card Images */
