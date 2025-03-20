@@ -72,8 +72,7 @@ A continuación, se detallarán todas las tareas realizadas durante la primera m
 |----------------------------------------|---------------------|
 | Adrián Cabello Martín                  | Reserva de contratación de servicios, Vídeo demo 1/2 Sprint, Implementar plataforma de pago  |
 | Andrés Pizzano Cerrillos               | Reserva de contratación de servicios, Workflows, Poner la UI acorde  |
-| Antonio Montero López                  | Pensar story board, Dibujar story board, Elaborar presentación, Contenido a redes sociales, Documento cómo se hacen las revisiones de las tareas
-  |
+| Antonio Montero López                  | Pensar story board, Dibujar story board, Elaborar presentación, Contenido a redes sociales, Documento cómo se hacen las revisiones de las tareas |
 | Daniel Benito Hidalgo                  | Pensar story board, Dibujar story board, Análisis Sonarqube, Elaborar presentación, Contenido a redes sociales, Gestión de usuarios pilotos  |
 | David Godoy Fernández                  | Elaborar presentación, Gestión de usuarios pilotos, Creación y gestión de listas de invitados  |
 | Fernando José de Celis Hurtado         | Vídeo demo 1/2 Sprint, Implicaciones legales, Creación y gestión de listas de invitados |
