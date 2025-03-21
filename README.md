@@ -1,4 +1,8 @@
+<div align="center">
+
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
+
+</div>
 <p align="center">
     <img src="docs/img/Eventbride.png" width="225" height="225">
 </p>
@@ -81,10 +85,14 @@ Estos son todos los participantes de este proyecto. Gracias a ellos ha sido posi
 
 [[Contribuidores](https://github.com/ISPP-Eventbride/Eventbride/graphs/contributors)].
 
+## Licencias
+
+Puede ver la licencia de nuestro proyecto en el siguiente enlace: [Licencia](./docs/S2/legal implications.md)
+
 ## Contacto
 
 - Email: eventbride6@gmail.com   
 
-- [Instagram](https://www.instagram.com/eventbride_sevilla/)
+- [Instagram](https://www.instagram.com/eventbride_svq/)
 
 - [GitHub issues](https://github.com/ISPP-Eventbride/Eventbride/issues)
