@@ -1,5 +1,5 @@
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
-<center><img src="docs/img/Eventbride.png"></center>
+<center><img src="docs/img/Eventbride.png" width="225" height="225"></center>
 
 ## Introducción
 
