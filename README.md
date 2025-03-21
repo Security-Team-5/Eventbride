@@ -1,6 +1,7 @@
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
-<center><img src="docs/img/Eventbride.png" width="225" height="225"></center>
-
+<p align="center">
+    <img src="docs/img/Eventbride.png" width="225" height="225">
+</p>
 ## Introducción
 
 Eventbride es una plataforma dedicada a la contratación de servicios ver con eventos como bodas, comuniones y bautizos. Permite gestionar invitados, proveedores, presupuestos y todo lo demás.
