@@ -3,8 +3,6 @@ package com.eventbride.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 
@@ -27,7 +25,6 @@ public class OtherServiceDTO {
     private Boolean limitedByPricePerHour;
     private OtherServiceType otherServiceType;
     private String extraInformation;
-    private List<RatingDTO> ratingsDTO;
     private UserDTO userDTO;
 
 
@@ -47,9 +44,6 @@ public class OtherServiceDTO {
         this.limitedByPricePerHour = updated.getLimitedByPricePerHour();
         this.otherServiceType = updated.getOtherServiceType();
         this.extraInformation = updated.getExtraInformation();
-        if(updated.getRatings() != null){
-            this.ratingsDTO = RatingDTO.fromEntities(updated.getRatings());
-        }
         if(updated.getUser() != null){
             this.userDTO = new UserDTO(updated.getUser());
         }

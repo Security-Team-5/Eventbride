@@ -38,7 +38,7 @@ function Navbar() {
         )}
           </p>
           <p className="navbar-list"><a href="/venues">Recintos</a></p>
-          <p className="navbar-list"><a href="/proveedores">Otros servicios</a></p>
+          <p className="navbar-list"><a href="/other-services">Otros servicios</a></p>
           <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
           <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
         </div>
@@ -50,6 +50,7 @@ function Navbar() {
         <div className="navbar-flex">
           <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
           <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
+          <p className="navbar-list"><a href="/solicitudes">Solicitudes</a></p>
         </div>
       );
     }

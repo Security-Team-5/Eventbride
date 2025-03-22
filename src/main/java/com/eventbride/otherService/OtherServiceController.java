@@ -1,12 +1,16 @@
 package com.eventbride.otherService;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.eventbride.dto.OtherServiceDTO;
-import com.eventbride.service.Service;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +20,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 import jakarta.validation.Valid;
 
@@ -27,13 +31,25 @@ public class OtherServiceController {
     @Autowired
     private OtherServiceService otherServiceService;
 
+@GetMapping
+    public List<OtherServiceDTO> getAllOtherServices() {
+        List<OtherService> otherServices = otherServiceService.getAllOtherServices();
+        return OtherServiceDTO.fromEntities(otherServices);
+    }
+	
+@GetMapping("/{id}")
+    public OtherService getOtherServiceById(@PathVariable("id") Integer id) {
+		Optional<OtherService> otherSer = otherServiceService.getOtherServiceById(id);
+		return otherSer.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not found"));
+    }
 
-    @GetMapping("/filter")
-    public List<OtherService> getFilteredOtherServices(
+ @GetMapping("/filter")
+    public List<OtherServiceDTO> getFilteredOtherServices(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) OtherServiceType type) {
-        return otherServiceService.getFilteredOtherServices(name, city, type);
+        List<OtherService> otherServices = otherServiceService.getFilteredOtherServices(name, city, type);
+        return OtherServiceDTO.fromEntities(otherServices);
     }
 
     @PostMapping

@@ -96,3 +96,38 @@ select, input[type="text"], input[type="number"], input[type="checkbox"] {
     color: red;
     text-align: start
 }
+
+.service-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.accept-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.reject-button {
+    background-color: #FF4C4C;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.accept-button:hover {
+    background-color: #45A049;
+}
+
+.reject-button:hover {
+    background-color: #D43F3F;
+}
+
