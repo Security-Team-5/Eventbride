@@ -3,10 +3,11 @@ name: SonarCloud Analysis
 on:
   push:
     branches:
-      - main  # O la rama que prefieras
+      - master
   pull_request:
     branches:
-      - main
+      - master
+  workflow_dispatch: # esto nos permite ejecutar manualmenete este orkflow por si hay problemas
 
 jobs:
   sonarcloud:
@@ -26,5 +27,5 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1
         with:
-          organization: ispp-eventbride  # El nombre de tu organización en SonarCloud
+          organization: ispp-eventbride  
           token: ${{ secrets.SONAR_TOKEN }}  # Token de SonarCloud en los secretos de GitHub
