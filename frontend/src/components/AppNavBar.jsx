@@ -1,67 +1,131 @@
-/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
 import usuario from "../static/resources/images/user.png";
-import React, { useState } from 'react';
-
 
 function Navbar() {
-  //const {currentUser, loading} = useCurrentUser(null)
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   // Obtener datos user desde localStorage
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const renderNavList = () => {
-    if (!currentUser) {
-      return (
-        null
-      );
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Detectar scroll para cambiar la apariencia del navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Cerrar el dropdown al hacer clic fuera de él
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && !event.target.closest(".nav-dropdown-container")) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
+  const renderNavItems = () => {
+    if (!currentUser || !currentUser.role) {
+      return null;
     }
-    // TODO cambiar este tipo de implicaciones por el role correcto
+
     if (currentUser.role === "CLIENT") {
       return (
-        <div className="navbar-flex">
-          <p className="navbar-list"><a href="/events">Mis eventos</a></p>
-          <p className="navbar-list" onClick={toggleDropdown}>
-            <a href="#">Crear evento</a>
+        <ul className="nav-links">
+          <li>
+            <Link to="/events" className="nav-link">Mis eventos</Link>
+          </li>
+          <li className="nav-dropdown-container">
+            <button className="nav-link dropdown-trigger" onClick={toggleDropdown}>
+              Crear evento
+              <span className={`dropdown-arrow ${isOpen ? "open" : ""}`}>▼</span>
+            </button>
             {isOpen && (
-            <div className="dropdown">
-              <p><a href="/create-events">Desde cero</a></p>
-              <p><a href="/quiz">Cuestionario</a></p>
-        </div>
-        )}
-          </p>
-          <p className="navbar-list"><a href="/venues">Recintos</a></p>
-          <p className="navbar-list"><a href="/other-services">Otros servicios</a></p>
-          <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
-          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
-        </div>
+              <div className="dropdown-menu">
+                <Link to="/create-events" className="dropdown-item">Desde cero</Link>
+                <Link to="/quiz" className="dropdown-item">Cuestionario</Link>
+              </div>
+            )}
+          </li>
+          <li>
+            <Link to="/venues" className="nav-link">Recintos</Link>
+          </li>
+          <li>
+            <Link to="/other-services" className="nav-link">Otros servicios</Link>
+          </li>
+          <li>
+            <Link to="/invitaciones" className="nav-link">Invitaciones</Link>
+          </li>
+          <li>
+            <Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link>
+          </li>
+        </ul>
       );
     }
 
     if (currentUser.role === "SUPPLIER") {
       return (
-        <div className="navbar-flex">
-          <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
-          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
-          <p className="navbar-list"><a href="/solicitudes">Solicitudes</a></p>
-        </div>
+        <ul className="nav-links">
+          <li>
+            <Link to="/misservicios" className="nav-link">Mis servicios</Link>
+          </li>
+          <li>
+            <Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link>
+          </li>
+          <li>
+            <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
+          </li>
+        </ul>
       );
     }
 
     if (currentUser.role === "ADMIN") {
       return (
-        <div className="navbar-flex">
-          <p className="navbar-list"><a href="/admin-services">Administar servicios</a></p>
-          <p className="navbar-list"><a href="/admin-users">Administar usuarios</a></p>
-          <p className="navbar-list"><a href="/admin-events">Administar eventos</a></p>
-        </div>
+        <ul className="nav-links">
+          <li>
+            <Link to="/admin-services" className="nav-link">Administrar servicios</Link>
+          </li>
+          <li>
+            <Link to="/admin-users" className="nav-link">Administrar usuarios</Link>
+          </li>
+          <li>
+            <Link to="/admin-events" className="nav-link">Administrar eventos</Link>
+          </li>
+        </ul>
       );
     }
 
@@ -69,38 +133,49 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-brand">
-        <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
-        <a href="/"><span className="navbar-title">Inicio</span></a>
+    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <div className="navbar-container">
+        <div className="navbar-brand">
+          <Link to="/" className="brand-link">
+            <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+            <span className="navbar-title">Inicio</span>
+          </Link>
+        </div>
+
+        {/* Hamburger menu for mobile */}
+        <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+          <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        {/* Navigation links */}
+        <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
+          {renderNavItems()}
+
+          {currentUser && currentUser.role && (
+            <div className="navbar-actions">
+              <Link to="/" className="action-icon messages-icon">
+                <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
+                <span className="notification-badge">2</span>
+              </Link>
+
+              <div className="user-menu">
+                <Link to="/" className="action-icon user-icon">
+                  <img src={usuario || "/placeholder.svg"} alt="Usuario" className="icon-img" />
+                </Link>
+                <div className="user-name">{currentUser.name || "Usuario"}</div>
+              </div>
+
+              <button className="logout-button" onClick={handleLogout}>
+                Cerrar sesión
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-      {renderNavList()}
-      {currentUser && (
-        <>
-          <div className="navbar-card">
-            <a href="/mensajes">
-              <img src={carta} alt="Carta" className="carta" />
-            </a>
-          </div>
-          <div className="navbar-user">
-            <a href="/perfil">
-              <img src={usuario} alt="Usuario" className="usuario" />
-            </a>
-          </div>
-          <div className="navbar-user">
-            <button
-              type="button"
-              onClick={() => {
-                localStorage.removeItem("jwt");
-                localStorage.removeItem("user");
-                window.location.href = "/";
-              }}
-            >
-              Cerrar sesión
-            </button>
-          </div>
-        </>
-      )}
     </nav>
   );
 }

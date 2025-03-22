@@ -18,8 +18,10 @@ import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceRepository;
+import com.eventbride.otherService.OtherServiceService;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueRepository;
+import com.eventbride.venue.VenueService;
 
 import org.springframework.stereotype.Service;
 
@@ -27,12 +29,16 @@ import org.springframework.stereotype.Service;
 public class EventPropertiesService {
     private EventPropertiesRepository eventPropertiesRepository;
     private EventRepository eventRepository;
+    private VenueService venueService;
+    private OtherServiceService otherServiceService;
 
     @Autowired
     public EventPropertiesService(EventPropertiesRepository eventPropertiesRepository,
-            EventRepository eventRepository) {
+            EventRepository eventRepository, VenueService venueService, OtherServiceService otherServiceService) {
         this.eventPropertiesRepository = eventPropertiesRepository;
         this.eventRepository = eventRepository;
+        this.venueService = venueService;
+        this.otherServiceService = otherServiceService;
 
     }
 
@@ -170,6 +176,24 @@ public class EventPropertiesService {
     @Transactional
     public void deleteEventProperties(int id) throws DataAccessException {
         eventPropertiesRepository.deleteById(id);
+    }
+
+    @Transactional
+    public List<EventPropertiesDTO> findEventPropertiesPendingByUserId(Integer userId) {
+        List<OtherService> otherServices = otherServiceService.getOtherServiceByUserId(userId);
+        List<Venue> venues = venueService.getVenuesByUserId(userId);
+        List<EventPropertiesDTO> res = new ArrayList<>();
+
+        for (OtherService otherService : otherServices) {
+            res.addAll(eventPropertiesRepository.findByOtherServiceAndStatus(otherService,
+                    EventProperties.Status.PENDING).stream().map(e -> new EventPropertiesDTO(e)).toList());
+        }
+
+        for (Venue venue : venues) {
+            res.addAll(eventPropertiesRepository.findByVenueAndStatus(venue,
+                    EventProperties.Status.PENDING).stream().map(e -> new EventPropertiesDTO(e)).toList());
+        }
+        return res;
     }
 
 }

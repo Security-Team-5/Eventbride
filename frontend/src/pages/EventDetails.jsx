@@ -198,180 +198,190 @@ function EventDetails() {
             </button>
           </div>
 
-          
-                <div className="event-info-card">
-                <div className="event-info">
-                  <div className="info-item">
-                  <span className="info-label">Fecha:</span>
-                  <p className="event-date">{formatearFecha(evento?.eventDate)}</p>
-                  </div>
-                  <div className="info-item">
-                  <span className="info-label">Invitados:</span>
-                  <p className="event-guests">{evento?.guests}</p>
-                  </div>
-                  <div className="info-item">
-                  <span className="info-label">Coste acumulado:</span>
-                  <p className="event-budget">
-                    <u
+
+          <div className="event-info-card">
+            <div className="event-info">
+              <div className="info-item">
+                <span className="info-label">Fecha:</span>
+                <p className="event-date">{formatearFecha(evento?.eventDate)}</p>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Invitados:</span>
+                <p className="event-guests">{evento?.guests}</p>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Coste acumulado:</span>
+                <p className="event-budget">
+                  <u
                     style={{ cursor: "pointer", color: "blue" }}
                     onClick={openCostBreakdownModal}
-                    >
+                  >
                     {sumaCosteTotalDeposit().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                    </u>
-                  </p>
-                  </div>
-                </div>
-                </div>
+                  </u>
+                </p>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div className="event-properties-container">
-                <div className="event-venues">
-                <h3 className="section-title">Recinto contratado</h3>
-                {evento?.eventPropertiesDTO?.some((prop) => prop.venueDTO) ? (
-                  evento?.eventPropertiesDTO?.map((prop, i) =>
-                  prop.venueDTO ? (
-                    <div key={i} className="venue-card">
+        <div className="event-properties-container">
+          <div className="event-venues">
+            <h3 className="section-title">Recinto contratado</h3>
+            {evento?.eventPropertiesDTO?.some((prop) => prop.venueDTO) ? (
+              evento?.eventPropertiesDTO?.map((prop, i) =>
+                prop.venueDTO ? (
+                  <div key={i} className="venue-card">
                     <div className="card-header">
                       <h4 className="venue-name">{decodeText(prop.venueDTO.name)}</h4>
                     </div>
                     <div className="venue-image-container">
                       <img
-                      className="venue-image"
-                      src={prop.venueDTO.picture || "/placeholder.svg"}
-                      alt={prop.venueDTO.name}
+                        className="venue-image"
+                        src={prop.venueDTO.picture || "/placeholder.svg"}
+                        alt={prop.venueDTO.name}
                       />
                     </div>
                     <div className="venue-details">
                       <p className="venue-address">
-                      <span className="detail-label">Ubicación:</span>
-                      {decodeText(prop.venueDTO.address)}
+                        <span className="detail-label">Ubicación:</span>
+                        {decodeText(prop.venueDTO.address)}
                       </p>
                     </div>
                     <div className="payment-container">
                       <button
-                      className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
-                      disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                      onClick={() => navigate(`/payment/${prop.id}`)}
+                        className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
+                        disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
+                        onClick={() => navigate(`/payment/${prop.id}`)}
+                        style={{
+                          backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
+                        }}
                       >
-                      {getPaymentStatusText(prop.status)}
+                        {getPaymentStatusText(prop.status)}
                       </button>
                       <div className="status-indicator">
-                      <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
-                      <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
+                        <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
+                        <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
                       </div>
                     </div>
-                    </div>
-                  ) : null,
-                  )
-                ) : (
-                  <div className="empty-state">
-                  <p>No hay recintos contratados</p>
                   </div>
-                )}
-                </div>
+                ) : null,
+              )
+            ) : (
+              <div className="empty-state">
+                <p>No hay recintos contratados</p>
+              </div>
+            )}
+          </div>
 
-                <div className="event-services">
-                <h3 className="section-title">Otros servicios contratados</h3>
-                {evento?.eventPropertiesDTO?.some((prop) => prop.otherServiceDTO) ? (
-                  evento?.eventPropertiesDTO?.map((prop, i) =>
-                  prop.otherServiceDTO ? (
-                    <div key={i} className="service-card">
+          <div className="event-services">
+            <h3 className="section-title">Otros servicios contratados</h3>
+            {evento?.eventPropertiesDTO?.some((prop) => prop.otherServiceDTO) ? (
+              evento?.eventPropertiesDTO?.map((prop, i) =>
+                prop.otherServiceDTO ? (
+                  <div key={i} className="service-card">
                     <div className="card-header">
                       <h4 className="service-name">{decodeText(prop.otherServiceDTO.name)}</h4>
                     </div>
                     <div className="service-image-container">
                       <img
-                      className="service-image"
-                      src={prop.otherServiceDTO.picture || "/placeholder.svg"}
-                      alt={prop.otherServiceDTO.name}
+                        className="service-image"
+                        src={prop.otherServiceDTO.picture || "/placeholder.svg"}
+                        alt={prop.otherServiceDTO.name}
                       />
                     </div>
                     <div className="service-details">
                       <p className="service-description">
-                      <span className="detail-label">Descripción:</span>
-                      {decodeText(prop.otherServiceDTO.description)}
+                        <span className="detail-label">Descripción:</span>
+                        {decodeText(prop.otherServiceDTO.description)}
                       </p>
                     </div>
                     <div className="payment-container">
                       <button
-                      className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
-                      disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                      onClick={() => navigate(`/payment/${prop.id}`)}
+                        className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
+                        disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
+                        onClick={() => navigate(`/payment/${prop.id}`)}
+                        style={{
+                          backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
+                        }}
                       >
-                      {getPaymentStatusText(prop.status)}
+                        {getPaymentStatusText(prop.status)}
                       </button>
                       <div className="status-indicator">
-                      <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
-                      <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
+                        <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
+                        <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
                       </div>
                     </div>
-                    </div>
-                  ) : null,
-                  )
-                ) : (
-                  <div className="empty-state">
-                  <p>No hay servicios adicionales contratados</p>
                   </div>
-                )}
-                </div>
+                ) : null,
+              )
+            ) : (
+              <div className="empty-state">
+                <p>No hay servicios adicionales contratados</p>
               </div>
-              </div>
-
-              {/* Modal de desglose de precios */}
-      {isCostBreakdownModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h3>Desglose de precios</h3>
-            </div>
-
-            <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>Costes servicios: {calcularCosteServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h2>
-            <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
-              {evento?.eventPropertiesDTO?.map((prop, i) => (
-                <div key={i} className="price-breakdown-item">
-                  <p><strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}:</strong> {prop.setPricePerService?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "N/A"}</p>
-                </div>
-              ))}
-            </div>
-            <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>Señales: {calcularDepositServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h2>
-            <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
-              {evento?.eventPropertiesDTO?.map((prop, i) => (
-                <div key={i} className="price-breakdown-item">
-                  <p><strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}:</strong> {prop.depositAmount?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "null"}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <button className="close-button" onClick={closeCostBreakdownModal}>
-                Cerrar
-              </button>
-            </div>
+            )}
           </div>
         </div>
-      )}
+      </div >
+
+      {/* Modal de desglose de precios */}
+      {
+        isCostBreakdownModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-container">
+              <div className="modal-header">
+                <h3>Desglose de precios</h3>
+              </div>
+
+              <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>Costes servicios: {calcularCosteServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h2>
+              <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
+                {evento?.eventPropertiesDTO?.map((prop, i) => (
+                  <div key={i} className="price-breakdown-item">
+                    <p><strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}:</strong> {prop.setPricePerService?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "N/A"}</p>
+                  </div>
+                ))}
+              </div>
+              <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>Señales: {calcularDepositServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h2>
+              <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
+                {evento?.eventPropertiesDTO?.map((prop, i) => (
+                  <div key={i} className="price-breakdown-item">
+                    <p><strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}:</strong> {prop.depositAmount?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "null"}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <button className="close-button" onClick={closeCostBreakdownModal}>
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+      }
 
       {/* Modal de confirmación */}
-      {isDeleteModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h3>¿Estás seguro de que quieres eliminar este evento?</h3>
-            </div>
-            <div className="modal-body">
-              <p>Esta acción no se puede deshacer. El evento será eliminado permanentemente.</p>
-            </div>
-            <div className="modal-footer">
-              <button className="cancel-button" onClick={closeModal}>
-                Cancelar
-              </button>
-              <button className="confirm-button" onClick={deleteEvent}>
-                Eliminar
-              </button>
+      {
+        isDeleteModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-container">
+              <div className="modal-header">
+                <h3>¿Estás seguro de que quieres eliminar este evento?</h3>
+              </div>
+              <div className="modal-body">
+                <p>Esta acción no se puede deshacer. El evento será eliminado permanentemente.</p>
+              </div>
+              <div className="modal-footer">
+                <button className="cancel-button" onClick={closeModal}>
+                  Cancelar
+                </button>
+                <button className="confirm-button" onClick={deleteEvent}>
+                  Eliminar
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
     </>
   )
 }
