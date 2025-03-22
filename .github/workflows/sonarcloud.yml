@@ -28,5 +28,10 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1
         with:
-          organization: ispp-eventbride  
-          token: ${{ secrets.SONAR_TOKEN }}  # Token de SonarCloud en los secretos de GitHub
+          # Si necesitas enviar argumentos adicionales al scanner:
+          args: >
+            -Dsonar.organization=ispp-eventbride 
+            -Dsonar.projectKey=ISPP-Eventbride_Eventbride
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
