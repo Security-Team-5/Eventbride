@@ -1,6 +1,6 @@
 # <center>Conduct Code</center>
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
-<center><img src=".\img\Eventbride.png"></center>
+<center><img src="..\img\Eventbride.png"></center>
 
 ### Grupo 3: Eventbride
 
@@ -23,7 +23,7 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: 16/03/2025
+### Fecha: 22/03/2025
 
 ### Entregable: Sprint 2
 
@@ -34,6 +34,7 @@
 | Fecha      | Versión | Descripción                                | Entrega  | Contribuyente(s)                    |
 |------------|---------|--------------------------------------------|----------|-------------------------------------|
 | 16/03/2025 | v1.0    | Creación del documento y estructura básica | Sprint 2 | Héctor Noguera González             |
+| 22/03/2025 | v1.1    | Corrección del índice de contenidos        | Sprint 2 | María de la Salud Carrera Talaverón |
 
 ---
 
@@ -42,9 +43,9 @@
 2. [Cuando sientas que estas sobrecargado/a](#id1)
 3. [No se como avanzar con mi tarea](#id2)
 4. [Mi compañero de trabajo no está realizando su parte](#id3)
-    2. [Contenido 2.2](#id22)
-4. [Conclusiones](#concl)
-5. [Bibliografía](#bib)
+5. [No me encuentró motivado con el proyecto](#id4)
+6. [Conclusiones](#concl)
+7. [Bibliografía](#bib)
 
 
 <div id='intro'></div>
