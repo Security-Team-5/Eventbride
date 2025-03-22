@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import "../static/resources/css/EventDetails.css"
+import PaypalButtonTotal from "../components/PaypalButtomTotal";
 
 function EventDetails() {
   const [evento, setEvento] = useState(null);
@@ -178,9 +179,52 @@ function EventDetails() {
     let total = 0;
     for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
       const prop = evento.eventPropertiesDTO[i];
-      total += (prop.setPricePerService || 0) + (prop.depositAmount || 0);
+      total += (prop.setPricePerService || 0);
     }
     return total;
+  };
+
+  const reservarOPagarServicios = () => {
+    if (!evento || !Array.isArray(evento.eventPropertiesDTO)) return null;
+  
+    const estados = evento.eventPropertiesDTO.map(prop =>
+      prop.status?.trim().toUpperCase()
+    );
+  
+    const todosSonFinales = estados.every(status =>
+      status === 'PENDING' || status === 'COMPLETED'
+    );
+    if (todosSonFinales) return null;
+  
+    return estados.includes('APPROVED');
+  };
+  
+
+  const obtenerDepositosActivos = () => {
+    if (!evento || !evento.eventPropertiesDTO) return 0;
+  
+    const depositos = {};
+    evento.eventPropertiesDTO.forEach((evenProp) => {
+      console.log(evenProp)
+      if (evenProp.status === "APPROVED") {
+        depositos[evenProp.id] = evenProp.depositAmount;
+      }
+    });
+    console.log(depositos)
+    return depositos;
+  };
+
+  const obetenerTotales = () => {
+    if (!evento || !evento.eventPropertiesDTO) return null;
+  
+    const totales = {};
+    evento.eventPropertiesDTO.forEach((evenProp) => {
+      if (evenProp.status === "DEPOSIT_PAID") {
+        totales[evenProp.id] = evenProp.pricePerService - evenProp.depositAmount;
+      }
+    });
+  
+    return totales;
   };
 
   return (
@@ -223,7 +267,49 @@ function EventDetails() {
             </div>
           </div>
         </div>
-
+        <div className="event-payment-container flex justify-center items-center">
+          {reservarOPagarServicios() !== null && (
+            <div className="text-center font-semibold text-lg">
+              {reservarOPagarServicios() ? (
+                (() => {
+                  const depositos = obtenerDepositosActivos();
+                  const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
+                  const ids = depositos ? Object.keys(depositos).map(Number) : [];
+                  return (
+                    <span>
+                      <span style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>
+                        Pagar señales: {total.toFixed(2)}€
+                      </span>
+                      <PaypalButtonTotal
+                        amount={total.toFixed(2)}
+                        paymentType={'DEPOSITO PARA RESERVA'}
+                        eventPropsIds={ids}
+                      />
+                    </span>
+                  );
+                })()
+              ) : (
+                (() => {
+                  const totales = obetenerTotales();
+                  const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
+                  const ids = totales ? Object.keys(totales).map(Number) : [];
+                  return (
+                    <span>
+                      <span style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>
+                        Pagar total: {total.toFixed(2)}€
+                      </span>
+                      <PaypalButtonTotal
+                        amount={total.toFixed(2)}
+                        paymentType={'CANTIDAD RESTANTE'}
+                        eventPropsIds={ids}
+                      />
+                    </span>
+                  );
+                })()
+              )}
+            </div>
+          )}
+        </div>
         <div className="event-properties-container">
           <div className="event-venues">
             <h3 className="section-title">Recinto contratado</h3>
@@ -272,7 +358,6 @@ function EventDetails() {
               </div>
             )}
           </div>
-
           <div className="event-services">
             <h3 className="section-title">Otros servicios contratados</h3>
             {evento?.eventPropertiesDTO?.some((prop) => prop.otherServiceDTO) ? (
