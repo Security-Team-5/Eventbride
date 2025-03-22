@@ -1,0 +1,21 @@
+name: Codacy Analysis
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  codacy-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Codacy Analysis CLI
+        run: |
+          docker run --rm \
+            -e CODACY_PROJECT_TOKEN=${{ secrets.CODACY_API_TOKEN }} \
+            -v ${{ github.workspace }}:/src \
+            codacy/codacy-analysis-cli analyze --tool eslint

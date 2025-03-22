@@ -1,4 +1,4 @@
-# <center>Commitment Agreement v4</center>
+# <center>Commitment Agreement v5</center>
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
 <center><img src="..\..\img\Eventbride.png"></center>
 
@@ -23,7 +23,7 @@
 - Sergio Pons López
 - Lorenzo Torralba Lanzas
 
-### Fecha: 19/03/2025
+### Fecha: 22/03/2025
 
 ### Entregable: Sprint 2
 
@@ -34,11 +34,11 @@ Esquema de documento generado con ChatGPT 3.5:
 
 **Compromiso de Participación en la Asignatura ISPP (Ingeniería del Software y Práctica Profesional) - Curso 2024-2025**
 
-**Nombre del Alumno:** Gonzalo Navas Remmers
+**Nombre del Alumno:** Lorenzo Torralba Lanzas
 
 ## Compromiso
 
-Yo, Gonzalo Navas Remmers, para avanzar en la asignatura de Ingeniería de Software y Práctica Profesional (ISPP) del curso 2024-2025, me comprometo a cumplir con los siguientes requisitos y condiciones como miembro activo del grupo de trabajo, compuesto por 17 personas:
+Yo, Lorenzo Torralba Lanzas, para avanzar en la asignatura de Ingeniería de Software y Práctica Profesional (ISPP) del curso 2024-2025, me comprometo a cumplir con los siguientes requisitos y condiciones como miembro activo del grupo de trabajo, compuesto por 17 personas:
 
 - **Dedicación de Tiempo:** Destinaré 10 horas semanales a las actividades y tareas asignadas dentro de la asignatura, incluyendo la asistencia a clase y el visualizado de las píldoras teóricas. En caso de que no pueda cumplir con este tiempo debido a un viaje u otra circunstancia, me comprometo a recuperarlo en los días siguientes.
   
@@ -51,6 +51,8 @@ Yo, Gonzalo Navas Remmers, para avanzar en la asignatura de Ingeniería de Softw
 - **Comunicación:** Informaré al equipo con antelación si encuentro dificultades que puedan afectar a mi trabajo o el de mis compañeros, buscando soluciones en conjunto.
   
 - **Compromiso con la calidad:** Debo asegurarme de que mis tareas cumplan con los estándares de calidad definidos por el equipo y la asignatura.
+
+- **Gestión de problemas:** Seguiré las pautas establecidas en el documento `conductCode.md` para afrontar los problemas o conflictos con los que me encuentre durante el desarrollo del proyecto.
   
 - **Responsabilidad por Rol:** Cada integrante del equipo se compromete a cumplir con las responsabilidades asociadas a su rol dentro del equipo de desarrollo. Garantizando así un correcto funcionamiento del equipo y la calidad del proyecto. Se definen así los siguientes roles:
 
@@ -78,4 +80,4 @@ Al firmar este documento, entiendo y acepto las responsabilidades que se me han 
 
 **Firma del Alumno:**
 
-[![3qQJte4.png](https://iili.io/3qQJte4.png)](https://freeimage.host/es)
+[![3qLUX3u.png](https://iili.io/3qLUX3u.png)](https://freeimage.host/es)

@@ -1,4 +1,4 @@
-# <center>Título del Documento</center>
+# <center>Implicaciones legales</center>
 ## <center>Ingeniería del Software y Práctica Profesional (ISPP)</center>
 <center><img src="..\img\Eventbride.png"></center>
 
@@ -35,6 +35,7 @@
 |------------|---------|--------------------------------------------|----------|-------------------------------------|
 | 17/03/2025 | v1.0    | Creación del documento y estructura básica | Sprint 2 | Fernando José de Celis Hurtado      |
 | 17/03/2025 | v1.1    | Realización del documento                  | Sprint 2 | Fernando José de Celis Hurtado      |
+| 21/03/2025 | v1.2    |Cambio del nombre del documento                  | Sprint 2 | Sergio Pons López |
 
 ---
 
