@@ -80,6 +80,7 @@ public class UserService {
         user.setTelephone(userDetails.getTelephone());
         user.setDni(userDetails.getDni());
         user.setRole(userDetails.getRole());
+        user.setProfilePicture(userDetails.getProfilePicture());
 
         return userRepository.save(user);
     }

@@ -97,28 +97,28 @@ public class UserController {
 
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
-		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-			List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-			if (roles.contains("ADMIN")) {
-				try {
-					Optional<User> existingUser = userService.getUserById(id);
-					if (existingUser.isEmpty()) {
-						return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
-					}
-					updatedUser.setId(id);
-					User savedUser = userService.updateUser(id, updatedUser);
-					return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
-				} catch (RuntimeException e) {
-					return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-				}
-			}
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		}
-		catch(Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+            List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+            if (roles.contains("ADMIN")) {
+                try {
+                    Optional<User> existingUser = userService.getUserById(id);
+                    if (existingUser.isEmpty()) {
+                        return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+                    }
+                    updatedUser.setId(id);
+                    User savedUser = userService.updateUser(id, updatedUser);
+                    return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+                } catch (RuntimeException e) {
+                    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+                }
+            }
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } 
+        catch(Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 
@@ -155,6 +155,25 @@ public class UserController {
             otherServiceService.saveAll(otherServices);
 
             userService.deleteUser(id);
+        }
+    }
+
+    /**
+     * Editar el perfil de un usuario por ID.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateOwnProfile(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
+        try {
+            Optional<User> existingUser = userService.getUserById(id);
+            if (existingUser.isEmpty()) {
+                return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+            }
+            User savedUser = userService.updateUser(id, updatedUser);
+            return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
