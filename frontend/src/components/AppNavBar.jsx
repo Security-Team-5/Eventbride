@@ -163,10 +163,10 @@ function Navbar() {
               </Link>
 
               <div className="user-menu">
-                <Link to="/" className="action-icon user-icon">
+                <Link to="/profile" className="action-icon user-icon">
                   <img src={usuario || "/placeholder.svg"} alt="Usuario" className="icon-img" />
                 </Link>
-                <div className="user-name">{currentUser.name || "Usuario"}</div>
+                <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
 
               <button className="logout-button" onClick={handleLogout}>
