@@ -12,6 +12,7 @@ function EventDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true)
+  const comision = 1.02; // Comisión del 2%, con cambiar esta constante cambia toda la lógica de la comisión
 
 
 
@@ -186,23 +187,23 @@ function EventDetails() {
 
   const reservarOPagarServicios = () => {
     if (!evento || !Array.isArray(evento.eventPropertiesDTO)) return null;
-  
+
     const estados = evento.eventPropertiesDTO.map(prop =>
       prop.status?.trim().toUpperCase()
     );
-  
+
     const todosSonFinales = estados.every(status =>
       status === 'PENDING' || status === 'COMPLETED'
     );
     if (todosSonFinales) return null;
-  
+
     return estados.includes('APPROVED');
   };
-  
+
 
   const obtenerDepositosActivos = () => {
     if (!evento || !evento.eventPropertiesDTO) return 0;
-  
+
     const depositos = {};
     evento.eventPropertiesDTO.forEach((evenProp) => {
       console.log(evenProp)
@@ -216,14 +217,14 @@ function EventDetails() {
 
   const obetenerTotales = () => {
     if (!evento || !evento.eventPropertiesDTO) return null;
-  
+
     const totales = {};
     evento.eventPropertiesDTO.forEach((evenProp) => {
       if (evenProp.status === "DEPOSIT_PAID") {
         totales[evenProp.id] = evenProp.pricePerService - evenProp.depositAmount;
       }
     });
-  
+
     return totales;
   };
 
@@ -266,49 +267,6 @@ function EventDetails() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="event-payment-container flex justify-center items-center">
-          {reservarOPagarServicios() !== null && (
-            <div className="text-center font-semibold text-lg">
-              {reservarOPagarServicios() ? (
-                (() => {
-                  const depositos = obtenerDepositosActivos();
-                  const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
-                  const ids = depositos ? Object.keys(depositos).map(Number) : [];
-                  return (
-                    <span>
-                      <span style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>
-                        Pagar señales: {total.toFixed(2)}€
-                      </span>
-                      <PaypalButtonTotal
-                        amount={total.toFixed(2)}
-                        paymentType={'DEPOSITO PARA RESERVA'}
-                        eventPropsIds={ids}
-                      />
-                    </span>
-                  );
-                })()
-              ) : (
-                (() => {
-                  const totales = obetenerTotales();
-                  const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
-                  const ids = totales ? Object.keys(totales).map(Number) : [];
-                  return (
-                    <span>
-                      <span style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'block', marginBottom: '0.5rem' }}>
-                        Pagar total: {total.toFixed(2)}€
-                      </span>
-                      <PaypalButtonTotal
-                        amount={total.toFixed(2)}
-                        paymentType={'CANTIDAD RESTANTE'}
-                        eventPropsIds={ids}
-                      />
-                    </span>
-                  );
-                })()
-              )}
-            </div>
-          )}
         </div>
         <div className="event-properties-container">
           <div className="event-venues">
@@ -405,6 +363,119 @@ function EventDetails() {
               </div>
             )}
           </div>
+        </div>
+        <div className="payment-summary">
+          <h3 className="section-title">Resumen del pago</h3>
+          <h3 className="summary-title">
+            Desglose de {reservarOPagarServicios() ? "pago de señales" : "pago final de servicios"}
+          </h3>
+          <div className="summary-card">
+            <div className="summary-content">
+              {reservarOPagarServicios() ? (
+                // desglose de depósitos más su comisión
+                <>
+                  {Object.entries(obtenerDepositosActivos()).map(([id, amount]) => {
+                    const prop = evento.eventPropertiesDTO.find((p) => p.id === parseInt(id));
+                    const name = prop?.venueDTO?.name || prop?.otherServiceDTO?.name || "Sin nombre";
+                    return (
+                      <div key={id} className="summary-item">
+                        <span>{decodeText(name)}</span>
+                        <span className="price">{amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</span>
+                      </div>
+                    );
+                  })}
+                  <div className="summary-item">
+                    {/* La fórmula es para que obtenga el porcentaje de la constante comisión en lugar de ser texto fijo */}
+                    <span>Gastos de gestión ({((comision - 1) * 100).toFixed(0)}%)</span>
+                    <span className="price">
+                      {Object.values(obtenerDepositosActivos())
+                        .reduce((acc, val) => acc + val * (comision - 1), 0)
+                        .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                // desglose de precios finales más su comisión
+                <>
+                  {Object.entries(obetenerTotales()).map(([id, amount]) => {
+                    const prop = evento.eventPropertiesDTO.find((p) => p.id === parseInt(id));
+                    const name = prop?.venueDTO?.name || prop?.otherServiceDTO?.name || "Sin nombre";
+                    return (
+                      <div key={id} className="summary-item">
+                        <span>{decodeText(name)}</span>
+                        <span className="price">{amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</span>
+                      </div>
+                    );
+                  })}
+                  <div className="summary-item">
+                    {/* La fórmula es para que obtenga el porcentaje de la constante comisión en lugar de ser texto fijo */}
+                    <span>Gastos de gestión ({((comision - 1) * 100).toFixed(0)}%)</span>
+                    <span className="price">
+                      {Object.values(obetenerTotales())
+                        .reduce((acc, val) => acc + val * (comision - 1), 0)
+                        .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                    </span>
+                  </div>
+                </>
+              )}
+              <div className="separator"></div>
+              <div className="summary-item total">
+                <span>Total</span>
+                <span>
+                  {reservarOPagarServicios()
+                    ? Object.values(obtenerDepositosActivos())
+                      .reduce((acc, val) => acc + val * comision, 0) // Aplicar 2% de comisión al total de depósitos
+                      .toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                    : Object.values(obetenerTotales())
+                      .reduce((acc, val) => acc + val * comision, 0) // Aplicar 2% de comisión al total de precios finales
+                      .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="event-payment-container flex justify-center items-center">
+          {reservarOPagarServicios() !== null && (
+            <div className="text-center font-semibold text-lg">
+              {reservarOPagarServicios() ? (
+                (() => {
+                  const depositos = obtenerDepositosActivos();
+                  const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
+                  const ids = depositos ? Object.keys(depositos).map(Number) : [];
+                  return (
+                    <span>
+                      <h3 className="summary-title" style={{ marginTop: '1rem' }}>
+                        Pagar con
+                      </h3>
+                      <PaypalButtonTotal
+                        amount={total}
+                        paymentType={'DEPOSITO PARA RESERVA'}
+                        eventPropsIds={ids}
+                      />
+                    </span>
+                  );
+                })()
+              ) : (
+                (() => {
+                  const totales = obetenerTotales();
+                  const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
+                  const ids = totales ? Object.keys(totales).map(Number) : [];
+                  return (
+                    <span>
+                      <h3 className="summary-title" style={{ marginTop: '1rem' }}>
+                        Pagar con
+                      </h3>
+                      <PaypalButtonTotal
+                        amount={total}
+                        paymentType={'CANTIDAD RESTANTE'}
+                        eventPropsIds={ids}
+                      />
+                    </span>
+                  );
+                })()
+              )}
+            </div>
+          )}
         </div>
       </div >
 
