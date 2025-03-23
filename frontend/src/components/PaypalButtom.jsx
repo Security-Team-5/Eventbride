@@ -36,6 +36,8 @@ function PaypalButton({ amount, paymentType, eventProp }) {
       }
     }
 
+    async function cancelOtherServiceOrVenue() {}
+
     // Evitar renderizar el botón más de una vez
     if (!document.getElementById("paypal-button-container").hasChildNodes()) {
       if (window.paypal) {

@@ -125,7 +125,7 @@ function EventDetails() {
       case "COMPLETED":
         return "Servicio pagado"
       case "CANCELLED":
-        return "Servicio cancelado, vuelva a solicitarlo"
+        return "Servicio cancelado, volver a solicitar"
       default:
         return "Pagar"
     }

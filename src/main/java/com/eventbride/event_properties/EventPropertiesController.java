@@ -106,4 +106,14 @@ public class EventPropertiesController {
         return eventPropertiesService.findEventPropertiesPendingByUserId(userId);
     }
 
+    @PutMapping("/status/pending/{eventPropertiesId}")
+    public ResponseEntity<EventProperties> updateStatusPending(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
+        EventProperties eventProperties = eventPropertiesService.findById(eventPropertiesId);
+        if (eventProperties != null) {
+            eventProperties.setStatus(EventProperties.Status.PENDING);
+            return new ResponseEntity<>(eventPropertiesService.save(eventProperties), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
