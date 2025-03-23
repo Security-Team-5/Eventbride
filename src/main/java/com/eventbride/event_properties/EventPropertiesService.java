@@ -3,6 +3,7 @@ package com.eventbride.event_properties;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +12,18 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
+import com.eventbride.event_properties.EventProperties.Status;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceRepository;
 import com.eventbride.otherService.OtherServiceService;
+import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueRepository;
 import com.eventbride.venue.VenueService;
@@ -47,6 +52,10 @@ public class EventPropertiesService {
 
     @Autowired
     VenueRepository venueRepository;
+
+    @Autowired
+    JavaMailSender mailSender;
+    
 
     @Transactional(readOnly = true)
     public List<EventProperties> findAll() {
@@ -77,6 +86,13 @@ public class EventPropertiesService {
         return save(toUpdate);
     }
 
+    @Transactional
+    public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException {
+        EventProperties toUpdate = findById(id);
+        toUpdate.setStatus(Status.CANCELLED);
+        return save(toUpdate);
+    }
+
     @Transactional(readOnly = true)
     public EventProperties findEventPropertiesByEvent(Event event) {
         return (EventProperties) eventPropertiesRepository.findEventPropertiesByEvent(event);
@@ -90,6 +106,44 @@ public class EventPropertiesService {
     @Transactional(readOnly = true)
     public List<EventProperties> findEventPropertiesByVenue(Integer venueId) {
         return eventPropertiesRepository.findEventPropertiesByVenueId(venueId);
+    }
+
+    @Transactional(readOnly = true)
+    public void getEventsPropsToCancelVenue(LocalDate fecha, Integer venueId, Integer eventPropId){
+        List<EventProperties> listToCancelVenues = eventPropertiesRepository.findVenuesToCancel(fecha, venueId, eventPropId);
+        for (EventProperties eP : listToCancelVenues) {
+            deleteEventProperties(eP.getId());
+            // Send emails
+            Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
+            User user = event.getUser();
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("eventbride6@gmail.com");
+            mailMessage.setTo(user.getEmail());
+            mailMessage.setSubject("Recinto cancelado");
+            mailMessage.setText("El recinto " + eP.getVenue().getName() + " ha sido cancelado" + "para el evento " + "eP.getEvent().getName()" + "el dia " + eP.getStartTime() +
+            ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
+            "\n\n Saludos, \n EventBride");
+            mailSender.send(mailMessage);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId){
+        List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha, otherServiceId, eventPropId);
+        for (EventProperties eP : listToCancelOtherServices) {
+            updateEventPropertiesToCancelled(eP.getId());
+            // Send emails
+            Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
+            User user = event.getUser();
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("eventbride6gmail.com");
+            mailMessage.setTo(user.getEmail());
+            mailMessage.setSubject("Servicio cancelado");
+            mailMessage.setText("El servicio " + eP.getOtherService().getName() + " ha sido cancelado" + "para el evento " + "eP.getEvent().getName()" + "el dia " + eP.getStartTime() +
+            ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
+            "\n\n Saludos, \n EventBride");
+            mailSender.send(mailMessage);
+        }
     }
 
     @Transactional

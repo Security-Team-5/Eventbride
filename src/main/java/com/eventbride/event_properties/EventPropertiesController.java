@@ -9,14 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
+import com.eventbride.user.User;
+import com.google.api.client.util.DateTime;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,6 +60,19 @@ public class EventPropertiesController {
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
         Event updatedEvent = eventPropertiesService.addVenueToEvent(eventId, venueId, startDate, endDate);
         return ResponseEntity.ok(updatedEvent);
+    }
+
+    @PutMapping("/cancel/{eventPropertieID}")
+    public ResponseEntity<Void> cancelEvent(@PathVariable Integer eventPropertieID, @RequestBody User user) {
+        EventProperties evenProp = eventPropertiesService.findById(eventPropertieID) ;
+        LocalDate fechaEvento = evenProp.getStartTime().toLocalDate();
+        if(evenProp.getVenue().getId() != null){
+            eventPropertiesService.getEventsPropsToCancelVenue(fechaEvento, evenProp.getVenue().getId(), evenProp.getId());
+        }else{
+            eventPropertiesService.getEventsPropsToCancelOtherService(fechaEvento, evenProp.getOtherService().getId(), evenProp.getId());
+        }
+
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{eventPropertiesId}")
