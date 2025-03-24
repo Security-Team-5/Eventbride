@@ -115,7 +115,6 @@ public class EventPropertiesService {
     public void getEventsPropsToCancelVenue(LocalDate fecha, Integer venueId, Integer eventPropId){
         List<EventProperties> listToCancelVenues = eventPropertiesRepository.findVenuesToCancel(fecha, venueId, eventPropId);
         for (EventProperties eP : listToCancelVenues) {
-            deleteEventProperties(eP.getId());
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
             User user = event.getUser();
@@ -123,10 +122,11 @@ public class EventPropertiesService {
             mailMessage.setFrom("eventbride6@gmail.com");
             mailMessage.setTo(user.getEmail());
             mailMessage.setSubject("Recinto cancelado");
-            mailMessage.setText("El recinto " + eP.getVenue().getName() + " ha sido cancelado" + "para el evento " + "eP.getEvent().getName()" + "el dia " + eP.getStartTime() +
+            mailMessage.setText("El recinto " + eP.getVenue().getName() + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
             ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
             "\n\n Saludos, \n EventBride");
             mailSender.send(mailMessage);
+            updateEventPropertiesToCancelled(eP.getId());
         }
     }
 
@@ -134,7 +134,6 @@ public class EventPropertiesService {
     public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId){
         List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha, otherServiceId, eventPropId);
         for (EventProperties eP : listToCancelOtherServices) {
-            updateEventPropertiesToCancelled(eP.getId());
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
             User user = event.getUser();
@@ -142,10 +141,12 @@ public class EventPropertiesService {
             mailMessage.setFrom("eventbride6gmail.com");
             mailMessage.setTo(user.getEmail());
             mailMessage.setSubject("Servicio cancelado");
-            mailMessage.setText("El servicio " + eP.getOtherService().getName() + " ha sido cancelado" + "para el evento " + "eP.getEvent().getName()" + "el dia " + eP.getStartTime() +
+            mailMessage.setText("El servicio " + eP.getOtherService().getName() + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
             ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
             "\n\n Saludos, \n EventBride");
             mailSender.send(mailMessage);
+            updateEventPropertiesToCancelled(eP.getId());
+
         }
     }
 
