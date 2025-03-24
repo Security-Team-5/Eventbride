@@ -1,14 +1,17 @@
 package com.eventbride.event_properties;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import com.eventbride.event.Event;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.venue.Venue;
 
-public interface EventPropertiesRepository extends CrudRepository<EventProperties, Integer>{
+import jakarta.transaction.Transactional;
+
+public interface EventPropertiesRepository extends JpaRepository<EventProperties, Integer>{
 
     List<EventProperties> findAll();
 
@@ -21,8 +24,14 @@ public interface EventPropertiesRepository extends CrudRepository<EventPropertie
     @Query("SELECT ep FROM EventProperties ep WHERE ep.venue.id=?1")
 	public List<EventProperties> findEventPropertiesByVenueId(Integer venueId);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM EventProperties ep WHERE ep.otherService=?1")
     void deleteByOtherService(OtherService otherService);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM EventProperties ep WHERE ep.venue =?1")
     void deleteByVenue(Venue venue);
 
     @Query("SELECT ep FROM EventProperties ep WHERE ep.otherService=?1 AND ep.status=?2")
