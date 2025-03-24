@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
@@ -9,7 +9,6 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
 
   // Obtener datos user desde localStorage
   const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
@@ -56,7 +55,7 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("user");
-    navigate("/login");
+    window.location.href = "/login";
   };
 
   const renderNavItems = () => {
@@ -137,10 +136,17 @@ function Navbar() {
     <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="navbar-container">
         <div className="navbar-brand">
-          <Link to="/" className="brand-link">
-            <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
-            <span className="navbar-title">Inicio</span>
-          </Link>
+          {currentUser === "{}" ? (
+            <span className="brand-link disabled-link">
+              <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+              <span className="navbar-title">Inicio</span>
+            </span>
+          ) : (
+            <Link to="/" className="brand-link">
+              <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+              <span className="navbar-title">Inicio</span>
+            </Link>
+          )}
         </div>
 
         {/* Hamburger menu for mobile */}
