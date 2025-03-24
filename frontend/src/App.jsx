@@ -32,9 +32,7 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <div className="navbar">
-          <NavBar />
-        </div>
+        <NavBar />
         <div className="content">
           <Routes>
             <Route path="/user" />
