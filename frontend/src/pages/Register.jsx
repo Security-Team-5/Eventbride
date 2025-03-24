@@ -18,6 +18,7 @@ const Register = () => {
     role: "CLIENT",
     profilePicture: "",
   })
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -29,6 +30,12 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!acceptedTerms) {
+      setError("Debes aceptar los términos y condiciones para continuar")
+      return
+    }
+
     setIsLoading(true)
     setError(null)
 
@@ -219,6 +226,21 @@ const Register = () => {
                   <option value="cliente">Cliente</option>
                   <option value="proveedor">Proveedor</option>
                 </select>
+              </div>
+            </div>
+
+            <div className="form-group terms-checkbox-container">
+              <div className="checkbox-wrapper">
+                <input
+                  type="checkbox"
+                  id="termsAccept"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  required
+                />
+                <label htmlFor="termsAccept" className="terms-label">
+                  <a href="/terminos-y-condiciones">Acepto los Terminos y Condiciones de Eventbride</a>
+                </label>
               </div>
             </div>
 
