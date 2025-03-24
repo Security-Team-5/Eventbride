@@ -41,11 +41,10 @@ logs/
 .env
 *.local
 
+
 # CSS y archivos estáticos (actualizado)
 _site/
 
 #MariaDB password
 src/main/resources/application-dev.properties
 src/main/resources/application-mysql.properties
-
-

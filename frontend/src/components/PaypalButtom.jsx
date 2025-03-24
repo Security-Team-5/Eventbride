@@ -18,7 +18,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
           navigate(`/events`)
 
         } catch (error) {
-          alert('Error al crear el evento');
+          alert('Error al pagar');
           console.error(error);
         }
       } else {
@@ -30,7 +30,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
           navigate(`/events`)
 
         } catch (error) {
-          alert('Error al crear el evento');
+          alert('Error al pagar');
           console.error(error);
         }
       }

@@ -1,60 +1,405 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
 
-@layer base {
-    :root {
-        --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 222.2 84% 4.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 222.2 84% 4.9%;
-        --primary: 221.2 83.2% 53.3%;
-        --primary-foreground: 210 40% 98%;
-        --secondary: 210 40% 96.1%;
-        --secondary-foreground: 222.2 47.4% 11.2%;
-        --muted: 210 40% 96.1%;
-        --muted-foreground: 215.4 16.3% 46.9%;
-        --accent: 210 40% 96.1%;
-        --accent-foreground: 222.2 47.4% 11.2%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 210 40% 98%;
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-        --ring: 221.2 83.2% 53.3%;
-        --radius: 0.5rem;
+/* Base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Arial", sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Removed any top margin/padding that might conflict with navbar */
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Typography */
+.section-title {
+    font-family: "Playfair Display", serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    text-align: center;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
+/* Buttons */
+.primary-button {
+    background-color: rgba(247, 217, 227, 0.96);
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.primary-button:hover {
+    background-color: white;
+    color: black;
+}
+
+.secondary-button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.secondary-button:hover {
+    background-color: rgba(247, 217, 227, 0.96);
+}
+
+.outline-button {
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.outline-button:hover {
+    background-color: #f8fafc;
+}
+
+.button-icon {
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    transition: transform 0.3s;
+}
+
+.outline-button:hover .button-icon {
+    transform: translateX(4px);
+}
+
+.event-button {
+    display: inline-block;
+    background-color: rgba(247, 217, 227, 0.96);
+    color: black;
+    border: 1px solid black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.event-button:hover {
+    background-color: rgba(247, 217, 227, 1);
+}
+
+/* Separator */
+.separator {
+    width: 100px;
+    height: 3px;
+    background-color: rgba(247, 217, 227, 0.96);
+    margin: 0 auto 2rem;
+}
+
+/* Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .card-grid {
+        grid-template-columns: 1fr 1fr;
     }
 
-    .dark {
-        --background: 222.2 84% 4.9%;
-        --foreground: 210 40% 98%;
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
-        --popover: 222.2 84% 4.9%;
-        --popover-foreground: 210 40% 98%;
-        --primary: 217.2 91.2% 59.8%;
-        --primary-foreground: 222.2 47.4% 11.2%;
-        --secondary: 217.2 32.6% 17.5%;
-        --secondary-foreground: 210 40% 98%;
-        --muted: 217.2 32.6% 17.5%;
-        --muted-foreground: 215 20.2% 65.1%;
-        --accent: 217.2 32.6% 17.5%;
-        --accent-foreground: 210 40% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 210 40% 98%;
-        --border: 217.2 32.6% 17.5%;
-        --input: 217.2 32.6% 17.5%;
-        --ring: 224.3 76.3% 48%;
+    .three-columns {
+        grid-template-columns: 1fr;
     }
 }
 
-@layer base {
-    * {
-        @apply border-border;
+@media (min-width: 992px) {
+    .three-columns {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    padding: 1.5rem 1.5rem 0.5rem;
+}
+
+.card-title {
+    font-family: "Playfair Display", serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-content {
+    padding: 0.5rem 1.5rem 1.5rem;
+}
+
+.card-footer {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.card-text {
+    color: #666;
+    line-height: 1.6;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Hero Section - Adjusted to work with navbar and made more compact */
+.hero-section {
+    position: relative;
+    height: calc(80vh - 0px);
+    /* Reduced height from 100vh to 80vh */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(50%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 0 20px;
+    margin-top: 0;
+    width: 100%;
+    max-width: 800px;
+}
+
+.hero-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    padding: 1.5rem;
+    /* Reduced padding from 2rem to 1.5rem */
+    border-radius: 8px;
+}
+
+.logo {
+    max-width: 180px;
+    /* Reduced from 300px to 180px */
+    margin: 0 auto 1rem;
+    /* Reduced bottom margin from 1.5rem to 1rem */
+}
+
+.hero-title {
+    font-family: "Playfair Display", serif;
+    font-size: 2rem;
+    /* Reduced from 2.5rem to 2rem */
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.75rem;
+    /* Reduced from 1rem to 0.75rem */
+}
+
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+        /* Reduced from 3.5rem to 2.5rem */
+    }
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    /* Reduced from 1.2rem to 1.1rem */
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    /* Reduced from 2rem to 1.5rem */
+}
+
+/* Sections */
+.welcome-section,
+.testimonials-section {
+    padding: 4rem 0;
+    background-color: white;
+}
+
+.about-section,
+.packages-section {
+    padding: 4rem 0;
+    background-color: #f8fafc;
+}
+
+.create-section {
+    padding: 4rem 0;
+    background-color: white;
+}
+
+.cta-section {
+    padding: 4rem 0;
+    background-color: rgba(247, 217, 227, 0.96);
+    color: black;
+    text-align: center;
+}
+
+.cta-title {
+    font-family: "Playfair Display", serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cta-description {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: black;
+}
+
+/* Icons */
+.icon-container {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+.icon {
+    width: 48px;
+    height: 48px;
+    color: #333;
+}
+
+/* Card Images */
+.card-image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Testimonials */
+.testimonial-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: rgba(59, 130, 246, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.testimonial-avatar span {
+    font-size: 1.5rem;
+    font-family: "Playfair Display", serif;
+    color: rgba(247, 217, 227, 0.96);
+}
+
+.testimonial-quote {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.testimonial-name {
+    font-weight: 600;
+    text-align: center;
+}
+
+.testimonial-event {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+}
+
+/* Media queries for better responsiveness */
+@media (max-width: 768px) {
+    .hero-section {
+        height: calc(70vh - 0px);
+        /* Further reduced for mobile */
     }
 
-    body {
-        @apply bg-background text-foreground;
+    .hero-card {
+        padding: 1.25rem;
+    }
+
+    .logo {
+        max-width: 150px;
+        /* Even smaller on mobile */
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .hero-description {
+        font-size: 0.95rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
     }
 }
