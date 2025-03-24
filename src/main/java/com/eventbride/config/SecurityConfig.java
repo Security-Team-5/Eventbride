@@ -50,9 +50,12 @@ public class SecurityConfig {
                                 "/api/payment/**",
                                 "/api/venues/add-venue/**",
                                 "/api/venues/{eventId}/add-venue/{venueId}/**",
-                                "/api/services/**")
-                        .permitAll()
-                        .requestMatchers("/api/services/admin",
+                                "/api/services/**",
+								"/ws/**",
+								"/ws/info/**",
+								"/api/chat/**")
+                        			.permitAll()
+                        			.requestMatchers("/api/services/admin",
                                 "/api/users/**",
                                 "/api/**",
                                 "/api/v1/events/DTO",

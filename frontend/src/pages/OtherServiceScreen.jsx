@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../App.css";
 import "../static/resources/css/OtherService.css";
+import {Link} from "react-router-dom";
 
 const OtherServiceScreen = () => {
   const [otherServices, setOtherServices] = useState([]);
@@ -208,6 +209,13 @@ const OtherServiceScreen = () => {
             >
               Añadir a mi evento
             </button>
+              <button
+                  className="confirm-button"
+              >
+                  <Link to={`/chat/${service.userDTO.id}`}>
+                      Chatear
+                  </Link>
+              </button>
           </div>
         ))}
       </div>
