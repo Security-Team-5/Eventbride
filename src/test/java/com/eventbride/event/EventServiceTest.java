@@ -4,6 +4,7 @@ import com.eventbride.event.Event.EventType;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.invitation.Invitation;
 import com.eventbride.user.User;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataAccessException;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -183,5 +186,135 @@ public class EventServiceTest {
         assertThrows(java.util.NoSuchElementException.class, () -> {
             eventService.updateEvent(updatedEvent, eventId);
         });
+    }
+
+    @Test
+    public void testDeleteEvent_PositiveCase() {
+        int eventId = 1;
+        Event event = new Event();
+        event.setId(eventId);
+        event.setEventType(EventType.WEDDING);
+        event.setGuests(100);
+        event.setBudget(new BigDecimal("10000.00"));
+
+        when(eventRepository.findById(eventId)).thenReturn(java.util.Optional.of(event));
+        doNothing().when(eventRepository).delete(event);
+
+        assertDoesNotThrow(() -> {
+            eventService.deleteEvent(eventId);
+        });
+
+        verify(eventRepository, times(1)).delete(event);
+    }
+
+    @Test
+    public void testDeleteEvent_NegativeCase_EventNotFound() {
+        int eventId = 999;
+        when(eventRepository.findById(eventId)).thenReturn(java.util.Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            eventService.deleteEvent(eventId);
+        });
+
+        verify(eventRepository, never()).delete(any(Event.class));
+    }
+
+    @Test
+    public void testGetRecentEventByUserId_PositiveCase() {
+        Integer userId = 1;
+        Event recentEvent = new Event();
+        recentEvent.setId(1);
+        recentEvent.setUser(new User());
+        recentEvent.setEventDate(LocalDate.now());
+
+        when(eventRepository.findRecentEventByUserId(userId)).thenReturn(Optional.of(recentEvent));
+
+        Optional<Event> result = eventService.getRecentEventByUserId(userId);
+
+        assertTrue(result.isPresent());
+        assertEquals(recentEvent.getId(), result.get().getId());
+    }
+
+    @Test
+    public void testGetRecentEventByUserId_NegativeCase_EmptyResult() {
+        Integer userId = 99;
+        when(eventRepository.findRecentEventByUserId(userId)).thenReturn(Optional.empty());
+
+        Optional<Event> result = eventService.getRecentEventByUserId(userId);
+
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void testFindEventsByUserId_PositiveCase() {
+        Integer userId = 1;
+        Event event1 = new Event();
+        event1.setId(1);
+        event1.setUser(new User());
+        event1.setEventType(EventType.WEDDING);
+
+        Event event2 = new Event();
+        event2.setId(2);
+        event2.setUser(new User());
+        event2.setEventType(EventType.CHRISTENING);
+
+        when(eventRepository.findAllEventsByUserId(userId)).thenReturn(Arrays.asList(event1, event2));
+
+        List<Event> result = eventService.findEventsByUserId(userId);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(EventType.WEDDING, result.get(0).getEventType());
+    }
+
+    @Test
+    public void testFindEventsByUserId_NegativeCase_RepositoryException() {
+        Integer userId = 99;
+        when(eventRepository.findAllEventsByUserId(userId)).thenThrow(new DataAccessException("Query failed") {});
+
+        DataAccessException exception = assertThrows(DataAccessException.class, () -> {
+            eventService.findEventsByUserId(userId);
+        });
+
+        assertEquals("Query failed", exception.getMessage());
+    }
+
+    @Test
+    public void testSaveAll_PositiveCase() {
+        Event event1 = new Event();
+        event1.setId(1);
+        event1.setEventType(EventType.WEDDING);
+        event1.setGuests(100);
+        event1.setBudget(new BigDecimal("15000.00"));
+
+        Event event2 = new Event();
+        event2.setId(2);
+        event2.setEventType(EventType.COMMUNION);
+        event2.setGuests(30);
+        event2.setBudget(new BigDecimal("3000.00"));
+
+        List<Event> events = Arrays.asList(event1, event2);
+
+        eventService.saveAll(events);
+
+        verify(eventRepository, times(1)).saveAll(events);
+    }
+
+    @Test
+    public void testSaveAll_NegativeCase_ExceptionThrown() {
+        Event event = new Event();
+        event.setEventType(EventType.COMMUNION);
+        event.setGuests(60);
+        event.setBudget(new BigDecimal("6000.00"));
+
+        List<Event> events = Collections.singletonList(event);
+
+        doThrow(new DataAccessException("Batch save failed") {}).when(eventRepository).saveAll(events);
+
+        DataAccessException exception = assertThrows(DataAccessException.class, () -> {
+            eventService.saveAll(events);
+        });
+
+        assertEquals("Batch save failed", exception.getMessage());
     }
 }
