@@ -62,6 +62,25 @@ public class OtherServiceController {
         }
     }
 
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteOtherService(@PathVariable Integer id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		
+		System.out.println("Authorities: " + authorities);
+		
+		boolean hasSupplierRole = authorities.stream()
+			.map(GrantedAuthority::getAuthority)
+			.anyMatch(role -> role.equals("SUPPLIER") || role.equals("ROLE_SUPPLIER"));
+		
+		if (hasSupplierRole) {
+			otherServiceService.deleteOtherService(id);
+			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();

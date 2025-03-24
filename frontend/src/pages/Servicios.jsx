@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom"
-import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info } from "lucide-react"
+import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, Trash2 } from "lucide-react"
 import "../static/resources/css/Servicios.css"
 
 const Servicios = () => {
@@ -36,6 +36,22 @@ const Servicios = () => {
         }
         fetchServices()
     }, [currentUser.id])
+
+    const deleteService = async (serviceId, serviceType) => {
+        if (window.confirm("¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.")) {
+          try {
+            // Ajustar serviceType para otherService
+            const normalizedServiceType = serviceType === "otherService" ? "other-services" : `${serviceType}s`;
+      
+            await apiClient.delete(`/api/${normalizedServiceType}/delete/${serviceId}`);
+      
+            setServices(services.filter((service) => service.id !== serviceId));
+          } catch (error) {
+            console.error("Error al eliminar el servicio:", error);
+            alert("No se pudo eliminar el servicio. Por favor, inténtalo de nuevo.");
+          }
+        }
+      };
 
     // Función para formatear el tipo de servicio
     const formatServiceType = (type, otherServiceType) => {
@@ -151,6 +167,10 @@ const Servicios = () => {
                             </div>
 
                             <div className="service-footer">
+                                <button className="delete-button" onClick={() => deleteService(service.id, service.type)}>
+                                    <Trash2 size={16} />
+                                    Eliminar
+                                </button>
                                 <button
                                     className="edit-button"
                                     onClick={() =>
