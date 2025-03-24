@@ -77,6 +77,25 @@ function EventDetails() {
     setIsCostBreakdownModalOpen(false);
   };
 
+  // Función para volver a solicitar un servicio
+  const solicitarServicio = (eventPropertiesId) => {
+    fetch(`/api/event-properties/status/pending/${eventPropertiesId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Servicio solicitado correctamente");
+          getEvents(); // Volver a cargar los eventos para actualizar el estado
+        } else {
+          console.error("Error al solicitar el servicio");
+        }
+      })
+      .catch((error) => console.error("Error solicitando el servicio:", error));
+  };
+
   // Cargar evento al montar el componente
   useEffect(() => {
 
@@ -124,6 +143,8 @@ function EventDetails() {
         return "Completar pago"
       case "COMPLETED":
         return "Servicio pagado"
+      case "CANCELLED":
+        return "Servicio cancelado, volver a solicitar"
       default:
         return "Pagar"
     }
@@ -193,7 +214,7 @@ function EventDetails() {
     );
 
     const todosSonFinales = estados.every(status =>
-      status === 'PENDING' || status === 'COMPLETED'
+      status === 'PENDING' || status === 'COMPLETED' || status === 'CANCELLED'
     );
     if (todosSonFinales) return null;
 
@@ -228,6 +249,8 @@ function EventDetails() {
     return totales;
   };
 
+  //Hacer solicitarServicio 
+
   return (
     <>
       <div className="event-contain">
@@ -242,8 +265,6 @@ function EventDetails() {
               <span>Eliminar</span>
             </button>
           </div>
-
-
           <div className="event-info-card">
             <div className="event-info">
               <div className="info-item">
@@ -339,16 +360,22 @@ function EventDetails() {
                       </p>
                     </div>
                     <div className="payment-container">
-                      <button
-                        className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
-                        disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                        onClick={() => navigate(`/payment/${prop.id}`)}
-                        style={{
-                          backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
-                        }}
-                      >
-                        {getPaymentStatusText(prop.status)}
-                      </button>
+                    <button
+                      className={`payment-button ${["PENDING", "COMPLETED"].includes(prop.status) ? "disabled" : ""}`}
+                      disabled={["PENDING", "COMPLETED"].includes(prop.status)}
+                      onClick={() => {
+                        if (prop.status === "CANCELLED") {
+                          solicitarServicio(prop.id); 
+                        } else {
+                          navigate(`/payment/${prop.id}`);
+                        }
+                      }}
+                      style={{
+                        backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
+                      }}
+                    >
+                      {getPaymentStatusText(prop.status)}
+                    </button>
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
                         <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
