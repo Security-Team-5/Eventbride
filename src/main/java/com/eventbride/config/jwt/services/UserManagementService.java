@@ -230,4 +230,8 @@ public class UserManagementService {
         return reqRes;
 
     }
+
+    public String generateToken(User user){
+        return jwtUtils.generateToken(user);
+    }
 }
