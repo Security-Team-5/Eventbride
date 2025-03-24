@@ -13,6 +13,7 @@ function Navbar() {
 
   // Obtener datos user desde localStorage
   const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  console.log(currentUser)
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -166,7 +167,7 @@ function Navbar() {
                 <Link to="/" className="action-icon user-icon">
                   <img src={usuario || "/placeholder.svg"} alt="Usuario" className="icon-img" />
                 </Link>
-                <div className="user-name">{currentUser.name || "Usuario"}</div>
+                <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
 
               <button className="logout-button" onClick={handleLogout}>
