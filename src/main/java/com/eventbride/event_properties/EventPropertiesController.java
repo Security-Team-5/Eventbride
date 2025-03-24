@@ -1,4 +1,5 @@
 package com.eventbride.event_properties;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,20 +40,20 @@ public class EventPropertiesController {
     public EventPropertiesDTO findById(@PathVariable("id") Integer id) {
         return eventPropertiesService.findByIdDTO(id);
     }
-    
 
     @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
-    public ResponseEntity<Event> addOtherServiceToEvent(@PathVariable Integer eventId, @PathVariable Integer otherServiceId,         
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
+    public ResponseEntity<Event> addOtherServiceToEvent(@PathVariable Integer eventId,
+            @PathVariable Integer otherServiceId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
         Event updatedEvent = eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId, startDate, endDate);
         return ResponseEntity.ok(updatedEvent);
     }
 
     @PutMapping("/{eventId}/add-venue/{venueId}")
-    public ResponseEntity<Event> addVenueToEvent(@PathVariable Integer eventId, @PathVariable Integer venueId, 
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
+    public ResponseEntity<Event> addVenueToEvent(@PathVariable Integer eventId, @PathVariable Integer venueId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
         Event updatedEvent = eventPropertiesService.addVenueToEvent(eventId, venueId, startDate, endDate);
         return ResponseEntity.ok(updatedEvent);
     }
@@ -81,6 +82,11 @@ public class EventPropertiesController {
             EventProperties eventPropertiesSaved = eventPropertiesService.save(eventProperties);
             eventPropertiesService.deleteEventProperties(eventPropertiesSaved.getId());
         }
+    }
+
+    @GetMapping("/pending/{userId}")
+    public List<EventPropertiesDTO> getPendingEventPropertiesByUserId(@PathVariable("userId") Integer userId) {
+        return eventPropertiesService.findEventPropertiesPendingByUserId(userId);
     }
 
 }

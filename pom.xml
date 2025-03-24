@@ -271,6 +271,13 @@
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>2.4.4</version>
 			</plugin>
+
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.9.1.2184</version> <!-- Revisa si hay una versión más reciente -->
+      </plugin>
+      
     </plugins>
   </build>
   <licenses>
