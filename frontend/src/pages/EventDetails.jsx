@@ -77,6 +77,25 @@ function EventDetails() {
     setIsCostBreakdownModalOpen(false);
   };
 
+  // Función para volver a solicitar un servicio
+  const solicitarServicio = (eventPropertiesId) => {
+    fetch(`/api/event-properties/status/pending/${eventPropertiesId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Servicio solicitado correctamente");
+          getEvents(); // Volver a cargar los eventos para actualizar el estado
+        } else {
+          console.error("Error al solicitar el servicio");
+        }
+      })
+      .catch((error) => console.error("Error solicitando el servicio:", error));
+  };
+
   // Cargar evento al montar el componente
   useEffect(() => {
 
