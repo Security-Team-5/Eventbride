@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { User, Lock, LogIn, AlertCircle } from 'lucide-react';
 import { getCurrentUser } from "../utils/api";
 import apiClient from "../apiClient";
+import '../static/resources/css/Login.css'
 
 // eslint-disable-next-line react/prop-types
 function Login({ setUser }) {
@@ -28,6 +29,7 @@ function Login({ setUser }) {
       window.localStorage.setItem("jwt", response.data.token);
       setUser(data.user);
       navigate("/");
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError("Credenciales incorrectas");
     } finally {

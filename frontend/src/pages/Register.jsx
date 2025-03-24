@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { User, Mail, Phone, Lock, FileText, Image, UserCircle, AlertCircle, UserPlus } from "lucide-react"
 import apiClient from "../apiClient"
+import "../static/resources/css/Register.css"
 
 const Register = () => {
   const [form, setForm] = useState({
