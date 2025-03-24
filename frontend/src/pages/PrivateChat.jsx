@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { useParams } from "react-router-dom";
+import "../static/resources/css/PrivateChat.css"
 
 const PrivateChat = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
@@ -105,48 +106,27 @@ const PrivateChat = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <div ref={chatBoxRef} style={styles.chatBox}>
-              {messages.map((msg, index) => {
+    <div className="chat-container">
+      <div ref={chatBoxRef} className="chat-box">
+        {messages.map((msg, index) => {
           const isCurrentUser = msg.sender.username === currentUser.username;
-
           return (
             <div
               key={index}
-              style={{
-                display: "flex",
-                justifyContent: isCurrentUser ? "flex-end" : "flex-start",
-                marginBottom: "12px",
-              }}
+              className={`message-row ${isCurrentUser ? "user" : "other"}`}
             >
-              <div
-                style={{
-                  backgroundColor: isCurrentUser ? "#d4f8c6" : "#f0f0f0",
-                  borderRadius: "16px",
-                  padding: "10px 14px",
-                  maxWidth: "60%",
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                }}
-              >
-                <span
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "0.85em",
-                    color: "#444",
-                    display: "block",
-                    marginBottom: "4px",
-                  }}
-                >
+              <div className={`message-bubble ${isCurrentUser ? "user" : "other"}`}>
+                <span className="sender-name">
                   {msg.sender.username || otherUser.username}:
                 </span>
-                <span style={{ fontSize: "1em", color: "#333" }}>{msg.content}</span>
+                <span className="message-text">{msg.content}</span>
               </div>
             </div>
           );
         })}
       </div>
 
-      <div style={styles.inputContainer}>
+      <div className="input-container">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -157,9 +137,13 @@ const PrivateChat = () => {
             }
           }}
           placeholder="Escribe un mensaje..."
-          style={styles.input}
+          className="message-input"
         />
-        <button onClick={sendMessage} disabled={!connected} style={styles.button}>
+        <button
+          onClick={sendMessage}
+          disabled={!connected}
+          className="send-button"
+        >
           Enviar
         </button>
       </div>
@@ -167,50 +151,5 @@ const PrivateChat = () => {
   );
 };
 
-const styles = {
-  container: {
-    maxWidth: "700px",
-    margin: "100px auto",
-    border: "1px solid #ccc",
-    borderRadius: "16px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-    overflow: "hidden",
-    display: "flex",
-    flexDirection: "column",
-    height: "80vh",
-    backgroundColor: "#fff",
-  },
-  chatBox: {
-    flex: 1,
-    padding: "20px",
-    overflowY: "auto",
-    backgroundColor: "#fafafa",
-  },
-  inputContainer: {
-    display: "flex",
-    borderTop: "1px solid #ccc",
-    padding: "12px",
-    backgroundColor: "#fff",
-  },
-  input: {
-    flex: 1,
-    padding: "12px 16px",
-    fontSize: "1em",
-    borderRadius: "24px",
-    border: "none",
-    backgroundColor: "#111",
-    color: "white",
-    marginRight: "10px",
-    outline: "none",
-  },
-  button: {
-    padding: "12px 20px",
-    borderRadius: "24px",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    cursor: "pointer",
-  },
-};
 
 export default PrivateChat;

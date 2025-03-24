@@ -21,6 +21,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import InformationService from "./pages/InformationService";
 import Payment from "./pages/Payment";
 import PrivateChat from "./pages/PrivateChat.jsx";
+import FloatingChatButton from "./components/FloatingChatButton";
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -61,7 +62,8 @@ function App() {
               </>
             }
           </Routes>
-
+          <FloatingChatButton />
+          
         </div>
       </Router>
     </div>

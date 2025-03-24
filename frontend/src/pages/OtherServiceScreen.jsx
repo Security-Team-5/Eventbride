@@ -16,6 +16,7 @@ import {
   Calendar,
   CheckCircle,
 } from "lucide-react"
+import { Link } from "react-router-dom"
 import "../static/resources/css/OtherService.css"
 
 const OtherServiceScreen = () => {
@@ -232,43 +233,105 @@ const OtherServiceScreen = () => {
       </button>
 
       {filtersVisible && (
-         <div className="filters-container">
-           <h2>Filtros disponibles</h2>
-           <input
-             type="text"
-             placeholder="Nombre del servicio"
-             value={name}
-             onChange={(e) => setName(e.target.value)}
-           />
-           <input
-             type="text"
-             placeholder="Ciudad en la que buscas"
-             value={city}
-             onChange={(e) => setCity(e.target.value)}
-           />
-           <button onClick={getFilteredOtherServices}>Aplicar filtros</button>
-         </div>
-       )}
- 
-       <h2 className="category-title">Servicios disponibles en la categoría: {category}</h2>
-
-
-      <div className="services-grid">
-        {otherServices.map((service) => (
-          <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
-            <h3 className="service-title">{service.name}</h3>
-            <p><strong>Precio:</strong> {service.limitedByPricePerGuest ? `${service.servicePricePerGuest} € por invitado` :
-              service.limitedByPricePerHour ? `${service.servicePricePerHour} € por hora` :
-                `${service.fixedPrice} €`}</p>
+        <div className="filter-container">
+          <h2 className="filter-title">Filtros disponibles</h2>
+          <div className="filter-form">
+            <div className="input-group">
+              <label className="input-label">Nombre del servicio</label>
+              <input
+                type="text"
+                className="input-field"
+                placeholder="Ej: Catering Deluxe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="input-group">
+              <label className="input-label">Ciudad</label>
+              <input
+                type="text"
+                className="input-field"
+                placeholder="Ej: Madrid"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="button-group">
+            <button className="primary-button" onClick={getFilteredOtherServices}>
+              <Filter size={16} />
+              Aplicar filtros
+            </button>
             <button
-              className="confirm-button"
-              onClick={(e) => handleAddServiceClick(e, service.id)}
+              className="secondary-button"
+              onClick={() => {
+                setName("")
+                setCity("")
+                getAllOtherServices()
+              }}
             >
-              Añadir a mi evento
+              <X size={16} />
+              Borrar filtros
             </button>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
+      <h2 className="services-subtitle">
+        {category ? `Servicios de ${formatServiceType(category)}` : "Todos los servicios disponibles"}
+      </h2>
+
+      {/* Grid de servicios */}
+      {loading ? (
+        <div className="empty-state">
+          <div className="loading-spinner"></div>
+          <p>Cargando servicios...</p>
+        </div>
+      ) : otherServices.length === 0 ? (
+        <div className="empty-state">
+          <Info size={48} className="empty-icon" />
+          <h2 className="empty-title">No se encontraron servicios</h2>
+          <p className="empty-text">Intenta con otros filtros o categorías.</p>
+        </div>
+      ) : (
+        <div className="services-grid">
+          {otherServices.map((service) => (
+            <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
+              <div className="card-header">
+                <h3 className="service-title">{service.name}</h3>
+              </div>
+              <div className="card-body">
+                <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
+
+                <div className="service-info">
+                  <MapPin size={18} className="info-icon" />
+                  <span className="info-text">{service.cityAvailable}</span>
+                </div>
+
+                <div className="service-info">
+                  <DollarSign size={18} className="info-icon" />
+                  <span className="info-text">
+                    {service.limitedByPricePerGuest
+                      ? `${service.servicePricePerGuest}€ por invitado`
+                      : service.limitedByPricePerHour
+                        ? `${service.servicePricePerHour}€ por hora`
+                        : `${service.fixedPrice}€ precio fijo`}
+                  </span>
+                </div>
+              </div>
+              <div className="card-footer">
+                <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
+                  <Plus size={16} />
+                  Añadir a mi evento
+                </button>
+                <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
+                  💬 Chatear
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Modal para seleccionar evento */}
       {modalVisible && (
@@ -417,4 +480,4 @@ const OtherServiceScreen = () => {
   )
 }
 
-export default OtherServiceScreen;
+export default OtherServiceScreen
