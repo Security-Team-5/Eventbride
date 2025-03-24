@@ -15,7 +15,6 @@ function PaypalButton({ amount, paymentType, eventProp }) {
           const currentUser = JSON.parse(localStorage.getItem("user"))
           const response = await axios.post(`/api/payment/${eventProp.id}/pay-deposit/${currentUser.id}`);
           console.log(response.data);
-          navigate(`/events`)
 
         } catch (error) {
           alert('Error al pagar');
@@ -27,8 +26,6 @@ function PaypalButton({ amount, paymentType, eventProp }) {
           const currentUser = JSON.parse(localStorage.getItem("user"))
           const response = await axios.post(`/api/payment/${eventProp.id}/pay-remaining/${currentUser.id}`);
           console.log(response.data);
-          navigate(`/events`)
-
         } catch (error) {
           alert('Error al pagar');
           console.error(error);
@@ -36,7 +33,15 @@ function PaypalButton({ amount, paymentType, eventProp }) {
       }
     }
 
-    async function cancelOtherServiceOrVenue() {}
+    async function cancelEventAfterPayment() {
+      try {
+        const currentUser = JSON.parse(localStorage.getItem("user"));
+        await axios.put(`/api/event-properties/cancel/${eventProp.id}`, currentUser);
+        console.log('Evento cancelado correctamente');
+      } catch (error) {
+        console.error('Error al cancelar evento:', error);
+      }
+    }
 
     // Evitar renderizar el botón más de una vez
     if (!document.getElementById("paypal-button-container").hasChildNodes()) {
@@ -53,8 +58,10 @@ function PaypalButton({ amount, paymentType, eventProp }) {
               });
             },
             onApprove: (data, actions) => {
-              return actions.order.capture().then((details) => {
-                payPrice()
+              return actions.order.capture().then(async (details) => {
+                await payPrice();
+                await cancelEventAfterPayment();
+                navigate('/events')
                 alert(`Pago completado por ${details.payer.name.given_name}`);
               });
             },

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
 import com.eventbride.user.User;
-import com.google.api.client.util.DateTime;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,7 +65,7 @@ public class EventPropertiesController {
     public ResponseEntity<Void> cancelEvent(@PathVariable Integer eventPropertieID, @RequestBody User user) {
         EventProperties evenProp = eventPropertiesService.findById(eventPropertieID) ;
         LocalDate fechaEvento = evenProp.getStartTime().toLocalDate();
-        if(evenProp.getVenue().getId() != null){
+        if(evenProp.getVenue() != null){
             eventPropertiesService.getEventsPropsToCancelVenue(fechaEvento, evenProp.getVenue().getId(), evenProp.getId());
         }else{
             eventPropertiesService.getEventsPropsToCancelOtherService(fechaEvento, evenProp.getOtherService().getId(), evenProp.getId());

@@ -87,10 +87,13 @@ public class EventPropertiesService {
     }
 
     @Transactional
-    public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException {
+    public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException{
         EventProperties toUpdate = findById(id);
-        toUpdate.setStatus(Status.CANCELLED);
-        return save(toUpdate);
+        System.out.println("ANTES DEL CAMBIO -> status: " + toUpdate.getStatus());
+        toUpdate.setStatus(EventProperties.Status.CANCELLED);
+        EventProperties saved = updateEventProperties(toUpdate,id);
+        System.out.println("DESPUÉS DEL CAMBIO -> status: " + saved.getStatus());
+        return saved;
     }
 
     @Transactional(readOnly = true)
@@ -108,7 +111,7 @@ public class EventPropertiesService {
         return eventPropertiesRepository.findEventPropertiesByVenueId(venueId);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void getEventsPropsToCancelVenue(LocalDate fecha, Integer venueId, Integer eventPropId){
         List<EventProperties> listToCancelVenues = eventPropertiesRepository.findVenuesToCancel(fecha, venueId, eventPropId);
         for (EventProperties eP : listToCancelVenues) {
@@ -127,7 +130,7 @@ public class EventPropertiesService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId){
         List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha, otherServiceId, eventPropId);
         for (EventProperties eP : listToCancelOtherServices) {
