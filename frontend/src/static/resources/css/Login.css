@@ -1,57 +1,338 @@
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    
+/* Split Layout */
+.split-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Login Side */
+.login-side {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f7fa;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: #888;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  border-color: #1a1a1a;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.15);
+  background-color: white;
+  color: #333;
+}
+
+.input-wrapper input::placeholder {
+  color: #aaa;
+}
+
+.login-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 8px;
+}
+
+.login-button:hover {
+  background-color: #333333;
+}
+
+.login-button:active {
+  background-color: #000000;
+}
+
+.login-button.loading {
+  background-color: #444444;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  
-  .login-box {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  }
-  
-  .login-box form {
-    display: flex;
+}
+
+.login-footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 15px;
+  color: #666;
+}
+
+.login-footer a {
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.login-footer a:hover {
+  color: #333333;
+  text-decoration: underline;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fff0f0;
+  color: #e53935;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  border-left: 3px solid #e53935;
+}
+
+/* Collage Side */
+.collage-side {
+  width: 60%;
+  background-color: #1a1a1a;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-collage {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.collage-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.collage-item::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  z-index: 1;
+}
+
+.collage-label {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  z-index: 2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.item-1 {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  background-image: url("https://media.admagazine.com/photos/641239e4d3f4fe9a251b2477/1:1/w_1999,h_1999,c_limit/destinos-para-bodas.jpg");
+  background-color: #d4a373;
+}
+
+.item-2 {
+  grid-column: 3 / 5;
+  grid-row: 1 / 2;
+  background-image: url("https://images.unsplash.com/photo-1566516171511-1c411a59c8ba?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmF1dGl6b3N8ZW58MHx8MHx8fDA%3D");
+  background-color: #e9c46a;
+}
+
+.item-3 {
+  grid-column: 3 / 4;
+  grid-row: 2 / 4;
+  background-image: url("https://img.freepik.com/free-photo/portrait-child-getting-ready-their-first-communion_23-2149377980.jpg?t=st=1742833748~exp=1742837348~hmac=fc791c12a916a813ee7ad5b57e1bb679c755efdecc0600d98fca7e602e44184a&w=360");
+  background-color: #2a9d8f;
+}
+
+.item-4 {
+  grid-column: 4 / 5;
+  grid-row: 2 / 3;
+  background-image: url("https://img.freepik.com/free-photo/dj-playing-music-mixer_155003-2685.jpg?t=st=1742834252~exp=1742837852~hmac=cca4d37b206f3303c7e71d5bcebceb1bfbd49d8499095c1c5a5497bea99c4347&w=1060");
+  background-color: #e76f51;
+}
+
+.item-5 {
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+  background-image: url("https://lasbodasdetatin.com/wp-content/uploads/2019/04/0196_ElFestinDeBabette_0675.jpg");
+  background-color: #264653;
+}
+
+.item-4,
+.item-5 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .split-layout {
     flex-direction: column;
-    gap: 5px; 
-  }
-  
-  .login-box input {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
   }
 
-  .login-box select {
+  .login-side,
+  .collage-side {
+    width: 100%;
+  }
+
+  .login-side {
+    min-height: 100vh;
+  }
+
+  .collage-side {
+    min-height: 50vh;
+  }
+
+  .photo-collage {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    height: 100%;
+  }
+
+  .item-1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  .item-2 {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  .item-3 {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  .item-4 {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+
+  .item-5 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .collage-side {
+    display: none;
+  }
+
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .login-header h1 {
+    font-size: 24px;
+  }
+
+  .input-wrapper input {
+    padding: 12px 12px 12px 40px;
+  }
+
+  .login-button {
     padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
   }
-  
-  .login-box button {
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .login-box button:hover {
-    background-color: #0056b3;
-  }
-  
-  html, body, #root {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
+}
