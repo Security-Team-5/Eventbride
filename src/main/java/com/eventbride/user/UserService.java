@@ -80,7 +80,9 @@ public class UserService {
         user.setTelephone(userDetails.getTelephone());
         user.setDni(userDetails.getDni());
         user.setRole(userDetails.getRole());
-        user.setProfilePicture(userDetails.getProfilePicture());
+        user.setPlan(userDetails.getPlan());
+        user.setPaymentPlanDate(userDetails.getPaymentPlanDate());
+        user.setExpirePlanDate(userDetails.getExpirePlanDate());
 
         return userRepository.save(user);
     }
@@ -95,5 +97,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
+    @Transactional
+    public User updateUserPlan(Integer id, User updatedUser) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setPlan(updatedUser.getPlan());
+        user.setPaymentPlanDate(updatedUser.getPaymentPlanDate());
+        user.setExpirePlanDate(updatedUser.getExpirePlanDate());
+        return userRepository.save(user);
+    }
+  
 }

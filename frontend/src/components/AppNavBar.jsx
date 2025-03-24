@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
@@ -9,10 +9,9 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
 
   // Obtener datos user desde localStorage
-  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  const [currentUser] = useState(JSON.parse(localStorage.getItem("user") || "{}"));
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -52,11 +51,6 @@ function Navbar() {
     };
   }, [isOpen]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
 
   const renderNavItems = () => {
     if (!currentUser || !currentUser.role) {
@@ -133,34 +127,35 @@ function Navbar() {
   };
 
   return (
-    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-      <div className="navbar-container">
-        <div className="navbar-brand">
-          <Link to="/" className="brand-link">
-            <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
-            <span className="navbar-title">Inicio</span>
-          </Link>
-        </div>
-
-        {/* Hamburger menu for mobile */}
-        <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
-          <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
-            <span></span>
-            <span></span>
-            <span></span>
+    <div>
+      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+        <div className="navbar-container">
+          <div className="navbar-brand">
+            <Link to="/" className="brand-link">
+              <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+              <span className="navbar-title">Inicio</span>
+            </Link>
           </div>
-        </div>
 
-        {/* Navigation links */}
-        <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
-          {renderNavItems()}
+          {/* Hamburger menu for mobile */}
+          <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+            <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
 
-          {currentUser && currentUser.role && (
-            <div className="navbar-actions">
-              <Link to="/" className="action-icon messages-icon">
-                <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
-                <span className="notification-badge">2</span>
-              </Link>
+          {/* Navigation links */}
+          <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
+            {renderNavItems()}
+
+            {currentUser && currentUser.role && (
+              <div className="navbar-actions">
+                <Link to="/" className="action-icon messages-icon">
+                  <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
+                  <span className="notification-badge">2</span>
+                </Link>
 
               <div className="user-menu">
                 <Link to="/profile" className="action-icon user-icon">
@@ -168,15 +163,12 @@ function Navbar() {
                 </Link>
                 <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
-
-              <button className="logout-button" onClick={handleLogout}>
-                Cerrar sesión
-              </button>
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
 

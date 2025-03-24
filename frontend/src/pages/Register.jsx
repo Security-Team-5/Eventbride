@@ -14,6 +14,9 @@ const Register = () => {
     dni: "",
     role: "CLIENT",
     profilePicture: "",
+    plan:null,
+    paymentPlanDate:null,
+    expirePlanDate:null,
   });
 
   const [error, setError] = useState(null);
@@ -40,6 +43,9 @@ const Register = () => {
         password: form.password,
         role: role,
         profilePicture: form.profilePicture,
+        plan: null,
+        paymentPlanDate: null,
+        expirePlanDate: null,
       });
 
       if (response.data.error) {
