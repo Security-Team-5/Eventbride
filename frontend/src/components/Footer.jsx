@@ -55,7 +55,7 @@ function Footer() {
                 </div>
 
                 <div className="footer-bottom">
-                    <p>© {new Date().getFullYear()} Eventbride. Todos los derechos reservados.</p>
+                    <p style={{ color: "#a0a0a0" }}>© {new Date().getFullYear()} Eventbride. Todos los derechos reservados.</p>
                 </div>
             </footer>
         </div>
