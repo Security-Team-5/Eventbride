@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Calendar, Users, DollarSign, PartyPopper } from "lucide-react"
+import { Calendar, Users, PartyPopper } from "lucide-react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import "../static/resources/css/CreateEvents.css"
@@ -16,7 +16,6 @@ function CreateEvents() {
   const currentUser = JSON.parse(localStorage.getItem("user"))
   const [eventType, setEventType] = useState("")
   const [guests, setGuests] = useState("")
-  const [budget, setBudget] = useState("")
   const [eventDate, setEventDate] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState("")
@@ -28,15 +27,29 @@ function CreateEvents() {
     setError("")
 
     // Simple validation
-    if (!eventType || !guests || !budget || !eventDate) {
+    if (!eventType || !guests || !eventDate) {
       setError("Por favor completa todos los campos")
+      return
+    }
+
+    // Additional validation for guests
+    const minGuests = 1
+    const maxGuests = 3000
+    if (guests < minGuests || guests > maxGuests) {
+      setError(`El número de invitados debe estar entre ${minGuests} y ${maxGuests}`)
+      return
+    }
+
+    // Additional validation for event date
+    const today = new Date().toISOString().split("T")[0]
+    if (eventDate <= today) {
+      setError("No puedes crear un evento en una fecha anterior a hoy")
       return
     }
 
     const newEvent = {
       eventType,
       guests,
-      budget,
       eventDate,
       user,
     }
@@ -107,22 +120,6 @@ function CreateEvents() {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="budget">
-              <DollarSign size={18} className="input-icon" />
-              Presupuesto estimado (€)
-            </label>
-            <input
-              type="number"
-              id="budget"
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
-              required
-              placeholder="Ej: 5000"
-              min="1"
-              className="form-input"
-            />
-          </div>
 
           <div className="form-group">
             <label htmlFor="eventDate">
