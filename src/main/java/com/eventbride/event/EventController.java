@@ -143,5 +143,18 @@ public class EventController {
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
+
+    @GetMapping("/supplier/{userId}")
+    public ResponseEntity<List<EventDTO>> getSupplierEventsByUserId(@PathVariable Integer userId) {
+        List<Event> events = eventService.findSupplierEventsByUserId(userId);
+        if (events.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<EventDTO> eventDTOs = new ArrayList<>();
+        for (Event event : events) {
+            eventDTOs.add(new EventDTO(event));
+        }
+        return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
+    }
 }
 

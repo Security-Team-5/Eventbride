@@ -96,4 +96,9 @@ public class EventService {
     public void saveAll(List<Event> events) {
         eventRepository.saveAll(events);
     }
+
+    @Transactional
+     public List<Event> findSupplierEventsByUserId(Integer userId) {
+         return eventRepository.findSupplierEventsByUserId(userId);
+     }
 }

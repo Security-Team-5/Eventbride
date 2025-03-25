@@ -109,6 +109,9 @@ function Navbar() {
           <li>
             <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
           </li>
+          <li>
+             <Link to="/supplierevents" className="nav-link">Mis eventos</Link>
+           </li>
         </ul>
       );
     }
