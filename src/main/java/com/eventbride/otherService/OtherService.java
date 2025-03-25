@@ -41,9 +41,6 @@ public class OtherService extends Service {
         DECORATION
     }
 
-    @OneToMany(mappedBy = "otherService", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Rating> ratings = new HashSet<>();
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
