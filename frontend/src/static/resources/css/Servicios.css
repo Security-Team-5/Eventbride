@@ -214,3 +214,29 @@
         grid-template-columns: 1fr;
     }
 }
+.warning-message {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.disable-button {
+    background-color: #f87171;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-right: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.service-item.over-limit {
+    border: 2px solid #f87171;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+}

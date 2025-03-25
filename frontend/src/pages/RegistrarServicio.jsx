@@ -23,9 +23,11 @@ const RegistrarServicio = () => {
     // Obtener datos user desde localStorage
     const currentUser = JSON.parse(localStorage.getItem("user"))
 
+    const [generalError, setGeneralError] = useState("") //Error si te pasas del numero de servicios permitidos
+
     const [serviceType, setServiceType] = useState("unselected")
     const [limitedBy, setLimitedBy] = useState("perGuest")
-    const [errors, setErrors] = useState({
+    const [errors] = useState({
         name: "",
         cityAvailable: "",
         servicePricePerGuest: "",
@@ -85,6 +87,8 @@ const RegistrarServicio = () => {
         formData.limitedByPricePerHour = limitedBy === "perHour"
 
         console.log("Datos del formulario:", formData)
+        console.log("General error:", generalError)
+
         fetch("/api/" + serviceType, {
             headers: {
                 "Content-Type": "application/json",
@@ -92,17 +96,24 @@ const RegistrarServicio = () => {
             method: "POST",
             body: JSON.stringify(formData),
         })
-            .then((response) => response.json())
-            .then((data) => {
-                if (!data.error) {
-                    navigate("/misservicios")
+            .then(async (response) => {
+                const data = await response.json()
+                if (!response.ok) {
+                    if (data.error) {
+                        setGeneralError(data.error)
+                    } else {
+                        setGeneralError("Ocurrió un error inesperado")
+                    }
+                    throw new Error("Solicitud fallida")
                 } else {
-                    // eslint-disable-next-line no-unused-vars
-                    const errorName = data.error
-                    setErrors(data)
+                    setGeneralError("") // Limpia el mensaje anterior
+                    navigate("/misservicios")
                 }
             })
-            .catch((error) => console.error("Error obteniendo evento:", error))
+            .catch((error) => {
+                console.error("Error creando servicio:", error)
+            })
+
     }
 
     return (
@@ -127,7 +138,14 @@ const RegistrarServicio = () => {
 
             {serviceType !== "unselected" && (
                 <div className="form-container">
+                    {generalError && (
+                        <div className="error-message general-error">
+                            <AlertCircle size={16} className="mr-2" />
+                            {generalError}
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit}>
+
                         <div className="form-section">
                             <h3 className="form-section-title">Información básica del servicio</h3>
 

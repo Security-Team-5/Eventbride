@@ -3,7 +3,18 @@
 import { useState, useEffect } from "react"
 import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom"
-import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info } from "lucide-react"
+import {
+    CheckCircle,
+    MapPin,
+    DollarSign,
+    Users,
+    Clock,
+    Plus,
+    Edit,
+    Package,
+    Info,
+    AlertCircle,
+} from "lucide-react"
 import "../static/resources/css/Servicios.css"
 
 const Servicios = () => {
@@ -11,36 +22,52 @@ const Servicios = () => {
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
-    // Obtener datos user desde localStorage
     const currentUser = JSON.parse(localStorage.getItem("user"))
 
     useEffect(() => {
-        // Fetch the services of the provider
         const fetchServices = async () => {
             try {
                 setLoading(true)
                 const response = await apiClient.get(`/api/services/user/${currentUser.id}`)
-                console.log("Response:", response.data)
+
                 const otherServices = Array.isArray(response.data.otherServices)
                     ? response.data.otherServices.map((otherService) => ({ ...otherService, type: "otherService" }))
                     : []
+
                 const venues = Array.isArray(response.data.venues)
                     ? response.data.venues.map((venue) => ({ ...venue, type: "venue" }))
                     : []
-                setServices([...otherServices, ...venues])
+
+                const allServices = [...otherServices, ...venues]
+                const plan = currentUser.plan || "BASIC"
+                const maxAllowed = plan === "PREMIUM" ? 10 : 3
+
+                // 🧠 Solo servicios disponibles
+                const availableServices = allServices.filter(s => s.available)
+                const excessServiceIds = availableServices
+                    .slice(maxAllowed)
+                    .map(s => s.id)
+
+                // Marcar los que están en exceso como overLimit
+                const markedServices = allServices.map(service => ({
+                    ...service,
+                    overLimit: excessServiceIds.includes(service.id),
+                }))
+
+                setServices(markedServices)
             } catch (error) {
                 console.error("Error fetching services:", error)
             } finally {
                 setLoading(false)
             }
         }
-        fetchServices()
-    }, [currentUser.id])
 
-    // Función para formatear el tipo de servicio
+        fetchServices()
+    }, [currentUser.id, currentUser.plan])
+
+
     const formatServiceType = (type, otherServiceType) => {
         if (type === "venue") return "Recinto para eventos"
-
         switch (otherServiceType) {
             case "CATERING":
                 return "Catering"
@@ -57,6 +84,13 @@ const Servicios = () => {
         <div className="mis-servicios-container">
             <h1 className="mis-servicios-title">Mis Servicios</h1>
 
+            {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
+                <div className="warning-message">
+                    <AlertCircle size={20} className="mr-2" />
+                    Has excedido el límite de servicios del plan <strong>BASIC</strong>. Marca algunos como no disponibles para cumplir con el límite.
+                </div>
+            )}
+
             {loading ? (
                 <div className="empty-state">
                     <div className="loading-spinner"></div>
@@ -71,10 +105,12 @@ const Servicios = () => {
             ) : (
                 <div className="services-list">
                     {services.map((service) => (
-                        <div key={service.id} className="service-item">
+                        <div key={service.id} className={`service-item ${service.overLimit ? "over-limit" : ""}`}>
                             <div className="service-header">
                                 <h3 className="service-title">{service.name}</h3>
-                                <span className="service-badge">{formatServiceType(service.type, service.otherServiceType)}</span>
+                                <span className="service-badge">
+                                    {formatServiceType(service.type, service.otherServiceType)}
+                                </span>
                             </div>
 
                             <div className="service-body">
@@ -151,6 +187,28 @@ const Servicios = () => {
                             </div>
 
                             <div className="service-footer">
+                                {service.overLimit && currentUser.plan === "BASIC" && (
+                                    <button
+                                        className="disable-button"
+                                        onClick={async () => {
+                                            try {
+                                                await apiClient.patch(`/api/other-services/disable/${service.id}`)
+                                                setServices((prev) =>
+                                                    prev.map((s) =>
+                                                        s.id === service.id
+                                                            ? { ...s, available: false, overLimit: false }
+                                                            : s
+                                                    )
+                                                )
+                                            } catch (error) {
+                                                console.error("Error al desactivar servicio:", error)
+                                            }
+                                        }}
+                                    >
+                                        Desactivar
+                                    </button>
+                                )}
+
                                 <button
                                     className="edit-button"
                                     onClick={() =>
@@ -180,4 +238,3 @@ const Servicios = () => {
 }
 
 export default Servicios
-

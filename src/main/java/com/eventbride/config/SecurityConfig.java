@@ -53,6 +53,7 @@ public class SecurityConfig {
                                 "/api/venues/{eventId}/add-venue/{venueId}/**",
                                 "/api/users/plan",
                                 "/api/users/profile/plan",
+                                "/api/other-services/disable/**",
                                 "/api/services/**")
                         .permitAll()
                         .requestMatchers("/api/services/admin",

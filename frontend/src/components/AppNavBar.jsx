@@ -103,6 +103,7 @@ function Navbar() {
           <li>
             <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
           </li>
+          <li className="nav-link" style={{backgroundColor:"red"}}>{currentUser.plan}</li>
         </ul>
       );
     }
