@@ -103,6 +103,7 @@
 .form-select:focus {
   outline: none;
   border-color: #d9be75;
+  box-shadow: 0 0 0 3px rgba(217, 190, 117, 0.1);
 }
 
 .form-input::placeholder {
