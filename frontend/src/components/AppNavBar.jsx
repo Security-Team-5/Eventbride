@@ -157,41 +157,33 @@ function Navbar() {
             <span></span>
             <span></span>
           </div>
-
-          {/* Hamburger menu for mobile */}
-          <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
-            <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-
-          {/* Navigation links */}
-          <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
-            {renderNavItems()}
-
-            {currentUser && currentUser.role && (
-              <div className="navbar-actions">
-                <Link to="/" className="action-icon messages-icon">
-                  <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
-                  <span className="notification-badge">2</span>
-                </Link>
-
-                <div className="user-menu">
-                  <Link to="/profile" className="action-icon user-icon">
-                    <img src={usuario || "/placeholder.svg"} alt="Usuario" className="icon-img" />
-                  </Link>
-                  <div className="user-name">{currentUser.username || "Usuario"}</div>
-                </div>
-              </div>
-            )}
-            <button className="logout-button" onClick={handleLogout}>
-              Cerrar sesión
-            </button>
-          </div>
         </div>
-      </div >
+
+        {/* Navigation links */}
+        <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
+          {renderNavItems()}
+
+          {currentUser && currentUser.role && (
+            <div className="navbar-actions">
+              <Link to="/" className="action-icon messages-icon">
+                <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
+                <span className="notification-badge">2</span>
+              </Link>
+
+              <div className="user-menu">
+                <Link to="/profile" className="action-icon user-icon">
+                  <img src={usuario || "/placeholder.svg"} alt="Usuario" className="icon-img" />
+                </Link>
+                <div className="user-name">{currentUser.username || "Usuario"}</div>
+              </div>
+
+              <button className="logout-button" onClick={handleLogout}>
+                Cerrar sesión
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
     </nav>
   );
 }
