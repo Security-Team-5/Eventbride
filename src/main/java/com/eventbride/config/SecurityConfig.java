@@ -55,7 +55,7 @@ public class SecurityConfig {
                                 "/api/venues/{eventId}/add-venue/{venueId}/**",
                                 "/api/services/**",
                                 "/api/event-properties/cancel/{eventPropertieID}",
-                                "/api/event-properties/status/pending/{eventPropertiesId}")
+                                "/api/event-properties/status/pending/{eventPropertiesId}",
                                 "/api/users/plan",
                                 "/api/users/profile/plan",
                                 "/api/other-services/disable/**",
