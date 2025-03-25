@@ -201,7 +201,7 @@ function EventDetails() {
     let total = 0;
     for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
       const prop = evento.eventPropertiesDTO[i];
-      total += (prop.setPricePerService || 0);
+      total += (prop.setPricePerService || 0)+ (prop.depositAmount || 0);
     }
     return total;
   };
