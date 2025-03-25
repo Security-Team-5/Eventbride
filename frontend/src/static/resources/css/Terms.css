@@ -1,43 +1,140 @@
-/* Terms.css */
+/* Terms and Conditions Styles */
 .terms-container {
-    font-family: Arial, sans-serif;
-    background-color: #FFFDF3;
-    
-  }
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  padding-top: 125px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  color: #333;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
 
-.term-paragraph {
-  justify-content: center;
+.terms-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eaeaea;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
 }
 
-.term {
-  width: 50%;
+.terms-icon {
+  color: #d9be75;
+  margin-bottom: 1rem;
 }
-  
-  h1 {
-    text-align: center;
-    color: #000000;
-    margin-top: 6.5%;
-  }
-  
-  section {
-    margin-bottom: 20px;
-  }
-  
-  h2 {
-    color: #000000;
-  }
-  
-  p { 
-    font-size: 16px;
-    line-height: 1.6;
-    color: #000000;
-    text-align: center;
+
+.terms-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.terms-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.terms-section {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.terms-section:last-child {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-icon {
+  color: #d9be75;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.section-content {
+  padding-left: 2.25rem;
+}
+
+.section-content p {
+  margin: 0 0 1rem;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.section-content p:last-child {
+  margin-bottom: 0;
+}
+
+.terms-list {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.terms-list li {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+  color: #4b5563;
+  position: relative;
+}
+
+.terms-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .terms-container {
+    padding: 1.5rem;
   }
 
-  ul li::before {
-    content: "• ";
-    color: #000000;
+  .terms-header {
+    margin-bottom: 2rem;
   }
-  
+
+  .terms-header h1 {
+    font-size: 2rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .section-content {
+    padding-left: 1.75rem;
+  }
+
+  .terms-content {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .terms-container {
+    padding: 1rem;
+  }
+
+  .terms-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .section-content {
+    padding-left: 1.5rem;
+  }
+}

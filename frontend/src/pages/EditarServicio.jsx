@@ -1,119 +1,158 @@
-"use client"
-
-import React, { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import apiClient from "../apiClient"
-import {
-    AlertCircle,
-    Clock,
-    DollarSign,
-    MapPin,
-    Save,
-    Users,
-    Home,
-    Info,
-    Image,
-    FileText,
-    Mail,
-    Package,
-    SquareIcon,
-} from "lucide-react"
-import "../static/resources/css/RegistrarServicio.css"
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
+import { Edit, Check, AlertCircle, Save } from 'lucide-react';
+import apiClient from '../apiClient';
+import "../static/resources/css/EditarServicio.css";
 
 const EditarServicio = () => {
-    const navigate = useNavigate()
-    const { id, serviceType } = useParams()
-    const currentUser = JSON.parse(localStorage.getItem("user"))
+    const navigate = useNavigate();
+    const { id, serviceType } = useParams();
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    const [limitedBy, setLimitedBy] = useState("perGuest");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    // eslint-disable-next-line no-unused-vars
+    const [errors, setErrors] = useState({
+        name: '',
+        cityAvailable: '',
+        servicePricePerGuest: '',
+        servicePricePerHour: '',
+        fixedPrice: '',
+        picture: '',
+        description: '',
+        otherServiceType: '',
+        postalCode: '',
+        coordinates: '',
+        address: '',
+        maxGuests: '',
+        surface: '',
+        earliestTime: '',
+        latestTime: '',
+        extraInformation: ''
+    });
 
-    const [limitedBy, setLimitedBy] = useState("perGuest")
-    const [errors, setErrors] = useState({})
     const [formData, setFormData] = useState({
-        name: "",
+        name: '',
         available: false,
-        cityAvailable: "",
+        cityAvailable: '',
         servicePricePerGuest: 0,
         servicePricePerHour: 0,
-        fixedPrice: "",
-        picture: "",
-        description: "",
+        fixedPrice: '',
+        picture: '',
+        description: '',
         limitedByPricePerGuest: false,
         limitedByPricePerHour: false,
-        otherServiceType: "CATERING",
-        postalCode: "",
-        coordinates: "",
-        address: "",
+        otherServiceType: 'CATERING',
+        postalCode: '',
+        coordinates: '',
+        address: '',
         maxGuests: 0,
         surface: 0,
-        earliestTime: "",
-        latestTime: "",
-        extraInformation: "",
-        user: { id: currentUser.id },
-    })
+        earliestTime: '',
+        latestTime: '',
+        extraInformation: '',
+        user: {
+            id: currentUser.id
+        }
+    });
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchServiceData = async () => {
+            setIsLoading(true);
             try {
-                const endpoint = serviceType === "venue" ? `/api/venues/${id}` : `/api/other-services/${id}`
-                const response = await apiClient.get(endpoint)
-                const data = response.data
+                let response;
+                if (serviceType === 'venue') {
+                    response = await apiClient.get(`/api/venues/${id}`);
+                } else {
+                    response = await apiClient.get(`/api/other-services/${id}`);
+                }
 
                 setFormData({
-                    ...formData,
-                    ...data,
-                    user: { id: currentUser.id },
-                })
+                    ...response.data,
+                    user: { id: currentUser.id }
+                });
 
                 setLimitedBy(
-                    data.limitedByPricePerGuest ? "perGuest" : data.limitedByPricePerHour ? "perHour" : "fixed"
-                )
+                    response.data.limitedByPricePerGuest
+                        ? "perGuest"
+                        : response.data.limitedByPricePerHour
+                            ? "perHour"
+                            : "fixed"
+                );
             } catch (error) {
-                console.error("Error fetching the service:", error)
+                console.error(`Error fetching the ${serviceType}:`, error);
+                setError(`No se pudo cargar la información del ${serviceType === 'venue' ? 'recinto' : 'servicio'}.`);
+            } finally {
+                setIsLoading(false);
             }
-        }
+        };
 
-        fetchData()
-    }, [id, serviceType])
+        fetchServiceData();
+    }, [id, serviceType, currentUser.id]);
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target
+        const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
-            [name]: type === "checkbox" ? checked : value,
-        })
-    }
+            [name]: type === 'checkbox' ? checked : value
+        });
+    };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        formData.limitedByPricePerGuest = limitedBy === "perGuest"
-        formData.limitedByPricePerHour = limitedBy === "perHour"
+        e.preventDefault();
+        setIsLoading(true);
+        setError(null);
 
-        const endpoint = serviceType === "venue" ? `/api/venues/${id}` : `/api/other-services/${id}`
+        const updatedFormData = {
+            ...formData,
+            limitedByPricePerGuest: limitedBy === "perGuest",
+            limitedByPricePerHour: limitedBy === "perHour"
+        };
+
         try {
-            await apiClient.put(endpoint, formData)
-            navigate("/misservicios")
+            if (serviceType === 'venue') {
+                await apiClient.put(`/api/venues/${id}`, updatedFormData);
+            } else {
+                await apiClient.put(`/api/other-services/${id}`, updatedFormData);
+            }
+            navigate('/misservicios');
         } catch (error) {
-            console.error("Error updating the service:", error)
+            console.error(`Error updating the ${serviceType}:`, error);
+            setError(`No se pudo actualizar el ${serviceType === 'venue' ? 'recinto' : 'servicio'}. Por favor, inténtelo de nuevo.`);
+        } finally {
+            setIsLoading(false);
         }
+    };
+
+    if (isLoading && !formData.name) {
+        return <div className="loading-container">Cargando información del servicio...</div>;
     }
 
     return (
-        <div className="service-registration-container">
-            <div className="service-registration-header">
-                <h1 className="service-registration-title">Editar Servicio</h1>
-                <h2 className="service-registration-subtitle">Actualiza los datos de tu servicio</h2>
-            </div>
+        <div className="edit-service-container">
+            <div className="edit-service-card">
+                <div className="edit-service-header">
+                    <Edit className="header-icon" />
+                    <h1>Editar {serviceType === 'venue' ? 'Recinto' : 'Servicio'}</h1>
+                </div>
 
-            <div className="form-container">
-                <form onSubmit={handleSubmit}>
+                {error && (
+                    <div className="error-message">
+                        <AlertCircle size={18} />
+                        <span>{error}</span>
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="edit-service-form">
                     <div className="form-section">
-                        <h3 className="form-section-title">Información básica del servicio</h3>
+                        <h2>Información General</h2>
 
                         <div className="form-group">
-                            <label htmlFor="name" className="form-label">
-                                <Package size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                Nombre del servicio
+
+                            <label htmlFor="name">
+                                Nombre
                             </label>
-                            {errors.name && <div className="error-message"><AlertCircle size={14} />{errors.name}</div>}
+                            {errors.name && <p className="error-text">{errors.name}</p>}
                             <input
                                 type="text"
                                 id="name"
@@ -121,50 +160,90 @@ const EditarServicio = () => {
                                 value={formData.name}
                                 onChange={handleChange}
                                 required
+                                minLength="1"
+                                maxLength="500"
                                 className="form-input"
-                                placeholder="Ej: Salón de eventos El Dorado"
                             />
                         </div>
 
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label htmlFor="cityAvailable" className="form-label">
-                                    <MapPin size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                    Ciudad disponible
-                                </label>
-                                {errors.cityAvailable && <div className="error-message"><AlertCircle size={14} />{errors.cityAvailable}</div>}
+                        <div className="form-group checkbox-group">
+                            <label htmlFor="available" className="checkbox-label">
                                 <input
-                                    type="text"
-                                    id="cityAvailable"
-                                    name="cityAvailable"
-                                    value={formData.cityAvailable}
+                                    type="checkbox"
+                                    id="available"
+                                    name="available"
+                                    checked={formData.available}
                                     onChange={handleChange}
-                                    required
-                                    className="form-input"
-                                    placeholder="Ej: Madrid"
+                                    className="checkbox-input"
                                 />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="available" className="form-label">Disponibilidad</label>
-                                <div className="checkbox-container">
-                                    <input
-                                        type="checkbox"
-                                        id="available"
-                                        name="available"
-                                        checked={formData.available}
-                                        onChange={handleChange}
-                                        className="form-checkbox"
-                                    />
-                                    <span>Servicio disponible para reservas</span>
-                                </div>
-                            </div>
+                                <span className="checkbox-text">
+                                    <Check size={16} className="checkbox-icon" />
+                                    Disponible
+                                </span>
+                            </label>
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="limitedBy" className="form-label">
-                                <DollarSign size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                Tipo de tarifa
+                            <label htmlFor="cityAvailable">
+                                Ciudad Disponible
+                            </label>
+                            {errors.cityAvailable && <p className="error-text">{errors.cityAvailable}</p>}
+                            <input
+                                type="text"
+                                id="cityAvailable"
+                                name="cityAvailable"
+                                value={formData.cityAvailable}
+                                onChange={handleChange}
+                                required
+                                minLength="1"
+                                maxLength="30"
+                                className="form-input"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="picture">
+                                URL de la Imagen
+                            </label>
+                            {errors.picture && <p className="error-text">{errors.picture}</p>}
+                            <input
+                                type="text"
+                                id="picture"
+                                name="picture"
+                                value={formData.picture}
+                                onChange={handleChange}
+                                required
+                                minLength="1"
+                                maxLength="250"
+                                className="form-input"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="description">
+                                Descripción
+                            </label>
+                            {errors.description && <p className="error-text">{errors.description}</p>}
+                            <textarea
+                                id="description"
+                                name="description"
+                                value={formData.description}
+                                onChange={handleChange}
+                                required
+                                minLength="1"
+                                maxLength="1000"
+                                className="form-textarea"
+                                rows="4"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="form-section">
+                        <h2>Información de Precios</h2>
+
+                        <div className="form-group">
+                            <label htmlFor="limitedBy">
+                                Tipo de Precio
                             </label>
                             <select
                                 id="limitedBy"
@@ -180,256 +259,254 @@ const EditarServicio = () => {
 
                         {limitedBy === "perGuest" && (
                             <div className="form-group">
-                                <label htmlFor="servicePricePerGuest" className="form-label">
-                                    <Users size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                    Precio por invitado (€)
+                                <label htmlFor="servicePricePerGuest">
+                                    Precio por Invitado (€)
                                 </label>
+                                {errors.servicePricePerGuest && <p className="error-text">{errors.servicePricePerGuest}</p>}
                                 <input
                                     type="number"
                                     id="servicePricePerGuest"
                                     name="servicePricePerGuest"
                                     value={formData.servicePricePerGuest}
                                     onChange={handleChange}
-                                    className="form-input"
                                     required
+                                    min="0"
+                                    step="0.01"
+                                    className="form-input"
                                 />
                             </div>
                         )}
 
                         {limitedBy === "perHour" && (
                             <div className="form-group">
-                                <label htmlFor="servicePricePerHour" className="form-label">
-                                    <Clock size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                    Precio por hora (€)
+                                <label htmlFor="servicePricePerHour">
+                                    Precio por Hora (€)
                                 </label>
+                                {errors.servicePricePerHour && <p className="error-text">{errors.servicePricePerHour}</p>}
                                 <input
                                     type="number"
                                     id="servicePricePerHour"
                                     name="servicePricePerHour"
                                     value={formData.servicePricePerHour}
                                     onChange={handleChange}
-                                    className="form-input"
                                     required
+                                    min="0"
+                                    step="0.01"
+                                    className="form-input"
                                 />
                             </div>
                         )}
 
                         {limitedBy === "fixed" && (
                             <div className="form-group">
-                                <label htmlFor="fixedPrice" className="form-label">
-                                    <DollarSign size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                    Precio fijo (€)
+                                <label htmlFor="fixedPrice">
+                                    Precio Fijo (€)
                                 </label>
+                                {errors.fixedPrice && <p className="error-text">{errors.fixedPrice}</p>}
                                 <input
                                     type="number"
                                     id="fixedPrice"
                                     name="fixedPrice"
                                     value={formData.fixedPrice}
                                     onChange={handleChange}
-                                    className="form-input"
                                     required
+                                    min="0"
+                                    step="0.01"
+                                    className="form-input"
                                 />
                             </div>
                         )}
-
-                        <div className="form-group">
-                            <label htmlFor="picture" className="form-label">
-                                <Image size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                URL de la imagen
-                            </label>
-                            <input
-                                type="text"
-                                id="picture"
-                                name="picture"
-                                value={formData.picture}
-                                onChange={handleChange}
-                                className="form-input"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="description" className="form-label">
-                                <FileText size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                Descripción
-                            </label>
-                            <textarea
-                                id="description"
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                                className="form-input"
-                                rows={4}
-                                required
-                            />
-                        </div>
                     </div>
 
                     {serviceType === "venue" ? (
                         <div className="form-section">
-                            <h3 className="form-section-title">Información específica del recinto</h3>
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label htmlFor="address" className="form-label">
-                                        <Home size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                        Dirección
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="address"
-                                        name="address"
-                                        value={formData.address}
-                                        onChange={handleChange}
-                                        className="form-input"
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="postalCode" className="form-label">
-                                        <Mail size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                        Código postal
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="postalCode"
-                                        name="postalCode"
-                                        value={formData.postalCode}
-                                        onChange={handleChange}
-                                        className="form-input"
-                                        required
-                                    />
-                                </div>
+                            <h2>Información del Recinto</h2>
+
+                            <div className="form-group">
+                                <label htmlFor="postalCode">
+                                    Código Postal
+                                </label>
+                                {errors.postalCode && <p className="error-text">{errors.postalCode}</p>}
+                                <input
+                                    type="text"
+                                    id="postalCode"
+                                    name="postalCode"
+                                    value={formData.postalCode}
+                                    onChange={handleChange}
+                                    required
+                                    minLength="1"
+                                    maxLength="5"
+                                    className="form-input"
+                                />
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="coordinates" className="form-label">
-                                    <MapPin size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
+                                <label htmlFor="coordinates">
                                     Coordenadas
                                 </label>
+                                {errors.coordinates && <p className="error-text">{errors.coordinates}</p>}
                                 <input
                                     type="text"
                                     id="coordinates"
                                     name="coordinates"
                                     value={formData.coordinates}
                                     onChange={handleChange}
-                                    className="form-input"
                                     required
+                                    minLength="1"
+                                    maxLength="30"
+                                    className="form-input"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="address">
+                                    Dirección
+                                </label>
+                                {errors.address && <p className="error-text">{errors.address}</p>}
+                                <input
+                                    type="text"
+                                    id="address"
+                                    name="address"
+                                    value={formData.address}
+                                    onChange={handleChange}
+                                    required
+                                    minLength="1"
+                                    maxLength="50"
+                                    className="form-input"
                                 />
                             </div>
 
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label htmlFor="maxGuests" className="form-label">
-                                        <Users size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                        Máximo de invitados
+                                    <label htmlFor="maxGuests">
+                                        Máximo de Invitados
                                     </label>
+                                    {errors.maxGuests && <p className="error-text">{errors.maxGuests}</p>}
                                     <input
                                         type="number"
                                         id="maxGuests"
                                         name="maxGuests"
                                         value={formData.maxGuests}
                                         onChange={handleChange}
-                                        className="form-input"
                                         required
+                                        min="1"
+                                        className="form-input"
                                     />
                                 </div>
+
                                 <div className="form-group">
-                                    <label htmlFor="surface" className="form-label">
-                                        <SquareIcon size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
+                                    <label htmlFor="surface">
                                         Superficie (m²)
                                     </label>
+                                    {errors.surface && <p className="error-text">{errors.surface}</p>}
                                     <input
                                         type="number"
                                         id="surface"
                                         name="surface"
                                         value={formData.surface}
                                         onChange={handleChange}
-                                        className="form-input"
                                         required
+                                        min="1"
+                                        className="form-input"
                                     />
                                 </div>
                             </div>
 
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label htmlFor="earliestTime" className="form-label">
-                                        <Clock size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                        Hora de apertura
+                                    <label htmlFor="earliestTime">
+                                        Hora de Apertura
                                     </label>
+                                    {errors.earliestTime && <p className="error-text">{errors.earliestTime}</p>}
                                     <input
                                         type="time"
                                         id="earliestTime"
                                         name="earliestTime"
                                         value={formData.earliestTime}
                                         onChange={handleChange}
-                                        className="form-input"
                                         required
+                                        className="form-input"
                                     />
                                 </div>
+
                                 <div className="form-group">
-                                    <label htmlFor="latestTime" className="form-label">
-                                        <Clock size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                        Hora de cierre
+                                    <label htmlFor="latestTime">
+                                        Hora de Cierre
                                     </label>
+                                    {errors.latestTime && <p className="error-text">{errors.latestTime}</p>}
                                     <input
                                         type="time"
                                         id="latestTime"
                                         name="latestTime"
                                         value={formData.latestTime}
                                         onChange={handleChange}
-                                        className="form-input"
                                         required
+                                        className="form-input"
                                     />
                                 </div>
                             </div>
                         </div>
                     ) : (
                         <div className="form-section">
-                            <h3 className="form-section-title">Información específica del servicio</h3>
+                            <h2>Información del Servicio</h2>
+
                             <div className="form-group">
-                                <label htmlFor="otherServiceType" className="form-label">
-                                    <Package size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                    Tipo de servicio
+                                <label htmlFor="otherServiceType">
+                                    Tipo de Servicio
                                 </label>
                                 <select
                                     id="otherServiceType"
                                     name="otherServiceType"
                                     value={formData.otherServiceType}
                                     onChange={handleChange}
-                                    className="form-select"
                                     required
+                                    className="form-select"
                                 >
                                     <option value="CATERING">Catering</option>
                                     <option value="ENTERTAINMENT">Entretenimiento</option>
                                     <option value="DECORATION">Decoración</option>
                                 </select>
                             </div>
+
                             <div className="form-group">
-                                <label htmlFor="extraInformation" className="form-label">
-                                    <Info size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                    Información adicional
+                                <label htmlFor="extraInformation">
+                                    Información Adicional
                                 </label>
+                                {errors.extraInformation && <p className="error-text">{errors.extraInformation}</p>}
                                 <textarea
                                     id="extraInformation"
                                     name="extraInformation"
                                     value={formData.extraInformation}
                                     onChange={handleChange}
-                                    className="form-input"
-                                    rows={4}
                                     required
+                                    minLength="1"
+                                    maxLength="1000"
+                                    className="form-textarea"
+                                    rows="4"
                                 />
                             </div>
                         </div>
                     )}
 
-                    <button type="submit" className="submit-button">
-                        <Save size={18} />
-                        Guardar cambios
-                    </button>
+                    <div className="form-actions">
+                        <button type="button" className="cancel-button" onClick={() => navigate('/misservicios')}>
+                            Cancelar
+                        </button>
+                        <button type="submit" className="submit-button" disabled={isLoading}>
+                            {isLoading ? (
+                                <span className="loading-spinner"></span>
+                            ) : (
+                                <>
+                                    <Save size={18} />
+                                    <span>Guardar Cambios</span>
+                                </>
+                            )}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default EditarServicio
+export default EditarServicio;

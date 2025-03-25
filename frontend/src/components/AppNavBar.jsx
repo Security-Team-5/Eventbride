@@ -11,7 +11,8 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   // Obtener datos user desde localStorage
-  const [currentUser] = useState(JSON.parse(localStorage.getItem("user") || "{}"));
+  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  console.log(currentUser)
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -51,6 +52,11 @@ function Navbar() {
     };
   }, [isOpen]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
 
   const renderNavItems = () => {
     if (!currentUser || !currentUser.role) {
@@ -103,7 +109,6 @@ function Navbar() {
           <li>
             <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
           </li>
-          <li className="nav-link" style={{backgroundColor:"red"}}>{currentUser.plan}</li>
         </ul>
       );
     }
@@ -128,35 +133,41 @@ function Navbar() {
   };
 
   return (
-    <div>
-      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-        <div className="navbar-container">
-          <div className="navbar-brand">
+    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <div className="navbar-container">
+        <div className="navbar-brand">
+          {currentUser === "{}" ? (
+            <span className="brand-link disabled-link">
+              <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+              <span className="navbar-title">Inicio</span>
+            </span>
+          ) : (
             <Link to="/" className="brand-link">
               <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
               <span className="navbar-title">Inicio</span>
             </Link>
+          )}
+        </div>
+
+        {/* Hamburger menu for mobile */}
+        <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+          <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
+            <span></span>
+            <span></span>
+            <span></span>
           </div>
+        </div>
 
-          {/* Hamburger menu for mobile */}
-          <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
-            <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
+        {/* Navigation links */}
+        <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
+          {renderNavItems()}
 
-          {/* Navigation links */}
-          <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
-            {renderNavItems()}
-
-            {currentUser && currentUser.role && (
-              <div className="navbar-actions">
-                <Link to="/" className="action-icon messages-icon">
-                  <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
-                  <span className="notification-badge">2</span>
-                </Link>
+          {currentUser && currentUser.role && (
+            <div className="navbar-actions">
+              <Link to="/" className="action-icon messages-icon">
+                <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
+                <span className="notification-badge">2</span>
+              </Link>
 
               <div className="user-menu">
                 <Link to="/profile" className="action-icon user-icon">
@@ -164,12 +175,17 @@ function Navbar() {
                 </Link>
                 <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
-              </div>
-            )}
-          </div>
+
+              {currentUser.role === "SUPPLIER" ? <li className="nav-link" style={{ backgroundColor: "red" }}>{currentUser.plan}</li> : ""}
+
+              <button className="logout-button" onClick={handleLogout}>
+                Cerrar sesión
+              </button>
+            </div>
+          )}
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }
 
