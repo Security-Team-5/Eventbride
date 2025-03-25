@@ -5,8 +5,10 @@ import "../../static/resources/css/Admin.css";
 
 function AdminUsers() {
     const [users, setUsers] = useState([]);
-    const [editUserId, setEditUserId] = useState(null); // Para saber qué usuario se está editando
+    const [editUserId, setEditUserId] = useState(null);
     const jwtToken = localStorage.getItem("jwt");
+    const [sortClientsFirst, setSortClientsFirst] = useState(true); 
+
     const [userData, setUserData] = useState({
         id: "",
         firstName: "",
@@ -20,13 +22,13 @@ function AdminUsers() {
     });
 
     const navigate = useNavigate();
+
     const roleMap = {
         CLIENT: "Cliente",
         SUPPLIER: "Proveedor",
         ADMIN: "Admin"
     };
 
-    // Obtener todos los usuarios
     useEffect(() => {
         getUsers();
     }, []);
@@ -51,7 +53,6 @@ function AdminUsers() {
             .catch(error => console.error("Error obteniendo usuarios:", error));
     }
 
-    // Inicia el proceso de edición
     function startEditing(user) {
         setEditUserId(user.id);
         setUserData({
@@ -59,17 +60,16 @@ function AdminUsers() {
         });
     }
 
-    // Actualizar los datos del usuario
     function updateUser() {
         if (!editUserId) {
             console.error("El ID del usuario es nulo");
             return;
         }
 
-        // Validar datos antes de enviar
         if (!validateUserData(userData)) {
             return;
         }
+
         userData.password = "password";
 
         fetch(`/api/users/admin/${editUserId}`, {
@@ -84,12 +84,11 @@ function AdminUsers() {
             .then(updatedUser => {
                 console.log("Usuario actualizado:", updatedUser);
                 setUsers(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u));
-                setEditUserId(null); // Salir del modo de edición
+                setEditUserId(null);
             })
             .catch(error => console.error("Error actualizando usuario:", error));
     }
 
-    // Validar los datos antes de enviarlos
     function validateUserData(userData) {
         if (!userData.firstName || !userData.lastName || !userData.username || !userData.email) {
             alert("Por favor, complete todos los campos obligatorios.");
@@ -98,9 +97,7 @@ function AdminUsers() {
         return true;
     }
 
-    // Eliminar un usuario
     function deleteUser(userId, e) {
-        // Prevenir el envío del formulario (si está dentro de un formulario)
         if (e) e.preventDefault();
 
         fetch(`/api/users/${userId}`, {
@@ -117,24 +114,38 @@ function AdminUsers() {
             .catch(error => console.error("Error eliminando usuario:", error));
     }
 
-    // Manejar el cambio de un campo de entrada
     function handleInputChange(e) {
         const { name, value } = e.target;
         setUserData(prevData => ({
             ...prevData,
-            [name]: value, // Actualizamos el campo específico
+            [name]: value,
         }));
     }
 
+    const sortedUsers = [...users].sort((a, b) => {
+        if (a.role === b.role) return 0;
+        if (sortClientsFirst) {
+            return a.role === "CLIENT" ? -1 : 1;
+        } else {
+            return a.role === "SUPPLIER" ? -1 : 1;
+        }
+    });
+
     return (
         <>
-            {users.length > 0 ? (
-                users.map((user, index) => (
-                    <div key={index} className="service-container" style={{ display: "flex", flexDirection: "column", marginTop: "6%" }}>
+            <div style={{ textAlign: "center", marginTop: "6%" }}>
+                <button style={{ backgroundColor: "rgba(217, 190, 117, 0.95)"}} onClick={() => setSortClientsFirst(prev => !prev)}>
+                    Ordenar por: {sortClientsFirst ? "Cliente" : "Proveedor"}
+                </button>
+            </div>
+
+            {sortedUsers.length > 0 ? (
+                sortedUsers.map((user, index) => (
+                    <div key={index} className="service-container" style={{ display: "flex", flexDirection: "column" }}>
                         <div>
                             <h2 className="service-title">{user.firstName} {user.lastName}</h2>
                             <div className="service-info">
-                                <form onSubmit={e => { e.preventDefault();}}>
+                                <form onSubmit={e => { e.preventDefault(); }}>
                                     <div>
                                         <label>Nombre:</label>
                                         <input
