@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.eventbride.event.Event;
 import com.eventbride.model.BaseEntity;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.payment.Payment;
@@ -52,6 +53,10 @@ public class EventProperties extends BaseEntity {
 
     @OneToMany(mappedBy = "eventProperties", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Payment> payments;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id", insertable = false, updatable = false)
+    private Event event;
 
     public enum Status {
         PENDING,

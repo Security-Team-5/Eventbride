@@ -44,6 +44,11 @@ public class EventPropertiesController {
         return eventPropertiesService.findByIdDTO(id);
     }
 
+    @GetMapping("/byevent/{eventId}/{userId}")
+    public EventProperties findEventPropertiesByEventAndUser(@PathVariable("userId") Integer userId, @PathVariable("eventId") Integer eventId) {
+        return eventPropertiesService.findEventPropertiesByEventAndUser(userId, eventId);
+    }
+
     @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
     public ResponseEntity<Event> addOtherServiceToEvent(@PathVariable Integer eventId,
             @PathVariable Integer otherServiceId,

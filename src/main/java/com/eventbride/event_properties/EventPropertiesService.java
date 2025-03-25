@@ -74,6 +74,12 @@ public class EventPropertiesService {
         return g.get();
     }
 
+    @Transactional(readOnly = true)
+    public EventProperties findEventPropertiesByEventAndUser(Integer userId, Integer eventId) {
+        EventProperties g = eventPropertiesRepository.findEventPropertiesByEventAndUser(userId, eventId);
+        return g;
+     }
+
     @Transactional
     public EventProperties save(EventProperties eventProperties) throws DataAccessException {
         return eventPropertiesRepository.save(eventProperties);

@@ -30,6 +30,17 @@ public interface EventPropertiesRepository extends CrudRepository<EventPropertie
     @Query("SELECT ep FROM EventProperties ep WHERE ep.venue.id=?1")
     public List<EventProperties> findEventPropertiesByVenueId(Integer venueId);
 
+    @Query("""
+                SELECT ep FROM EventProperties ep
+                LEFT JOIN ep.venue v
+                LEFT JOIN ep.otherService os
+                LEFT JOIN v.user vu
+                LEFT JOIN os.user osu
+                WHERE ep.event.id = :eventId
+                AND (vu.id = :userId OR osu.id = :userId)
+           """)
+     public EventProperties findEventPropertiesByEventAndUser(@Param("userId") Integer userId, @Param("eventId") Integer eventId);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM EventProperties ep WHERE ep.otherService=?1")
