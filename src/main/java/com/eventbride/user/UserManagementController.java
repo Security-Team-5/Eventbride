@@ -43,4 +43,10 @@ public class UserManagementController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
+    @PostMapping("/generate-token")
+    public ResponseEntity<String> generateToken(@RequestBody User user) {
+        return ResponseEntity.ok(userManagementService.generateToken(user));
+        
+    }
+
 }

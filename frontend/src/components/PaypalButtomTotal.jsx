@@ -34,7 +34,8 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
 
               const currentUser = JSON.parse(localStorage.getItem("user"));
 
-              const requests = eventPropsIds.map((id) =>
+
+              const paymentsRequests = eventPropsIds.map((id) =>
                 axios.post(
                   `/api/payment/${id}/${paymentType === "DEPOSITO PARA RESERVA"
                     ? "pay-deposit"
@@ -42,7 +43,14 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
                 )
               );
 
-              await Promise.all(requests);
+
+              await Promise.all(paymentsRequests);
+
+              const cancelRequests = eventPropsIds.map((id) =>
+                axios.put(`/api/event-properties/cancel/${id}`, currentUser)
+              );
+          
+              await Promise.all(cancelRequests);
               navigate("/events");
             } catch (err) {
               alert("Error al procesar el pago");

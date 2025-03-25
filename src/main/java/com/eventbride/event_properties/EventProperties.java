@@ -56,6 +56,7 @@ public class EventProperties extends BaseEntity {
     public enum Status {
         PENDING,
         APPROVED,
+        CANCELLED,
         DEPOSIT_PAID,
         COMPLETED
     }

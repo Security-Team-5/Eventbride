@@ -11,14 +11,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -81,6 +73,24 @@ public class VenueController {
         }
     }
 
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteVenue(@PathVariable Integer id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		
+		System.out.println("Authorities: " + authorities);
+		
+		boolean hasSupplierRole = authorities.stream()
+			.map(GrantedAuthority::getAuthority)
+			.anyMatch(role -> role.equals("SUPPLIER") || role.equals("ROLE_SUPPLIER"));
+		
+		if (hasSupplierRole) {
+			venueService.deleteVenue(id);
+			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
