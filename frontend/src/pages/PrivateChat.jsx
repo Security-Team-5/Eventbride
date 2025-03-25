@@ -3,6 +3,7 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { useParams } from "react-router-dom";
 import "../static/resources/css/PrivateChat.css"
+import FloatingBackButton from "../components/FloatingBackButton.jsx";
 
 const PrivateChat = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
@@ -80,7 +81,7 @@ const PrivateChat = () => {
   }, [messages]);
 
   const sendMessage = () => {
-    if (!connected || !stompClient.current || !stompClient.current.connected) {
+    if (!connected || !stompClient.current || !stompClient.current.connected || input.length===0) {
       return;
     }
 
@@ -106,22 +107,57 @@ const PrivateChat = () => {
   };
 
   return (
+    <>
+    <FloatingBackButton/>
     <div className="chat-container">
       <div ref={chatBoxRef} className="chat-box">
         {messages.map((msg, index) => {
           const isCurrentUser = msg.sender.username === currentUser.username;
+          const msgDate = new Date(msg.timestamp || Date.now());
+          const prevMsg = messages[index - 1];
+          const prevDate = prevMsg ? new Date(prevMsg.timestamp || Date.now()) : null;
+
+          const showDateSeparator =
+            !prevMsg ||
+            msgDate.toDateString() !== prevDate.toDateString();
+
+          const formatDateHeader = (date) => {
+            const today = new Date();
+            const yesterday = new Date();
+            yesterday.setDate(today.getDate() - 1);
+
+            if (date.toDateString() === today.toDateString()) return "Hoy";
+            if (date.toDateString() === yesterday.toDateString()) return "Ayer";
+
+            return date.toLocaleDateString("es-ES", {
+              day: "2-digit",
+              month: "short",
+            });
+          };
+
+          const formatTime = (date) =>
+            date.toLocaleTimeString("es-ES", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+
           return (
-            <div
-              key={index}
-              className={`message-row ${isCurrentUser ? "user" : "other"}`}
-            >
-              <div className={`message-bubble ${isCurrentUser ? "user" : "other"}`}>
+            <React.Fragment key={index}>
+              {showDateSeparator && (
+                <div className="date-separator">
+                  <span>{formatDateHeader(msgDate)}</span>
+                </div>
+              )}
+              <div className={`message-row ${isCurrentUser ? "user" : "other"}`}>
+                <div className={`message-bubble ${isCurrentUser ? "user" : "other"}`}>
                 <span className="sender-name">
                   {msg.sender.username || otherUser.username}:
                 </span>
-                <span className="message-text">{msg.content}</span>
+                  <span className="message-text">{msg.content}</span>
+                  <span className="message-time">{formatTime(msgDate)}</span>
+                </div>
               </div>
-            </div>
+            </React.Fragment>
           );
         })}
       </div>
@@ -148,6 +184,7 @@ const PrivateChat = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 
