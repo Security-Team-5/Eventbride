@@ -21,6 +21,8 @@ import AdminUsers from "./pages/admin/AdminUsers"
 import InformationService from "./pages/InformationService"
 import Payment from "./pages/Payment"
 import Footer from "./components/Footer"
+import Profile from "./pages/EditProfile"
+import EditPlanProfile from "./pages/EditPlanProfile";
 
 function App() {
   const { currentUser, loading, setCurrentUser } = useCurrentUser(null)
@@ -51,6 +53,8 @@ function App() {
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
             <Route path="/payment/:id" element={<Payment />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/plan" element={<EditPlanProfile />} />
             <Route path="/other-services/information/:id" element={<InformationService />} />
             {currentUser && currentUser.role == "ADMIN" && (
               <>
