@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
-import { Edit, MapPin, Clock, Users, DollarSign, Image, FileText, Check, Home, Square, AlertCircle, Save } from 'lucide-react';
+import { Edit, Check, AlertCircle, Save } from 'lucide-react';
 import apiClient from '../apiClient';
 import "../static/resources/css/EditarServicio.css";
 
@@ -11,6 +11,7 @@ const EditarServicio = () => {
     const [limitedBy, setLimitedBy] = useState("perGuest");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    // eslint-disable-next-line no-unused-vars
     const [errors, setErrors] = useState({
         name: '',
         cityAvailable: '',
