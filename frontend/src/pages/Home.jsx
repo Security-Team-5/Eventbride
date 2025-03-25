@@ -261,7 +261,7 @@ export default function HomePage() {
                 </div>
                 <div className="card-footer">
                   <a href="/solicitudes" className="primary-button">
-                    Cuestionario
+                    Solicitudes
                   </a>
                 </div>
               </div>

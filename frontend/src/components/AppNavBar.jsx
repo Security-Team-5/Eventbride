@@ -109,7 +109,6 @@ function Navbar() {
           <li>
             <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
           </li>
-          <li className="nav-link" style={{ backgroundColor: "red" }}>{currentUser.plan}</li>
         </ul>
       );
     }
@@ -176,6 +175,8 @@ function Navbar() {
                 </Link>
                 <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
+
+              {currentUser.role === "SUPPLIER" ? <li className="nav-link" style={{ backgroundColor: "red" }}>{currentUser.plan}</li> : ""}
 
               <button className="logout-button" onClick={handleLogout}>
                 Cerrar sesión
