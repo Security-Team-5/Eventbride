@@ -57,11 +57,18 @@ public class VenueService {
     public Venue save(Venue venue) {
         Optional<User> user = userService.getUserById(venue.getUser().getId());
         if (user.isPresent()) {
+            User existingUser = user.get();
             ServiceDTO allServices = serviceService.getAllServiceByUserId(venue.getUser().getId());
             int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
-            if (slotsCount > 3) {
-                throw new RuntimeException("Slot count exceeded");
+
+            String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
+            
+            if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
+                throw new RuntimeException("Has alcanzado el límite de venues en el plan BASIC.");
+            } else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
+                throw new RuntimeException("Has alcanzado el límite de venues en el plan PREMIUM.");
             }
+
             venue.setUser(user.get());
         } else {
             throw new RuntimeException("User not found");

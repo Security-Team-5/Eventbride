@@ -73,23 +73,6 @@ public class OtherServiceService {
     }
 
     @Transactional
-    public OtherService ZcreateOtherService(OtherService otherService) {
-        Optional<User> user = userService.getUserById(otherService.getUser().getId());
-        if (user.isPresent()) {
-            ServiceDTO allServices = serviceService.getAllServiceByUserId(otherService.getUser().getId());
-            int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
-            if (slotsCount > 3) {
-                throw new RuntimeException("Slot count exceeded");
-            }
-            otherService.setUser(user.get());
-
-        } else {
-            throw new RuntimeException("User not found");
-        }
-        return otherServiceRepo.save(otherService);
-    }
-
-    @Transactional
     public OtherService createOtherService(OtherService otherService) {
         Optional<User> user = userService.getUserById(otherService.getUser().getId());
 
