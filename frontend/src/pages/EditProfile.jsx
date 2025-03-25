@@ -142,7 +142,9 @@ function EditProfile() {
                         <p><strong>Teléfono:</strong> {userData.telephone}</p>
                         <p><strong>DNI:</strong> {userData.dni}</p>
                         <p><strong>Rol:</strong> {getRoleText(userData.role)}</p>
+                        {userData.role === "SUPPLIER" && (
                         <p><strong>Plan:</strong> {userData.plan || "Básico"}</p>
+                        )}
 
                         {userData.plan === "PREMIUM" && (
                             <>
