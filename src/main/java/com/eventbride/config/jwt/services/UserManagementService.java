@@ -45,6 +45,13 @@ public class UserManagementService {
             user.setUsername(registrationRequest.getUsername());
             user.setEmail(registrationRequest.getEmail());
             user.setTelephone(registrationRequest.getTelephone());
+            if (registrationRequest.getRole() == "SUPPLIER") {
+                user.setPlan(User.Plan.BASIC);
+            } else {
+                user.setPlan(null);
+            }
+            user.setPaymentPlanDate(null);
+            user.setExpirePlanDate(null);
             
             user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
             user.setDni(registrationRequest.getDni());

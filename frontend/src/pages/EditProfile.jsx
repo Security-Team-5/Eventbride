@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../static/resources/css/EditProfile.css";
 
 function EditProfile() {
@@ -14,6 +15,7 @@ function EditProfile() {
     });
     const [editing, setEditing] = useState(false);
     const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwt"));
+    const navigate = useNavigate();
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
@@ -30,6 +32,7 @@ function EditProfile() {
         }));
     };
 
+
     const getRoleText = (role) => {
         switch (role) {
             case "ADMIN":
@@ -41,6 +44,11 @@ function EditProfile() {
             default:
                 return role;
         }
+    };
+    const handleLogout = () => {
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("user");
+        navigate("/login");
     };
 
     const updateUser = () => {
@@ -94,38 +102,72 @@ function EditProfile() {
             .catch((err) => console.error("Token error:", err));
     };
 
-    return (
-        <div className="edit-profile-container">
-            <h2>Perfil de Usuario</h2>
+    const formatDateTime = (dateString) => {
+        if (!dateString) return "-";
+        const date = new Date(dateString);
+        return date.toLocaleString("es-ES", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+        });
+    };
+    
 
-            {!editing ? (
-                <div className="profile-view">
-                    <img src={userData.profilePicture} alt="Perfil" className="profile-image" />
-                    <p><strong>Nombre:</strong> {userData.firstName}</p>
-                    <p><strong>Apellido:</strong> {userData.lastName}</p>
-                    <p><strong>Usuario:</strong> {userData.username}</p>
-                    <p><strong>Email:</strong> {userData.email}</p>
-                    <p><strong>Teléfono:</strong> {userData.telephone}</p>
-                    <p><strong>DNI:</strong> {userData.dni}</p>
-                    <p><strong>Rol:</strong> {getRoleText(userData.role)}</p>
-                    <button onClick={() => setEditing(true)}>Editar Perfil</button>
+    return (
+        <div className="edit-profile-wrapper">
+            <div className="sidebar">
+                <div className="profile-pic-wrapper">
+                    <img src={userData.profilePicture} alt="Perfil" className="profile-pic" />
                 </div>
-            ) : (
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <div><label>Nombre:</label><input name="firstName" value={userData.firstName} onChange={handleInputChange} /></div>
-                    <div><label>Apellido:</label><input name="lastName" value={userData.lastName} onChange={handleInputChange} /></div>
-                    <div><label>Usuario:</label><input name="username" value={userData.username} onChange={handleInputChange} /></div>
-                    <div><label>Email:</label><input name="email" value={userData.email} onChange={handleInputChange} /></div>
-                    <div><label>Teléfono:</label><input name="telephone" value={userData.telephone} onChange={handleInputChange} /></div>
-                    <div><label>DNI:</label><input name="dni" value={userData.dni} onChange={handleInputChange} /></div>
-                    <div><label>Foto de perfil (URL):</label><input name="profilePicture" value={userData.profilePicture} onChange={handleInputChange} /></div>
-                    <img src={userData.profilePicture} alt="Preview" className="profile-image" />
-                    <div className="btn-group">
-                        <button className="save-btn" onClick={updateUser}>Guardar</button>
-                        <button className="cancel-btn" onClick={() => setEditing(false)}>Cancelar</button>
-                    </div>
-                </form>
-            )}
+                <button onClick={() => setEditing(true)}>EDITAR</button>
+                {userData.role === "SUPPLIER" && (
+                    <button onClick={() => navigate("/profile/plan")}>PLANES</button>
+                )}
+                <button className="hover-button" style={{ backgroundColor: "#dc3545", color: "white" }} onClick={handleLogout}>
+                    Cerrar sesión
+                </button>
+            </div>
+
+            <div className="profile-info">
+                {!editing ? (
+                    <>
+                        <p><strong>Nombre:</strong> {userData.firstName}</p>
+                        <p><strong>Apellido:</strong> {userData.lastName}</p>
+                        <p><strong>Usuario:</strong> {userData.username}</p>
+                        <p><strong>Email:</strong> {userData.email}</p>
+                        <p><strong>Teléfono:</strong> {userData.telephone}</p>
+                        <p><strong>DNI:</strong> {userData.dni}</p>
+                        <p><strong>Rol:</strong> {getRoleText(userData.role)}</p>
+                        <p><strong>Plan:</strong> {userData.plan || "Básico"}</p>
+
+                        {userData.plan === "PREMIUM" && (
+                            <>
+                                <p><strong>Fecha de pago:</strong> {formatDateTime(userData.paymentPlanDate)}</p>
+                                <p><strong>Vence el:</strong> {formatDateTime(userData.expirePlanDate)}</p>
+                            </>
+                        )}
+
+                    </>
+                ) : (
+                    <form onSubmit={(e) => e.preventDefault()} className="form-edit">
+                        <div><label>Nombre:</label><input name="firstName" value={userData.firstName} onChange={handleInputChange} /></div>
+                        <div><label>Apellido:</label><input name="lastName" value={userData.lastName} onChange={handleInputChange} /></div>
+                        <div><label>Usuario:</label><input name="username" value={userData.username} onChange={handleInputChange} /></div>
+                        <div><label>Email:</label><input name="email" value={userData.email} onChange={handleInputChange} /></div>
+                        <div><label>Teléfono:</label><input name="telephone" value={userData.telephone} onChange={handleInputChange} /></div>
+                        <div><label>DNI:</label><input name="dni" value={userData.dni} onChange={handleInputChange} /></div>
+                        <div><label>Foto perfil (URL):</label><input name="profilePicture" value={userData.profilePicture} onChange={handleInputChange} /></div>
+                        <div className="btn-group">
+                            <button className="save-btn" onClick={updateUser}>Guardar</button>
+                            <button className="cancel-btn" onClick={() => setEditing(false)}>Cancelar</button>
+                        </div>
+                    </form>
+                )}
+            </div>
         </div>
     );
 }

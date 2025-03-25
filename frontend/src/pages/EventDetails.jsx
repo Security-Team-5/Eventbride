@@ -249,8 +249,8 @@ function EventDetails() {
     return totales;
   };
 
-  //Hacer solicitarServicio 
 
+  //Hacer solicitarServicio 
   return (
     <>
       <div className="event-contain">
