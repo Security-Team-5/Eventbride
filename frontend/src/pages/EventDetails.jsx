@@ -14,7 +14,41 @@ function EventDetails() {
   const [isLoading, setIsLoading] = useState(true)
   const comision = 1.02; // Comisión del 2%, con cambiar esta constante cambia toda la lógica de la comisión
 
+  // Función para determinar si se debe permitir el pago
+  const isPaymentAllowed = () => {
+    if (!evento || !evento.eventDate || !evento.eventType) return true;
 
+    const eventDate = new Date(evento.eventDate);
+    const currentDate = new Date();
+
+    // Si la fecha del evento ya pasó, deshabilita pago
+    if (currentDate > eventDate) {
+      return false;
+    }
+
+    // Calculamos la diferencia en meses (aprox., sin contemplar días exactos)
+    const diffMonths =
+      (eventDate.getFullYear() - currentDate.getFullYear()) * 12 +
+      (eventDate.getMonth() - currentDate.getMonth());
+
+    switch (evento.eventType) {
+      case "WEDDING":
+        // Devuelve true si faltan más de 4 meses
+        return diffMonths > 4;
+
+      case "COMMUNION":
+        // Devuelve true si faltan más de 3 meses
+        return diffMonths > 3;
+
+      case "CHRISTENING":
+        // Devuelve true si falta más de 1 mes
+        return diffMonths > 1;
+
+      default:
+        // Para otros tipos de evento, permitir siempre
+        return true;
+    }
+  };
 
 
   // Obtener la lista de evento
@@ -98,7 +132,6 @@ function EventDetails() {
 
   // Cargar evento al montar el componente
   useEffect(() => {
-
     console.log("eventoId", id)
     getEvents()
   }, [id])
@@ -176,7 +209,6 @@ function EventDetails() {
 
   const calcularCosteServicios = () => {
     if (!evento || !evento.eventPropertiesDTO) return 0;
-
     let total = 0;
     for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
       const prop = evento.eventPropertiesDTO[i];
@@ -186,7 +218,6 @@ function EventDetails() {
   };
   const calcularDepositServicios = () => {
     if (!evento || !evento.eventPropertiesDTO) return 0;
-
     let total = 0;
     for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
       const prop = evento.eventPropertiesDTO[i];
@@ -197,34 +228,28 @@ function EventDetails() {
 
   const sumaCosteTotalDeposit = () => {
     if (!evento || !evento.eventPropertiesDTO) return 0;
-
     let total = 0;
     for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
       const prop = evento.eventPropertiesDTO[i];
-      total += (prop.setPricePerService || 0)+ (prop.depositAmount || 0);
+      total += (prop.setPricePerService || 0) + (prop.depositAmount || 0);
     }
     return total;
   };
 
   const reservarOPagarServicios = () => {
     if (!evento || !Array.isArray(evento.eventPropertiesDTO)) return null;
-
     const estados = evento.eventPropertiesDTO.map(prop =>
       prop.status?.trim().toUpperCase()
     );
-
     const todosSonFinales = estados.every(status =>
       status === 'PENDING' || status === 'COMPLETED' || status === 'CANCELLED'
     );
     if (todosSonFinales) return null;
-
     return estados.includes('APPROVED');
   };
 
-
   const obtenerDepositosActivos = () => {
     if (!evento || !evento.eventPropertiesDTO) return 0;
-
     const depositos = {};
     evento.eventPropertiesDTO.forEach((evenProp) => {
       console.log(evenProp)
@@ -238,19 +263,15 @@ function EventDetails() {
 
   const obetenerTotales = () => {
     if (!evento || !evento.eventPropertiesDTO) return null;
-
     const totales = {};
     evento.eventPropertiesDTO.forEach((evenProp) => {
       if (evenProp.status === "DEPOSIT_PAID") {
         totales[evenProp.id] = evenProp.pricePerService - evenProp.depositAmount;
       }
     });
-
     return totales;
   };
 
-
-  //Hacer solicitarServicio 
   return (
     <>
       <div className="event-contain">
@@ -289,6 +310,7 @@ function EventDetails() {
             </div>
           </div>
         </div>
+
         <div className="event-properties-container">
           <div className="event-venues">
             <h3 className="section-title">Recinto contratado</h3>
@@ -313,19 +335,29 @@ function EventDetails() {
                       </p>
                     </div>
                     <div className="payment-container">
-                      <button
-                        className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
-                        disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                        onClick={() => navigate(`/payment/${prop.id}`)}
-                        style={{
-                          backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
-                        }}
-                      >
-                        {getPaymentStatusText(prop.status)}
-                      </button>
+                      {isPaymentAllowed() ? (
+                        <button
+                          className={`payment-button ${prop.status === "PENDING" || prop.status === "COMPLETED" ? "disabled" : ""}`}
+                          disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
+                          onClick={() => navigate(`/payment/${prop.id}`)}
+                          style={{
+                            backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
+                          }}
+                        >
+                          {getPaymentStatusText(prop.status)}
+                        </button>
+                      ) : (
+                        <span style={{ backgroundColor: "red", color: "black", padding: "5px", borderRadius: "4px" }}>
+                          Fecha expirada
+                        </span>
+                      )}
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
-                        <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
+                        {prop.status === "COMPLETED" ? (
+                          <span className="status-text">Pagado</span>
+                        ) : isPaymentAllowed() ? (
+                          <span className="status-text">En proceso</span>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -337,6 +369,7 @@ function EventDetails() {
               </div>
             )}
           </div>
+
           <div className="event-services">
             <h3 className="section-title">Otros servicios contratados</h3>
             {evento?.eventPropertiesDTO?.some((prop) => prop.otherServiceDTO) ? (
@@ -360,25 +393,35 @@ function EventDetails() {
                       </p>
                     </div>
                     <div className="payment-container">
-                    <button
-                      className={`payment-button ${["PENDING", "COMPLETED"].includes(prop.status) ? "disabled" : ""}`}
-                      disabled={["PENDING", "COMPLETED"].includes(prop.status)}
-                      onClick={() => {
-                        if (prop.status === "CANCELLED") {
-                          solicitarServicio(prop.id); 
-                        } else {
-                          navigate(`/payment/${prop.id}`);
-                        }
-                      }}
-                      style={{
-                        backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
-                      }}
-                    >
-                      {getPaymentStatusText(prop.status)}
-                    </button>
+                      {isPaymentAllowed() ? (
+                        <button
+                          className={`payment-button ${["PENDING", "COMPLETED"].includes(prop.status) ? "disabled" : ""}`}
+                          disabled={["PENDING", "COMPLETED"].includes(prop.status)}
+                          onClick={() => {
+                            if (prop.status === "CANCELLED") {
+                              solicitarServicio(prop.id);
+                            } else {
+                              navigate(`/payment/${prop.id}`);
+                            }
+                          }}
+                          style={{
+                            backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
+                          }}
+                        >
+                          {getPaymentStatusText(prop.status)}
+                        </button>
+                      ) : (
+                        <span style={{ backgroundColor: "red", color: "black", padding: "5px", borderRadius: "4px" }}>
+                          Fecha expirada
+                        </span>
+                      )}
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
-                        <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
+                        {prop.status === "COMPLETED" ? (
+                          <span className="status-text">Pagado</span>
+                        ) : isPaymentAllowed() ? (
+                          <span className="status-text">En proceso</span>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -391,6 +434,7 @@ function EventDetails() {
             )}
           </div>
         </div>
+
         <div className="payment-summary">
           <h3 className="section-title">Resumen del pago</h3>
           <h3 className="summary-title">
@@ -399,7 +443,6 @@ function EventDetails() {
           <div className="summary-card">
             <div className="summary-content">
               {reservarOPagarServicios() ? (
-                // desglose de depósitos más su comisión
                 <>
                   {Object.entries(obtenerDepositosActivos()).map(([id, amount]) => {
                     const prop = evento.eventPropertiesDTO.find((p) => p.id === parseInt(id));
@@ -407,12 +450,13 @@ function EventDetails() {
                     return (
                       <div key={id} className="summary-item">
                         <span>{decodeText(name)}</span>
-                        <span className="price">{amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</span>
+                        <span className="price">
+                          {amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                        </span>
                       </div>
                     );
                   })}
                   <div className="summary-item">
-                    {/* La fórmula es para que obtenga el porcentaje de la constante comisión en lugar de ser texto fijo */}
                     <span>Gastos de gestión ({((comision - 1) * 100).toFixed(0)}%)</span>
                     <span className="price">
                       {Object.values(obtenerDepositosActivos())
@@ -422,7 +466,6 @@ function EventDetails() {
                   </div>
                 </>
               ) : (
-                // desglose de precios finales más su comisión
                 <>
                   {Object.entries(obetenerTotales()).map(([id, amount]) => {
                     const prop = evento.eventPropertiesDTO.find((p) => p.id === parseInt(id));
@@ -430,12 +473,13 @@ function EventDetails() {
                     return (
                       <div key={id} className="summary-item">
                         <span>{decodeText(name)}</span>
-                        <span className="price">{amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</span>
+                        <span className="price">
+                          {amount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                        </span>
                       </div>
                     );
                   })}
                   <div className="summary-item">
-                    {/* La fórmula es para que obtenga el porcentaje de la constante comisión en lugar de ser texto fijo */}
                     <span>Gastos de gestión ({((comision - 1) * 100).toFixed(0)}%)</span>
                     <span className="price">
                       {Object.values(obetenerTotales())
@@ -451,123 +495,133 @@ function EventDetails() {
                 <span>
                   {reservarOPagarServicios()
                     ? Object.values(obtenerDepositosActivos())
-                      .reduce((acc, val) => acc + val * comision, 0) // Aplicar 2% de comisión al total de depósitos
+                      .reduce((acc, val) => acc + val * comision, 0)
                       .toLocaleString("es-ES", { style: "currency", currency: "EUR" })
                     : Object.values(obetenerTotales())
-                      .reduce((acc, val) => acc + val * comision, 0) // Aplicar 2% de comisión al total de precios finales
+                      .reduce((acc, val) => acc + val * comision, 0)
                       .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                 </span>
               </div>
             </div>
           </div>
         </div>
+
         <div className="event-payment-container flex justify-center items-center">
           {reservarOPagarServicios() !== null && (
-            <div className="text-center font-semibold text-lg">
-              {reservarOPagarServicios() ? (
-                (() => {
-                  const depositos = obtenerDepositosActivos();
-                  const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
-                  const ids = depositos ? Object.keys(depositos).map(Number) : [];
-                  return (
-                    <span>
-                      <h3 className="summary-title" style={{ marginTop: '1rem' }}>
-                        Pagar con
-                      </h3>
-                      <PaypalButtonTotal
-                        amount={total}
-                        paymentType={'DEPOSITO PARA RESERVA'}
-                        eventPropsIds={ids}
-                      />
-                    </span>
-                  );
-                })()
-              ) : (
-                (() => {
-                  const totales = obetenerTotales();
-                  const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
-                  const ids = totales ? Object.keys(totales).map(Number) : [];
-                  return (
-                    <span>
-                      <h3 className="summary-title" style={{ marginTop: '1rem' }}>
-                        Pagar con
-                      </h3>
-                      <PaypalButtonTotal
-                        amount={total}
-                        paymentType={'CANTIDAD RESTANTE'}
-                        eventPropsIds={ids}
-                      />
-                    </span>
-                  );
-                })()
-              )}
-            </div>
+            isPaymentAllowed() ? (
+              <div className="text-center font-semibold text-lg">
+                {reservarOPagarServicios() ? (
+                  (() => {
+                    const depositos = obtenerDepositosActivos();
+                    const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
+                    const ids = depositos ? Object.keys(depositos).map(Number) : [];
+                    return (
+                      <span>
+                        <h3 className="summary-title" style={{ marginTop: '1rem' }}>
+                          Pagar con
+                        </h3>
+                        <PaypalButtonTotal
+                          amount={total}
+                          paymentType={'DEPOSITO PARA RESERVA'}
+                          eventPropsIds={ids}
+                        />
+                      </span>
+                    );
+                  })()
+                ) : (
+                  (() => {
+                    const totales = obetenerTotales();
+                    const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
+                    const ids = totales ? Object.keys(totales).map(Number) : [];
+                    return (
+                      <span>
+                        <h3 className="summary-title" style={{ marginTop: '1rem' }}>
+                          Pagar con
+                        </h3>
+                        <PaypalButtonTotal
+                          amount={total}
+                          paymentType={'CANTIDAD RESTANTE'}
+                          eventPropsIds={ids}
+                        />
+                      </span>
+                    );
+                  })()
+                )}
+              </div>
+            ) : (
+              <span style={{ backgroundColor: "red", color: "black", padding: "5px", borderRadius: "4px" }}>
+                Fecha expirada
+              </span>
+            )
           )}
         </div>
-      </div >
+      </div>
 
       {/* Modal de desglose de precios */}
-      {
-        isCostBreakdownModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-container">
-              <div className="modal-header">
-                <h3>Desglose de precios</h3>
-              </div>
-
-              <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>Costes servicios: {calcularCosteServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h2>
-              <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
-                {evento?.eventPropertiesDTO?.map((prop, i) => (
-                  <div key={i} className="price-breakdown-item">
-                    <p><strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}:</strong> {prop.setPricePerService?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "N/A"}</p>
-                  </div>
-                ))}
-              </div>
-              <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>Señales: {calcularDepositServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</h2>
-              <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
-                {evento?.eventPropertiesDTO?.map((prop, i) => (
-                  <div key={i} className="price-breakdown-item">
-                    <p><strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}:</strong> {prop.depositAmount?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "null"}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <button className="close-button" onClick={closeCostBreakdownModal}>
-                  Cerrar
-                </button>
-              </div>
+      {isCostBreakdownModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Desglose de precios</h3>
+            </div>
+            <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
+              Costes servicios: {calcularCosteServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+            </h2>
+            <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
+              {evento?.eventPropertiesDTO?.map((prop, i) => (
+                <div key={i} className="price-breakdown-item">
+                  <p>
+                    <strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}</strong>:{" "}
+                    {prop.setPricePerService?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "N/A"}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <h2 style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
+              Señales: {calcularDepositServicios().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+            </h2>
+            <div className="modal-body" style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}>
+              {evento?.eventPropertiesDTO?.map((prop, i) => (
+                <div key={i} className="price-breakdown-item">
+                  <p>
+                    <strong>{decodeText(prop.otherServiceDTO?.name || prop.venueDTO?.name)}</strong>:{" "}
+                    {prop.depositAmount?.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) || "null"}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <button className="close-button" onClick={closeCostBreakdownModal}>
+                Cerrar
+              </button>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
 
       {/* Modal de confirmación */}
-      {
-        isDeleteModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-container">
-              <div className="modal-header">
-                <h3>¿Estás seguro de que quieres eliminar este evento?</h3>
-              </div>
-              <div className="modal-body">
-                <p>Esta acción no se puede deshacer. El evento será eliminado permanentemente.</p>
-              </div>
-              <div className="modal-footer">
-                <button className="cancel-button" onClick={closeModal}>
-                  Cancelar
-                </button>
-                <button className="confirm-button" onClick={deleteEvent}>
-                  Eliminar
-                </button>
-              </div>
+      {isDeleteModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>¿Estás seguro de que quieres eliminar este evento?</h3>
+            </div>
+            <div className="modal-body">
+              <p>Esta acción no se puede deshacer. El evento será eliminado permanentemente.</p>
+            </div>
+            <div className="modal-footer">
+              <button className="cancel-button" onClick={closeModal}>
+                Cancelar
+              </button>
+              <button className="confirm-button" onClick={deleteEvent}>
+                Eliminar
+              </button>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
     </>
   )
 }
 
 export default EventDetails
-
