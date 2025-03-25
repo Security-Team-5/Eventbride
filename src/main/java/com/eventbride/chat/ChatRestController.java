@@ -35,26 +35,26 @@ public class ChatRestController {
 	public ResponseEntity<?> getUserConversations() {
 		Optional<User> currentUserOpt = userService.getUserByUsername(
 			SecurityContextHolder.getContext().getAuthentication().getName());
-	
+
 		if (!currentUserOpt.isPresent()) return ResponseEntity.status(401).build();
 		User currentUser = currentUserOpt.get();
-	
+
 		List<ChatMessage> allMessages = chatRepository.findAllMessagesForUser(currentUser);
-	
+
 		Map<Integer, ChatMessage> lastMessagesPerUser = new LinkedHashMap<>();
-	
+
 		for (ChatMessage msg : allMessages) {
-			User other = msg.getSender().equals(currentUser) ? msg.getReceiver() : msg.getSender();
-	
+			User other = msg.getSender().getId().equals(currentUser.getId()) ? msg.getReceiver() : msg.getSender();
+
 			if (!lastMessagesPerUser.containsKey(other.getId())) {
 				lastMessagesPerUser.put(other.getId(), msg);
 			}
 		}
-	
+
 		return ResponseEntity.ok(lastMessagesPerUser.values());
 	}
-	
-	
+
+
 
 
 	@GetMapping("/{recieverId}")
@@ -75,7 +75,7 @@ public class ChatRestController {
 		List<ChatMessage> messages = chatRepository.findMessagesBetweenUsers2(sender.get(), reciver.get());
 		return ResponseEntity.ok(messages);
 	}
-	
+
 
 
 }
