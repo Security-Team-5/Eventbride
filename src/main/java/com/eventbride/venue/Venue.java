@@ -57,9 +57,6 @@ public class Venue extends Service {
 
     @Column(name = "latest_time", nullable = false)
     private LocalTime latestTime;
-
-    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Rating> ratings = new HashSet<>();
  
     @ManyToOne
     @JoinColumn(name = "user_id")
