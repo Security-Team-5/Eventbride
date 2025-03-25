@@ -3,6 +3,7 @@ import axios from 'axios';
 import "../App.css"; 
 import apiClient from '../apiClient';
 import "../static/resources/css/OtherService.css";
+import LeafletMap from "../components/LeafletMap";
 
 const VenuesScreen = () => {
   const [venues, setVenues] = useState([]);
@@ -162,6 +163,8 @@ const VenuesScreen = () => {
   return (
     <div className="other-service-container">
       <h1 className="title">Venues Disponibles</h1>
+
+      <LeafletMap venues={venues} />
       
       <div className="filters-toggle">
         <button onClick={toggleFilters}>
