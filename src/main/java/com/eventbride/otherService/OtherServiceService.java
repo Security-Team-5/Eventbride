@@ -12,8 +12,10 @@ import com.eventbride.otherService.OtherService.OtherServiceType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.eventbride.event_properties.EventPropertiesRepository;
 
@@ -34,7 +36,11 @@ public class OtherServiceService {
 
     @Transactional
     public List<OtherService> getAllOtherServices() {
-        return otherServiceRepo.findAll();
+        return otherServiceRepo.findAll().stream()
+			.sorted(Comparator.comparing(
+				os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1
+			))
+			.collect(Collectors.toList());
     }
 
     @Transactional
@@ -69,7 +75,10 @@ public class OtherServiceService {
 
     @Transactional
     public List<OtherService> getFilteredOtherServices(String name, String city, OtherServiceType type) {
-        return otherServiceRepo.findByFilters(name, city, type);
+        return otherServiceRepo.findByFilters(name, city, type).stream().sorted(Comparator.comparing(
+				os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1
+			))
+			.collect(Collectors.toList());
     }
 
     @Transactional

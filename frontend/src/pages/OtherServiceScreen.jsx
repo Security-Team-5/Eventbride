@@ -294,13 +294,19 @@ const OtherServiceScreen = () => {
         </div>
       ) : (
         <div className="services-grid">
-          {otherServices.map((service) => (
+          {otherServices.map((service) => {
+
+            console.log(service)
+            return (
             <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
               <div className="card-header">
                 <h3 className="service-title">{service.name}</h3>
               </div>
               <div className="card-body">
                 <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
+                {
+                   service.userDTO?.plan==="PREMIUM" && <span className="service-badge">Promocionado</span>
+                }
 
                 <div className="service-info">
                   <MapPin size={18} className="info-icon" />
@@ -329,7 +335,7 @@ const OtherServiceScreen = () => {
                 )}
               </div>
             </div>
-          ))}
+          )})}
         </div>
       )}
 

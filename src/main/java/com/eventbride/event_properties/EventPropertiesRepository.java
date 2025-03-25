@@ -3,7 +3,6 @@ package com.eventbride.event_properties;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.event.Event;
 import com.eventbride.otherService.OtherService;
-import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
-
-import jakarta.transaction.Transactional;
 
 @Repository
 public interface EventPropertiesRepository extends CrudRepository<EventProperties, Integer> {
