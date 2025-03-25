@@ -18,7 +18,10 @@ function AdminUsers() {
         telephone: "",
         dni: "",
         role: "",
-        profilePicture: ""
+        profilePicture: "",
+        plan: "",
+        paymentPlanDate: "",
+        expirePlanDate: "",
     });
 
     const navigate = useNavigate();
@@ -27,6 +30,10 @@ function AdminUsers() {
         CLIENT: "Cliente",
         SUPPLIER: "Proveedor",
         ADMIN: "Admin"
+    };
+    const planMap = {
+        BASIC: "Básico",
+        PREMIUM: "Premium"
     };
 
     useEffect(() => {
@@ -71,6 +78,9 @@ function AdminUsers() {
         }
 
         userData.password = "password";
+
+        console.log("Payload enviado:", userData);
+
 
         fetch(`/api/users/admin/${editUserId}`, {
             headers: {
@@ -212,6 +222,56 @@ function AdminUsers() {
                                             ))}
                                         </select>
                                     </div>
+                                    {user.role === "SUPPLIER" && (
+                                        <>
+                                            <div>
+                                                <label>Plan:</label>
+                                                
+                                                <select
+                                                    name="plan"
+                                                    value={userData.id === user.id ? userData.plan : user.plan}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value;
+                                                        setUserData((prevData) => ({
+                                                            ...prevData,
+                                                            plan: value,
+                                                            ...(value === "BASIC" && {
+                                                                paymentPlanDate: null,
+                                                                expirePlanDate: null,
+                                                            })
+                                                        }));
+                                                    }}
+                                                >
+                                                    {Object.keys(planMap).map(plan => (
+                                                        <option key={plan} value={plan}>{planMap[plan]}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            {userData.id === user.id && userData.plan === "PREMIUM" && (
+
+                                                <>
+                                                    <div>
+                                                        <label>Fecha de pago del plan:</label>
+                                                        <input
+                                                            type="datetime-local"
+                                                            name="paymentPlanDate"
+                                                            value={userData.id === user.id ? userData.paymentPlanDate : user.paymentPlanDate || ""}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label>Fecha de expiración del plan:</label>
+                                                        <input
+                                                            type="datetime-local"
+                                                            name="expirePlanDate"
+                                                            value={userData.id === user.id ? userData.expirePlanDate : user.expirePlanDate || ""}
+                                                            onChange={handleInputChange}
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+                                        </>
+                                    )}
                                     <div>
                                         <label>Foto de perfil:</label>
                                         <img src={user.profilePicture} alt={user.username} className="service-image" />

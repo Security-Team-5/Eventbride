@@ -3,6 +3,7 @@ package com.eventbride.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -45,11 +46,19 @@ public class SecurityConfig {
                                 "/api/other-services/**",
                                 "/api/other-services/add-otherservice/**",
                                 "/api/other-services",
+                                "/api/other-services/delete/{id}",
                                 "/api/venues/**",
+                                "/api/venues/delete/{id}",
                                 "/api/event-properties/DTO/**",
                                 "/api/payment/**",
                                 "/api/venues/add-venue/**",
                                 "/api/venues/{eventId}/add-venue/{venueId}/**",
+                                "/api/services/**",
+                                "/api/event-properties/cancel/{eventPropertieID}",
+                                "/api/event-properties/status/pending/{eventPropertiesId}",
+                                "/api/users/plan",
+                                "/api/users/profile/plan",
+                                "/api/other-services/disable/**",
                                 "/api/services/**")
                         .permitAll()
                         .requestMatchers("/api/services/admin",

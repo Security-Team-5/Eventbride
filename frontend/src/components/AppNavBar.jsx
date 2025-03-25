@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
@@ -9,10 +9,10 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
 
   // Obtener datos user desde localStorage
   const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  console.log(currentUser)
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -55,7 +55,7 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("user");
-    navigate("/login");
+    window.location.href = "/login";
   };
 
   const renderNavItems = () => {
@@ -136,10 +136,17 @@ function Navbar() {
     <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="navbar-container">
         <div className="navbar-brand">
-          <Link to="/" className="brand-link">
-            <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
-            <span className="navbar-title">Inicio</span>
-          </Link>
+          {currentUser === "{}" ? (
+            <span className="brand-link disabled-link">
+              <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+              <span className="navbar-title">Inicio</span>
+            </span>
+          ) : (
+            <Link to="/" className="brand-link">
+              <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+              <span className="navbar-title">Inicio</span>
+            </Link>
+          )}
         </div>
 
         {/* Hamburger menu for mobile */}
@@ -163,11 +170,13 @@ function Navbar() {
               </Link>
 
               <div className="user-menu">
-                <Link to="/" className="action-icon user-icon">
+                <Link to="/profile" className="action-icon user-icon">
                   <img src={usuario || "/placeholder.svg"} alt="Usuario" className="icon-img" />
                 </Link>
-                <div className="user-name">{currentUser.name || "Usuario"}</div>
+                <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
+
+              {currentUser.role === "SUPPLIER" ? <li className="nav-link" style={{ backgroundColor: "red" }}>{currentUser.plan}</li> : ""}
 
               <button className="logout-button" onClick={handleLogout}>
                 Cerrar sesión

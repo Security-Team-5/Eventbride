@@ -74,30 +74,25 @@ const OtherServiceScreen = () => {
     }
   }
 
-  const getServiceDetails = async (serviceId) => {
-    try {
-      const response = await axios.get(`/api/other-services/${serviceId}`)
-      setServiceDetails(response.data)
-      setServiceDetailsVisible(true)
-    } catch (error) {
-      console.error("Error obteniendo detalles del servicio:", error)
-    }
+  // --- Cambios realizados en la apertura del modal de detalles ---
+  // Ahora handleServiceClick recibe el objeto completo y lo asigna a serviceDetails,
+  // lo que permite abrir el modal sin realizar una llamada adicional a la API.
+  const handleServiceClick = (service) => {
+    setServiceDetails(service)
+    setServiceDetailsVisible(true)
   }
 
-  const handleCategoryClick = (category) => {
-    if (category !== type) {
-      setCategory(category)
-      setType(category)
+  const handleCategoryClick = (selectedCategory) => {
+    if (selectedCategory !== type) {
+      setCategory(selectedCategory)
+      setType(selectedCategory)
     } else {
-      // Si ya está seleccionada, deseleccionar
       setCategory(null)
       setType(null)
     }
   }
 
-  const handleServiceClick = (serviceId) => {
-    getServiceDetails(serviceId)
-  }
+  // -------------------------------------------------------------------
 
   const handleAddServiceClick = (e, serviceId) => {
     e.stopPropagation()
@@ -167,7 +162,6 @@ const OtherServiceScreen = () => {
       alert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.")
       return
     }
-    // Combinar la fecha del evento con la hora que indicó el usuario
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
     try {
@@ -295,7 +289,7 @@ const OtherServiceScreen = () => {
       ) : (
         <div className="services-grid">
           {otherServices.map((service) => (
-            <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
+            <div key={service.id} className="service-card" onClick={() => handleServiceClick(service)}>
               <div className="card-header">
                 <h3 className="service-title">{service.name}</h3>
               </div>
@@ -419,18 +413,18 @@ const OtherServiceScreen = () => {
             </div>
             <div className="modal-body">
               <div className="service-details">
-                <div className="details-section">
-                  <span className="service-badge">{formatServiceType(serviceDetails.otherServiceType)}</span>
-
-                  <div className="event-detail" style={{ marginTop: "1rem" }}>
-                    <MapPin size={18} className="detail-icon" />
-                    <span className="detail-text">Ciudad: {serviceDetails.cityAvailable}</span>
+                <div className="space-y-4">
+                  <div className="card-info">
+                    <MapPin size={18} className="card-icon" />
+                    <span className="card-text">
+                      <strong>Ciudad:</strong> {serviceDetails.cityAvailable}
+                    </span>
                   </div>
 
-                  <div className="event-detail">
-                    <DollarSign size={18} className="detail-icon" />
-                    <span className="detail-text">
-                      Precio:{" "}
+                  <div className="card-info">
+                    <DollarSign size={18} className="card-icon" />
+                    <span className="card-text">
+                      <strong>Precio:</strong>{" "}
                       {serviceDetails.limitedByPricePerGuest
                         ? `${serviceDetails.servicePricePerGuest}€ por invitado`
                         : serviceDetails.limitedByPricePerHour
@@ -438,19 +432,23 @@ const OtherServiceScreen = () => {
                           : `${serviceDetails.fixedPrice}€ precio fijo`}
                     </span>
                   </div>
-                </div>
 
-                <div className="details-section">
-                  <span className="details-label">Descripción:</span>
-                  <p className="details-text">{serviceDetails.description}</p>
-                </div>
-
-                {serviceDetails.extraInformation && (
-                  <div className="details-section">
-                    <span className="details-label">Información adicional:</span>
-                    <p className="details-text">{serviceDetails.extraInformation}</p>
+                  <div className="card-info">
+                    <span className="card-icon">📝</span>
+                    <span className="card-text">
+                      <strong>Descripción:</strong> {serviceDetails.description}
+                    </span>
                   </div>
-                )}
+
+                  {serviceDetails.extraInformation && (
+                    <div className="card-info">
+                      <span className="card-icon">📎</span>
+                      <span className="card-text">
+                        <strong>Información adicional:</strong> {serviceDetails.extraInformation}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <div className="modal-footer">
@@ -477,4 +475,3 @@ const OtherServiceScreen = () => {
 }
 
 export default OtherServiceScreen
-

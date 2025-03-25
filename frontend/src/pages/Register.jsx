@@ -1,7 +1,10 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import apiClient from "../apiClient";
+"use client"
+
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { User, Mail, Phone, Lock, FileText, Image, UserCircle, AlertCircle, UserPlus } from "lucide-react"
+import apiClient from "../apiClient"
+import "../static/resources/css/Register.css"
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -14,20 +17,29 @@ const Register = () => {
     dni: "",
     role: "CLIENT",
     profilePicture: "",
-  });
+  })
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Formulario enviado:", form);
+    e.preventDefault()
 
-    const role = 'proveedor' === form.role ? 'SUPPLIER' : 'CLIENT';
+    if (!acceptedTerms) {
+      setError("Debes aceptar los términos y condiciones para continuar")
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+
+    const role = "proveedor" === form.role ? "SUPPLIER" : "CLIENT"
 
     try {
       const response = await apiClient.post("/api/users/auth/register", {
@@ -40,47 +52,235 @@ const Register = () => {
         password: form.password,
         role: role,
         profilePicture: form.profilePicture,
-      });
+      })
 
       if (response.data.error) {
-        setError("Error: " + response.data.error);
-        return;
+        setError("Error: " + response.data.error)
+        return
       }
 
-      console.log("Usuario registrado:", response.data);
-      navigate("/login");
+      console.log("Usuario registrado:", response.data)
+      navigate("/login")
     } catch (error) {
-      console.error("Error en el registro:", error.response?.data || error.message);
-      setError("Error al registrarse. Inténtalo de nuevo.");
+      console.error("Error en el registro:", error.response?.data || error.message)
+      setError("Error al registrarse. Inténtalo de nuevo.")
+    } finally {
+      setIsLoading(false)
     }
-  };
+  }
 
-  // TODO: Añadir al formulario el campo para el tipo de usuario: cliente o proveedor
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Registro</h2>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <input type="text" name="firstName" placeholder="Nombre" value={form.firstName} onChange={handleChange} required />
-          <input type="text" name="lastName" placeholder="Apellido" value={form.lastName} onChange={handleChange} required />
-          <input type="text" name="username" placeholder="Usuario" value={form.username} onChange={handleChange} required />
-          <input type="url" name="profilePicture" placeholder="https://foto.de/perfil" value={form.profilePicture} onChange={handleChange} required />
-          <input type="email" name="email" placeholder="Correo electrónico" value={form.email} onChange={handleChange} required />
-          <input type="tel" name="telephone" placeholder="Teléfono" value={form.telephone} onChange={handleChange} required />
-          <input type="text" name="dni" placeholder="DNI" value={form.dni} onChange={handleChange} required />
-          <input type="password" name="password" placeholder="Contraseña" value={form.password} onChange={handleChange} required />
-          <select name="role" value={form.role} onChange={handleChange} required>
-            <option value="">Selecciona tu rol</option>
-            <option value="cliente">Cliente</option>
-            <option value="proveedor">Proveedor</option>
-          </select>
-          <button type="submit">Registrarse</button>
-        </form>
-        <p>¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link></p>
+    <div className="split-layout register-layout">
+      <div className="login-side">
+        <div className="login-card register-card">
+          <div className="login-header">
+            <h1>Crear cuenta</h1>
+            <p>Completa el formulario para registrarte</p>
+          </div>
+
+          {error && (
+            <div className="error-message">
+              <AlertCircle size={18} />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="firstName">Nombre</label>
+                <div className="input-wrapper">
+                  <User size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="Tu nombre"
+                    value={form.firstName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="lastName">Apellido</label>
+                <div className="input-wrapper">
+                  <User size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Tu apellido"
+                    value={form.lastName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="username">Nombre de usuario</label>
+              <div className="input-wrapper">
+                <UserCircle size={18} className="input-icon" />
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Elige un nombre de usuario"
+                  value={form.username}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="profilePicture">URL de foto de perfil</label>
+              <div className="input-wrapper">
+                <Image size={18} className="input-icon" />
+                <input
+                  type="url"
+                  id="profilePicture"
+                  name="profilePicture"
+                  placeholder="https://foto.de/perfil"
+                  value={form.profilePicture}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">Correo electrónico</label>
+              <div className="input-wrapper">
+                <Mail size={18} className="input-icon" />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="tu@email.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="telephone">Teléfono</label>
+                <div className="input-wrapper">
+                  <Phone size={18} className="input-icon" />
+                  <input
+                    type="tel"
+                    id="telephone"
+                    name="telephone"
+                    placeholder="Tu número de teléfono"
+                    value={form.telephone}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="dni">DNI</label>
+                <div className="input-wrapper">
+                  <FileText size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    id="dni"
+                    name="dni"
+                    placeholder="Tu DNI"
+                    value={form.dni}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Contraseña</label>
+              <div className="input-wrapper">
+                <Lock size={18} className="input-icon" />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Crea una contraseña segura"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="role">Tipo de usuario</label>
+              <div className="select-wrapper">
+                <select id="role" name="role" value={form.role} onChange={handleChange} required>
+                  <option value="">Selecciona tu rol</option>
+                  <option value="cliente">Cliente</option>
+                  <option value="proveedor">Proveedor</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group terms-checkbox-container">
+              <div className="checkbox-wrapper">
+                <input
+                  type="checkbox"
+                  id="termsAccept"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  required
+                />
+                <label htmlFor="termsAccept" className="terms-label">
+                  <a href="/terminos-y-condiciones">Acepto los Terminos y Condiciones de Eventbride</a>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" className={`login-button ${isLoading ? "loading" : ""}`} disabled={isLoading}>
+              {isLoading ? (
+                <span className="loading-spinner"></span>
+              ) : (
+                <>
+                  <UserPlus size={18} />
+                  <span>Crear cuenta</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="login-footer">
+            <p>
+              ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="collage-side">
+        <div className="photo-collage">
+          <div className="collage-item item-1">
+            <div className="collage-label">Bodas</div>
+          </div>
+          <div className="collage-item item-2">
+            <div className="collage-label">Bautizos</div>
+          </div>
+          <div className="collage-item item-3">
+            <div className="collage-label">Comuniones</div>
+          </div>
+          <div className="collage-item item-4"></div>
+          <div className="collage-item item-5"></div>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
