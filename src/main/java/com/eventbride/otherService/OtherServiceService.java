@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.BeanUtils;
 
 import com.eventbride.otherService.OtherService.OtherServiceType;
+import com.eventbride.rating.RatingRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,6 +34,9 @@ public class OtherServiceService {
 
     @Autowired
     private EventPropertiesRepository eventPropertiesRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @Transactional
     public List<OtherService> getAllOtherServices() {
@@ -125,6 +129,8 @@ public class OtherServiceService {
 
         // Elimina EventProperties asociadas para evitar fallos con la foreign key
         eventPropertiesRepository.deleteByOtherService(otherService);
+        // Elimina Ratings asociadas para evitar fallos con la foreign key
+        ratingRepository.deleteByOtherService(otherService);
 
         // Elimina OtherService
         otherServiceRepo.delete(otherService);
