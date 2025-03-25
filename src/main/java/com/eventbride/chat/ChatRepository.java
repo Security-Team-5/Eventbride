@@ -22,5 +22,9 @@ public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
 		"ORDER BY m.timestamp ASC")
 	List<ChatMessage> findMessagesBetweenUsers2(@Param("user1") User user1, @Param("user2") User user2);
 
+	@Query("SELECT m FROM ChatMessage m WHERE m.sender = :user OR m.receiver = :user ORDER BY m.timestamp DESC")
+	List<ChatMessage> findAllMessagesForUser(@Param("user") User user);
+	
+
 
 }

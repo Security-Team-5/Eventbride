@@ -1,0 +1,36 @@
+.chatlist-container {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .chatlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .chatlist-item {
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+  }
+  
+  .chatlist-item a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .chatlist-info strong {
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .chatlist-info p {
+    margin: 4px 0 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  

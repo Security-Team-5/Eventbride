@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,32 @@ public class ChatRestController {
 
 	@Autowired
 	private UserService userService;
+
+	@GetMapping("/conversations")
+	public ResponseEntity<?> getUserConversations() {
+		Optional<User> currentUserOpt = userService.getUserByUsername(
+			SecurityContextHolder.getContext().getAuthentication().getName());
+	
+		if (!currentUserOpt.isPresent()) return ResponseEntity.status(401).build();
+		User currentUser = currentUserOpt.get();
+	
+		List<ChatMessage> allMessages = chatRepository.findAllMessagesForUser(currentUser);
+	
+		Map<Integer, ChatMessage> lastMessagesPerUser = new LinkedHashMap<>();
+	
+		for (ChatMessage msg : allMessages) {
+			User other = msg.getSender().equals(currentUser) ? msg.getReceiver() : msg.getSender();
+	
+			if (!lastMessagesPerUser.containsKey(other.getId())) {
+				lastMessagesPerUser.put(other.getId(), msg);
+			}
+		}
+	
+		return ResponseEntity.ok(lastMessagesPerUser.values());
+	}
+	
+	
+
 
 	@GetMapping("/{recieverId}")
 	public ResponseEntity<?> findAllMessagesByUsers(@PathVariable Integer recieverId) {
@@ -47,5 +75,7 @@ public class ChatRestController {
 		List<ChatMessage> messages = chatRepository.findMessagesBetweenUsers2(sender.get(), reciver.get());
 		return ResponseEntity.ok(messages);
 	}
+	
+
 
 }

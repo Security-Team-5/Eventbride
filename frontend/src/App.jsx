@@ -22,6 +22,7 @@ import InformationService from "./pages/InformationService";
 import Payment from "./pages/Payment";
 import PrivateChat from "./pages/PrivateChat.jsx";
 import FloatingChatButton from "./components/FloatingChatButton";
+import ChatList from "./pages/ChatList";
 
 function App() {
   const {currentUser, loading, setCurrentUser} = useCurrentUser(null);
@@ -54,6 +55,7 @@ function App() {
             <Route path="/payment/:id" element={<Payment/>} />
             <Route path="/other-services/information/:id" element={<InformationService />} />
             <Route path="/chat/:id" element={<PrivateChat />} />
+            <Route path="/chats" element={<ChatList />} />
             {currentUser && currentUser.role == "ADMIN" &&
               <>
                 <Route path="/admin-events" element={<AdminEvents/>} />
