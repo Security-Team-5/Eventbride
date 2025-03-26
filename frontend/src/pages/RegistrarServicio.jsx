@@ -22,6 +22,7 @@ import "../static/resources/css/RegistrarServicio.css"
 const RegistrarServicio = () => {
     // Obtener datos user desde localStorage
     const currentUser = JSON.parse(localStorage.getItem("user"))
+    const [jwtToken] = useState(localStorage.getItem("jwt"));
 
     const [generalError, setGeneralError] = useState("") //Error si te pasas del numero de servicios permitidos
 
@@ -92,6 +93,7 @@ const RegistrarServicio = () => {
         fetch("/api/" + serviceType, {
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${jwtToken}`,
             },
             method: "POST",
             body: JSON.stringify(formData),

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef } from "react";
 import "../static/resources/css/Paypal.css";
-import axios from "axios";
+import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom";
 
 function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
@@ -14,14 +14,14 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
 
     const renderPayPalButton = async () => {
       try {
-        if (paypalRef.current.hasChildNodes()) return; 
+        if (paypalRef.current.hasChildNodes()) return;
         window.paypal.Buttons({
           createOrder: (data, actions) => {
             return actions.order.create({
               purchase_units: [
                 {
                   amount: {
-                    value: parseFloat(amount * commissionRate).toFixed(2),  
+                    value: parseFloat(amount * commissionRate).toFixed(2),
                   },
                 },
               ],
@@ -35,7 +35,7 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
 
 
               const paymentsRequests = eventPropsIds.map((id) =>
-                axios.post(
+                apiClient.post(
                   `/api/payment/${id}/${paymentType === "DEPOSITO PARA RESERVA"
                     ? "pay-deposit"
                     : "pay-remaining"}/${currentUser.id}`
@@ -46,9 +46,9 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
               await Promise.all(paymentsRequests);
 
               const cancelRequests = eventPropsIds.map((id) =>
-                axios.put(`/api/event-properties/cancel/${id}`, currentUser)
+                apiClient.put(`/api/event-properties/cancel/${id}`, currentUser)
               );
-          
+
               await Promise.all(cancelRequests);
               navigate("/events");
               alert(`Pago completado por ${details.payer.name.given_name}`);
@@ -67,13 +67,13 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
 
     return () => {
       if (paypalRef.current) {
-        paypalRef.current.innerHTML = ""; 
+        paypalRef.current.innerHTML = "";
       }
     };
   }, [amount, paymentType, eventPropsIds, navigate]);
 
   return (
-    <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center"}}>
+    <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center" }}>
       <div ref={paypalRef} />
     </div>
   );

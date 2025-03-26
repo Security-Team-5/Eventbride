@@ -13,9 +13,7 @@ function EventDetails() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true)
   const commissionRate = 1.05; // Comisión del 5%, con cambiar esta constante cambia toda la lógica de la comisión
-
-
-
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   // Obtener la lista de evento
   function getEvents() {
@@ -23,6 +21,7 @@ function EventDetails() {
     fetch(`/api/v1/events/${id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "GET",
     })
@@ -43,6 +42,7 @@ function EventDetails() {
     fetch(`/api/v1/events/${id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "DELETE",
     })
@@ -82,6 +82,7 @@ function EventDetails() {
     fetch(`/api/event-properties/status/pending/${eventPropertiesId}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "PUT",
     })
@@ -360,22 +361,22 @@ function EventDetails() {
                       </p>
                     </div>
                     <div className="payment-container">
-                    <button
-                      className={`payment-button ${["PENDING", "COMPLETED"].includes(prop.status) ? "disabled" : ""}`}
-                      disabled={["PENDING", "COMPLETED"].includes(prop.status)}
-                      onClick={() => {
-                        if (prop.status === "CANCELLED") {
-                          solicitarServicio(prop.id); 
-                        } else {
-                          navigate(`/payment/${prop.id}`);
-                        }
-                      }}
-                      style={{
-                        backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
-                      }}
-                    >
-                      {getPaymentStatusText(prop.status)}
-                    </button>
+                      <button
+                        className={`payment-button ${["PENDING", "COMPLETED"].includes(prop.status) ? "disabled" : ""}`}
+                        disabled={["PENDING", "COMPLETED"].includes(prop.status)}
+                        onClick={() => {
+                          if (prop.status === "CANCELLED") {
+                            solicitarServicio(prop.id);
+                          } else {
+                            navigate(`/payment/${prop.id}`);
+                          }
+                        }}
+                        style={{
+                          backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
+                        }}
+                      >
+                        {getPaymentStatusText(prop.status)}
+                      </button>
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
                         <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
@@ -532,7 +533,7 @@ function EventDetails() {
                 ))}
               </div>
 
-              <p style={{justifyContent:"center", display:"flex", flexDirection:"row"}}>La señal se descontará en el pago final.</p>
+              <p style={{ justifyContent: "center", display: "flex", flexDirection: "row" }}>La señal se descontará en el pago final.</p>
 
               <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <button className="close-button" onClick={closeCostBreakdownModal}>

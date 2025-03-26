@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import axios from "axios"
 import apiClient from "../apiClient"
 import {
   Filter,
@@ -101,10 +100,7 @@ const VenuesScreen = () => {
   const getUserEvents = async () => {
     try {
       const currentUser = JSON.parse(localStorage.getItem("user"))
-      const response = await fetch(`/api/v1/events/next/${currentUser.id}`, {
-        headers: { "Content-Type": "application/json" },
-        method: "GET",
-      })
+      const response = await apiClient.get(`/api/v1/events/next/${currentUser.id}`)
       const data = await response.json()
       setEvents(data)
     } catch (error) {
@@ -169,7 +165,7 @@ const VenuesScreen = () => {
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
 
     try {
-      await axios.put(`/api/event-properties/${eventObj.id}/add-venue/${venueId}`, null, {
+      await apiClient.put(`/api/event-properties/${eventObj.id}/add-venue/${venueId}`, null, {
         params: { startDate, endDate },
       })
       alert("¡Operación realizada con éxito!")
@@ -188,16 +184,16 @@ const VenuesScreen = () => {
 
   return (
     <div className="venues-container">
-  {/* Header */}
-  <div className="venues-header">
-    <h1 className="venues-title">Venues Disponibles</h1>
+      {/* Header */}
+      <div className="venues-header">
+        <h1 className="venues-title">Venues Disponibles</h1>
 
-    <button className="filter-toggle" onClick={toggleFilters}>
-      <Filter size={18} />
-      {filtersVisible ? "Ocultar filtros" : "Mostrar filtros"}
-      {filtersVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-    </button>
-  </div>
+        <button className="filter-toggle" onClick={toggleFilters}>
+          <Filter size={18} />
+          {filtersVisible ? "Ocultar filtros" : "Mostrar filtros"}
+          {filtersVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </button>
+      </div>
 
       {/* Filters */}
       {filtersVisible && (
@@ -248,7 +244,7 @@ const VenuesScreen = () => {
         </div>
       )}
 
-<LeafletMap venues={venues} />
+      <LeafletMap venues={venues} />
 
       {/* Venues grid */}
       {loading ? (
@@ -262,7 +258,7 @@ const VenuesScreen = () => {
           <p>No se encontraron venues con los criterios seleccionados.</p>
         </div>
       ) : (
-        <div className="venues-grid" style={{ marginTop: "2%"}}>
+        <div className="venues-grid" style={{ marginTop: "2%" }}>
           {venues.map((venue) => (
             <div key={venue.id} className="venue-card" onClick={() => handleVenueClick(venue)}>
               <div className="card-header">
@@ -271,7 +267,7 @@ const VenuesScreen = () => {
               <div className="card-body">
                 <div className="card-info">
                   {
-                    venue.userDTO?.plan==="PREMIUM" && <span className="service-badge">Promocionado</span>
+                    venue.userDTO?.plan === "PREMIUM" && <span className="service-badge">Promocionado</span>
                   }
                   <MapPin size={18} className="card-icon" />
                   <span className="card-text">
@@ -288,16 +284,16 @@ const VenuesScreen = () => {
                 </div>
               </div>
               <div className="card-footer">
-              {venue.available ? (
-                <>
-                  <button className="add-button" onClick={(e) => handleAddVenueClick(e, venue)}>
-                    <Plus size={16} />
-                    Añadir a mi evento
-                  </button>
-                  <Link to={`/chat/${venue.userDTO.id}`} className="chat-button">
-                    💬 Chatear
-                  </Link>
-                </>
+                {venue.available ? (
+                  <>
+                    <button className="add-button" onClick={(e) => handleAddVenueClick(e, venue)}>
+                      <Plus size={16} />
+                      Añadir a mi evento
+                    </button>
+                    <Link to={`/chat/${venue.userDTO.id}`} className="chat-button">
+                      💬 Chatear
+                    </Link>
+                  </>
                 ) : (
                   <div className="not-available-banner">No disponible</div>
                 )}

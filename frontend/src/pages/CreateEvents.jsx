@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Calendar, Users, DollarSign, PartyPopper } from "lucide-react"
-import axios from "axios"
+import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom"
 import "../static/resources/css/CreateEvents.css"
 
@@ -44,7 +44,7 @@ function CreateEvents() {
     setIsSubmitting(true)
 
     try {
-      const response = await axios.post("/api/v1/events", newEvent)
+      const response = await apiClient.post("/api/v1/events", newEvent)
       console.log(response.data)
       navigate("/events")
     } catch (error) {

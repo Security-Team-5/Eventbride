@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import axios from "axios"
+import apiClient from "../apiClient"
 import {
   Filter,
   X,
@@ -29,6 +29,7 @@ const OtherServiceScreen = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [serviceDetailsVisible, setServiceDetailsVisible] = useState(false)
   const [events, setEvents] = useState([])
+  // eslint-disable-next-line no-unused-vars
   const [selectedService, setSelectedService] = useState(null)
   const [selectedOtherServiceId, setSelectedOtherServiceId] = useState(null)
   const [serviceDetails, setServiceDetails] = useState(null)
@@ -36,12 +37,13 @@ const OtherServiceScreen = () => {
   const [loading, setLoading] = useState(true)
 
   const currentUser = JSON.parse(localStorage.getItem("user"))
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   const getFilteredOtherServices = async () => {
     try {
       setLoading(true)
       const params = { name, city, type }
-      const response = await axios.get(`/api/other-services/filter`, { params })
+      const response = await apiClient.get(`/api/other-services/filter`, { params })
       setOtherServices(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -53,7 +55,7 @@ const OtherServiceScreen = () => {
   const getAllOtherServices = async () => {
     try {
       setLoading(true)
-      const response = await axios.get("/api/other-services")
+      const response = await apiClient.get("/api/other-services")
       setOtherServices(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -65,7 +67,7 @@ const OtherServiceScreen = () => {
   const getUserEvents = async () => {
     try {
       const response = await fetch(`/api/v1/events/next/${currentUser.id}`, {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${jwtToken}`, },
         method: "GET",
       })
       const data = await response.json()
@@ -77,7 +79,7 @@ const OtherServiceScreen = () => {
 
   const getServiceDetails = async (serviceId) => {
     try {
-      const response = await axios.get(`/api/other-services/${serviceId}`)
+      const response = await apiClient.get(`/api/other-services/${serviceId}`)
       setServiceDetails(response.data)
       setServiceDetailsVisible(true)
     } catch (error) {
@@ -172,7 +174,7 @@ const OtherServiceScreen = () => {
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
     try {
-      await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
+      await apiClient.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
         params: { startDate, endDate },
       })
       alert("¡Operación realizada con éxito!")
@@ -299,49 +301,50 @@ const OtherServiceScreen = () => {
 
             console.log(service)
             return (
-            <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
-              <div className="card-header">
-                <h3 className="service-title">{service.name}</h3>
-              </div>
-              <div className="card-body">
+              <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
+                <div className="card-header">
+                  <h3 className="service-title">{service.name}</h3>
+                </div>
+                <div className="card-body">
                   {
-                   service.userDTO?.plan==="PREMIUM" && <span className="service-badge">Promocionado</span>
+                    service.userDTO?.plan === "PREMIUM" && <span className="service-badge">Promocionado</span>
                   }
-                <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
+                  <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
 
-                <div className="service-info">
-                  <MapPin size={18} className="info-icon" />
-                  <span className="info-text">{service.cityAvailable}</span>
+                  <div className="service-info">
+                    <MapPin size={18} className="info-icon" />
+                    <span className="info-text">{service.cityAvailable}</span>
+                  </div>
+
+                  <div className="service-info">
+                    <DollarSign size={18} className="info-icon" />
+                    <span className="info-text">
+                      {service.limitedByPricePerGuest
+                        ? `${service.servicePricePerGuest}€ por invitado`
+                        : service.limitedByPricePerHour
+                          ? `${service.servicePricePerHour}€ por hora`
+                          : `${service.fixedPrice}€ precio fijo`}
+                    </span>
+                  </div>
                 </div>
-
-                <div className="service-info">
-                  <DollarSign size={18} className="info-icon" />
-                  <span className="info-text">
-                    {service.limitedByPricePerGuest
-                      ? `${service.servicePricePerGuest}€ por invitado`
-                      : service.limitedByPricePerHour
-                        ? `${service.servicePricePerHour}€ por hora`
-                        : `${service.fixedPrice}€ precio fijo`}
-                  </span>
+                <div className="card-footer">
+                  {service.available ? (
+                    <>
+                      <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
+                        <Plus size={16} />
+                        Añadir a mi evento
+                      </button>
+                      <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
+                        💬 Chatear
+                      </Link>
+                    </>
+                  ) : (
+                    <div className="not-available-banner">No disponible</div>
+                  )}
                 </div>
               </div>
-              <div className="card-footer">
-              {service.available ? (
-                <>
-                  <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
-                    <Plus size={16} />
-                    Añadir a mi evento
-                  </button>
-                  <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
-                    💬 Chatear
-                  </Link>
-                  </>
-                ) : (
-                  <div className="not-available-banner">No disponible</div>
-                )}
-              </div>
-            </div>
-          )})}
+            )
+          })}
         </div>
       )}
 
