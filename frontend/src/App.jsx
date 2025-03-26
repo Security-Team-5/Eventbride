@@ -14,15 +14,19 @@ import Terms from "./pages/Terms"
 import { useCurrentUser } from "./hooks/useCurrentUser"
 import MyEvents from "./pages/MyEvents"
 import CreateEvents from "./pages/CreateEvents"
-import EventDetails from "./pages/EventDetails"
-import AdminEvents from "./pages/admin/AdminEvents"
-import AdminServices from "./pages/admin/AdminServices"
-import AdminUsers from "./pages/admin/AdminUsers"
-import InformationService from "./pages/InformationService"
-import Payment from "./pages/Payment"
+import EventDetails from "./pages/EventDetails";
+import AdminEvents from "./pages/admin/AdminEvents";
+import AdminServices from "./pages/admin/AdminServices";
+import AdminUsers from "./pages/admin/AdminUsers";
+import InformationService from "./pages/InformationService";
+import Payment from "./pages/Payment";
+import PrivateChat from "./pages/PrivateChat.jsx";
+import FloatingChatButton from "./components/FloatingChatButton";
+import ChatList from "./pages/ChatList";
 import Footer from "./components/Footer"
-import Profile from "./pages/EditProfile"
-import EditPlanProfile from "./pages/EditPlanProfile";
+import FAQ from "./pages/faqs"
+import EditProfile from "./pages/EditProfile"
+import EditPlanProfile from "./pages/EditPlanProfile"
 
 function App() {
   const { currentUser, loading, setCurrentUser } = useCurrentUser(null)
@@ -53,17 +57,21 @@ function App() {
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
             <Route path="/payment/:id" element={<Payment />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<EditProfile />} />
             <Route path="/profile/plan" element={<EditPlanProfile />} />
             <Route path="/other-services/information/:id" element={<InformationService />} />
+            <Route path="/faqs" element={<FAQ />} />
             {currentUser && currentUser.role == "ADMIN" && (
               <>
+                <Route path="/chat/:id" element={<PrivateChat />} />
+                <Route path="/chats" element={<ChatList />} />
                 <Route path="/admin-events" element={<AdminEvents />} />
                 <Route path="/admin-users" element={<AdminUsers />} />
                 <Route path="/admin-services" element={<AdminServices />} />
               </>
             )}
           </Routes>
+          <FloatingChatButton />
         </div>
         <Footer />
       </div>

@@ -3,7 +3,6 @@ package com.eventbride.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -54,6 +53,9 @@ public class SecurityConfig {
                                 "/api/venues/add-venue/**",
                                 "/api/venues/{eventId}/add-venue/{venueId}/**",
                                 "/api/services/**",
+								"/ws/**",
+								"/ws/info/**",
+								"/api/chat/**",
                                 "/api/event-properties/cancel/{eventPropertieID}",
                                 "/api/event-properties/status/pending/{eventPropertiesId}",
                                 "/api/users/plan",
@@ -61,7 +63,7 @@ public class SecurityConfig {
                                 "/api/other-services/disable/**",
                                 "/api/services/**")
                         .permitAll()
-                        .requestMatchers("/api/services/admin",
+                        			.requestMatchers("/api/services/admin",
                                 "/api/users/**",
                                 "/api/**",
                                 "/api/v1/events/DTO",

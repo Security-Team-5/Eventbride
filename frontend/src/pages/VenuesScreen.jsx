@@ -16,6 +16,7 @@ import {
   Info,
   ArrowRight,
 } from "lucide-react"
+import { Link } from "react-router-dom"
 import "../static/resources/css/VenueScreen.css"
 import LeafletMap from "../components/LeafletMap";
 
@@ -287,14 +288,13 @@ const VenuesScreen = () => {
                 </div>
               </div>
               <div className="card-footer">
-                {venue.available ? (
-                  <button className="add-button" onClick={(e) => handleAddVenueClick(e, venue)}>
-                    <Plus size={16} />
-                    Añadir a mi evento
-                  </button>
-                ) : (
-                  <div className="not-available-banner">No disponible</div>
-                )}
+                <button className="add-button" onClick={(e) => handleAddVenueClick(e, venue)}>
+                  <Plus size={16} />
+                  Añadir a mi evento
+                </button>
+                <Link to={`/chat/${venue.userDTO.id}`} className="chat-button">
+                  💬 Chatear
+                </Link>
               </div>
             </div>
           ))}
