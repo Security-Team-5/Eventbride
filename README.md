@@ -4,7 +4,7 @@
 
 </div>
 <p align="center">
-    <img src="\frontend\src\static\resources\images\logo-eventbride.png" width="225" height="225">
+    <img src="img/Eventbride.png" width="225" height="225">
 </p>
 
 ## Introducción
@@ -48,14 +48,14 @@ Eventbride es una plataforma dedicada a la contratación de servicios ver con ev
     spring.datasource.password=${MYSQL_PASS:TUCONTRASEÑA}
 ```
 > [!IMPORTANT]
-> No pongas el user y contraseña entre comillas, sigue la estructura literal, por ejemplo:**
+> No pongas el user y contraseña entre comillas, sigue la estructura literal, por ejemplo:
 
 ```
     spring.datasource.username=${MYSQL_USER:RyanGosling}
     spring.datasource.password=${MYSQL_PASS:lalaland}
 ```
 
-9. Repetir los pasos 5, 6 y 7 con el archivo *application-mysql.properties.example* (ruta: src\main\resources\application-mysql.properties.example).
+9. Repetir los pasos 6, 7 y 8 con el archivo *application-mysql.properties.example* (ruta: src\main\resources\application-mysql.properties.example).
 
 ### Arranque del sistema
 
@@ -83,7 +83,7 @@ Con las siguientes credenciales deberías poder acceder al sistema correctamente
 
 Estos son todos los participantes de este proyecto. Gracias a ellos ha sido posible.
 
-[[Contribuidores](https://github.com/ISPP-Eventbride/Eventbride/graphs/contributors)].
+[![Contribuidores](https://contrib.rocks/image?repo=ISPP-Eventbride/Eventbride)](https://github.com/ISPP-Eventbride/Eventbride/graphs/contributors)
 
 ## Licencias
 
@@ -94,5 +94,3 @@ Puede ver la licencia de nuestro proyecto en el siguiente enlace: [Licencia](./d
 - Email: eventbride6@gmail.com   
 
 - [Instagram](https://www.instagram.com/eventbride_svq/)
-
-- [GitHub issues](https://github.com/ISPP-Eventbride/Eventbride/issues)
