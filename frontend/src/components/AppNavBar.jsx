@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
@@ -167,9 +168,26 @@ function Navbar() {
                 <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
 
-              {currentUser.role === "SUPPLIER" ? <li className="nav-link" style={{ backgroundColor: "red" }}>{currentUser.plan}</li> : ""}
-
-              <button className="logout-button" onClick={handleLogout}>
+              {currentUser.role === "SUPPLIER" && (
+                <li
+                  className="nav-link"
+                  style={{
+                    background: currentUser.plan === "PREMIUM" 
+                      ? "linear-gradient(45deg, #FFD700, #FFC107, #FFA000)" 
+                      : "silver",
+                    color: "black",
+                    padding: "8px 12px",
+                    borderRadius: "5px",
+                    fontWeight: "bold",
+                    textShadow: currentUser.plan === "PREMIUM" ? "1px 1px 2px rgba(0, 0, 0, 0.5)": "none",
+                    border: currentUser.plan === "PREMIUM" ? "2px solid #DAA520" : "2px solid rgb(143, 143, 143)",
+                    boxShadow: currentUser.plan === "PREMIUM" ? "0px 0px 10px rgba(114, 114, 114, 0.8)" : "none",
+                  }}
+                >
+                  {currentUser.plan}
+                </li>
+              )}
+              <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%"}}>
                 Cerrar sesión
               </button>
             </div>
