@@ -1,14 +1,15 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../static/resources/css/Login.css";
+import { User, Lock, LogIn, AlertCircle } from 'lucide-react';
 import { getCurrentUser } from "../utils/api";
 import apiClient from "../apiClient";
+import '../static/resources/css/Login.css'
 
+// eslint-disable-next-line react/prop-types
 function Login({ setUser }) {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,6 +18,9 @@ function Login({ setUser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
     try {
       const response = await apiClient.post("/api/users/auth/login", form);
       const token = response.data.token;
@@ -25,22 +29,97 @@ function Login({ setUser }) {
       window.localStorage.setItem("jwt", response.data.token);
       setUser(data.user);
       navigate("/");
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError("Credenciales incorrectas");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Login</h2>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <input type="text" name="username" placeholder="Username" onChange={handleChange} required />
-          <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-          <button type="submit">Login</button>
-        </form>
-        <p>¿No tienes una cuenta? <a href="/register">Regístrate</a></p>
+    <div className="split-layout">
+      <div className="login-side">
+        <div className="login-card">
+          <div className="login-header">
+            <h1>Bienvenido</h1>
+            <p>Inicia sesión para continuar</p>
+          </div>
+
+          {error && (
+            <div className="error-message">
+              <AlertCircle size={18} />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="form-group">
+              <label htmlFor="username">Usuario</label>
+              <div className="input-wrapper">
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Ingresa tu nombre de usuario"
+                  value={form.username}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Contraseña</label>
+              <div className="input-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Ingresa tu contraseña"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className={`login-button ${isLoading ? 'loading' : ''}`}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <span className="loading-spinner"></span>
+              ) : (
+                <>
+                  <LogIn size={18} />
+                  <span>Iniciar sesión</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="login-footer">
+            <p>¿No tienes una cuenta? <a href="/register">Regístrate</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div className="collage-side">
+        <div className="photo-collage">
+          <div className="collage-item item-1">
+            <div className="collage-label">Bodas</div>
+          </div>
+          <div className="collage-item item-2">
+            <div className="collage-label">Bautizos</div>
+          </div>
+          <div className="collage-item item-3">
+            <div className="collage-label">Comuniones</div>
+          </div>
+          <div className="collage-item item-4"></div>
+          <div className="collage-item item-5"></div>
+        </div>
       </div>
     </div>
   );

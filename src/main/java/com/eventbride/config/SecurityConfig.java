@@ -31,40 +31,57 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults()) // Desactiva CSRF para facilitar pruebas
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**",
-                "/api/users",
-                "/api/users/**",
-                "/api/users/auth/register",
-                "/api/users/auth/login",
-                "/api/venues/**",
-                "/api/users/auth/current-user",
-                "/api/v1/events/**",
-                "/api/other-services/**",
-                "/api/other-services",
-                "/api/venues/**",
-                "/api/services/**",
-                "/api/invitation/eventInvitations/**",
-				"/api/invitation/**",
-				"/api/invitation/create/**",
-                "/api/event-properties/DTO/**",
-                "/api/payment/**",
-                "/api/venues/add-venue/**",
-                "/api/venues/{eventId}/add-venue/{venueId}/**").permitAll()
-                .requestMatchers("/api/services/admin",
-                "/api/users/**",
-                "/api/**",
-                "/api/v1/events/DTO",
-                "/api/other-services/admin/**",
-                "/api/venues/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider()).addFilterBefore(
-                jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            /* .formLogin(login -> login.disable()) // Desactiva el formulario de login por defecto
-            .httpBasic(httpBasic -> httpBasic.disable())*/; // Desactiva la autenticación HTTP básica
+                .csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults()) // Desactiva CSRF para facilitar pruebas
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**",
+                                "/api/users",
+                                "/api/users/**",
+                                "/api/users/auth/register",
+                                "/api/users/auth/login",
+                                "/api/venues/**",
+                                "/api/event-properties/**",
+                                "/api/users/auth/current-user",
+                                "/api/v1/events/**",
+                                "/api/other-services/**",
+                                "/api/other-services/add-otherservice/**",
+                                "/api/other-services",
+                                "/api/other-services/delete/{id}",
+                                "/api/venues/**",
+                                "/api/venues/delete/{id}",
+                                "/api/event-properties/DTO/**",
+                                "/api/invitation/eventInvitations/**",
+				                        "/api/invitation/**",
+				                        "/api/invitation/create/**",
+                                "/api/payment/**",
+                                "/api/venues/add-venue/**",
+                                "/api/venues/{eventId}/add-venue/{venueId}/**",
+                                "/api/services/**",
+								                "/ws/**",
+								                "/ws/info/**",
+								                "/api/chat/**",
+                                "/api/event-properties/cancel/{eventPropertieID}",
+                                "/api/event-properties/status/pending/{eventPropertiesId}",
+                                "/api/users/plan",
+                                "/api/users/profile/plan",
+                                "/api/other-services/disable/**",
+                                "/api/services/**")
+                        .permitAll()
+                        			.requestMatchers("/api/services/admin",
+                                "/api/users/**",
+                                "/api/**",
+                                "/api/v1/events/DTO",
+                                "/api/other-services/admin/**",
+                                "/api/venues/admin/**")
+                        .hasRole("ADMIN")
+                        .anyRequest().authenticated())
+                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider()).addFilterBefore(
+                        jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        /*
+         * .formLogin(login -> login.disable()) // Desactiva el formulario de login por
+         * defecto
+         * .httpBasic(httpBasic -> httpBasic.disable())
+         */; // Desactiva la autenticación HTTP básica
 
         return http.build();
     }

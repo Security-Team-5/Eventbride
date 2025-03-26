@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.UserDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,6 +81,9 @@ public class UserService {
         user.setTelephone(userDetails.getTelephone());
         user.setDni(userDetails.getDni());
         user.setRole(userDetails.getRole());
+        user.setPlan(userDetails.getPlan());
+        user.setPaymentPlanDate(userDetails.getPaymentPlanDate());
+        user.setExpirePlanDate(userDetails.getExpirePlanDate());
 
         return userRepository.save(user);
     }
@@ -94,5 +98,21 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
+    public User updateUserPlan(Integer id, User updatedUser) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setPlan(updatedUser.getPlan());
+        user.setPaymentPlanDate(updatedUser.getPaymentPlanDate());
+        user.setExpirePlanDate(updatedUser.getExpirePlanDate());
+        return userRepository.save(user);
+    }
 
+    public User setPremium(Integer id, LocalDate expirationDate) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setPlan(User.Plan.PREMIUM);
+        user.setPaymentPlanDate(LocalDate.now());
+        user.setExpirePlanDate(expirationDate);
+        return userRepository.save(user);
+    }
+  
 }

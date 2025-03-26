@@ -8,7 +8,8 @@ import com.eventbride.model.BaseEntity;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.payment.Payment;
 import com.eventbride.venue.Venue;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+/*import com.fasterxml.jackson.annotation.JsonIgnore;*/
+
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -55,6 +56,7 @@ public class EventProperties extends BaseEntity {
     public enum Status {
         PENDING,
         APPROVED,
+        CANCELLED,
         DEPOSIT_PAID,
         COMPLETED
     }

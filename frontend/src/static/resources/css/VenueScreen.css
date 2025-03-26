@@ -1,0 +1,426 @@
+/* Estilos generales */
+.venues-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    padding-top: 100px;
+    /* Espacio para el navbar */
+}
+
+.venues-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.venues-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
+    font-family: "Playfair Display", serif;
+}
+
+/* Estilos para filtros */
+.filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background-color: #d9be75;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+}
+
+.filter-toggle:hover {
+    background-color: #c5ad69;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(217, 190, 117, 0.2);
+}
+
+.filter-container {
+    background-color: #f4f4f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.filter-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+    font-family: "Playfair Display", serif;
+}
+
+.filter-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.input-field {
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #d9be75;
+    box-shadow: 0 0 0 3px rgba(217, 190, 117, 0.2);
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.primary-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background-color: #d9be75;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.primary-button:hover {
+    background-color: #c5ad69;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(217, 190, 117, 0.2);
+}
+
+.secondary-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background-color: white;
+    color: #555;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-button:hover {
+    background-color: #f4f4f9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para la cuadrícula de venues */
+.venues-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.venue-card {
+    background-color: #f4f4f9;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.venue-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    padding: 1.2rem;
+    background-color: rgba(217, 190, 117, 0.1);
+    border-bottom: 1px solid rgba(217, 190, 117, 0.2);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    font-family: "Playfair Display", serif;
+    text-align: center;
+}
+
+.card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.card-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+
+.card-icon {
+    color: #d9be75;
+    flex-shrink: 0;
+}
+
+.card-text {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.card-footer {
+    padding: 1.2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.add-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background-color: #d9be75;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-button:hover {
+    background-color: #c5ad69;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(217, 190, 117, 0.2);
+}
+
+/* Estilos para modales */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 50;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    max-width: 42rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 1.2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    font-family: "Playfair Display", serif;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1.2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.close-button {
+    padding: 0.7rem 1.2rem;
+    background-color: white;
+    color: #555;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.close-button:hover {
+    background-color: #f4f4f9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para tarjetas de eventos */
+.event-card {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background-color: #f4f4f9;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.event-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background-color: #d9be75;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.event-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    color: #333;
+    font-family: "Playfair Display", serif;
+}
+
+.time-input-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+/* Estados vacíos y de carga */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: #f4f4f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Media queries para responsividad */
+@media (min-width: 640px) {
+    .venues-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .venues-title {
+        margin-bottom: 0;
+    }
+
+    .button-group {
+        flex-direction: row;
+    }
+
+    .venues-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .time-input-group {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .filter-form {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .venues-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Animación de carga */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(217, 190, 117, 0.3);
+    border-radius: 50%;
+    border-top-color: #d9be75;
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+.not-available-banner {
+    background-color: #e0e0e0;
+    color: #555;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.875rem;
+  }

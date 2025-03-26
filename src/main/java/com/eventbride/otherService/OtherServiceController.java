@@ -28,39 +28,58 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/other-services")
 public class OtherServiceController {
 
-    @Autowired
-    private OtherServiceService otherServiceService;
+	@Autowired
+	private OtherServiceService otherServiceService;
 
-@GetMapping
-    public List<OtherServiceDTO> getAllOtherServices() {
-        List<OtherService> otherServices = otherServiceService.getAllOtherServices();
-        return OtherServiceDTO.fromEntities(otherServices);
-    }
-	
-@GetMapping("/{id}")
-    public OtherService getOtherServiceById(@PathVariable("id") Integer id) {
+	@GetMapping
+	public List<OtherServiceDTO> getAllOtherServices() {
+		List<OtherService> otherServices = otherServiceService.getAllOtherServices();
+		return OtherServiceDTO.fromEntities(otherServices);
+	}
+
+	@GetMapping("/{id}")
+	public OtherService getOtherServiceById(@PathVariable("id") Integer id) {
 		Optional<OtherService> otherSer = otherServiceService.getOtherServiceById(id);
 		return otherSer.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not found"));
-    }
+	}
 
- @GetMapping("/filter")
-    public List<OtherServiceDTO> getFilteredOtherServices(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) OtherServiceType type) {
-        List<OtherService> otherServices = otherServiceService.getFilteredOtherServices(name, city, type);
-        return OtherServiceDTO.fromEntities(otherServices);
-    }
+	@GetMapping("/filter")
+	public List<OtherServiceDTO> getFilteredOtherServices(
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) String city,
+			@RequestParam(required = false) OtherServiceType type) {
+		List<OtherService> otherServices = otherServiceService.getFilteredOtherServices(name, city, type);
+		return OtherServiceDTO.fromEntities(otherServices);
+	}
 
-    @PostMapping
-    public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
-        try {
-            OtherService newOtherService = otherServiceService.createOtherService(otherService);
-            return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+	@PostMapping
+	public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
+		try {
+			OtherService newOtherService = otherServiceService.createOtherService(otherService);
+			return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
+		} catch (RuntimeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteOtherService(@PathVariable Integer id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		
+		System.out.println("Authorities: " + authorities);
+		
+		boolean hasSupplierRole = authorities.stream()
+			.map(GrantedAuthority::getAuthority)
+			.anyMatch(role -> role.equals("SUPPLIER") || role.equals("ROLE_SUPPLIER"));
+		
+		if (hasSupplierRole) {
+			otherServiceService.deleteOtherService(id);
+			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -81,7 +100,8 @@ public class OtherServiceController {
 		if (cause instanceof JsonMappingException jsonMappingException) {
 			for (JsonMappingException.Reference reference : jsonMappingException.getPath()) {
 				String fieldName = reference.getFieldName();
-				errorDetails.put(fieldName, "El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
+				errorDetails.put(fieldName,
+						"El campo '" + fieldName + "' tiene un formato incorrecto o un valor no válido.");
 			}
 			errorDetails.put("error", "El formato del JSON es incorrecto o faltan datos obligatorios.");
 		} else if (cause instanceof JsonParseException) {
@@ -126,6 +146,19 @@ public class OtherServiceController {
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 
+	@PatchMapping("/disable/{id}")
+	public ResponseEntity<?> disableOtherService(@PathVariable Integer id) {
+		Optional<OtherService> optionalService = otherServiceService.getOtherServiceById(id);
+
+		if (optionalService.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Servicio no encontrado"));
+		}
+
+		OtherService service = optionalService.get();
+		service.setAvailable(false);
+		otherServiceService.save(service);
+
+		return ResponseEntity.ok().build();
+	}
+
 }
-
-

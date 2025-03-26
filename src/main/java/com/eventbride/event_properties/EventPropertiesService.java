@@ -3,6 +3,7 @@ package com.eventbride.event_properties;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +12,21 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
+import com.eventbride.event_properties.EventProperties.Status;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceRepository;
+import com.eventbride.otherService.OtherServiceService;
+import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueRepository;
+import com.eventbride.venue.VenueService;
 
 import org.springframework.stereotype.Service;
 
@@ -27,12 +34,16 @@ import org.springframework.stereotype.Service;
 public class EventPropertiesService {
     private EventPropertiesRepository eventPropertiesRepository;
     private EventRepository eventRepository;
+    private VenueService venueService;
+    private OtherServiceService otherServiceService;
 
     @Autowired
     public EventPropertiesService(EventPropertiesRepository eventPropertiesRepository,
-            EventRepository eventRepository) {
+            EventRepository eventRepository, VenueService venueService, OtherServiceService otherServiceService) {
         this.eventPropertiesRepository = eventPropertiesRepository;
         this.eventRepository = eventRepository;
+        this.venueService = venueService;
+        this.otherServiceService = otherServiceService;
 
     }
 
@@ -41,6 +52,10 @@ public class EventPropertiesService {
 
     @Autowired
     VenueRepository venueRepository;
+
+    @Autowired
+    JavaMailSender mailSender;
+    
 
     @Transactional(readOnly = true)
     public List<EventProperties> findAll() {
@@ -71,6 +86,16 @@ public class EventPropertiesService {
         return save(toUpdate);
     }
 
+    @Transactional
+    public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException{
+        EventProperties toUpdate = findById(id);
+        System.out.println("ANTES DEL CAMBIO -> status: " + toUpdate.getStatus());
+        toUpdate.setStatus(EventProperties.Status.CANCELLED);
+        EventProperties saved = updateEventProperties(toUpdate,id);
+        System.out.println("DESPUÉS DEL CAMBIO -> status: " + saved.getStatus());
+        return saved;
+    }
+
     @Transactional(readOnly = true)
     public EventProperties findEventPropertiesByEvent(Event event) {
         return (EventProperties) eventPropertiesRepository.findEventPropertiesByEvent(event);
@@ -84,6 +109,45 @@ public class EventPropertiesService {
     @Transactional(readOnly = true)
     public List<EventProperties> findEventPropertiesByVenue(Integer venueId) {
         return eventPropertiesRepository.findEventPropertiesByVenueId(venueId);
+    }
+
+    @Transactional
+    public void getEventsPropsToCancelVenue(LocalDate fecha, Integer venueId, Integer eventPropId){
+        List<EventProperties> listToCancelVenues = eventPropertiesRepository.findVenuesToCancel(fecha, venueId, eventPropId);
+        for (EventProperties eP : listToCancelVenues) {
+            // Send emails
+            Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
+            User user = event.getUser();
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("eventbride6@gmail.com");
+            mailMessage.setTo(user.getEmail());
+            mailMessage.setSubject("Recinto cancelado");
+            mailMessage.setText("El recinto " + eP.getVenue().getName() + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
+            ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
+            "\n\n Saludos, \n EventBride");
+            mailSender.send(mailMessage);
+            updateEventPropertiesToCancelled(eP.getId());
+        }
+    }
+
+    @Transactional
+    public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId){
+        List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha, otherServiceId, eventPropId);
+        for (EventProperties eP : listToCancelOtherServices) {
+            // Send emails
+            Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
+            User user = event.getUser();
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("eventbride6gmail.com");
+            mailMessage.setTo(user.getEmail());
+            mailMessage.setSubject("Servicio cancelado");
+            mailMessage.setText("El servicio " + eP.getOtherService().getName() + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
+            ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
+            "\n\n Saludos, \n EventBride");
+            mailSender.send(mailMessage);
+            updateEventPropertiesToCancelled(eP.getId());
+
+        }
     }
 
     @Transactional
@@ -170,6 +234,24 @@ public class EventPropertiesService {
     @Transactional
     public void deleteEventProperties(int id) throws DataAccessException {
         eventPropertiesRepository.deleteById(id);
+    }
+
+    @Transactional
+    public List<EventPropertiesDTO> findEventPropertiesPendingByUserId(Integer userId) {
+        List<OtherService> otherServices = otherServiceService.getOtherServiceByUserId(userId);
+        List<Venue> venues = venueService.getVenuesByUserId(userId);
+        List<EventPropertiesDTO> res = new ArrayList<>();
+
+        for (OtherService otherService : otherServices) {
+            res.addAll(eventPropertiesRepository.findByOtherServiceAndStatus(otherService,
+                    EventProperties.Status.PENDING).stream().map(e -> new EventPropertiesDTO(e)).toList());
+        }
+
+        for (Venue venue : venues) {
+            res.addAll(eventPropertiesRepository.findByVenueAndStatus(venue,
+                    EventProperties.Status.PENDING).stream().map(e -> new EventPropertiesDTO(e)).toList());
+        }
+        return res;
     }
 
 }

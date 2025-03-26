@@ -1,5 +1,7 @@
 package com.eventbride.user;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,6 +12,8 @@ import com.eventbride.model.Person;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -34,6 +38,21 @@ public class User extends Person implements UserDetails{
     @Column(name = "role", nullable = false)
     @NotBlank
     private String role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "plan", nullable = true)
+    private Plan plan;
+
+    public enum Plan {
+        BASIC,
+        PREMIUM
+    }
+
+    @Column(name = "payment_plan_date", nullable = true)
+    private LocalDate paymentPlanDate;
+
+    @Column(name = "expire_plan_date", nullable = true)
+    private LocalDate expirePlanDate;
 
     @Override
     public Collection< ? extends GrantedAuthority> getAuthorities() {
