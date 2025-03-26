@@ -16,6 +16,7 @@ import {
   Calendar,
   CheckCircle,
 } from "lucide-react"
+import { Link } from "react-router-dom"
 import "../static/resources/css/OtherService.css"
 
 const OtherServiceScreen = () => {
@@ -323,6 +324,9 @@ const OtherServiceScreen = () => {
                   <Plus size={16} />
                   Añadir a mi evento
                 </button>
+                <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
+                  💬 Chatear
+                </Link>
               </div>
             </div>
           ))}
@@ -477,4 +481,3 @@ const OtherServiceScreen = () => {
 }
 
 export default OtherServiceScreen
-
