@@ -532,6 +532,8 @@ function EventDetails() {
                 ))}
               </div>
 
+              <p style={{justifyContent:"center", display:"flex", flexDirection:"row"}}>La señal se descontará en el pago final.</p>
+
               <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <button className="close-button" onClick={closeCostBreakdownModal}>
                   Cerrar

@@ -56,7 +56,7 @@ const Servicios = () => {
         fetchServices()
     }, [currentUser.id, currentUser.plan])
 
-
+/*
     const deleteService = async (serviceId, serviceType) => {
         if (window.confirm("¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.")) {
             try {
@@ -71,7 +71,7 @@ const Servicios = () => {
                 alert("No se pudo eliminar el servicio. Por favor, inténtalo de nuevo.");
             }
         }
-    };
+    };*/
 
     // Función para formatear el tipo de servicio
     const formatServiceType = (type, otherServiceType) => {

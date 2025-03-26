@@ -94,7 +94,7 @@ const Register = () => {
           />
           <input
             type="number"
-            min="0"
+            min="1"
             max={invitation?.maxGuests}
             step="1"
             name="numberOfGuests"
