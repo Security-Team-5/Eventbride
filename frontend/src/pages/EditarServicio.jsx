@@ -272,6 +272,7 @@ const EditarServicio = () => {
                                     required
                                     min="0"
                                     step="0.01"
+                                    max="10000000.00"
                                     className="form-input"
                                 />
                             </div>
@@ -292,6 +293,7 @@ const EditarServicio = () => {
                                     required
                                     min="0"
                                     step="0.01"
+                                    max="10000000.00"
                                     className="form-input"
                                 />
                             </div>
@@ -312,6 +314,7 @@ const EditarServicio = () => {
                                     required
                                     min="0"
                                     step="0.01"
+                                    max="10000000.00"
                                     className="form-input"
                                 />
                             </div>

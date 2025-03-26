@@ -28,7 +28,7 @@ function AdminEvents() {
     const eventToValidate = eventData[event.id];
     
     // Comprobar campos obligatorios
-    if (!eventToValidate.eventType || !eventToValidate.guests || !eventToValidate.budget || !eventToValidate.eventDate) {
+    if (!eventToValidate.eventType || !eventToValidate.guests || !eventToValidate.eventDate) {
       setError("Por favor, complete todos los campos obligatorios.");
       return false;
     }
@@ -38,12 +38,7 @@ function AdminEvents() {
       setError("El número de invitados debe ser mayor que cero.");
       return false;
     }
-    
-    // Validar presupuesto
-    if (eventToValidate.budget <= 0) {
-      setError("El presupuesto debe ser mayor que cero.");
-      return false;
-    }
+
     
     // Validar fecha del evento
     const eventDate = new Date(eventToValidate.eventDate);
@@ -211,19 +206,7 @@ function AdminEvents() {
                         required
                       />
                     </div>
-                    <div>
-                      <label>Presupuesto:</label>
-                      <input
-                        type="number"
-                        name="budget"
-                        value={eventData[editEventId]?.budget || event.budget}
-                        onChange={handleInputChange}
-                        readOnly={editEventId !== event.id}
-                        min="1"
-                        step="0.01"
-                        required
-                      />
-                    </div>
+
                     <div style={{ marginBottom: "10px" }}>
                       <label>Fecha:</label>
                       <input

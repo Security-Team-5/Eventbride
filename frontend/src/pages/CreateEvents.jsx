@@ -40,12 +40,26 @@ function CreateEvents() {
       return
     }
 
-    // Additional validation for event date
-    const today = new Date().toISOString().split("T")[0]
-    if (eventDate <= today) {
-      setError("No puedes crear un evento en una fecha anterior a hoy")
-      return
-    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+    const selectedDate = new Date(eventDate);
+    
+    // Calcula la diferencia en días
+    const minDaysDifference = Math.ceil((selectedDate - today) / (1000 * 60 * 60 * 24));
+    
+    console.log("Diferencia en días:", minDaysDifference);
+      if (eventType === "CHRISTENING" && minDaysDifference > 30) {
+        setError("Para un bautizo, la fecha debe ser como máximo 30 días después de hoy");
+        return;
+      } else if (eventType === "COMMUNION" && minDaysDifference > 90) {
+        setError("Para una comunión, la fecha debe ser como máximo 90 días después de hoy");
+        return;
+      } else if (eventType === "WEDDING" && minDaysDifference > 120) {
+        setError("Para una boda, la fecha debe ser al como máximo 120 días después de hoy");
+        return;
+      }
+    // }
+
 
     const newEvent = {
       eventType,
@@ -133,6 +147,8 @@ function CreateEvents() {
               onChange={(e) => setEventDate(e.target.value)}
               required
               className="form-input"
+              min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split("T")[0]} 
+              max={new Date(new Date().setDate(new Date().getDate() + 120)).toISOString().split("T")[0]}
             />
           </div>
 

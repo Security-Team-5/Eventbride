@@ -45,7 +45,7 @@ const RegistrarServicio = () => {
         latestTime: "",
         extraInformation: "",
     })
-
+    const [error, setError] = useState("")
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
@@ -74,7 +74,12 @@ const RegistrarServicio = () => {
     })
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target
+        const { name, value, type, checked } = e.target;
+        if (name === "name" && value.length > 500) {
+            setError("El nombre no puede tener más de 500 caracteres.");
+        } else if (name === "name") {
+            setError(""); 
+        }
         setFormData({
             ...formData,
             [name]: type === "checkbox" ? checked : value,
@@ -122,7 +127,7 @@ const RegistrarServicio = () => {
                 <h1 className="service-registration-title">Registrar Servicio</h1>
                 <h2 className="service-registration-subtitle">¿Qué tipo de servicio deseas registrar?</h2>
             </div>
-
+            {error && <div className="error-message">{error}</div>}
             <select
                 id="serviceType"
                 value={serviceType}
@@ -178,7 +183,7 @@ const RegistrarServicio = () => {
                                 <div className="form-group">
                                     <label htmlFor="cityAvailable" className="form-label">
                                         <MapPin size={16} className="inline-block mr-2" style={{ color: "#d9be75" }} />
-                                        Ciudad disponible
+                                        Localidad
                                     </label>
                                     {errors.cityAvailable && (
                                         <div className="error-message">
@@ -196,7 +201,7 @@ const RegistrarServicio = () => {
                                         minLength="1"
                                         maxLength="30"
                                         className="form-input"
-                                        placeholder="Ej: Madrid"
+                                        placeholder="Ej: Sevilla"
                                     />
                                 </div>
 
@@ -256,6 +261,7 @@ const RegistrarServicio = () => {
                                         required
                                         min="0"
                                         step="0.01"
+                                        max="10000000.00"
                                         className="form-input"
                                         placeholder="Ej: 25.50"
                                     />
@@ -283,6 +289,7 @@ const RegistrarServicio = () => {
                                         required
                                         min="0"
                                         step="0.01"
+                                        max="10000000.00"
                                         className="form-input"
                                         placeholder="Ej: 100.00"
                                     />
@@ -310,6 +317,7 @@ const RegistrarServicio = () => {
                                         required
                                         min="0"
                                         step="0.01"
+                                        max="10000000.00"
                                         className="form-input"
                                         placeholder="Ej: 500.00"
                                     />
@@ -362,7 +370,7 @@ const RegistrarServicio = () => {
                                     maxLength="1000"
                                     className="form-input"
                                     rows={4}
-                                    placeholder="Describe tu servicio con detalle..."
+                                    placeholder="Describe tu servicio con detalle...(máximo 1000 caracteres)"
                                 />
                             </div>
                         </div>
@@ -601,7 +609,7 @@ const RegistrarServicio = () => {
                                         maxLength="1000"
                                         className="form-input"
                                         rows={4}
-                                        placeholder="Proporciona detalles adicionales sobre tu servicio..."
+                                        placeholder="Proporciona detalles adicionales sobre tu servicio...(máximo 1000 caracteres)"
                                     />
                                 </div>
 
