@@ -26,6 +26,7 @@ import ChatList from "./pages/ChatList";
 import Footer from "./components/Footer"
 import EditProfile from "./pages/EditProfile"
 import EditPlanProfile from "./pages/EditPlanProfile"
+import Notifications from "./pages/Notifications"
 
 function App() {
   const { currentUser, loading, setCurrentUser } = useCurrentUser(null)
@@ -61,6 +62,7 @@ function App() {
             <Route path="/other-services/information/:id" element={<InformationService />} />
             <Route path="/chat/:id" element={<PrivateChat />} />
             <Route path="/chats" element={<ChatList />} />
+            <Route path="/notifications" element={<Notifications />} />
             {currentUser && currentUser.role == "ADMIN" &&
               (<>
                 <Route path="/admin-events" element={<AdminEvents />} />

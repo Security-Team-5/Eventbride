@@ -164,7 +164,7 @@ function Navbar() {
 
           {currentUser && currentUser.role && (
             <div className="navbar-actions">
-              <Link to="/" className="action-icon messages-icon">
+              <Link to="/notifications" className="action-icon messages-icon">
                 <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
                 <span className="notification-badge">2</span>
               </Link>
