@@ -1,142 +1,122 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../static/resources/css/EditPlanProfile.css";
+import PaypalButtonPlan from "../components/PaypalButtomPlan";
 
 function EditPlanProfile() {
-    const [userData, setUserData] = useState({
-        plan: "",
-        paymentPlanDate: "",
-        expirePlanDate: ""
-    });
-    const [jwtToken] = useState(localStorage.getItem("jwt"));
-    const navigate = useNavigate();
-    const [durationMonths, setDurationMonths] = useState(1);
+  const [userData, setUserData] = useState({
+    plan: "",
+    paymentPlanDate: new Date().toISOString().slice(0, 10),
+    expirePlanDate: ""
+  });
 
-    useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-        if (storedUser && storedUser.id) {
-            setUserData(storedUser);
-        }
-    }, []);
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
+  const navigate = useNavigate();
+  const [durationMonths, setDurationMonths] = useState(1);
+  const [amount, setAmount] = useState(50.0);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setUserData((prev) => ({ ...prev, [name]: value }));
-    };
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    if (storedUser && storedUser.id) {
+      setUserData((prev) => ({
+        ...prev,
+        ...storedUser,
+        paymentPlanDate: new Date().toISOString().slice(0, 10) // asegurar fecha por defecto
+      }));
+    }
+  }, []);
 
-    const handleDurationChange = (e) => {
-        const value = parseInt(e.target.value, 10);
-        setDurationMonths(isNaN(value) ? 1 : value);
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    const updatePlan = async () => {
-        if (userData.plan === "PREMIUM") {
-            if (!userData.paymentPlanDate) {
-                alert("Debes seleccionar una fecha de inicio para el plan PREMIUM.");
-                return;
-            }
+  const handleDurationChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    setDurationMonths(isNaN(value) ? 0 : value);
+  };
 
-            const paymentDate = new Date(userData.paymentPlanDate);
-            const expireDate = new Date(paymentDate);
-            expireDate.setMonth(expireDate.getMonth() + durationMonths);
+  // Calcula fecha de expiración en formato Date y string bonito
+  const calculatedFechaFinDate = (() => {
+    if (!userData.paymentPlanDate || !durationMonths || durationMonths <= 0) return null;
 
-            userData.paymentPlanDate = paymentDate.toISOString();
-            userData.expirePlanDate = expireDate.toISOString();
-        } else {
-            userData.paymentPlanDate = null;
-            userData.expirePlanDate = null;
-        }
+    const startDate = new Date(userData.paymentPlanDate);
+    const day = startDate.getDate();
 
-        const updatedUser = {
-            ...userData,
-            password: "no-password"
-        };
+    const tempDate = new Date(startDate.getFullYear(), startDate.getMonth() + durationMonths, 1);
+    tempDate.setDate(day);
 
-        try {
-            const response = await fetch(`/api/users/${userData.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwtToken}`,
-                },
-                body: JSON.stringify(updatedUser),
-            });
+    if (tempDate.getDate() !== day) {
+      tempDate.setDate(0); // Ajustar a último día del mes anterior
+    }
 
-            if (!response.ok) {
-                const errorMsg = await response.text();
-                throw new Error(errorMsg || "Error actualizando el plan");
-            }
+    return tempDate;
+  })();
 
-            const updated = await response.json();
-            setUserData(updated);
-            localStorage.setItem("user", JSON.stringify(updated));
-            alert(`¡Plan actualizado a ${updated.plan} con éxito!`);
-            navigate("/profile");
-        } catch (err) {
-            console.error("Error al cambiar de plan:", err);
-            alert("Hubo un error al actualizar el plan.");
-        }
-    };
+  const fechaFinStringForDisplay = calculatedFechaFinDate
+    ? calculatedFechaFinDate.toLocaleDateString("es-ES")
+    : "";
 
-    const calculatedExpireDate = () => {
-        if (!userData.paymentPlanDate) return "";
-        const date = new Date(userData.paymentPlanDate);
-        date.setMonth(date.getMonth() + durationMonths);
-        return date.toLocaleString("es-ES");
-    };
+  const fechaFinStringForBackend = calculatedFechaFinDate
+    ? calculatedFechaFinDate.toISOString().split("T")[0]
+    : "";
 
-    return (
-        <div className="edit-plan-container">
-            <form onSubmit={(e) => e.preventDefault()} className="edit-plan-form">
-                <h2>Editar Plan</h2>
+  useEffect(() => {
+    setAmount(50 * durationMonths);
+  }, [durationMonths]);
 
-                <div className="form-group">
-                    <label>Tipo de plan:</label>
-                    <select name="plan" value={userData.plan} onChange={handleInputChange}>
-                        <option value="">Seleccionar...</option>
-                        <option value="BASIC">Básico</option>
-                        <option value="PREMIUM">Premium</option>
-                    </select>
-                </div>
+  return (
+    <div className="edit-plan-container">
+      <form onSubmit={(e) => e.preventDefault()} className="edit-plan-form">
+        <h2>Editar Plan</h2>
 
-                {userData.plan === "PREMIUM" && (
-                    <>
-                        <div className="form-group">
-                            <label>Fecha de inicio:</label>
-                            <input
-                                type="datetime-local"
-                                name="paymentPlanDate"
-                                value={userData.paymentPlanDate?.slice(0, 16) || ""}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Duración del plan (meses):</label>
-                            <input
-                                type="number"
-                                min="1"
-                                value={durationMonths}
-                                onChange={handleDurationChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Fecha de expiración (auto calculada):</label>
-                            <input
-                                type="text"
-                                disabled
-                                value={calculatedExpireDate()}
-                            />
-                        </div>
-                    </>
-                )}
-
-                <div className="btn-group">
-                    <button className="save-btn" onClick={updatePlan}>Guardar</button>
-                    <button className="cancel-btn" onClick={() => navigate("/profile")}>Cancelar</button>
-                </div>
-            </form>
+        <div className="form-group">
+          <label>Tipo de plan:</label>
+          <select name="plan" value={userData.plan} onChange={handleInputChange}>
+            <option value="">Seleccionar...</option>
+            <option value="BASIC">Básico</option>
+            <option value="PREMIUM">Premium</option>
+          </select>
         </div>
-    );
+
+        {userData.plan === "PREMIUM" && (
+          <>
+            <div className="form-group">
+              <label>Duración del plan (meses):</label>
+              <input
+                type="number"
+                min="1"
+                value={durationMonths}
+                onChange={handleDurationChange}
+              />
+            </div>
+
+            {durationMonths > 0 && (
+              <div className="form-group">
+                <label>Fecha de expiración (auto calculada):</label>
+                <input type="text" disabled value={fechaFinStringForDisplay} />
+              </div>
+            )}
+          </>
+        )}
+
+        {userData.plan === "PREMIUM" && durationMonths > 0 && (
+          <>
+            <span className="price">Precio: {amount} €</span>
+            <div className="btn-group">
+              <PaypalButtonPlan amount={amount} fechaFin={fechaFinStringForBackend} />
+            </div>
+          </>
+        )}
+
+        <div className="btn-group">
+          <button className="cancel-btn" onClick={() => navigate("/profile")}>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 export default EditPlanProfile;

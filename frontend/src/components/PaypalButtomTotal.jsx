@@ -30,7 +30,6 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
           onApprove: async (data, actions) => {
             try {
               const details = await actions.order.capture();
-              alert(`Pago completado por ${details.payer.name.given_name}`);
 
               const currentUser = JSON.parse(localStorage.getItem("user"));
 
@@ -52,6 +51,7 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
           
               await Promise.all(cancelRequests);
               navigate("/events");
+              alert(`Pago completado por ${details.payer.name.given_name}`);
             } catch (err) {
               alert("Error al procesar el pago");
               console.error(err);
