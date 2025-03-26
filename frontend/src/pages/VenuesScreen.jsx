@@ -262,7 +262,7 @@ const VenuesScreen = () => {
           <p>No se encontraron venues con los criterios seleccionados.</p>
         </div>
       ) : (
-        <div className="venues-grid">
+        <div className="venues-grid" style={{ marginTop: "2%"}}>
           {venues.map((venue) => (
             <div key={venue.id} className="venue-card" onClick={() => handleVenueClick(venue)}>
               <div className="card-header">
