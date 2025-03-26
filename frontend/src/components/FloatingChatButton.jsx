@@ -10,6 +10,10 @@ const FloatingChatButton = () => {
 
   if (hideOnChatPage) return null;
 
+  const jwt = localStorage.getItem("jwt");
+
+  if(!jwt) return null;
+
   return (
     <Link to="/chats" className="floating-chat-button" title="Ver mis chats">
       <MessageCircle size={24} />

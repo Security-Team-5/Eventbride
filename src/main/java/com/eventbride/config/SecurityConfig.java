@@ -45,7 +45,9 @@ public class SecurityConfig {
                                 "/api/other-services/**",
                                 "/api/other-services/add-otherservice/**",
                                 "/api/other-services",
+                                "/api/other-services/delete/{id}",
                                 "/api/venues/**",
+                                "/api/venues/delete/{id}",
                                 "/api/event-properties/DTO/**",
                                 "/api/payment/**",
                                 "/api/venues/add-venue/**",
@@ -53,8 +55,14 @@ public class SecurityConfig {
                                 "/api/services/**",
 								"/ws/**",
 								"/ws/info/**",
-								"/api/chat/**")
-                        			.permitAll()
+								"/api/chat/**",
+                                "/api/event-properties/cancel/{eventPropertieID}",
+                                "/api/event-properties/status/pending/{eventPropertiesId}",
+                                "/api/users/plan",
+                                "/api/users/profile/plan",
+                                "/api/other-services/disable/**",
+                                "/api/services/**")
+                        .permitAll()
                         			.requestMatchers("/api/services/admin",
                                 "/api/users/**",
                                 "/api/**",

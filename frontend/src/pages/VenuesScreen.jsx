@@ -18,6 +18,7 @@ import {
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import "../static/resources/css/VenueScreen.css"
+import LeafletMap from "../components/LeafletMap";
 
 const VenuesScreen = () => {
   const [venues, setVenues] = useState([])
@@ -187,15 +188,16 @@ const VenuesScreen = () => {
 
   return (
     <div className="venues-container">
-      {/* Header */}
-      <div className="venues-header">
-        <h1 className="venues-title">Venues Disponibles</h1>
-        <button className="filter-toggle" onClick={toggleFilters}>
-          <Filter size={18} />
-          {filtersVisible ? "Ocultar filtros" : "Mostrar filtros"}
-          {filtersVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-        </button>
-      </div>
+  {/* Header */}
+  <div className="venues-header">
+    <h1 className="venues-title">Venues Disponibles</h1>
+
+    <button className="filter-toggle" onClick={toggleFilters}>
+      <Filter size={18} />
+      {filtersVisible ? "Ocultar filtros" : "Mostrar filtros"}
+      {filtersVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+    </button>
+  </div>
 
       {/* Filters */}
       {filtersVisible && (
@@ -245,6 +247,8 @@ const VenuesScreen = () => {
           </div>
         </div>
       )}
+
+<LeafletMap venues={venues} />
 
       {/* Venues grid */}
       {loading ? (

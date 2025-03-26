@@ -123,7 +123,7 @@
     padding: 1.5rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 /* Botones */
@@ -148,6 +148,29 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(217, 190, 117, 0.2);
 }
+
+.delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: auto;
+  }
+  
+  .delete-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.2);
+  }
 
 .create-service-container {
     display: flex;
@@ -213,4 +236,30 @@
     .services-list {
         grid-template-columns: 1fr;
     }
+}
+.warning-message {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.disable-button {
+    background-color: #f87171;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-right: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.service-item.over-limit {
+    border: 2px solid #f87171;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
 }

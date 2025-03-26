@@ -187,3 +187,13 @@
         gap: 1.5rem;
     }
 }
+.general-error {
+    background-color: #ffecec;
+    color: #d8000c;
+    padding: 1rem;
+    border: 1px solid #d8000c;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
