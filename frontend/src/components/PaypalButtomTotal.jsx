@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
   const navigate = useNavigate();
   const paypalRef = useRef(null); // Referencia segura al div
-  const comision = 1.02; // Comisión del 2%, con cambiar esta constante cambia toda la lógica de la comisión
+  const commissionRate = 1.05; // Comisión del 5%, con cambiar esta constante cambia toda la lógica de la comisión
 
   useEffect(() => {
     if (!paypalRef.current) return;
@@ -21,7 +21,7 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
               purchase_units: [
                 {
                   amount: {
-                    value: parseFloat(amount * comision).toFixed(2),  
+                    value: parseFloat(amount * commissionRate).toFixed(2),  
                   },
                 },
               ],

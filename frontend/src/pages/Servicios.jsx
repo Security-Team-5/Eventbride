@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom"
 
-import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, Trash2, AlertCircle, EyeOff } from "lucide-react"
+import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff} from "lucide-react"
 
 import "../static/resources/css/Servicios.css"
 
@@ -195,12 +195,6 @@ const Servicios = () => {
                             </div>
 
                             <div className="service-footer">
-
-                                <button className="delete-button" onClick={() => deleteService(service.id, service.type)}>
-                                    <Trash2 size={16} />
-                                    Eliminar
-                                </button>
-
                                 {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
                                     <button
                                         className="disable-button"
