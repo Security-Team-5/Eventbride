@@ -12,6 +12,7 @@ function EditProfile() {
         dni: "",
         profilePicture: "",
         role: "",
+        receivesEmails: false,
     });
     const [editing, setEditing] = useState(false);
     const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwt"));
@@ -142,7 +143,11 @@ function EditProfile() {
                         <p><strong>Teléfono:</strong> {userData.telephone}</p>
                         <p><strong>DNI:</strong> {userData.dni}</p>
                         <p><strong>Rol:</strong> {getRoleText(userData.role)}</p>
-                        <p><strong>Plan:</strong> {userData.plan || "Básico"}</p>
+                        <p><strong>Recibe emails:</strong> {userData.receivesEmails ? "Sí" : "No"}</p>
+
+                        {userData.role === "SUPPLIER" && (
+                            <p><strong>Plan:</strong> {userData.plan || "Básico"}</p>
+                        )}
 
                         {userData.plan === "PREMIUM" && (
                             <>
@@ -161,6 +166,10 @@ function EditProfile() {
                         <div><label>Teléfono:</label><input name="telephone" value={userData.telephone} onChange={handleInputChange} /></div>
                         <div><label>DNI:</label><input name="dni" value={userData.dni} onChange={handleInputChange} /></div>
                         <div><label>Foto perfil (URL):</label><input name="profilePicture" value={userData.profilePicture} onChange={handleInputChange} /></div>
+                        <div>
+                            <input type="checkbox" name="receivesEmails" checked={userData.receivesEmails} onChange={handleInputChange} />
+                            <label>Quiero recibir notificaciones por email</label>
+                        </div>
                         <div className="btn-group">
                             <button className="save-btn" onClick={updateUser}>Guardar</button>
                             <button className="cancel-btn" onClick={() => setEditing(false)}>Cancelar</button>

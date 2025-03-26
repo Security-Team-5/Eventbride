@@ -53,6 +53,9 @@ public class User extends Person implements UserDetails{
     @Column(name = "expire_plan_date", nullable = true)
     private LocalDateTime expirePlanDate;
 
+    @Column(name = "receives_emails", nullable = false)
+    private boolean receivesEmails;
+
     @Override
     public Collection< ? extends GrantedAuthority> getAuthorities() {
         return List.of( new SimpleGrantedAuthority(role));
