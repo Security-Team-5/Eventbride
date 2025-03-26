@@ -69,17 +69,8 @@ function Navbar() {
           <li>
             <Link to="/events" className="nav-link">Mis eventos</Link>
           </li>
-          <li className="nav-dropdown-container">
-            <button className="nav-link dropdown-trigger" onClick={toggleDropdown}>
-              Crear evento
-              <span className={`dropdown-arrow ${isOpen ? "open" : ""}`}>▼</span>
-            </button>
-            {isOpen && (
-              <div className="dropdown-menu">
-                <Link to="/create-events" className="dropdown-item">Desde cero</Link>
-                <Link to="/quiz" className="dropdown-item">Cuestionario</Link>
-              </div>
-            )}
+          <li>
+            <Link to="/create-events" className="nav-link">Desde cero</Link>
           </li>
           <li>
             <Link to="/venues" className="nav-link">Recintos</Link>

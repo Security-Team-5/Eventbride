@@ -25,7 +25,7 @@ const VenuesScreen = () => {
   const [surface, setSurface] = useState("")
   const [filtersVisible, setFiltersVisible] = useState(false)
 
-  // Modal para ver detalles del venue al hacer click en la card
+  // Modal para ver detalles del venue
   const [selectedVenue, setSelectedVenue] = useState(null)
   // Modal para añadir el venue a un evento
   const [selectedVenueForAdd, setSelectedVenueForAdd] = useState(null)
@@ -36,9 +36,9 @@ const VenuesScreen = () => {
   const [venueTimes, setVenueTimes] = useState({})
   const [loading, setLoading] = useState(true)
 
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
   // Obtiene venues con o sin filtros
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
   const getFilteredVenues = async () => {
     try {
       setLoading(true)
@@ -75,9 +75,9 @@ const VenuesScreen = () => {
     }
   }, [])
 
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
   // Lógica de filtros
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
   const applyFilters = () => {
     getFilteredVenues()
   }
@@ -93,9 +93,9 @@ const VenuesScreen = () => {
     setFiltersVisible(!filtersVisible)
   }
 
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
   // Obtiene los eventos del usuario
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
   const getUserEvents = async () => {
     try {
       const currentUser = JSON.parse(localStorage.getItem("user"))
@@ -110,15 +110,15 @@ const VenuesScreen = () => {
     }
   }
 
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
   // Manejo de modales
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
   // Muestra el modal con detalles del venue
   const handleVenueClick = (venue) => {
     setSelectedVenue(venue)
   }
 
-  // Al hacer click en "Añadir a mi evento", abre el modal de asignar venue
+  // Al hacer click en "Añadir a mi evento", abre el modal para asignar venue
   const handleAddVenueClick = (e, venue) => {
     e.stopPropagation()
     setSelectedVenueForAdd(venue)
@@ -126,9 +126,9 @@ const VenuesScreen = () => {
     setAddModalVisible(true)
   }
 
-  // ------------------------------------------------------------------------------
-  // Almacena la hora de inicio/fin seleccionada del venue para un evento específico
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
+  // Maneja cambios de hora para cada evento específico
+  // -------------------------------------------------------------------------------
   const handleTimeChange = (eventId, field, value) => {
     setVenueTimes((prevTimes) => ({
       ...prevTimes,
@@ -139,30 +139,27 @@ const VenuesScreen = () => {
     }))
   }
 
-  // ------------------------------------------------------------------------------
-  // Combina la fecha del evento (día, mes, año) con la hora (HH:mm) seleccionada
-  // para formar un LocalDateTime "yyyy-MM-dd HH:mm:ss"
-  // ------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
+  // Combina la fecha del evento con la hora seleccionada (HH:mm) para formar "yyyy-MM-dd HH:mm:ss"
+  // -------------------------------------------------------------------------------
   const combineDateAndTime = (eventDate, time) => {
     const dateObj = new Date(eventDate)
     const year = dateObj.getFullYear()
     const month = String(dateObj.getMonth() + 1).padStart(2, "0")
     const day = String(dateObj.getDate()).padStart(2, "0")
-    // time es un string tipo "HH:mm", se le añade ":00" para segundos
     return `${year}-${month}-${day} ${time}:00`
   }
 
-  // ------------------------------------------------------------------------------
-  // Envía la petición PUT para añadir el venue al evento
-  // utilizando las horas de inicio/fin del venue (no cambia la fecha del evento)
-  // ------------------------------------------------------------------------------
-  const handleConfirmVenue = async (eventObj, venueId) => {
+  // -------------------------------------------------------------------------------
+  // Envía la petición para añadir el venue al evento
+  // -------------------------------------------------------------------------------
+  const handleConfirmVenue = async (e, eventObj, venueId) => {
+    e.stopPropagation()
     const times = venueTimes[eventObj.id] || {}
     if (!times.startTime || !times.endTime) {
       alert("Por favor, ingresa la hora de inicio y la hora de fin para este venue.")
       return
     }
-    // Combinar la fecha del evento con la hora que indicó el usuario
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
 
@@ -172,13 +169,17 @@ const VenuesScreen = () => {
       })
       alert("¡Operación realizada con éxito!")
       setAddModalVisible(false)
+      // Opcional: limpiar tiempos para el evento actual
+      setVenueTimes((prev) => ({ ...prev, [eventObj.id]: {} }))
     } catch (error) {
       console.error("Error al añadir el venue:", error)
       alert("Este evento ya tiene un servicio asociado.")
     }
   }
 
-  // Format date for display
+  // -------------------------------------------------------------------------------
+  // Formatea la fecha para visualización
+  // -------------------------------------------------------------------------------
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" }
     return new Date(dateString).toLocaleDateString("es-ES", options)
@@ -196,7 +197,7 @@ const VenuesScreen = () => {
         </button>
       </div>
 
-      {/* Filters */}
+      {/* Filtros */}
       {filtersVisible && (
         <div className="filter-container">
           <h2 className="filter-title">Filtros disponibles</h2>
@@ -290,10 +291,10 @@ const VenuesScreen = () => {
         </div>
       )}
 
-      {/* Venue details modal */}
+      {/* Modal de detalles del venue */}
       {selectedVenue && !addModalVisible && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="modal-overlay" onClick={() => setSelectedVenue(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2 className="modal-title">{selectedVenue.name}</h2>
             </div>
@@ -357,12 +358,14 @@ const VenuesScreen = () => {
         </div>
       )}
 
-      {/* Add to event modal */}
+      {/* Modal para añadir el venue a un evento */}
       {addModalVisible && selectedVenueForAdd && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="modal-overlay" onClick={() => setAddModalVisible(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2 className="modal-title">Selecciona un evento para añadir: {selectedVenueForAdd.name}</h2>
+              <h2 className="modal-title">
+                Selecciona un evento para añadir: {selectedVenueForAdd.name}
+              </h2>
             </div>
             <div className="modal-body">
               {events.length === 0 ? (
@@ -420,7 +423,9 @@ const VenuesScreen = () => {
                     <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
                       <button
                         className="primary-button"
-                        onClick={() => handleConfirmVenue(eventObj, selectedVenueForAdd.id)}
+                        onClick={(e) =>
+                          handleConfirmVenue(e, eventObj, selectedVenueForAdd.id)
+                        }
                       >
                         <ArrowRight size={16} />
                         Confirmar
@@ -443,4 +448,3 @@ const VenuesScreen = () => {
 }
 
 export default VenuesScreen
-

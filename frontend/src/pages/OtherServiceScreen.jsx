@@ -74,9 +74,7 @@ const OtherServiceScreen = () => {
     }
   }
 
-  // --- Cambios realizados en la apertura del modal de detalles ---
-  // Ahora handleServiceClick recibe el objeto completo y lo asigna a serviceDetails,
-  // lo que permite abrir el modal sin realizar una llamada adicional a la API.
+  // Abre el modal de detalles sin hacer llamada adicional
   const handleServiceClick = (service) => {
     setServiceDetails(service)
     setServiceDetailsVisible(true)
@@ -91,8 +89,6 @@ const OtherServiceScreen = () => {
       setType(null)
     }
   }
-
-  // -------------------------------------------------------------------
 
   const handleAddServiceClick = (e, serviceId) => {
     e.stopPropagation()
@@ -165,13 +161,18 @@ const OtherServiceScreen = () => {
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
     try {
-      await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
-        params: { startDate, endDate },
-      })
+      await axios.put(
+        `/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`,
+        null,
+        { params: { startDate, endDate } }
+      )
       alert("¡Operación realizada con éxito!")
       setModalVisible(false)
     } catch (error) {
       console.error("Error al añadir el servicio:", error)
+      alert("Error al añadir el servicio. Intenta nuevamente.")
+      // Opcional: cerrar modal o dejar abierto para reintentar
+      // setModalVisible(false)
     }
   }
 
@@ -195,7 +196,10 @@ const OtherServiceScreen = () => {
 
       {/* Categorías */}
       <div className="category-container">
-        <button className={`category-button ${!category ? "active" : ""}`} onClick={() => handleCategoryClick(null)}>
+        <button
+          className={`category-button ${!category ? "active" : ""}`}
+          onClick={() => handleCategoryClick(null)}
+        >
           Todos los servicios
         </button>
         <button
@@ -295,20 +299,18 @@ const OtherServiceScreen = () => {
               </div>
               <div className="card-body">
                 <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
-
                 <div className="service-info">
                   <MapPin size={18} className="info-icon" />
                   <span className="info-text">{service.cityAvailable}</span>
                 </div>
-
                 <div className="service-info">
                   <DollarSign size={18} className="info-icon" />
                   <span className="info-text">
                     {service.limitedByPricePerGuest
                       ? `${service.servicePricePerGuest}€ por invitado`
                       : service.limitedByPricePerHour
-                        ? `${service.servicePricePerHour}€ por hora`
-                        : `${service.fixedPrice}€ precio fijo`}
+                      ? `${service.servicePricePerHour}€ por hora`
+                      : `${service.fixedPrice}€ precio fijo`}
                   </span>
                 </div>
               </div>
@@ -340,19 +342,16 @@ const OtherServiceScreen = () => {
                 events.map((eventObj) => (
                   <div key={eventObj.id} className="event-card">
                     <h3 className="event-title">{formatEventType(eventObj.eventType)}</h3>
-
                     <div className="event-details">
                       <div className="event-detail">
                         <Calendar size={18} className="detail-icon" />
                         <span className="detail-text">{formatDate(eventObj.eventDate)}</span>
                       </div>
-
                       <div className="event-detail">
                         <Users size={18} className="detail-icon" />
                         <span className="detail-text">{eventObj.guests} invitados</span>
                       </div>
                     </div>
-
                     <div className="time-inputs">
                       <div className="time-group">
                         <label className="time-label">
@@ -366,7 +365,6 @@ const OtherServiceScreen = () => {
                           onChange={(e) => handleTimeChange(eventObj.id, "startTime", e.target.value)}
                         />
                       </div>
-
                       <div className="time-group">
                         <label className="time-label">
                           <Clock size={16} className="detail-icon" />
@@ -380,12 +378,14 @@ const OtherServiceScreen = () => {
                         />
                       </div>
                     </div>
-
                     <div className="event-actions">
                       <button
                         className="primary-button"
                         style={{ flex: "1" }}
-                        onClick={() => handleConfirmService(eventObj, selectedOtherServiceId)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleConfirmService(eventObj, selectedOtherServiceId)
+                        }}
                       >
                         <CheckCircle size={16} />
                         Confirmar
@@ -420,7 +420,6 @@ const OtherServiceScreen = () => {
                       <strong>Ciudad:</strong> {serviceDetails.cityAvailable}
                     </span>
                   </div>
-
                   <div className="card-info">
                     <DollarSign size={18} className="card-icon" />
                     <span className="card-text">
@@ -428,18 +427,16 @@ const OtherServiceScreen = () => {
                       {serviceDetails.limitedByPricePerGuest
                         ? `${serviceDetails.servicePricePerGuest}€ por invitado`
                         : serviceDetails.limitedByPricePerHour
-                          ? `${serviceDetails.servicePricePerHour}€ por hora`
-                          : `${serviceDetails.fixedPrice}€ precio fijo`}
+                        ? `${serviceDetails.servicePricePerHour}€ por hora`
+                        : `${serviceDetails.fixedPrice}€ precio fijo`}
                     </span>
                   </div>
-
                   <div className="card-info">
                     <span className="card-icon">📝</span>
                     <span className="card-text">
                       <strong>Descripción:</strong> {serviceDetails.description}
                     </span>
                   </div>
-
                   {serviceDetails.extraInformation && (
                     <div className="card-info">
                       <span className="card-icon">📎</span>
