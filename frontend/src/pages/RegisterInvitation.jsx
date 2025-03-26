@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import apiClient from "../apiClient";
+import '../static/resources/css/RegisterInvitation.css'
 
 const Register = () => {
-
   const { invitationId } = useParams();
 
   const [form, setForm] = useState({
@@ -69,25 +69,65 @@ const Register = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Registro</h2>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="register-container">
+      <div className="register-box">
+        <h2>Registro de Invitación</h2>
+  
+        {error && <p className="error">{error}</p>}
+  
         <form onSubmit={handleSubmit}>
-          <input type="text" name="firstName" placeholder="Nombre" value={form.firstName} onChange={handleChange} required />
-          <input type="text" name="lastName" placeholder="Apellido" value={form.lastName} onChange={handleChange} required />
-          <input type="number" min="0" max={invitation?.maxGuests} step="1" name="numberOfGuests" placeholder="Nº Acompañantes" value={form.username} onChange={handleChange} required />
-          <input type="email" name="email" placeholder="Correo electrónico" value={form.email} onChange={handleChange} required />
-          <input type="tel" name="telephone" placeholder="Teléfono" value={form.telephone} onChange={handleChange} required />
-          {success==false && 
-            <button type="submit">Aceptar Invitación</button>
-          }{success==true &&
-            <button type="submit" disabled>Invitación Aceptada</button>
-          }
-      </form>
+          <input
+            type="text"
+            name="firstName"
+            placeholder="Nombre"
+            value={form.firstName}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Apellido"
+            value={form.lastName}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="number"
+            min="0"
+            max={invitation?.maxGuests}
+            step="1"
+            name="numberOfGuests"
+            placeholder="Nº Acompañantes"
+            value={form.numberOfGuests}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Correo electrónico"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="tel"
+            name="telephone"
+            placeholder="Teléfono"
+            value={form.telephone}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit" disabled={success}>
+            {success ? "Invitación Aceptada" : "Aceptar Invitación"}
+          </button>
+        </form>
+      </div>
     </div>
-    </div >
   );
+  
+
 };
 
 export default Register;
