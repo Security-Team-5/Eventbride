@@ -21,6 +21,7 @@ import AdminUsers from "./pages/admin/AdminUsers"
 import InformationService from "./pages/InformationService"
 import Payment from "./pages/Payment"
 import Footer from "./components/Footer"
+import FAQ from "./pages/faqs"
 
 function App() {
   const { currentUser, loading, setCurrentUser } = useCurrentUser(null)
@@ -52,6 +53,7 @@ function App() {
             <Route path="/event/:id" element={<EventDetails />} />
             <Route path="/payment/:id" element={<Payment />} />
             <Route path="/other-services/information/:id" element={<InformationService />} />
+            <Route path="/faqs" element={<FAQ />} />
             {currentUser && currentUser.role == "ADMIN" && (
               <>
                 <Route path="/admin-events" element={<AdminEvents />} />
