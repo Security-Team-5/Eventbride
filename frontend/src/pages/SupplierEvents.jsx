@@ -2,8 +2,7 @@
  
  import { useState, useEffect } from "react"
  import apiClient from "../apiClient"
- import { useNavigate } from "react-router-dom"
- import { Calendar, Users, Clock, Eye, Info, CalendarClock, Loader, CheckCircle, Hourglass, XCircle} from "lucide-react"
+ import { Calendar, Users, Clock, XIcon, Info, CalendarClock, Loader, CheckCircle, Hourglass, XCircle} from "lucide-react"
  import "../static/resources/css/SupplierEvents.css"
  
  const SupplierEvents = () => {
@@ -11,7 +10,6 @@
    const [loading, setLoading] = useState(true)
    const [eventProperties, setEventProperties] = useState({})
    const [loadingProperties, setLoadingProperties] = useState({})
-   const navigate = useNavigate()
  
    // Obtener datos user desde localStorage
    const currentUser = JSON.parse(localStorage.getItem("user"))
@@ -69,6 +67,23 @@
   
       fetchEventProperties()
     }, [eventos, currentUser.id])
+
+    const cancelarEvento = async (eventPropertieId) => {
+      if (window.confirm("¿Estás seguro de que deseas cancelar este evento? Esta acción no se puede deshacer.")) {
+        try {
+          // Llamada a la API para cancelar el evento
+          await apiClient.put(`/api/event-properties/cancel/${eventPropertieId}`)
+
+          const response = await apiClient.get(`/api/v1/events/supplier/${currentUser.id}`)
+          setEventos(response.data)
+  
+          alert("El evento ha sido cancelado correctamente.")
+        } catch (error) {
+          console.error("Error al cancelar el evento:", error)
+          alert("No se pudo cancelar el evento. Por favor, inténtalo de nuevo.")
+        }
+      }
+    }
  
    // Función para formatear la fecha
    const formatDate = (dateString) => {
@@ -233,9 +248,9 @@
                 </div>
     
                 <div className="service-footer">
-                  <button className="view-button" onClick={() => navigate(`/eventos/${evento.id}`)}>
-                    <Eye size={16} />
-                    Ver detalles
+                <button className="cancel-button" onClick={() => cancelarEvento(eventProperties[evento.id]?.id)}>
+                   <XIcon size={16} />
+                   Cancelar evento
                   </button>
                 </div>
               </div>

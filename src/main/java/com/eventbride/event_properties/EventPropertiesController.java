@@ -67,7 +67,7 @@ public class EventPropertiesController {
     }
 
     @PutMapping("/cancel/{eventPropertieID}")
-    public ResponseEntity<Void> cancelEvent(@PathVariable Integer eventPropertieID, @RequestBody User user) {
+    public ResponseEntity<Void> cancelEvent(@PathVariable Integer eventPropertieID) {
         EventProperties evenProp = eventPropertiesService.findById(eventPropertieID) ;
         LocalDate fechaEvento = evenProp.getStartTime().toLocalDate();
         if(evenProp.getVenue() != null){

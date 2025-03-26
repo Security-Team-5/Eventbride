@@ -125,14 +125,14 @@
     justify-content: center;
   }
   
-  /* Botón de ver detalles */
-  .view-button {
+  /* Botón de cancelar */
+  .cancel-button {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: 0.7rem 1.2rem;
-    background-color: #d9be75;
+    background-color: #e74c3c;
     color: white;
     border: none;
     border-radius: 6px;
@@ -142,10 +142,10 @@
     transition: all 0.2s ease;
   }
   
-  .view-button:hover {
-    background-color: #c5ad69;
+  .cancel-button:hover {
+    background-color: #c0392b;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(217, 190, 117, 0.2);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.2);
   }
   
   /* Estado vacío */

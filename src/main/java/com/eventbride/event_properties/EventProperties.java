@@ -10,7 +10,7 @@ import com.eventbride.otherService.OtherService;
 import com.eventbride.payment.Payment;
 import com.eventbride.venue.Venue;
 /*import com.fasterxml.jackson.annotation.JsonIgnore;*/
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -52,6 +52,7 @@ public class EventProperties extends BaseEntity {
     private LocalDateTime bookDateTime;
 
     @OneToMany(mappedBy = "eventProperties", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Payment> payments;
 
     @ManyToOne
