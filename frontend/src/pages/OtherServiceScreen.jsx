@@ -16,6 +16,7 @@ import {
   Calendar,
   CheckCircle,
 } from "lucide-react"
+import { Link } from "react-router-dom"
 import "../static/resources/css/OtherService.css"
 
 const OtherServiceScreen = () => {
@@ -325,11 +326,16 @@ const OtherServiceScreen = () => {
                 </div>
               </div>
               <div className="card-footer">
-                {service.available ? (
+              {service.available ? (
+                <>
                   <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
                     <Plus size={16} />
                     Añadir a mi evento
                   </button>
+                  <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
+                    💬 Chatear
+                  </Link>
+                  </>
                 ) : (
                   <div className="not-available-banner">No disponible</div>
                 )}
