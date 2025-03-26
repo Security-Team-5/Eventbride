@@ -19,9 +19,12 @@
          const fetchEventos = async () => {
              try {
                  setLoading(true)
-                 const response = await apiClient.get(`/api/v1/events/supplier/${currentUser.id}`)
-                 console.log("Response:", response.data)
-                 setEventos(response.data)
+               const response = await fetch(`/api/v1/events/supplier/${currentUser.id}`)
+               if (!response.ok) throw response
+               const data = await response.json()
+               console.log("Response:", data)
+               setEventos(data)
+               await fetchEventProperties(data)
              } catch (error) {
                  console.error("Error fetching events:", error)
                  if (error.response && error.response.status === 404) {
@@ -35,56 +38,69 @@
      }, [currentUser.id])
 
 
-     useEffect(() => {
-      const fetchEventProperties = async () => {
-        if (eventos.length === 0) return
-  
-        const initialLoadingState = {}
-        eventos.forEach((evento) => {
-          initialLoadingState[evento.id] = true
-        })
-        setLoadingProperties(initialLoadingState)
-  
-        const properties = {}
-  
-        for (const evento of eventos) {
-          try {
-            const response = await apiClient.get(`/api/event-properties/byevent/${evento.id}/${currentUser.id}`)
-            properties[evento.id] = response.data
-          } catch (error) {
-            console.error(`Error fetching properties for event ${evento.id}:`, error)
-            properties[evento.id] = null
-          } finally {
-            setLoadingProperties((prev) => ({
-              ...prev,
-              [evento.id]: false,
-            }))
-          }
-        }
-  
-        setEventProperties(properties)
-      }
-  
-      fetchEventProperties()
-    }, [eventos, currentUser.id])
+   const fetchEventProperties = async (evs) => {
+     if (evs?.length === 0 || !evs) return
 
-    const cancelarEvento = async (eventPropertieId) => {
-      if (window.confirm("¿Estás seguro de que deseas cancelar este evento? Esta acción no se puede deshacer.")) {
-        try {
-          // Llamada a la API para cancelar el evento
-          await apiClient.put(`/api/event-properties/cancel/${eventPropertieId}`)
+     const initialLoadingState = {}
+     evs?.forEach((evento) => {
+       initialLoadingState[evento.id] = true
+     })
+     setLoadingProperties(initialLoadingState)
 
-          const response = await apiClient.get(`/api/v1/events/supplier/${currentUser.id}`)
-          setEventos(response.data)
-  
-          alert("El evento ha sido cancelado correctamente.")
-        } catch (error) {
-          console.error("Error al cancelar el evento:", error)
-          alert("No se pudo cancelar el evento. Por favor, inténtalo de nuevo.")
-        }
-      }
-    }
- 
+     const properties = {}
+
+     for (const evento of evs) {
+       try {
+         const response = await fetch(`/api/event-properties/byevent/${evento.id}/${currentUser.id}`)
+         if (!response.ok) throw response
+         properties[evento.id] = await response.json()
+       } catch (error) {
+         console.error(`Error fetching properties for event ${evento.id}:`, error)
+         properties[evento.id] = null
+       } finally {
+         setLoadingProperties((prev) => ({
+           ...prev,
+           [evento.id]: false,
+         }))
+       }
+     }
+
+     setEventProperties(properties)
+   }
+
+   const cancelarEvento = async (eventPropertieId) => {
+     if (window.confirm("¿Estás seguro de que deseas cancelar este evento? Esta acción no se puede deshacer.")) {
+       try {
+         // Llamada a la API para cancelar el evento
+         const cancelResponse = await fetch(`/api/event-properties/cancel/${eventPropertieId}`, {
+           method: "PUT"
+         })
+         if (!cancelResponse.ok) throw cancelResponse
+
+         // 🔥 Buscar el evento asociado a esa propiedad
+         const eventoIdToRemove = Object.keys(eventProperties).find(
+           (eventoId) => eventProperties[eventoId]?.id === eventPropertieId
+         )
+
+         if (eventoIdToRemove) {
+           // ✂️ Actualizar estado eliminando el evento cancelado
+           setEventos((prevEventos) => prevEventos.filter(e => e.id.toString() !== eventoIdToRemove))
+           setEventProperties((prev) => {
+             const updated = { ...prev }
+             delete updated[eventoIdToRemove]
+             return updated
+           })
+         }
+
+         alert("El evento ha sido cancelado correctamente.")
+       } catch (error) {
+         console.error("Error al cancelar el evento:", error)
+         alert("No se pudo cancelar el evento. Por favor, inténtalo de nuevo.")
+       }
+     }
+   }
+
+
    // Función para formatear la fecha
    const formatDate = (dateString) => {
      const options = {
@@ -159,7 +175,9 @@
  
    // Filtrar solo eventos futuros y ordenarlos por fecha
    const futureEventos = eventos
-     .filter((evento) => isFutureEvent(evento.eventDate))
+     ?.filter((evento) =>
+       isFutureEvent(evento.eventDate) && eventProperties[evento.id] !== null
+     )
      .sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate))
  
      return (
@@ -171,7 +189,7 @@
             <div className="loading-spinner"></div>
             <p>Cargando eventos...</p>
           </div>
-        ) : futureEventos.length === 0 ? (
+        ) : futureEventos?.length === 0 ? (
           <div className="empty-state">
             <Info size={48} className="empty-icon" />
             <h2 className="empty-title">No tienes eventos próximos</h2>
@@ -181,7 +199,7 @@
           </div>
         ) : (
           <div className="services-list">
-            {futureEventos.map((evento) => (
+            {futureEventos?.map((evento) => (
               <div key={evento.id} className="service-item">
                 <div className="service-header">
                   <h3 className="service-title">{evento.eventName}</h3>
