@@ -303,10 +303,10 @@ const OtherServiceScreen = () => {
                 <h3 className="service-title">{service.name}</h3>
               </div>
               <div className="card-body">
-                <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
-                {
+                  {
                    service.userDTO?.plan==="PREMIUM" && <span className="service-badge">Promocionado</span>
-                }
+                  }
+                <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
 
                 <div className="service-info">
                   <MapPin size={18} className="info-icon" />
