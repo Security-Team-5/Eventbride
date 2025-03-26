@@ -4,7 +4,7 @@
 
 </div>
 <p align="center">
-    <img src="docs/img/Eventbride.png" width="225" height="225">
+    <img src="\frontend\src\static\resources\images\logo-eventbride.png" width="225" height="225">
 </p>
 
 ## Introducción
