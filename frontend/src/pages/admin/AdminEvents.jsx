@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AlertCircle } from "lucide-react";
 
 function AdminEvents() {
   const [events, setEvents] = useState([]);
   const [editEventId, setEditEventId] = useState(null); // Para saber qué evento se está editando
   const [eventData, setEventData] = useState({});
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const jwt = localStorage.getItem("jwt");
@@ -14,9 +16,52 @@ function AdminEvents() {
     CHRISTENING: "Bautizo",
     COMMUNION: "comunión",
   }
+  
   useEffect(() => {
     getEvents();
   }, []);
+
+  // Validar los datos del evento antes de enviarlos
+  function validateEventData(event) {
+    setError("");
+    
+    const eventToValidate = eventData[event.id];
+    
+    // Comprobar campos obligatorios
+    if (!eventToValidate.eventType || !eventToValidate.guests || !eventToValidate.budget || !eventToValidate.eventDate) {
+      setError("Por favor, complete todos los campos obligatorios.");
+      return false;
+    }
+    
+    // Validar número de invitados
+    if (eventToValidate.guests <= 0) {
+      setError("El número de invitados debe ser mayor que cero.");
+      return false;
+    }
+    
+    // Validar presupuesto
+    if (eventToValidate.budget <= 0) {
+      setError("El presupuesto debe ser mayor que cero.");
+      return false;
+    }
+    
+    // Validar fecha del evento
+    const eventDate = new Date(eventToValidate.eventDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (isNaN(eventDate.getTime())) {
+      setError("La fecha del evento no es válida.");
+      return false;
+    }
+    
+    if (eventDate < today) {
+      setError("La fecha del evento no puede estar en el pasado.");
+      return false;
+    }
+    
+    return true;
+  }
 
   function getEvents() {
     fetch("/api/v1/events/DTO", {
@@ -39,6 +84,10 @@ function AdminEvents() {
   }
 
   function updateEvent(event) {
+    // Validar datos antes de enviar
+    if (!validateEventData(event)) {
+      return;
+    }
 
     const evento = eventData[event.id];
     evento.eventProperties = evento.eventPropertiesDTO;
@@ -58,8 +107,12 @@ function AdminEvents() {
         console.log("Aqui");
         setEvents(prevEvents => prevEvents.map(e => e.id === updatedEvent.id ? updatedEvent : e));
         setEditEventId(null);  // Salimos del modo de edición
+        setError(""); // Limpiar errores después de una actualización exitosa
       })
-      .catch(error => console.error("Error actualizando evento:", error));
+      .catch(error => {
+        console.error("Error actualizando evento:", error);
+        setError("Error al actualizar el evento. Por favor, inténtelo de nuevo.");
+      });
   }
 
   function deleteEvent(eventId) {
@@ -100,12 +153,19 @@ function AdminEvents() {
   }
 
   function handleOnSubmit(event){
-      console.log(event)
-      updateEvent(event);
+    console.log(event);
+    updateEvent(event);
   }
 
   return (
     <>
+      {error && (
+        <div className="error-message" style={{ color: "red", padding: "10px", marginBottom: "10px", display: "flex", alignItems: "center", gap: "5px" }}>
+          <AlertCircle size={18} />
+          <span>{error}</span>
+        </div>
+      )}
+      
       {currentUser?.role === "ADMIN" ? (
         events.length > 0 ? (
           events.map((event, index) => (
@@ -130,6 +190,7 @@ function AdminEvents() {
                         value={eventData[editEventId]?.eventType || event.eventType} 
                         onChange={handleInputChange}  
                         style={{ width: "100%" }}
+                        required
                       >
                         {Object.keys(eventTypeMap).map(eventType => (
                           <option key={eventType} value={eventType}>
@@ -146,6 +207,8 @@ function AdminEvents() {
                         value={eventData[editEventId]?.guests || event.guests}
                         onChange={handleInputChange}
                         readOnly={editEventId !== event.id}
+                        min="1"
+                        required
                       />
                     </div>
                     <div>
@@ -156,6 +219,9 @@ function AdminEvents() {
                         value={eventData[editEventId]?.budget || event.budget}
                         onChange={handleInputChange}
                         readOnly={editEventId !== event.id}
+                        min="1"
+                        step="0.01"
+                        required
                       />
                     </div>
                     <div style={{ marginBottom: "10px" }}>
@@ -166,6 +232,8 @@ function AdminEvents() {
                         value={eventData[editEventId]?.eventDate || new Date(event.eventDate).toISOString().split('T')[0]}
                         onChange={handleInputChange}
                         readOnly={editEventId !== event.id}
+                        required
+                        min={new Date().toISOString().split('T')[0]} // Fecha mínima es hoy
                         style={{
                           borderRadius: "5px",
                           border: "1px solid #ccc",
