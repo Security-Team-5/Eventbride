@@ -12,7 +12,7 @@ function EventDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true)
-  const comision = 1.02; // Comisión del 2%, con cambiar esta constante cambia toda la lógica de la comisión
+  const commissionRate = 1.05; // Comisión del 5%, con cambiar esta constante cambia toda la lógica de la comisión
 
 
 
@@ -413,10 +413,10 @@ function EventDetails() {
                   })}
                   <div className="summary-item">
                     {/* La fórmula es para que obtenga el porcentaje de la constante comisión en lugar de ser texto fijo */}
-                    <span>Gastos de gestión ({((comision - 1) * 100).toFixed(0)}%)</span>
+                    <span>Gastos de gestión ({((commissionRate - 1) * 100).toFixed(0)}%)</span>
                     <span className="price">
                       {Object.values(obtenerDepositosActivos())
-                        .reduce((acc, val) => acc + val * (comision - 1), 0)
+                        .reduce((acc, val) => acc + val * (commissionRate - 1), 0)
                         .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                     </span>
                   </div>
@@ -436,10 +436,10 @@ function EventDetails() {
                   })}
                   <div className="summary-item">
                     {/* La fórmula es para que obtenga el porcentaje de la constante comisión en lugar de ser texto fijo */}
-                    <span>Gastos de gestión ({((comision - 1) * 100).toFixed(0)}%)</span>
+                    <span>Gastos de gestión ({((commissionRate - 1) * 100).toFixed(0)}%)</span>
                     <span className="price">
                       {Object.values(obetenerTotales())
-                        .reduce((acc, val) => acc + val * (comision - 1), 0)
+                        .reduce((acc, val) => acc + val * (commissionRate - 1), 0)
                         .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                     </span>
                   </div>
@@ -451,10 +451,10 @@ function EventDetails() {
                 <span>
                   {reservarOPagarServicios()
                     ? Object.values(obtenerDepositosActivos())
-                      .reduce((acc, val) => acc + val * comision, 0) // Aplicar 2% de comisión al total de depósitos
+                      .reduce((acc, val) => acc + val * commissionRate, 0) // Aplicar 2% de comisión al total de depósitos
                       .toLocaleString("es-ES", { style: "currency", currency: "EUR" })
                     : Object.values(obetenerTotales())
-                      .reduce((acc, val) => acc + val * comision, 0) // Aplicar 2% de comisión al total de precios finales
+                      .reduce((acc, val) => acc + val * commissionRate, 0) // Aplicar 2% de comisión al total de precios finales
                       .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                 </span>
               </div>

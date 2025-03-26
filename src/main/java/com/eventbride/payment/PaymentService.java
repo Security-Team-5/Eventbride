@@ -19,6 +19,7 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
     private EventPropertiesRepository eventPropertiesRepository;
     private UserRepository userRepository;
+    private Double commissionRate = 0.05;
 
     @Autowired
     public PaymentService(PaymentRepository paymentRepository, EventPropertiesRepository eventPropertiesRepository,
@@ -39,7 +40,7 @@ public class PaymentService {
 
             p = new Payment();
 
-            p.setAmount(e.getDepositAmount());
+            p.setAmount(e.getDepositAmount() + e.getDepositAmount() * commissionRate);
             p.setDateTime(LocalDateTime.now());
             p.setPaymentType(PaymentType.DEPOSIT);
             p.setEventProperties(e);
@@ -63,7 +64,7 @@ public class PaymentService {
         Payment p;
 
         Double precioTotal = e.getPricePerService().doubleValue();
-        Double comision = precioTotal * 0.02;
+        Double comision = precioTotal * commissionRate;
         Double precioConComision = precioTotal + comision;
 
         Payment depositPayment = paymentRepository.filterByEventPropertiesId(eventPropertiesId);
