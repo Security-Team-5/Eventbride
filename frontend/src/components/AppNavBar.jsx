@@ -162,8 +162,22 @@ function Navbar() {
               </Link>
 
               <div className="user-menu">
-                <Link to="/profile" className="action-icon user-icon">
-                  <img src={usuario || "/placeholder.svg"} alt="Usuario" className="icon-img" />
+                <Link to="/profile" className="action-icon user-icon"style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                    background: "transparent",
+                }}>
+                  <div style={{ height: "40px", overflow: "hidden", background: "transparent" }} className="profile-pic-wrapper">
+                  {currentUser.profilePicture?.trim() ? (
+                      <img style={{ maxWidth: "40px",height: "40px", maxHeight: "40px", objectFit: "cover", borderRadius: "50%", background: "transparent" }} src={currentUser.profilePicture} alt="Foto de perfil" />
+                      ) : null
+                      }
+                  </div>                
                 </Link>
                 <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
@@ -179,8 +193,7 @@ function Navbar() {
                     padding: "8px 12px",
                     borderRadius: "5px",
                     fontWeight: "bold",
-                    textShadow: currentUser.plan === "PREMIUM" ? "1px 1px 2px rgba(0, 0, 0, 0.5)": "none",
-                    border: currentUser.plan === "PREMIUM" ? "2px solid #DAA520" : "2px solid rgb(143, 143, 143)",
+                    border: currentUser.plan === "PREMIUM" ? "2px solid #DAA520" : "2px solid rgb(133, 133, 133)",
                     boxShadow: currentUser.plan === "PREMIUM" ? "0px 0px 10px rgba(114, 114, 114, 0.8)" : "none",
                   }}
                 >
