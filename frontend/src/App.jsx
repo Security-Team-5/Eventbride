@@ -18,6 +18,11 @@ import EventDetails from "./pages/EventDetails";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminUsers from "./pages/admin/AdminUsers";
+import Invitations from "./pages/Invitations";
+import EventInvitations from "./pages/EventInvitations";
+import RegisterInvitation from "./pages/RegisterInvitation";
+import ConfirmEmailInvitation from "./pages/ConfirmEmailInvitation.jsx";
+
 import InformationService from "./pages/InformationService";
 import Payment from "./pages/Payment";
 import PrivateChat from "./pages/PrivateChat.jsx";
@@ -56,7 +61,11 @@ function App() {
             <Route path="/events" element={<MyEvents />} />
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
-            <Route path="/payment/:id" element={<Payment />} />
+            <Route path="/invitaciones" element={<Invitations />} />
+            <Route path="/invitaciones/:currentEventId" element={<EventInvitations />} />
+            <Route path="/invitaciones/registro/:invitationId" element={<RegisterInvitation />} />
+            <Route path="/invitaciones/confirmar/:invitationId" element={<ConfirmEmailInvitation />} />
+            <Route path="/payment/:id" element={<Payment/>} />
             <Route path="/chat/:id" element={<PrivateChat />} />
             <Route path="/chats" element={<ChatList />} />
             <Route path="/profile" element={<EditProfile />} />

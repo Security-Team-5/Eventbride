@@ -1,0 +1,66 @@
+package com.eventbride.invitation;
+
+import com.eventbride.event.Event;
+import com.eventbride.otherService.OtherService;
+import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/invitation")
+public class InvitationController {
+
+	@Autowired
+	private InvitationService invitationService;
+
+	@PostMapping("/create/{id}")
+	public ResponseEntity<?> createInvitation(@PathVariable int id, @RequestBody int maxGuests) {
+		try {
+			Invitation res = invitationService.createVoidInvitation(id, maxGuests);
+			return new ResponseEntity<>(res, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getInvitation(@PathVariable int id) {
+		try{
+			Invitation invitation = invitationService.getInvitationById(id);
+			return new ResponseEntity<>(invitation, HttpStatus.OK);
+		}
+		catch (Exception e){
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("/eventInvitations/{eventId}")
+	public ResponseEntity<?> getInvitationsByEvent(@PathVariable int eventId){
+		try{
+			List<Invitation> invitations = invitationService.getInvitationByEventId(eventId);
+			return new ResponseEntity<>(invitations, HttpStatus.OK);
+		}
+		catch (Exception e){
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PutMapping
+	public ResponseEntity<?> fillInvitation(@RequestBody @Valid Invitation invitation) {
+		try {
+			Invitation res = invitationService.fillInvitation(invitation);
+			return new ResponseEntity<>(res, HttpStatus.CREATED);
+		}
+		catch (Exception e){
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+}

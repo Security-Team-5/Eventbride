@@ -1,0 +1,167 @@
+.event-invitations-container {
+  text-align: center; /* Centrar el contenido dentro del contenedor */
+}
+
+.event-container-i {
+  width: 40%;
+  max-width: 50%;
+  margin: 0 auto;
+  padding: 2%;
+  background-color: #ffffff; /* Cambiar el fondo a blanco */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5%;
+}
+
+.event-title-i {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 4%;
+  margin-top: -5%;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: bold; /* Hacer las letras en negrita */
+}
+
+.event-info-i {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: -1%;
+}
+
+.event-info-i p {
+  font-size: 1.1rem;
+  margin: -1%;
+  min-width: 150px;
+  font-weight: bold; /* Hacer las letras en negrita */
+}
+
+.event-date-i,
+.event-guests-i {
+  font-weight: bold; /* Hacer las letras en negrita */
+}
+
+.no-invitation {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold; /* Hacer las letras en negrita */
+}
+
+.boton-editar {
+  display: block; /* Para que ocupe todo el ancho disponible */
+  width: 100%; /* Hace que el botón sea más ancho */
+  max-width: 300px; /* Evita que sea demasiado ancho en pantallas grandes */
+  background-color: rgb(251, 159, 229);
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px; /* Hace el botón más alargado */
+  border-radius: 8px;
+  margin: 40px auto 0; /* Agrega más separación hacia abajo y lo centra horizontalmente */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  text-align: center;
+}
+
+.boton-editar:hover {
+  background-color: rgba(215, 77, 192, 0.856);
+}
+
+.boton-crear-invitacion {
+  display: inline-block;
+  width: 200px;
+  background-color: green; /* Cambiar el fondo a verde */
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 20px auto; /* Centrar el botón horizontalmente */
+  margin-top: 100px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  text-align: center;
+}
+
+.boton-crear-invitacion:hover {
+  background-color: darkgreen;
+}
+
+.invitation-name {
+  font-weight: bold;
+  color: #333; /* Cambiar el color del texto a un tono oscuro */
+}
+
+/* Estilo para el backdrop del modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Posicionar en la parte superior */
+  padding-top: 10%; /* Separación desde arriba */
+  z-index: 1000;
+}
+
+/* Estilo para el contenido del modal */
+.modal-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Animación para que el modal aparezca suavemente */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Opcionales: estilos para el encabezado y botones del modal */
+.modal-content h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal-content button {
+  margin: 10px 5px 0 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Botón de confirmar (Enviar) */
+.modal-content button:first-of-type {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Botón de cancelar */
+.modal-content button:last-of-type {
+  background-color: #dc3545;
+  color: #fff;
+}

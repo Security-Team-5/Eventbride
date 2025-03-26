@@ -152,6 +152,18 @@
   gap: 0.8rem;
 }
 
+/* Estilo del recinto y otros servicios */
+.event-properties {
+  display: flex;
+  justify-content: space-between;
+  gap: 3%;
+  margin-top: 2%; 
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
 .detail-icon {
   font-size: 1.1rem;
   color: #d9be75;
