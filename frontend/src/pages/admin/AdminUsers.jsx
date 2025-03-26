@@ -20,9 +20,11 @@ function AdminUsers() {
         plan: "",
         paymentPlanDate: "",
         expirePlanDate: "",
+        receivesEmails: false,
     });
 
     const navigate = useNavigate();
+    
     const roleMap = {
         CLIENT: "Cliente",
         SUPPLIER: "Proveedor",
@@ -197,6 +199,21 @@ function AdminUsers() {
                                             name="dni"
                                             value={userData.id === user.id ? userData.dni : user.dni}
                                             onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label>Recibe correos:</label>
+                                        <input
+                                            type="checkbox"
+                                            name="receiveEmails"
+                                            checked={userData.id === user.id ? userData.receivesEmails : user.receivesEmails}
+                                            onChange={(e) => {
+                                                const checked = e.target.checked;
+                                                setUserData((prevData) => ({
+                                                    ...prevData,
+                                                    receivesEmails: checked,
+                                                }));
+                                            }}
                                         />
                                     </div>
                                     <div>

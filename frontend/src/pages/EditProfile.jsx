@@ -124,7 +124,7 @@ function EditProfile() {
                 <div className="profile-pic-wrapper">
                     <img src={userData.profilePicture} alt="Perfil" className="profile-pic" />
                 </div>
-                <button onClick={() => setEditing(true)}>EDITAR</button>
+                <button onClick={() => setEditing(true)} className="hover-button" style={{ backgroundColor: "#f1e080", color: "white" }}>EDITAR</button>
                 {userData.role === "SUPPLIER" && (
                     <button onClick={() => navigate("/profile/plan")}>PLANES</button>
                 )}
