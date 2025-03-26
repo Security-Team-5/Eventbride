@@ -87,18 +87,7 @@ public class PaymentService {
 
             p.setUser(user);
             paymentRepository.save(p);
-
-            // Payment que se realiza a Eventbride
-            Payment p2 = new Payment();
-
-            p2.setAmount(comision);
-            p2.setDateTime(LocalDateTime.now());
-            p2.setPaymentType(PaymentType.COMMISSION);
-            p2.setEventProperties(e);
-            User adminUser = userRepository.findById(15).get();// Usuario administrador que representa la cuenta de la
-                                                               // empresa
-            p2.setUser(adminUser);
-            paymentRepository.save(p2);
+            
         } else {
             p = null;
         }

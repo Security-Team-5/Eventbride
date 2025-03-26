@@ -42,8 +42,7 @@ public class Payment extends BaseEntity {
 
     public enum PaymentType {
         DEPOSIT,
-        REMAINING,
-        COMMISSION
+        REMAINING
     }
     
 }
