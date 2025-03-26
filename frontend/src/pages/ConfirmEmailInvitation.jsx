@@ -14,7 +14,7 @@ const Register = () => {
   return (
     <div className="confirm-container">
         {
-                <h2>
+                <h2 style={{color:"black"}}>
                     ¡¡Invitación confirmada correctamente!!
                 </h2>
             
