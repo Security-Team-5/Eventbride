@@ -63,10 +63,8 @@ function App() {
             <Route path="/faqs" element={<FAQ />} />
             {currentUser && currentUser.role == "ADMIN" && (
               <>
-            <Route path="/chat/:id" element={<PrivateChat />} />
-            <Route path="/chats" element={<ChatList />} />
-            {currentUser && currentUser.role == "ADMIN" &&
-              (<>
+                <Route path="/chat/:id" element={<PrivateChat />} />
+                <Route path="/chats" element={<ChatList />} />
                 <Route path="/admin-events" element={<AdminEvents />} />
                 <Route path="/admin-users" element={<AdminUsers />} />
                 <Route path="/admin-services" element={<AdminServices />} />
