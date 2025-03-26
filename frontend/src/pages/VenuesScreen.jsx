@@ -16,6 +16,7 @@ import {
   Info,
   ArrowRight,
 } from "lucide-react"
+import { Link } from "react-router-dom"
 import "../static/resources/css/VenueScreen.css"
 import LeafletMap from "../components/LeafletMap";
 
@@ -288,6 +289,9 @@ const VenuesScreen = () => {
                   <Plus size={16} />
                   Añadir a mi evento
                 </button>
+                <Link to={`/chat/${venue.userDTO.id}`} className="chat-button">
+                  💬 Chatear
+                </Link>
               </div>
             </div>
           ))}
