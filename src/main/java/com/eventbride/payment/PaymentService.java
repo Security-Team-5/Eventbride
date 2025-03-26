@@ -93,4 +93,16 @@ public class PaymentService {
         }
         return p;
     }
+
+    @Transactional
+    public Payment payPlan(Integer userId, Double amount) {
+        Payment p = new Payment();
+
+        p.setAmount(amount);
+        p.setDateTime(LocalDateTime.now());
+        p.setPaymentType(PaymentType.PLAN);
+        p.setUser(userRepository.findById(userId).get());
+        paymentRepository.save(p);
+        return p;
+    }
 }

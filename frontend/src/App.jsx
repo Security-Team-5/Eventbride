@@ -57,14 +57,14 @@ function App() {
             <Route path="/create-events" element={<CreateEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
             <Route path="/payment/:id" element={<Payment />} />
+            <Route path="/chat/:id" element={<PrivateChat />} />
+            <Route path="/chats" element={<ChatList />} />
             <Route path="/profile" element={<EditProfile />} />
             <Route path="/profile/plan" element={<EditPlanProfile />} />
             <Route path="/other-services/information/:id" element={<InformationService />} />
             <Route path="/faqs" element={<FAQ />} />
             {currentUser && currentUser.role == "ADMIN" && (
               <>
-                <Route path="/chat/:id" element={<PrivateChat />} />
-                <Route path="/chats" element={<ChatList />} />
                 <Route path="/admin-events" element={<AdminEvents />} />
                 <Route path="/admin-users" element={<AdminUsers />} />
                 <Route path="/admin-services" element={<AdminServices />} />

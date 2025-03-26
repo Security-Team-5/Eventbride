@@ -12,6 +12,9 @@ function EditProfile() {
         dni: "",
         profilePicture: "",
         role: "",
+        plan: "",
+        paymentPlanDate: "",
+        expirePlanDate: "",
     });
     const [editing, setEditing] = useState(false);
     const [jwtToken, setJwtToken] = useState(localStorage.getItem("jwt"));
@@ -121,10 +124,13 @@ function EditProfile() {
         <div className="edit-profile-wrapper">
             <div className="sidebar">
                 <div className="profile-pic-wrapper">
-                    <img src={userData.profilePicture} alt="Perfil" className="profile-pic" />
+                {userData.profilePicture?.trim() ? (
+                    <img src={userData.profilePicture} alt="Foto de perfil" />
+                    ) : null
+                    }
                 </div>
                 <button onClick={() => setEditing(true)}>EDITAR</button>
-                {userData.role === "SUPPLIER" && (
+                {userData.role === "SUPPLIER" && userData.plan === "BASIC" && (
                     <button onClick={() => navigate("/profile/plan")}>PLANES</button>
                 )}
                 <button className="hover-button" style={{ backgroundColor: "#dc3545", color: "white" }} onClick={handleLogout}>
@@ -142,7 +148,9 @@ function EditProfile() {
                         <p><strong>Teléfono:</strong> {userData.telephone}</p>
                         <p><strong>DNI:</strong> {userData.dni}</p>
                         <p><strong>Rol:</strong> {getRoleText(userData.role)}</p>
+                        {userData.role === "SUPPLIER" && (
                         <p><strong>Plan:</strong> {userData.plan || "Básico"}</p>
+                        )}
 
                         {userData.plan === "PREMIUM" && (
                             <>

@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VenueService {
@@ -35,7 +37,11 @@ public class VenueService {
 
     @Transactional
     public List<Venue> getAllVenues() {
-        return venueRepository.findAll();
+		return venueRepository.findAll().stream()
+			.sorted(Comparator.comparing(
+				os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1
+			))
+			.collect(Collectors.toList());
     }
 
     @Transactional
@@ -55,17 +61,28 @@ public class VenueService {
             city,
             maxGuests != null ? maxGuests : 0,
             surface != null ? surface : 0.0
-        );
+        ).stream()
+			.sorted(Comparator.comparing(
+				os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1
+			))
+			.collect(Collectors.toList());
     }
 
     public Venue save(Venue venue) {
         Optional<User> user = userService.getUserById(venue.getUser().getId());
         if (user.isPresent()) {
+            User existingUser = user.get();
             ServiceDTO allServices = serviceService.getAllServiceByUserId(venue.getUser().getId());
             int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
-            if (slotsCount > 3) {
-                throw new RuntimeException("Slot count exceeded");
+
+            String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
+
+            if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
+                throw new RuntimeException("Has alcanzado el límite de venues en el plan BASIC.");
+            } else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
+                throw new RuntimeException("Has alcanzado el límite de venues en el plan PREMIUM.");
             }
+
             venue.setUser(user.get());
         } else {
             throw new RuntimeException("User not found");

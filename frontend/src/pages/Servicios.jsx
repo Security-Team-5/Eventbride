@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom"
 
-import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle} from "lucide-react"
+import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff} from "lucide-react"
 
 import "../static/resources/css/Servicios.css"
 
@@ -59,19 +59,19 @@ const Servicios = () => {
 
     const deleteService = async (serviceId, serviceType) => {
         if (window.confirm("¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.")) {
-          try {
-            // Ajustar serviceType para otherService
-            const normalizedServiceType = serviceType === "otherService" ? "other-services" : `${serviceType}s`;
-      
-            await apiClient.delete(`/api/${normalizedServiceType}/delete/${serviceId}`);
-      
-            setServices(services.filter((service) => service.id !== serviceId));
-          } catch (error) {
-            console.error("Error al eliminar el servicio:", error);
-            alert("No se pudo eliminar el servicio. Por favor, inténtalo de nuevo.");
-          }
+            try {
+                // Ajustar serviceType para otherService
+                const normalizedServiceType = serviceType === "otherService" ? "other-services" : `${serviceType}s`;
+
+                await apiClient.delete(`/api/${normalizedServiceType}/delete/${serviceId}`);
+
+                setServices(services.filter((service) => service.id !== serviceId));
+            } catch (error) {
+                console.error("Error al eliminar el servicio:", error);
+                alert("No se pudo eliminar el servicio. Por favor, inténtalo de nuevo.");
+            }
         }
-      };
+    };
 
     // Función para formatear el tipo de servicio
     const formatServiceType = (type, otherServiceType) => {
@@ -95,7 +95,7 @@ const Servicios = () => {
             {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
                 <div className="warning-message">
                     <AlertCircle size={20} className="mr-2" />
-                    Has excedido el límite de servicios del plan <strong>BASIC</strong>. Marca algunos como no disponibles para cumplir con el límite.
+                    Has excedido el límite de servicios del plan BASIC. Debe desactivar los sobrantes. El máximo permitido es 3.
                 </div>
             )}
 
@@ -195,7 +195,7 @@ const Servicios = () => {
                             </div>
 
                             <div className="service-footer">
-                                {service.overLimit && currentUser.plan === "BASIC" && (
+                                {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
                                     <button
                                         className="disable-button"
                                         onClick={async () => {
@@ -213,9 +213,11 @@ const Servicios = () => {
                                             }
                                         }}
                                     >
+                                        <EyeOff size={16} />
                                         Desactivar
                                     </button>
                                 )}
+
                                 <button
                                     className="edit-button"
                                     onClick={() =>

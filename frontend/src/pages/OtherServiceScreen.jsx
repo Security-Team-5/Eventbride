@@ -295,12 +295,18 @@ const OtherServiceScreen = () => {
         </div>
       ) : (
         <div className="services-grid">
-          {otherServices.map((service) => (
+          {otherServices.map((service) => {
+
+            console.log(service)
+            return (
             <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
               <div className="card-header">
                 <h3 className="service-title">{service.name}</h3>
               </div>
               <div className="card-body">
+                  {
+                   service.userDTO?.plan==="PREMIUM" && <span className="service-badge">Promocionado</span>
+                  }
                 <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
 
                 <div className="service-info">
@@ -320,16 +326,22 @@ const OtherServiceScreen = () => {
                 </div>
               </div>
               <div className="card-footer">
-                <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
-                  <Plus size={16} />
-                  Añadir a mi evento
-                </button>
-                <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
-                  💬 Chatear
-                </Link>
+              {service.available ? (
+                <>
+                  <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
+                    <Plus size={16} />
+                    Añadir a mi evento
+                  </button>
+                  <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
+                    💬 Chatear
+                  </Link>
+                  </>
+                ) : (
+                  <div className="not-available-banner">No disponible</div>
+                )}
               </div>
             </div>
-          ))}
+          )})}
         </div>
       )}
 
