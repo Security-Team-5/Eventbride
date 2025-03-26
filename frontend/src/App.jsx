@@ -24,6 +24,7 @@ import PrivateChat from "./pages/PrivateChat.jsx";
 import FloatingChatButton from "./components/FloatingChatButton";
 import ChatList from "./pages/ChatList";
 import Footer from "./components/Footer"
+import FAQ from "./pages/faqs"
 import EditProfile from "./pages/EditProfile"
 import EditPlanProfile from "./pages/EditPlanProfile"
 
@@ -59,6 +60,9 @@ function App() {
             <Route path="/profile" element={<EditProfile />} />
             <Route path="/profile/plan" element={<EditPlanProfile />} />
             <Route path="/other-services/information/:id" element={<InformationService />} />
+            <Route path="/faqs" element={<FAQ />} />
+            {currentUser && currentUser.role == "ADMIN" && (
+              <>
             <Route path="/chat/:id" element={<PrivateChat />} />
             <Route path="/chats" element={<ChatList />} />
             {currentUser && currentUser.role == "ADMIN" &&
