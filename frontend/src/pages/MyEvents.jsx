@@ -9,6 +9,7 @@ function MyEvents() {
   const navigate = useNavigate();
 
   const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   // Obtener la lista de eventos
   function getEvents() {
@@ -24,6 +25,7 @@ function MyEvents() {
     fetch(`/api/v1/events/next/${currentUser.id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "GET",
     })
@@ -126,14 +128,14 @@ function MyEvents() {
       </div>
 
       {eventos.length > 0 ? (
-        
+
         <div className="events-grid">
           {eventos.map((evento, index) => {
             const diasRestantes = calcularDiasRestantes(evento.eventDate);
 
             const calcularCosteEvento = () => {
               if (!evento || !evento.eventPropertiesDTO) return 0;
-  
+
               let total = 0;
               for (let i = 0; i < evento.eventPropertiesDTO.length; i++) {
                 const prop = evento.eventPropertiesDTO[i];

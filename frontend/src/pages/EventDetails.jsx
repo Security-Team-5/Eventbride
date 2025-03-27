@@ -231,17 +231,17 @@ function EventDetails() {
     <>
       <div className="event-contain">
         <div className="event-details">
-        <div className="event-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div className="event-title-container">
-            <span className="event-type-badge">{tipoDeEvento(evento?.eventType)}</span>
-            <h2 className="event-title">Detalles del Evento</h2>
-          </div>
+          <div className="event-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="event-title-container">
+              <span className="event-type-badge">{tipoDeEvento(evento?.eventType)}</span>
+              <h2 className="event-title">Detalles del Evento</h2>
+            </div>
 
-          <button className="delete-button" onClick={openModal} style={{ marginLeft: "auto" }}>
-            <i className="delete-icon">✕</i>
-            <span>Eliminar</span>
-          </button>
-        </div>
+            <button className="delete-button" onClick={openModal} style={{ marginLeft: "auto" }}>
+              <i className="delete-icon">✕</i>
+              <span>Eliminar</span>
+            </button>
+          </div>
           <div className="event-info-card">
             <div className="event-info">
               <div className="info-item">
@@ -281,7 +281,7 @@ function EventDetails() {
                         className="service-image"
                         src={prop.venueDTO.picture || "/placeholder.svg"}
                         alt={prop.venueDTO.name}
-                        style={{ objectFit: "cover", maxHeight: "100%"}}
+                        style={{ objectFit: "cover", maxHeight: "100%" }}
                       />
                     </div>
                     <div className="venue-details">
@@ -290,7 +290,7 @@ function EventDetails() {
                         {decodeText(prop.venueDTO.address)}
                       </p>
                     </div>
-                    <div className="payment-container" style={{ width: "200px"}}>
+                    <div className="payment-container" style={{ width: "200px" }}>
                       {prop.status === "APPROVED" && isReservaExpired() ? (
                         <button
                           className="payment-button expired"
@@ -338,12 +338,12 @@ function EventDetails() {
                     <div className="card-header">
                       <h4 className="service-name">{decodeText(prop.otherServiceDTO.name)}</h4>
                     </div>
-                    <div className="service-image-container" style={{ objectFit: "cover", maxHeight: "100%"}}>
+                    <div className="service-image-container" style={{ objectFit: "cover", maxHeight: "100%" }}>
                       <img
                         className="service-image"
                         src={prop.otherServiceDTO.picture || "/placeholder.svg"}
                         alt={prop.otherServiceDTO.name}
-                        style={{ objectFit: "cover", maxHeight: "100%",borderRadius: "8px"}}
+                        style={{ objectFit: "cover", maxHeight: "100%", borderRadius: "8px" }}
                       />
                     </div>
                     <div className="venue-details">
@@ -352,7 +352,7 @@ function EventDetails() {
                         {decodeText(prop.otherServiceDTO.description)}
                       </p>
                     </div>
-                    <div className="payment-container" style={{ width: "200px"}}>
+                    <div className="payment-container" style={{ width: "200px" }}>
                       {prop.status === "APPROVED" && isReservaExpired() ? (
                         <button
                           className="payment-button expired"
@@ -371,7 +371,7 @@ function EventDetails() {
                           disabled={["PENDING", "COMPLETED"].includes(prop.status)}
                           onClick={() => {
                             if (prop.status === "CANCELLED") {
-                              solicitarServicio(prop.id); 
+                              solicitarServicio(prop.id);
                             } else {
                               navigate(`/payment/${prop.id}`);
                             }

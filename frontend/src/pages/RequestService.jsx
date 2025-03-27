@@ -5,6 +5,7 @@ import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom"
 import { MapPin, DollarSign, Users, Clock, Check, X, Plus, Info, Package, CheckCircle, ServerIcon, Calendar } from "lucide-react"
 import "../static/resources/css/RequestService.css"
+import axios from "axios"
 
 const Servicios = () => {
     const [eventProps, setEventProps] = useState([])
@@ -12,6 +13,7 @@ const Servicios = () => {
     const navigate = useNavigate()
 
     const currentUser = JSON.parse(localStorage.getItem("user"))
+    const [jwtToken] = useState(localStorage.getItem("jwt"));
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -32,7 +34,13 @@ const Servicios = () => {
     const handleAccept = async (id) => {
         try {
             // SE LE ESTÁ METIENDO EL ID DE UN SERVICIO NO DE UN EVENTPROPERTIES
-            await apiClient.put(`/api/event-properties/${id}`)
+            await fetch(`/api/event-properties/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                method: "PUT",
+            })
             setEventProps(eventProps.filter((service) => service.id !== id)) // Eliminar del estado local
         } catch (error) {
             console.error("Error al aceptar el servicio:", error)
@@ -41,7 +49,13 @@ const Servicios = () => {
 
     const handleReject = async (id) => {
         try {
-            await apiClient.delete(`/api/event-properties/${id}`)
+            await fetch(`/api/event-properties/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                method: "DELETE",
+            })
             setEventProps(eventProps.filter((service) => service.id !== id)) // Eliminar del estado local
         } catch (error) {
             console.error("Error al rechazar el servicio:", error)
@@ -209,4 +223,3 @@ const Servicios = () => {
 }
 
 export default Servicios
-

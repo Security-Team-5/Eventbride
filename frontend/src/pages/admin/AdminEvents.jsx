@@ -8,7 +8,7 @@ function AdminEvents() {
   const [eventData, setEventData] = useState({});
   const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem("user"));
-  const jwt = localStorage.getItem("jwt");
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
   const eventTypeMap = {
     WEDDING: "Boda",
     CHRISTENING: "Bautizo",
@@ -22,6 +22,7 @@ function AdminEvents() {
     fetch("/api/v1/events/DTO", {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "GET",
     })
@@ -47,7 +48,7 @@ function AdminEvents() {
     fetch(`/api/v1/events/${event.id}`, {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${jwt}`,
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "PUT",
       body: JSON.stringify(evento),
@@ -66,6 +67,7 @@ function AdminEvents() {
     fetch(`/api/v1/events/${eventId}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "DELETE",
     })
@@ -78,30 +80,30 @@ function AdminEvents() {
 
   function handleInputChange(e) {
     const { name, value } = e.target;
-  
+
     const updatedData = {
       ...eventData,
       [editEventId]: {
         ...eventData[editEventId],
-        [name]: value,  
+        [name]: value,
       }
     };
-  
-    setEventData(updatedData); 
+
+    setEventData(updatedData);
   }
-  
+
 
   function startEditing(event) {
-    setEditEventId(event.id); 
+    setEditEventId(event.id);
     setEventData(prevData => ({
       ...prevData,
       [event.id]: event,
     }));
   }
 
-  function handleOnSubmit(event){
-      console.log(event)
-      updateEvent(event);
+  function handleOnSubmit(event) {
+    console.log(event)
+    updateEvent(event);
   }
 
   return (
@@ -127,8 +129,8 @@ function AdminEvents() {
                       <label>Tipo de Evento:</label>
                       <select
                         name="eventType"
-                        value={eventData[editEventId]?.eventType || event.eventType} 
-                        onChange={handleInputChange}  
+                        value={eventData[editEventId]?.eventType || event.eventType}
+                        onChange={handleInputChange}
                         style={{ width: "100%" }}
                       >
                         {Object.keys(eventTypeMap).map(eventType => (
@@ -169,11 +171,11 @@ function AdminEvents() {
                         style={{
                           borderRadius: "5px",
                           border: "1px solid #ccc",
-                          padding: "10px",   
-                          fontSize: "16px",   
+                          padding: "10px",
+                          fontSize: "16px",
                           height: "15px",
-                          width: "15%",  
-                          marginLeft: "5px",    
+                          width: "15%",
+                          marginLeft: "5px",
                         }}
                       />
                     </div>
@@ -213,17 +215,17 @@ function AdminEvents() {
                     ) : (
                       <p>Este evento no tiene propiedades adicionales.</p>
                     )}
-                      {editEventId === event.id ? (
-                        <div className="button-container">
-                          <button className="save-btn" type="submit" onClick={() => {handleOnSubmit(event)}}>Guardar</button>
-                          <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
+                    {editEventId === event.id ? (
+                      <div className="button-container">
+                        <button className="save-btn" type="submit" onClick={() => { handleOnSubmit(event) }}>Guardar</button>
+                        <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
                       </div>
-                      ) : (
-                        <div className="button-container">
-                          <button onClick={() => startEditing(event)} className="edit-btn">Editar</button>
-                          <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
-                        </div>
-                      )}
+                    ) : (
+                      <div className="button-container">
+                        <button onClick={() => startEditing(event)} className="edit-btn">Editar</button>
+                        <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
+                      </div>
+                    )}
                   </form>
                 </div>
               </div>

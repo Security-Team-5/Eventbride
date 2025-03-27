@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef } from "react";
 import "../static/resources/css/Paypal.css";
-import axios from "axios";
+import apiClient from "../apiClient";
 import { useNavigate } from "react-router-dom";
 
 function PaypalButtonPlan({ amount, fechaFin }) {
@@ -29,6 +29,7 @@ function PaypalButtonPlan({ amount, fechaFin }) {
           },
           onApprove: async (data, actions) => {
             try {
+              // eslint-disable-next-line no-unused-vars
               const details = await actions.order.capture();
 
               const currentUser = JSON.parse(localStorage.getItem("user"));
@@ -46,16 +47,16 @@ function PaypalButtonPlan({ amount, fechaFin }) {
 
               console.log("Enviado al backend:", `"${fechaFin}"`);
 
-              const putResponse = await axios.put(`/api/users/premium/${userId}`, `"${fechaFin}"`, {
+              const putResponse = await apiClient.put(`/api/users/premium/${userId}`, `"${fechaFin}"`, {
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: `Bearer ${localStorage.getItem("jwt")}`,
                 },
               });
 
-              const updatedUser = putResponse.data; 
+              const updatedUser = putResponse.data;
 
-              await axios.post(`/api/payment/plan/${userId}`, JSON.stringify(amount), {
+              await apiClient.post(`/api/payment/plan/${userId}`, JSON.stringify(amount), {
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: `Bearer ${localStorage.getItem("jwt")}`,

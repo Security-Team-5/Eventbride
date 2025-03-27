@@ -6,6 +6,7 @@ import '../static/resources/css/RegisterInvitation.css'
 
 const Register = () => {
   const { invitationId } = useParams();
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   const [form, setForm] = useState({
     id: invitationId,
@@ -25,6 +26,7 @@ const Register = () => {
     fetch(`/api/invitation/${invitationId}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "GET",
     })
@@ -72,9 +74,9 @@ const Register = () => {
     <div className="register-container">
       <div className="register-box">
         <h2>Registro de Invitación</h2>
-  
+
         {error && <p className="error">{error}</p>}
-  
+
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -126,7 +128,7 @@ const Register = () => {
       </div>
     </div>
   );
-  
+
 
 };
 

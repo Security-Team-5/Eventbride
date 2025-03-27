@@ -7,6 +7,7 @@ function Invitations() {
 
   const [eventos, setEventos] = useState([]);
   const navigate = useNavigate(); // Hook para redirigir
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
 
   const currentUser = JSON.parse(localStorage.getItem("user"));
@@ -16,6 +17,7 @@ function Invitations() {
     fetch(`/api/v1/events/next/${currentUser.id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "GET",
     })
@@ -52,33 +54,33 @@ function Invitations() {
     return new Date(fecha).toLocaleDateString("es-ES", opciones);
   };
 
-    return (
-        <>
-          {eventos.length > 0 ? (
-            eventos.map((evento, index) => (
-              <div key={index} className="event-container-i">
-                <div>
-                  <h2 className="event-title-i">{tipoDeEvento(evento.eventType)}</h2>
-                  <div className="event-info-i">
-                    <p className="event-date-i">Fecha: {formatearFecha(evento.eventDate)}</p>
-                    <p className="event-guests-i">Invitados: {evento.guests}</p>
-                  </div>
-                  <button 
-                    className="boton-editar"
-                    onClick={() => navigate(`/invitaciones/${evento.id}`)}
-                    >
-                        Editar Invitados
-                    </button>
-                </div>
+  return (
+    <>
+      {eventos.length > 0 ? (
+        eventos.map((evento, index) => (
+          <div key={index} className="event-container-i">
+            <div>
+              <h2 className="event-title-i">{tipoDeEvento(evento.eventType)}</h2>
+              <div className="event-info-i">
+                <p className="event-date-i">Fecha: {formatearFecha(evento.eventDate)}</p>
+                <p className="event-guests-i">Invitados: {evento.guests}</p>
               </div>
-            ))
-          ) : (
-            <div className="no-event">
-              <p>No hay eventos disponibles en este momento.</p>
+              <button
+                className="boton-editar"
+                onClick={() => navigate(`/invitaciones/${evento.id}`)}
+              >
+                Editar Invitados
+              </button>
             </div>
-          )}
-        </>
-      );
+          </div>
+        ))
+      ) : (
+        <div className="no-event">
+          <p>No hay eventos disponibles en este momento.</p>
+        </div>
+      )}
+    </>
+  );
 
 }
 

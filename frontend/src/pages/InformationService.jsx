@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
 import "../static/resources/css/EventDetails.css";
 import { useParams } from "react-router-dom";
+import apiClient from "../apiClient";
 
 function InformationService() {
   const { id } = useParams();
   const [service, setService] = useState(null);
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!id) return;
 
-    fetch(`/api/other-services/${id}`, {
-      headers: { "Content-Type": "application/json" },
-      method: "GET",
-    })
+    apiClient.get(`/api/other-services/${id}`)
       .then((response) => {
         if (!response.ok) {
-            console.log(response.data);
+          console.log(response.data);
           throw new Error("No se pudo obtener el servicio");
         }
         return response.json();

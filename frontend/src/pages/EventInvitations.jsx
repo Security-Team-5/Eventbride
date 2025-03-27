@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../static/resources/css/Invitations.css";
 import { useParams } from "react-router-dom";
+import apiClient from "../apiClient";
 
 function EventInvitations() {
   const [invitaciones, setInvitaciones] = useState([]);
@@ -10,12 +11,7 @@ function EventInvitations() {
 
   // Obtener la lista de invitaciones
   function getInvitations() {
-    fetch(`/api/invitation/eventInvitations/${currentEventId}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    })
+    apiClient.get(`/api/invitation/eventInvitations/${currentEventId}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("evento:", currentEventId);
@@ -56,18 +52,15 @@ function EventInvitations() {
       return;
     }
     // Llamada a la API con el body que contiene el número máximo de invitados
-    fetch(`/api/invitation/create/${currentEventId}`, {
+    apiClient.post(`/api/invitation/create/${currentEventId}`, max, {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "POST",
-      body: JSON.stringify(max),
-      // Si el API espera un objeto, podrías usar: body: JSON.stringify({ maxGuests: max })
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-            const id = data.id
+          const id = data.id
           copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${id}`);
           alert("Link a la invitación copiado al portapapeles");
         }
