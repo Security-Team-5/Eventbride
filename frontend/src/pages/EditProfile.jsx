@@ -123,9 +123,9 @@ function EditProfile() {
     return (
         <div className="edit-profile-wrapper">
             <div className="sidebar">
-                <div className="profile-pic-wrapper">
+                <div style={{ maxHeight: "300px", overflow: "hidden", backgroundColor: "#f8f8f8" }} className="profile-pic-wrapper">
                 {userData.profilePicture?.trim() ? (
-                    <img src={userData.profilePicture} alt="Foto de perfil" />
+                    <img style={{ maxWidth: "300px", maxHeight: "300px", objectFit: "cover", borderRadius: "50%" }} src={userData.profilePicture} alt="Foto de perfil" />
                     ) : null
                     }
                 </div>

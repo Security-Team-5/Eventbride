@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import axios from "axios"
-import apiClient from "../apiClient"
 import {
   Filter,
   X,
@@ -49,7 +48,7 @@ const VenuesScreen = () => {
       if (city) params.city = city
       if (maxGuests) params.maxGuests = maxGuests
       if (surface) params.surface = surface
-      const response = await apiClient.get("/api/venues/filter", { params })
+      const response = await axios.get("/api/venues/filter", { params: params, headers: { Authorization: `Bearer ${jwtToken}` } })
       setVenues(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -61,7 +60,7 @@ const VenuesScreen = () => {
   const findAllVenues = async () => {
     try {
       setLoading(true)
-      const response = await apiClient.get("/api/venues")
+      const response = await axios.get("/api/venues", { headers: { Authorization: `Bearer ${jwtToken}` } })
       setVenues(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -105,7 +104,7 @@ const VenuesScreen = () => {
       const response = await fetch(`/api/v1/events/next/${currentUser.id}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`
+          "Authorization": `Bearer ${jwtToken}`
         },
         method: "GET",
       })
@@ -175,6 +174,7 @@ const VenuesScreen = () => {
     try {
       await axios.put(`/api/event-properties/${eventObj.id}/add-venue/${venueId}`, null, {
         params: { startDate, endDate },
+        headers: { Authorization: `Bearer ${jwtToken}` }
       })
       alert("¡Operación realizada con éxito!")
       setAddModalVisible(false)

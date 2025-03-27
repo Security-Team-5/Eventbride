@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import apiClient from "../apiClient"
+import axios from "axios"
 import {
   Filter,
   X,
@@ -29,7 +29,6 @@ const OtherServiceScreen = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [serviceDetailsVisible, setServiceDetailsVisible] = useState(false)
   const [events, setEvents] = useState([])
-  // eslint-disable-next-line no-unused-vars
   const [selectedService, setSelectedService] = useState(null)
   const [selectedOtherServiceId, setSelectedOtherServiceId] = useState(null)
   const [serviceDetails, setServiceDetails] = useState(null)
@@ -43,7 +42,10 @@ const OtherServiceScreen = () => {
     try {
       setLoading(true)
       const params = { name, city, type }
-      const response = await apiClient.get(`/api/other-services/filter`, { params })
+      const response = await axios.get(`/api/other-services/filter`, {
+        params: params,
+        headers: { Authorization: `Bearer ${jwtToken}` }
+      })
       setOtherServices(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -55,7 +57,7 @@ const OtherServiceScreen = () => {
   const getAllOtherServices = async () => {
     try {
       setLoading(true)
-      const response = await apiClient.get("/api/other-services")
+      const response = await axios.get("/api/other-services", { headers: { Authorization: `Bearer ${jwtToken}` } })
       setOtherServices(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -67,7 +69,10 @@ const OtherServiceScreen = () => {
   const getUserEvents = async () => {
     try {
       const response = await fetch(`/api/v1/events/next/${currentUser.id}`, {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${jwtToken}`, },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken}`
+        },
         method: "GET",
       })
       const data = await response.json()
@@ -79,7 +84,7 @@ const OtherServiceScreen = () => {
 
   const getServiceDetails = async (serviceId) => {
     try {
-      const response = await apiClient.get(`/api/other-services/${serviceId}`)
+      const response = await axios.get(`/api/other-services/${serviceId}`, { headers: { Authorization: `Bearer ${jwtToken}` } })
       setServiceDetails(response.data)
       setServiceDetailsVisible(true)
     } catch (error) {
@@ -174,8 +179,9 @@ const OtherServiceScreen = () => {
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
     try {
-      await apiClient.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
+      await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
         params: { startDate, endDate },
+        headers: { Authorization: `Bearer ${jwtToken}` }
       })
       alert("¡Operación realizada con éxito!")
       setModalVisible(false)
