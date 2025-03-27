@@ -51,6 +51,12 @@ public class SecurityConfig {
                                                                 "/api/other-services/{id}")
                                                 .permitAll()
 
+                                                // URIS DE ADMIN
+                                                .requestMatchers(
+                                                                "/api/services/admin",
+                                                                "/api/other-services/admin/{id}")
+                                                .hasAuthority("ADMIN")
+
                                                 // URIS DE SUPPLIER
                                                 .requestMatchers(
                                                                 "/api/services/user/{id}",
