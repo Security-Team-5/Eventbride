@@ -56,7 +56,7 @@ public class SecurityConfig {
                                 "/api/event-properties/cancel/**",
                                 "/api/event-properties/{eventId}/add-otherservice/{otherServiceId}",
                                 "/api/event-properties/cancel/{eventPropertieID}",
-                                "/api/invitation/eventInvitations/**",
+                                "/api/invitation/eventInvitations/{eventId}",
                                 "/api/invitation/**",
                                 "/api/invitation/create/**",
                                 "/api/other-services",

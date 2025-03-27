@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "../static/resources/css/Invitations.css";
 import { useParams } from "react-router-dom";
-import apiClient from "../apiClient"
 
 function EventInvitations() {
   const [invitaciones, setInvitaciones] = useState([]);
