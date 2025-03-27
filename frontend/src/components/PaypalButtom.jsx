@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect } from "react";
 import "../static/resources/css/Paypal.css";
-import apiClient from "../apiClient";
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function PaypalButton({ amount, paymentType, eventProp }) {
@@ -13,7 +13,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
       if (paymentType === 'DEPOSITO PARA RESERVA') {
         try {
           const currentUser = JSON.parse(localStorage.getItem("user"))
-          const response = await apiClient.post(`/api/payment/${eventProp.id}/pay-deposit/${currentUser.id}`);
+          const response = await axios.post(`/api/payment/${eventProp.id}/pay-deposit/${currentUser.id}`);
           console.log(response.data);
 
         } catch (error) {
@@ -24,7 +24,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
         //INTRODUCIR LÓGICA DE PAGO RESTANTE
         try {
           const currentUser = JSON.parse(localStorage.getItem("user"))
-          const response = await apiClient.post(`/api/payment/${eventProp.id}/pay-remaining/${currentUser.id}`);
+          const response = await axios.post(`/api/payment/${eventProp.id}/pay-remaining/${currentUser.id}`);
           console.log(response.data);
         } catch (error) {
           alert('Error al pagar');
@@ -36,7 +36,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
     async function cancelEventAfterPayment() {
       try {
         const currentUser = JSON.parse(localStorage.getItem("user"));
-        await apiClient.put(`/api/event-properties/cancel/${eventProp.id}`, currentUser);
+        await axios.put(`/api/event-properties/cancel/${eventProp.id}`, currentUser);
         console.log('Evento cancelado correctamente');
       } catch (error) {
         console.error('Error al cancelar evento:', error);

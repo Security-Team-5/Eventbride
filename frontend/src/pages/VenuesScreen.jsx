@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import axios from "axios"
 import apiClient from "../apiClient"
 import {
   Filter,
@@ -25,6 +26,7 @@ const VenuesScreen = () => {
   const [maxGuests, setMaxGuests] = useState("")
   const [surface, setSurface] = useState("")
   const [filtersVisible, setFiltersVisible] = useState(false)
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   // Modal para ver detalles del venue al hacer click en la card
   const [selectedVenue, setSelectedVenue] = useState(null)
@@ -100,7 +102,13 @@ const VenuesScreen = () => {
   const getUserEvents = async () => {
     try {
       const currentUser = JSON.parse(localStorage.getItem("user"))
-      const response = await apiClient.get(`/api/v1/events/next/${currentUser.id}`)
+      const response = await fetch(`/api/v1/events/next/${currentUser.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`
+        },
+        method: "GET",
+      })
       const data = await response.json()
       setEvents(data)
     } catch (error) {
@@ -165,7 +173,7 @@ const VenuesScreen = () => {
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
 
     try {
-      await apiClient.put(`/api/event-properties/${eventObj.id}/add-venue/${venueId}`, null, {
+      await axios.put(`/api/event-properties/${eventObj.id}/add-venue/${venueId}`, null, {
         params: { startDate, endDate },
       })
       alert("¡Operación realizada con éxito!")
@@ -456,4 +464,3 @@ const VenuesScreen = () => {
 }
 
 export default VenuesScreen
-
