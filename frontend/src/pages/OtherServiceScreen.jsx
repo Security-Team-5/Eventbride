@@ -16,6 +16,7 @@ import {
   Calendar,
   CheckCircle,
 } from "lucide-react"
+import { Link } from "react-router-dom"
 import "../static/resources/css/OtherService.css"
 
 const OtherServiceScreen = () => {
@@ -35,12 +36,16 @@ const OtherServiceScreen = () => {
   const [loading, setLoading] = useState(true)
 
   const currentUser = JSON.parse(localStorage.getItem("user"))
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   const getFilteredOtherServices = async () => {
     try {
       setLoading(true)
       const params = { name, city, type }
-      const response = await axios.get(`/api/other-services/filter`, { params })
+      const response = await axios.get(`/api/other-services/filter`, {
+        params: params,
+        headers: { Authorization: `Bearer ${jwtToken}` }
+      })
       setOtherServices(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -52,7 +57,7 @@ const OtherServiceScreen = () => {
   const getAllOtherServices = async () => {
     try {
       setLoading(true)
-      const response = await axios.get("/api/other-services")
+      const response = await axios.get("/api/other-services", { headers: { Authorization: `Bearer ${jwtToken}` } })
       setOtherServices(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -64,7 +69,10 @@ const OtherServiceScreen = () => {
   const getUserEvents = async () => {
     try {
       const response = await fetch(`/api/v1/events/next/${currentUser.id}`, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken}`
+        },
         method: "GET",
       })
       const data = await response.json()
@@ -76,7 +84,7 @@ const OtherServiceScreen = () => {
 
   const getServiceDetails = async (serviceId) => {
     try {
-      const response = await axios.get(`/api/other-services/${serviceId}`)
+      const response = await axios.get(`/api/other-services/${serviceId}`, { headers: { Authorization: `Bearer ${jwtToken}` } })
       setServiceDetails(response.data)
       setServiceDetailsVisible(true)
     } catch (error) {
@@ -173,6 +181,7 @@ const OtherServiceScreen = () => {
     try {
       await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
         params: { startDate, endDate },
+        headers: { Authorization: `Bearer ${jwtToken}` }
       })
       alert("¡Operación realizada con éxito!")
       setModalVisible(false)
@@ -294,38 +303,54 @@ const OtherServiceScreen = () => {
         </div>
       ) : (
         <div className="services-grid">
-          {otherServices.map((service) => (
-            <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
-              <div className="card-header">
-                <h3 className="service-title">{service.name}</h3>
-              </div>
-              <div className="card-body">
-                <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
+          {otherServices.map((service) => {
 
-                <div className="service-info">
-                  <MapPin size={18} className="info-icon" />
-                  <span className="info-text">{service.cityAvailable}</span>
+            console.log(service)
+            return (
+              <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
+                <div className="card-header">
+                  <h3 className="service-title">{service.name}</h3>
                 </div>
+                <div className="card-body">
+                  {
+                    service.userDTO?.plan === "PREMIUM" && <span className="service-badge">Promocionado</span>
+                  }
+                  <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
 
-                <div className="service-info">
-                  <DollarSign size={18} className="info-icon" />
-                  <span className="info-text">
-                    {service.limitedByPricePerGuest
-                      ? `${service.servicePricePerGuest}€ por invitado`
-                      : service.limitedByPricePerHour
-                        ? `${service.servicePricePerHour}€ por hora`
-                        : `${service.fixedPrice}€ precio fijo`}
-                  </span>
+                  <div className="service-info">
+                    <MapPin size={18} className="info-icon" />
+                    <span className="info-text">{service.cityAvailable}</span>
+                  </div>
+
+                  <div className="service-info">
+                    <DollarSign size={18} className="info-icon" />
+                    <span className="info-text">
+                      {service.limitedByPricePerGuest
+                        ? `${service.servicePricePerGuest}€ por invitado`
+                        : service.limitedByPricePerHour
+                          ? `${service.servicePricePerHour}€ por hora`
+                          : `${service.fixedPrice}€ precio fijo`}
+                    </span>
+                  </div>
+                </div>
+                <div className="card-footer">
+                  {service.available ? (
+                    <>
+                      <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
+                        <Plus size={16} />
+                        Añadir a mi evento
+                      </button>
+                      <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
+                        💬 Chatear
+                      </Link>
+                    </>
+                  ) : (
+                    <div className="not-available-banner">No disponible</div>
+                  )}
                 </div>
               </div>
-              <div className="card-footer">
-                <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
-                  <Plus size={16} />
-                  Añadir a mi evento
-                </button>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
 
@@ -477,4 +502,3 @@ const OtherServiceScreen = () => {
 }
 
 export default OtherServiceScreen
-

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
@@ -69,17 +70,8 @@ function Navbar() {
           <li>
             <Link to="/events" className="nav-link">Mis eventos</Link>
           </li>
-          <li className="nav-dropdown-container">
-            <button className="nav-link dropdown-trigger" onClick={toggleDropdown}>
-              Crear evento
-              <span className={`dropdown-arrow ${isOpen ? "open" : ""}`}>▼</span>
-            </button>
-            {isOpen && (
-              <div className="dropdown-menu">
-                <Link to="/create-events" className="dropdown-item">Desde cero</Link>
-                <Link to="/quiz" className="dropdown-item">Cuestionario</Link>
-              </div>
-            )}
+          <li>
+            <Link to="/create-events" className="nav-link">Crear evento</Link>
           </li>
           <li>
             <Link to="/venues" className="nav-link">Recintos</Link>
@@ -164,21 +156,51 @@ function Navbar() {
 
           {currentUser && currentUser.role && (
             <div className="navbar-actions">
-              <Link to="/" className="action-icon messages-icon">
+              <Link to="/chats" className="action-icon messages-icon">
                 <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
                 <span className="notification-badge">2</span>
               </Link>
 
               <div className="user-menu">
-                <Link to="/profile" className="action-icon user-icon">
-                  <img src={usuario || "/placeholder.svg"} alt="Usuario" className="icon-img" />
+                <Link to="/profile" className="action-icon user-icon" style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  overflow: "hidden",
+                  background: "transparent",
+                }}>
+                  <div style={{ height: "40px", overflow: "hidden", background: "transparent" }} className="profile-pic-wrapper">
+                    {currentUser.profilePicture?.trim() ? (
+                      <img style={{ maxWidth: "40px", height: "40px", maxHeight: "40px", objectFit: "cover", borderRadius: "50%", background: "transparent" }} src={currentUser.profilePicture} alt="Foto de perfil" />
+                    ) : null
+                    }
+                  </div>
                 </Link>
                 <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
 
-              {currentUser.role === "SUPPLIER" ? <li className="nav-link" style={{ backgroundColor: "red" }}>{currentUser.plan}</li> : ""}
-
-              <button className="logout-button" onClick={handleLogout}>
+              {currentUser.role === "SUPPLIER" && (
+                <li
+                  className="nav-link"
+                  style={{
+                    background: currentUser.plan === "PREMIUM"
+                      ? "linear-gradient(45deg, #FFD700, #FFC107, #FFA000)"
+                      : "silver",
+                    color: "black",
+                    padding: "8px 12px",
+                    borderRadius: "5px",
+                    fontWeight: "bold",
+                    border: currentUser.plan === "PREMIUM" ? "2px solid #DAA520" : "2px solid rgb(133, 133, 133)",
+                    boxShadow: currentUser.plan === "PREMIUM" ? "0px 0px 10px rgba(114, 114, 114, 0.8)" : "none",
+                  }}
+                >
+                  {currentUser.plan}
+                </li>
+              )}
+              <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
                 Cerrar sesión
               </button>
             </div>

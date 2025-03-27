@@ -7,9 +7,9 @@ INSERT IGNORE INTO users (id, username, role, email, first_name, last_name, tele
 (5, 'MariaCT', 'CLIENT', 'marcartal1@alum.us.es', 'María', 'Carrera Talaverón', '987654321', '11111111A', 'https://pbs.twimg.com/media/EyaRtQoWgAMd7iU.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null),
 (16, 'Fraan', 'CLIENT', 'fraavicar@alum.us.es.com', 'Fran', 'Avilés Carrera', '321789654', '44444444A', 'https://media.licdn.com/dms/image/v2/D4E03AQFk3oiu-3OLDQ/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1731263648526?e=2147483647&v=beta&t=iWb8NwRLUnxVmF34sGj0DReKSFEHm-99wXLlEH5ebPA', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null),
 -- proveedores
-(6, 'El castillo de Maxi', 'SUPPLIER', 'CastilloMaxi@example.com', 'Castillo', 'Maxi', '930348923', '55555555A', 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20 22:00:00', '2025-04-20 22:00:00'),
-(7, 'JLMorilla', 'SUPPLIER', 'foto@juanluismorilla.com', 'Juan Luis', 'Morilla', '123456789', '66666666A', 'https://www.juanluismorilla.com/wp-content/uploads/2020/06/JLM_logomarca_RGB.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20 22:00:00', '2025-04-20 22:00:00'),
-(8, 'JMGomez', 'SUPPLIER', 'jmgosevilla@gmail.com', 'Jose Manuel', 'Gomez', '123456789', '77777777A', 'https://www.corteganaiberico.com/wp-content/uploads/2021/10/pata-negra-y-jamon-iberico-1.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20 22:00:00', '2025-04-20 22:00:00'),
+(6, 'El castillo de Maxi', 'SUPPLIER', 'CastilloMaxi@example.com', 'Castillo', 'Maxi', '930348923', '55555555A', 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2025-04-20'),
+(7, 'JLMorilla', 'SUPPLIER', 'foto@juanluismorilla.com', 'Juan Luis', 'Morilla', '123456789', '66666666A', 'https://www.juanluismorilla.com/wp-content/uploads/2020/06/JLM_logomarca_RGB.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2025-04-20'),
+(8, 'JMGomez', 'SUPPLIER', 'jmgosevilla@gmail.com', 'Jose Manuel', 'Gomez', '123456789', '77777777A', 'https://www.corteganaiberico.com/wp-content/uploads/2021/10/pata-negra-y-jamon-iberico-1.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2025-04-20'),
 (9, 'JMGonzalez', 'SUPPLIER', 'gonzalezcaraballojosemanuel@gmail.com', 'Jose Manuel', 'Gonzalez Caraballo', '123456789', '88888888A', 'https://www.jamonibericomatas.com/wp-content/uploads/2022/01/Consejos-sobre-como-cortar-jamon-iberico-de-bellota.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
 (10, 'FelipeGN', 'SUPPLIER', 'felielectri@gmail.com', 'Felipe', 'G', '123456789', '99999999A', 'https://www.shutterstock.com/image-photo/woman-cutting-cheese-kitchen-slicing-600nw-2441834571.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
 (11, 'DLDecor', 'SUPPLIER', 'info@davidlaradecor.es', 'David', 'Lara', '123456789', '00000000B', 'https://www.davidlaradecor.es/wp-content/uploads/2018/01/logo-portada.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
@@ -45,17 +45,17 @@ INSERT IGNORE INTO events (id, event_type, guests, budget, event_date, payment_d
 (10, 'CHRISTENING', 100, 11000.00, '2026-10-30', '2026-08-30', 90, TRUE, 5);
 
 
-INSERT IGNORE INTO invitations (id, first_name, last_name, telephone, email, invitation_type, event_id) VALUES
-(1, 'Antonio', 'Martinez Ares', '654000111', 'oveja@example.com', 'SENT', 1),
-(2, 'Juan Manuel', 'Braza Benitez', '654000112', 'sheriff@example.com', 'SENT', 1),
-(3, 'Juan Carlos', 'Aragon', '654000113', 'veneno@example.com', 'SENT', 2),
-(4, 'Manolo', 'Santander', '654000114', 'viña@example.com', 'SENT', 2),
-(5, 'Jesus', 'Bienvenido', '654000115', 'rata@example.com', 'SENT', 3),
-(6, 'Antonio', 'Martin', '654000116', 'musa@example.com', 'SENT', 3),
-(7, 'Jose', 'Guerrero', '654000117', 'yuyu@example.com', 'SENT', 4),
-(8, 'Francisco', 'Alba', '654000118', 'caleta@example.com', 'SENT', 4),
-(9, 'Kike', 'Remolino', '654000119', 'heavy@example.com', 'SENT', 5),
-(10, 'Julio', 'Pardo', '654000110',  'opera@example.com', 'SENT', 5);
+INSERT IGNORE INTO invitations (id, first_name, last_name, number_of_guests, telephone, email, invitation_type, event_id) VALUES
+(1, 'Antonio', 'Martinez Ares', '1', '654000111', 'oveja@example.com', 'SENT', 1),
+(2, 'Juan Manuel', 'Braza Benitez', '2', '654000112', 'sheriff@example.com', 'SENT', 1),
+(3, 'Juan Carlos', 'Aragon', '3', '654000113', 'veneno@example.com', 'SENT', 2),
+(4, 'Manolo', 'Santander', '3', '654000114', 'viña@example.com', 'SENT', 2),
+(5, 'Jesus', 'Bienvenido', '4', '654000115', 'rata@example.com', 'SENT', 3),
+(6, 'Antonio', 'Martin', '2', '654000116', 'musa@example.com', 'SENT', 3),
+(7, 'Jose', 'Guerrero', '1', '654000117', 'yuyu@example.com', 'SENT', 4),
+(8, 'Francisco', 'Alba', '3', '654000118', 'caleta@example.com', 'SENT', 4),
+(9, 'Kike', 'Remolino', '2', '654000119', 'heavy@example.com', 'SENT', 5),
+(10, 'Julio', 'Pardo', '1', '654000110',  'opera@example.com', 'SENT', 5);
 
 
 INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comment) VALUES

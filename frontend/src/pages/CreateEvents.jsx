@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { Calendar, Users, PartyPopper } from "lucide-react"
-import axios from "axios"
+import apiClient from "../apiClient"
+
 import { useNavigate } from "react-router-dom"
 import "../static/resources/css/CreateEvents.css"
 
@@ -14,6 +15,7 @@ const EVENT_TYPES = {
 
 function CreateEvents() {
   const currentUser = JSON.parse(localStorage.getItem("user"))
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
   const [eventType, setEventType] = useState("")
   const [guests, setGuests] = useState("")
   const [eventDate, setEventDate] = useState("")
@@ -71,7 +73,15 @@ function CreateEvents() {
     setIsSubmitting(true)
 
     try {
-      const response = await axios.post("/api/v1/events", newEvent)
+      const response = await fetch(`/api/v1/events`, {
+        method: "POST", // Usamos POST para crear un nuevo evento
+        headers: {
+          "Authorization": `Bearer ${jwtToken}`,
+          "Content-Type": "application/json", // Asegúrate de que el contenido es JSON
+        },
+        body: JSON.stringify(newEvent), // Se envían los datos en el cuerpo de la solicitud
+      });
+
       console.log(response.data)
       navigate("/events")
     } catch (error) {

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import axios from "axios"
-import apiClient from "../apiClient"
 import {
   Filter,
   X,
@@ -16,7 +15,9 @@ import {
   Info,
   ArrowRight,
 } from "lucide-react"
+import { Link } from "react-router-dom"
 import "../static/resources/css/VenueScreen.css"
+import LeafletMap from "../components/LeafletMap";
 
 const VenuesScreen = () => {
   const [venues, setVenues] = useState([])
@@ -24,6 +25,7 @@ const VenuesScreen = () => {
   const [maxGuests, setMaxGuests] = useState("")
   const [surface, setSurface] = useState("")
   const [filtersVisible, setFiltersVisible] = useState(false)
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   // Modal para ver detalles del venue al hacer click en la card
   const [selectedVenue, setSelectedVenue] = useState(null)
@@ -46,7 +48,7 @@ const VenuesScreen = () => {
       if (city) params.city = city
       if (maxGuests) params.maxGuests = maxGuests
       if (surface) params.surface = surface
-      const response = await apiClient.get("/api/venues/filter", { params })
+      const response = await axios.get("/api/venues/filter", { params: params, headers: { Authorization: `Bearer ${jwtToken}` } })
       setVenues(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -58,7 +60,7 @@ const VenuesScreen = () => {
   const findAllVenues = async () => {
     try {
       setLoading(true)
-      const response = await apiClient.get("/api/venues")
+      const response = await axios.get("/api/venues", { headers: { Authorization: `Bearer ${jwtToken}` } })
       setVenues(response.data)
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -100,7 +102,10 @@ const VenuesScreen = () => {
     try {
       const currentUser = JSON.parse(localStorage.getItem("user"))
       const response = await fetch(`/api/v1/events/next/${currentUser.id}`, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken}`
+        },
         method: "GET",
       })
       const data = await response.json()
@@ -169,6 +174,7 @@ const VenuesScreen = () => {
     try {
       await axios.put(`/api/event-properties/${eventObj.id}/add-venue/${venueId}`, null, {
         params: { startDate, endDate },
+        headers: { Authorization: `Bearer ${jwtToken}` }
       })
       alert("¡Operación realizada con éxito!")
       setAddModalVisible(false)
@@ -189,6 +195,7 @@ const VenuesScreen = () => {
       {/* Header */}
       <div className="venues-header">
         <h1 className="venues-title">Venues Disponibles</h1>
+
         <button className="filter-toggle" onClick={toggleFilters}>
           <Filter size={18} />
           {filtersVisible ? "Ocultar filtros" : "Mostrar filtros"}
@@ -245,6 +252,8 @@ const VenuesScreen = () => {
         </div>
       )}
 
+      <LeafletMap venues={venues} />
+
       {/* Venues grid */}
       {loading ? (
         <div className="empty-state">
@@ -257,7 +266,7 @@ const VenuesScreen = () => {
           <p>No se encontraron venues con los criterios seleccionados.</p>
         </div>
       ) : (
-        <div className="venues-grid">
+        <div className="venues-grid" style={{ marginTop: "2%" }}>
           {venues.map((venue) => (
             <div key={venue.id} className="venue-card" onClick={() => handleVenueClick(venue)}>
               <div className="card-header">
@@ -265,6 +274,9 @@ const VenuesScreen = () => {
               </div>
               <div className="card-body">
                 <div className="card-info">
+                  {
+                    venue.userDTO?.plan === "PREMIUM" && <span className="service-badge">Promocionado</span>
+                  }
                   <MapPin size={18} className="card-icon" />
                   <span className="card-text">
                     {venue.address}, {venue.cityAvailable}
@@ -280,10 +292,19 @@ const VenuesScreen = () => {
                 </div>
               </div>
               <div className="card-footer">
-                <button className="add-button" onClick={(e) => handleAddVenueClick(e, venue)}>
-                  <Plus size={16} />
-                  Añadir a mi evento
-                </button>
+                {venue.available ? (
+                  <>
+                    <button className="add-button" onClick={(e) => handleAddVenueClick(e, venue)}>
+                      <Plus size={16} />
+                      Añadir a mi evento
+                    </button>
+                    <Link to={`/chat/${venue.userDTO.id}`} className="chat-button">
+                      💬 Chatear
+                    </Link>
+                  </>
+                ) : (
+                  <div className="not-available-banner">No disponible</div>
+                )}
               </div>
             </div>
           ))}
@@ -443,4 +464,3 @@ const VenuesScreen = () => {
 }
 
 export default VenuesScreen
-

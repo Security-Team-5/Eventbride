@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import apiClient from "../apiClient"
 import { useNavigate } from "react-router-dom"
 
-import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, Trash2 } from "lucide-react"
+import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff } from "lucide-react"
 
 import "../static/resources/css/Servicios.css"
 
@@ -14,12 +14,19 @@ const Servicios = () => {
     const navigate = useNavigate()
 
     const currentUser = JSON.parse(localStorage.getItem("user"))
+    const [jwtToken] = useState(localStorage.getItem("jwt"));
 
     useEffect(() => {
         const fetchServices = async () => {
             try {
                 setLoading(true)
-                const response = await apiClient.get(`/api/services/user/${currentUser.id}`)
+                const response = await fetch(`/api/services/user/${currentUser.id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${jwtToken}`,
+                    },
+                    method: "GET",
+                })
 
                 const otherServices = Array.isArray(response.data.otherServices)
                     ? response.data.otherServices.map((otherService) => ({ ...otherService, type: "otherService" }))
@@ -28,7 +35,6 @@ const Servicios = () => {
                 const venues = Array.isArray(response.data.venues)
                     ? response.data.venues.map((venue) => ({ ...venue, type: "venue" }))
                     : []
-
                 const allServices = [...otherServices, ...venues]
                 const plan = currentUser.plan || "BASIC"
                 const maxAllowed = plan === "PREMIUM" ? 10 : 3
@@ -56,22 +62,22 @@ const Servicios = () => {
         fetchServices()
     }, [currentUser.id, currentUser.plan])
 
-
-    const deleteService = async (serviceId, serviceType) => {
-        if (window.confirm("¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.")) {
-          try {
-            // Ajustar serviceType para otherService
-            const normalizedServiceType = serviceType === "otherService" ? "other-services" : `${serviceType}s`;
-      
-            await apiClient.delete(`/api/${normalizedServiceType}/delete/${serviceId}`);
-      
-            setServices(services.filter((service) => service.id !== serviceId));
-          } catch (error) {
-            console.error("Error al eliminar el servicio:", error);
-            alert("No se pudo eliminar el servicio. Por favor, inténtalo de nuevo.");
-          }
-        }
-      };
+    /*
+        const deleteService = async (serviceId, serviceType) => {
+            if (window.confirm("¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.")) {
+                try {
+                    // Ajustar serviceType para otherService
+                    const normalizedServiceType = serviceType === "otherService" ? "other-services" : `${serviceType}s`;
+    
+                    await apiClient.delete(`/api/${normalizedServiceType}/delete/${serviceId}`);
+    
+                    setServices(services.filter((service) => service.id !== serviceId));
+                } catch (error) {
+                    console.error("Error al eliminar el servicio:", error);
+                    alert("No se pudo eliminar el servicio. Por favor, inténtalo de nuevo.");
+                }
+            }
+        };*/
 
     // Función para formatear el tipo de servicio
     const formatServiceType = (type, otherServiceType) => {
@@ -95,7 +101,7 @@ const Servicios = () => {
             {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
                 <div className="warning-message">
                     <AlertCircle size={20} className="mr-2" />
-                    Has excedido el límite de servicios del plan <strong>BASIC</strong>. Marca algunos como no disponibles para cumplir con el límite.
+                    Has excedido el límite de servicios del plan BASIC. Debe desactivar los sobrantes. El máximo permitido es 3.
                 </div>
             )}
 
@@ -195,12 +201,7 @@ const Servicios = () => {
                             </div>
 
                             <div className="service-footer">
-
-                                <button className="delete-button" onClick={() => deleteService(service.id, service.type)}>
-                                    <Trash2 size={16} />
-                                    Eliminar
-                                </button>
-                                {service.overLimit && currentUser.plan === "BASIC" && (
+                                {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
                                     <button
                                         className="disable-button"
                                         onClick={async () => {
@@ -218,9 +219,11 @@ const Servicios = () => {
                                             }
                                         }}
                                     >
+                                        <EyeOff size={16} />
                                         Desactivar
                                     </button>
                                 )}
+
                                 <button
                                     className="edit-button"
                                     onClick={() =>

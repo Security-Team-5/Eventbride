@@ -1,6 +1,6 @@
 package com.eventbride.user;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class User extends Person implements UserDetails{
     @Column(name = "profile_picture", nullable = false)
     @NotBlank
     @URL(message = "Formato de URL inválido")
-    @Size(min = 1, max = 500)
+    @Size(min = 1, max = 1000)
     private String profilePicture;
 
     @Column(name = "role", nullable = false)
@@ -50,10 +50,10 @@ public class User extends Person implements UserDetails{
     }
 
     @Column(name = "payment_plan_date", nullable = true)
-    private LocalDateTime paymentPlanDate;
+    private LocalDate paymentPlanDate;
 
     @Column(name = "expire_plan_date", nullable = true)
-    private LocalDateTime expirePlanDate;
+    private LocalDate expirePlanDate;
 
     @Override
     public Collection< ? extends GrantedAuthority> getAuthorities() {

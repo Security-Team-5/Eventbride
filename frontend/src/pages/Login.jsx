@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Lock, LogIn, AlertCircle } from 'lucide-react';
@@ -57,7 +58,6 @@ function Login({ setUser }) {
             <div className="form-group">
               <label htmlFor="username">Usuario</label>
               <div className="input-wrapper">
-                <User size={18} className="input-icon" />
                 <input
                   type="text"
                   id="username"
@@ -73,7 +73,6 @@ function Login({ setUser }) {
             <div className="form-group">
               <label htmlFor="password">Contraseña</label>
               <div className="input-wrapper">
-                <Lock size={18} className="input-icon" />
                 <input
                   type="password"
                   id="password"

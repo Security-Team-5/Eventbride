@@ -43,6 +43,7 @@ function AdminUsers() {
         fetch("api/users/DTO", {
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${jwtToken}`,
             },
             method: "GET",
         })
@@ -373,7 +374,7 @@ function AdminUsers() {
                                         <>
                                             <div>
                                                 <label>Plan:</label>
-                                                
+
                                                 <select
                                                     name="plan"
                                                     value={userData.id === user.id ? userData.plan : user.plan}
