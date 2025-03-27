@@ -1,7 +1,6 @@
 package com.eventbride.user;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class User extends Person implements UserDetails{
 
     @Column(name = "profile_picture", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 500)
+    @Size(min = 1, max = 1000)
     private String profilePicture;
 
     @Column(name = "role", nullable = false)

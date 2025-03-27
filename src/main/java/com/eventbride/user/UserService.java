@@ -84,6 +84,7 @@ public class UserService {
         user.setPlan(userDetails.getPlan());
         user.setPaymentPlanDate(userDetails.getPaymentPlanDate());
         user.setExpirePlanDate(userDetails.getExpirePlanDate());
+        user.setProfilePicture(userDetails.getProfilePicture());
 
         return userRepository.save(user);
     }
