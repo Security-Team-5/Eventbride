@@ -211,13 +211,6 @@ const Servicios = () => {
                     })
                 )}
             </div>
-
-            <div className="create-service-button-container">
-                <button className="create-service-button" onClick={() => navigate("/misservicios/registrar")}>
-                    <Plus size={18} />
-                    Crear nuevo servicio
-                </button>
-            </div>
         </div >
     )
 }

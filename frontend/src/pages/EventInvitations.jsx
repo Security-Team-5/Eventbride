@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import "../static/resources/css/Invitations.css";
 import { useParams } from "react-router-dom";
-import apiClient from "../apiClient";
 
 function EventInvitations() {
   const [invitaciones, setInvitaciones] = useState([]);
   const { currentEventId } = useParams();
   const [modalOpen, setModalOpen] = useState(false);
   const [maxGuests, setMaxGuests] = useState("");
+  const [eventData, setEventData] = useState(null); // Para guardar info del evento
+
 
   // Obtener la lista de invitaciones
   function getInvitations() {
-    apiClient.get(`/api/invitation/eventInvitations/${currentEventId}`)
+    fetch(`/api/invitation/eventInvitations/${currentEventId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
       .then((response) => response.json())
       .then((data) => {
-        console.log("evento:", currentEventId);
-        console.log("Invitaciones de este evento:", data);
+        console.log("Invitaciones recibidas:", data);
         setInvitaciones(data);
       })
       .catch((error) =>
@@ -23,8 +28,26 @@ function EventInvitations() {
       );
   }
 
+  function getEventData() {
+    fetch(`/api/v1/events/${currentEventId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Datos del evento:", data);
+        setEventData(data);
+      })
+      .catch((error) =>
+        console.error("Error obteniendo los datos del evento:", error)
+      );
+  }
+
   // Cargar invitaciones al montar el componente
   useEffect(() => {
+    getEventData();
     getInvitations();
   }, []);
 
@@ -51,16 +74,18 @@ function EventInvitations() {
       alert("Por favor, ingresa un número válido mayor a 0.");
       return;
     }
-    // Llamada a la API con el body que contiene el número máximo de invitados
-    apiClient.post(`/api/invitation/create/${currentEventId}`, max, {
+
+    fetch(`/api/invitation/create/${currentEventId}`, {
       headers: {
         "Content-Type": "application/json",
       },
+      method: "POST",
+      body: JSON.stringify(max),
     })
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-          const id = data.id
+          const id = data.id;
           copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${id}`);
           alert("Link a la invitación copiado al portapapeles");
         }
@@ -68,12 +93,30 @@ function EventInvitations() {
       .catch((error) =>
         console.error("Error al crear la invitación:", error)
       );
+
     setModalOpen(false);
     setMaxGuests("");
   };
 
+  // Calcular el total de invitados (1 por el invitado principal + sus invitados)
+  const totalInvitados = invitaciones.reduce(
+    (total, invitacion) => total + Number(invitacion.numberOfGuests),
+    0
+  );
+
+  // Para comprobarlo en consola
+  console.log("Total de invitados calculado:", totalInvitados);
+
   return (
     <div className="event-invitations-container">
+      <div className="total-invitations">
+        {eventData && (
+          <div>
+            <p style={{fontSize:"130%"}}>Invitados estimados: {eventData.guests}</p>
+          </div>
+        )}
+        <h2>Total de invitados: {totalInvitados}</h2>
+      </div>
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
@@ -90,6 +133,7 @@ function EventInvitations() {
         </div>
       )}
 
+      {/* Mostrar el total de invitados */}
       {invitaciones.length > 0 ? (
         <>
           {invitaciones.map((invitacion, index) => (
@@ -112,9 +156,11 @@ function EventInvitations() {
           <p>No hay invitaciones disponibles para este evento.</p>
         </div>
       )}
+
       <button className="boton-crear-invitacion" onClick={handleCreateInvitation}>
         Crear invitación
       </button>
+
     </div>
   );
 }

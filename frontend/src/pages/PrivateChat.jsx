@@ -81,7 +81,7 @@ const PrivateChat = () => {
   }, [messages]);
 
   const sendMessage = () => {
-    if (!connected || !stompClient.current || !stompClient.current.connected || input.length===0) {
+    if (!connected || !stompClient.current || !stompClient.current.connected || input.length === 0) {
       return;
     }
 
@@ -108,82 +108,90 @@ const PrivateChat = () => {
 
   return (
     <>
-    <FloatingBackButton/>
-    <div className="chat-container">
-      <div ref={chatBoxRef} className="chat-box">
-        {messages.map((msg, index) => {
-          const isCurrentUser = msg.sender.username === currentUser.username;
-          const msgDate = new Date(msg.timestamp || Date.now());
-          const prevMsg = messages[index - 1];
-          const prevDate = prevMsg ? new Date(prevMsg.timestamp || Date.now()) : null;
+      <FloatingBackButton />
+      <div className="chat-container">
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img style={{ width: "10%", height: "100%" }}
+            src={otherUser?.profilePicture || "/placeholder.svg"}
+            alt="Profile"
+            className="profile-picture"
+          />
+          <b style={{ marginLeft: "1%", fontSize: 18 }}>Chat con {otherUser.username}</b>
+        </div>
+        <div ref={chatBoxRef} className="chat-box">
+          {messages.map((msg, index) => {
+            const isCurrentUser = msg.sender.username === currentUser.username;
+            const msgDate = new Date(msg.timestamp || Date.now());
+            const prevMsg = messages[index - 1];
+            const prevDate = prevMsg ? new Date(prevMsg.timestamp || Date.now()) : null;
 
-          const showDateSeparator =
-            !prevMsg ||
-            msgDate.toDateString() !== prevDate.toDateString();
+            const showDateSeparator =
+              !prevMsg ||
+              msgDate.toDateString() !== prevDate.toDateString();
 
-          const formatDateHeader = (date) => {
-            const today = new Date();
-            const yesterday = new Date();
-            yesterday.setDate(today.getDate() - 1);
+            const formatDateHeader = (date) => {
+              const today = new Date();
+              const yesterday = new Date();
+              yesterday.setDate(today.getDate() - 1);
 
-            if (date.toDateString() === today.toDateString()) return "Hoy";
-            if (date.toDateString() === yesterday.toDateString()) return "Ayer";
+              if (date.toDateString() === today.toDateString()) return "Hoy";
+              if (date.toDateString() === yesterday.toDateString()) return "Ayer";
 
-            return date.toLocaleDateString("es-ES", {
-              day: "2-digit",
-              month: "short",
-            });
-          };
+              return date.toLocaleDateString("es-ES", {
+                day: "2-digit",
+                month: "short",
+              });
+            };
 
-          const formatTime = (date) =>
-            date.toLocaleTimeString("es-ES", {
-              hour: "2-digit",
-              minute: "2-digit",
-            });
+            const formatTime = (date) =>
+              date.toLocaleTimeString("es-ES", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
 
-          return (
-            <React.Fragment key={index}>
-              {showDateSeparator && (
-                <div className="date-separator">
-                  <span>{formatDateHeader(msgDate)}</span>
+            return (
+              <React.Fragment key={index}>
+                {showDateSeparator && (
+                  <div className="date-separator">
+                    <span>{formatDateHeader(msgDate)}</span>
+                  </div>
+                )}
+                <div className={`message-row ${isCurrentUser ? "user" : "other"}`}>
+                  <div className={`message-bubble ${isCurrentUser ? "user" : "other"}`}>
+                    <span className="sender-name">
+                      {msg.sender.username || otherUser.username}:
+                    </span>
+                    <span className="message-text">{msg.content}</span>
+                    <span className="message-time">{formatTime(msgDate)}</span>
+                  </div>
                 </div>
-              )}
-              <div className={`message-row ${isCurrentUser ? "user" : "other"}`}>
-                <div className={`message-bubble ${isCurrentUser ? "user" : "other"}`}>
-                <span className="sender-name">
-                  {msg.sender.username || otherUser.username}:
-                </span>
-                  <span className="message-text">{msg.content}</span>
-                  <span className="message-time">{formatTime(msgDate)}</span>
-                </div>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
 
-      <div className="input-container">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              sendMessage();
-            }
-          }}
-          placeholder="Escribe un mensaje..."
-          className="message-input"
-        />
-        <button
-          onClick={sendMessage}
-          disabled={!connected}
-          className="send-button"
-        >
-          Enviar
-        </button>
+        <div className="input-container">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
+            placeholder="Escribe un mensaje..."
+            className="message-input"
+          />
+          <button
+            onClick={sendMessage}
+            disabled={!connected}
+            className="send-button"
+          >
+            Enviar
+          </button>
+        </div>
       </div>
-    </div>
     </>
   );
 };

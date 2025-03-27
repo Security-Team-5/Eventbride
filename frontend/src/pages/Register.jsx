@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { User, Mail, Phone, Lock, FileText, Image, UserCircle, AlertCircle, UserPlus } from "lucide-react"
 import apiClient from "../apiClient"
 import "../static/resources/css/Register.css"
 
@@ -80,7 +79,6 @@ const Register = () => {
 
           {error && (
             <div className="error-message">
-              <AlertCircle size={18} />
               <span>{error}</span>
             </div>
           )}
@@ -90,7 +88,6 @@ const Register = () => {
               <div className="form-group">
                 <label htmlFor="firstName">Nombre</label>
                 <div className="input-wrapper">
-                  <User size={18} className="input-icon" />
                   <input
                     type="text"
                     id="firstName"
@@ -106,7 +103,6 @@ const Register = () => {
               <div className="form-group">
                 <label htmlFor="lastName">Apellido</label>
                 <div className="input-wrapper">
-                  <User size={18} className="input-icon" />
                   <input
                     type="text"
                     id="lastName"
@@ -123,7 +119,6 @@ const Register = () => {
             <div className="form-group">
               <label htmlFor="username">Nombre de usuario</label>
               <div className="input-wrapper">
-                <UserCircle size={18} className="input-icon" />
                 <input
                   type="text"
                   id="username"
@@ -139,7 +134,6 @@ const Register = () => {
             <div className="form-group">
               <label htmlFor="profilePicture">URL de foto de perfil</label>
               <div className="input-wrapper">
-                <Image size={18} className="input-icon" />
                 <input
                   type="url"
                   id="profilePicture"
@@ -155,7 +149,6 @@ const Register = () => {
             <div className="form-group">
               <label htmlFor="email">Correo electrónico</label>
               <div className="input-wrapper">
-                <Mail size={18} className="input-icon" />
                 <input
                   type="email"
                   id="email"
@@ -172,7 +165,6 @@ const Register = () => {
               <div className="form-group">
                 <label htmlFor="telephone">Teléfono</label>
                 <div className="input-wrapper">
-                  <Phone size={18} className="input-icon" />
                   <input
                     type="tel"
                     id="telephone"
@@ -188,7 +180,6 @@ const Register = () => {
               <div className="form-group">
                 <label htmlFor="dni">DNI</label>
                 <div className="input-wrapper">
-                  <FileText size={18} className="input-icon" />
                   <input
                     type="text"
                     id="dni"
@@ -205,7 +196,6 @@ const Register = () => {
             <div className="form-group">
               <label htmlFor="password">Contraseña</label>
               <div className="input-wrapper">
-                <Lock size={18} className="input-icon" />
                 <input
                   type="password"
                   id="password"
@@ -249,7 +239,6 @@ const Register = () => {
                 <span className="loading-spinner"></span>
               ) : (
                 <>
-                  <UserPlus size={18} />
                   <span>Crear cuenta</span>
                 </>
               )}
