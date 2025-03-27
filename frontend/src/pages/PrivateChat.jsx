@@ -116,7 +116,7 @@ const PrivateChat = () => {
             alt="Profile"
             className="profile-picture"
           />
-          <b style={{ marginLeft: "1%", fontSize: 18 }}>Chat con {otherUser.username}</b>
+          <b style={{ marginLeft: "1%", fontSize: 18 }}>Chat con {otherUser?.username}</b>
         </div>
         <div ref={chatBoxRef} className="chat-box">
           {messages.map((msg, index) => {
