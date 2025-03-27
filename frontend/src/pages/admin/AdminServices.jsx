@@ -620,11 +620,6 @@ function AdminServices() {
                                     style={{ cursor: "pointer" }}
                                 />
                             )}
-                            <div className="button-container">
-                                <button className="delete-btn" onClick={() => deleteService(service.id, service.type)}>
-                                    Borrar
-                                </button>
-                            </div>
                         </div>
                     ))
                 ) : (

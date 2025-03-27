@@ -97,7 +97,7 @@ function AdminUsers() {
                     if (response.status === 409) {
                         throw new Error("El nombre de usuario ya está en uso. Por favor, elija otro.");
                     }
-                    
+
                     // For other errors, try to parse the response body
                     return response.text().then(text => {
                         // Try to parse as JSON, but handle case where it's not valid JSON
@@ -131,76 +131,76 @@ function AdminUsers() {
     // Validar los datos antes de enviarlos
     function validateUserData(userData) {
         setError("");
-        
+
         // Comprobar campos obligatorios
         if (!userData.firstName || !userData.lastName || !userData.username || !userData.email || !userData.dni) {
             setError("Por favor, complete todos los campos obligatorios.");
             return false;
         }
-        
+
         // Validar longitud del nombre
         if (userData.firstName.length > 40) {
             setError("El nombre no puede tener más de 40 caracteres.");
             return false;
         }
-        
+
         if (userData.lastName.length > 40) {
             setError("El apellido no puede tener más de 40 caracteres.");
             return false;
         }
-        
+
         if (userData.username.length > 50) {
             setError("El nombre de usuario no puede tener más de 50 caracteres.");
             return false;
         }
-        
+
         // Validar formato del DNI
         const dniPattern = /^[0-9]{8}[A-Za-z]$/;
         if (!dniPattern.test(userData.dni)) {
             setError("El DNI es incorrecto. Debe tener 8 números seguidos de una letra.");
             return false;
         }
-        
+
         // Validar formato del correo electrónico
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(userData.email)) {
             setError("El correo electrónico no es válido.");
             return false;
         }
-        
+
         // Validar número de teléfono
         const telephonePattern = /^[0-9]{9}$/;
         if (!telephonePattern.test(userData.telephone)) {
             setError("El teléfono debe tener 9 números.");
             return false;
         }
-        
+
         // Validar fechas para plan premium
         if (userData.role === "SUPPLIER" && userData.plan === "PREMIUM") {
             if (!userData.paymentPlanDate) {
                 setError("La fecha de pago del plan es obligatoria para planes Premium.");
                 return false;
             }
-            
+
             if (!userData.expirePlanDate) {
                 setError("La fecha de expiración del plan es obligatoria para planes Premium.");
                 return false;
             }
-            
+
             const paymentDate = new Date(userData.paymentPlanDate);
             const expireDate = new Date(userData.expirePlanDate);
-            
+
             if (isNaN(paymentDate.getTime()) || isNaN(expireDate.getTime())) {
                 setError("Las fechas del plan no son válidas.");
                 return false;
             }
-            
+
             if (expireDate <= paymentDate) {
                 setError("La fecha de expiración debe ser posterior a la fecha de pago.");
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -226,34 +226,34 @@ function AdminUsers() {
     // Manejar el cambio de un campo de entrada
     function handleInputChange(e) {
         const { name, value } = e.target;
-        
+
         // Manejo especial para el DNI
         if (name === "dni") {
             // Extraer los dígitos y letras del valor actual
             const digits = value.replace(/\D/g, '');
             const letters = value.replace(/[^A-Za-z]/g, '');
-            
+
             // Construir el nuevo valor del DNI
             let newDni = digits.substring(0, 8); // Primero los 8 dígitos
-            
+
             // Solo añadir la letra si ya tenemos 8 dígitos
             if (digits.length >= 8 && letters.length > 0) {
                 newDni += letters.charAt(letters.length - 1).toUpperCase();
             }
-            
+
             setUserData(prevData => ({
                 ...prevData,
                 [name]: newDni,
             }));
-        } 
+        }
         // Manejo especial para el teléfono (solo dígitos)
         else if (name === "telephone") {
             // Extraer solo los dígitos
             const digits = value.replace(/\D/g, '');
-            
+
             // Limitar a 9 dígitos
             const newTelephone = digits.substring(0, 9);
-            
+
             setUserData(prevData => ({
                 ...prevData,
                 [name]: newTelephone,
@@ -273,7 +273,7 @@ function AdminUsers() {
     return (
         <>
             {/* Los errores se muestran en cada usuario */}
-            
+
             {users.length > 0 ? (
                 users.map((user, index) => (
                     <div key={index} className="service-container" style={{ display: "flex", flexDirection: "column", marginTop: "6%" }}>
@@ -319,17 +319,17 @@ function AdminUsers() {
                                         <div>
                                             <Mail size={18} className="input-icon" />
                                             <input
-                                            type="email"
-                                            name="email"
-                                            placeholder="Introduzca el correo electrónico"
-                                            value={userData.id === user.id ? userData.email : user.email}
-                                            onChange={handleInputChange}
-                                            required
+                                                type="email"
+                                                name="email"
+                                                placeholder="Introduzca el correo electrónico"
+                                                value={userData.id === user.id ? userData.email : user.email}
+                                                onChange={handleInputChange}
+                                                required
                                             />
                                         </div>
                                     </div>
                                     <div>
-                                        <Phone size={18}/>
+                                        <Phone size={18} />
                                         <input
                                             type="tel"
                                             id="telephone"
@@ -345,17 +345,17 @@ function AdminUsers() {
                                     <div>
                                         <label htmlFor="dni">DNI</label>
                                         <div>
-                                        <FileText size={18} className="input-icon" />
-                                        <input
-                                            type="text"
-                                            id="dni"
-                                            name="dni"
-                                            placeholder="Tu DNI"
-                                            pattern="[0-9]{8}[A-Z]"
-                                            value={userData.id === user.id ? userData.dni : user.dni}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
+                                            <FileText size={18} className="input-icon" />
+                                            <input
+                                                type="text"
+                                                id="dni"
+                                                name="dni"
+                                                placeholder="Tu DNI"
+                                                pattern="[0-9]{8}[A-Z]"
+                                                value={userData.id === user.id ? userData.dni : user.dni}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
                                         </div>
                                     </div>
                                     <div>
@@ -424,18 +424,6 @@ function AdminUsers() {
                                         <label>Foto de perfil:</label>
                                         <img src={user.profilePicture} alt={user.username} className="service-image" />
                                     </div>
-
-                                    {editUserId === user.id ? (
-                                        <div className="button-container">
-                                            <button className="save-btn" onClick={updateUser}>Guardar</button>
-                                            <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
-                                        </div>
-                                    ) : (
-                                        <div className="button-container">
-                                            <button onClick={() => startEditing(user)} className="edit-btn">Editar</button>
-                                            <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
-                                        </div>
-                                    )}
                                 </form>
                             </div>
                         </div>
