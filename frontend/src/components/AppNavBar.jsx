@@ -156,28 +156,28 @@ function Navbar() {
 
           {currentUser && currentUser.role && (
             <div className="navbar-actions">
-              <Link to="/" className="action-icon messages-icon">
+              <Link to="/chats" className="action-icon messages-icon">
                 <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
                 <span className="notification-badge">2</span>
               </Link>
 
               <div className="user-menu">
-                <Link to="/profile" className="action-icon user-icon"style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    background: "transparent",
+                <Link to="/profile" className="action-icon user-icon" style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  overflow: "hidden",
+                  background: "transparent",
                 }}>
                   <div style={{ height: "40px", overflow: "hidden", background: "transparent" }} className="profile-pic-wrapper">
-                  {currentUser.profilePicture?.trim() ? (
-                      <img style={{ maxWidth: "40px",height: "40px", maxHeight: "40px", objectFit: "cover", borderRadius: "50%", background: "transparent" }} src={currentUser.profilePicture} alt="Foto de perfil" />
-                      ) : null
-                      }
-                  </div>                
+                    {currentUser.profilePicture?.trim() ? (
+                      <img style={{ maxWidth: "40px", height: "40px", maxHeight: "40px", objectFit: "cover", borderRadius: "50%", background: "transparent" }} src={currentUser.profilePicture} alt="Foto de perfil" />
+                    ) : null
+                    }
+                  </div>
                 </Link>
                 <div className="user-name">{currentUser.username || "Usuario"}</div>
               </div>
@@ -186,8 +186,8 @@ function Navbar() {
                 <li
                   className="nav-link"
                   style={{
-                    background: currentUser.plan === "PREMIUM" 
-                      ? "linear-gradient(45deg, #FFD700, #FFC107, #FFA000)" 
+                    background: currentUser.plan === "PREMIUM"
+                      ? "linear-gradient(45deg, #FFD700, #FFC107, #FFA000)"
                       : "silver",
                     color: "black",
                     padding: "8px 12px",
@@ -200,7 +200,7 @@ function Navbar() {
                   {currentUser.plan}
                 </li>
               )}
-              <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%"}}>
+              <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
                 Cerrar sesión
               </button>
             </div>
