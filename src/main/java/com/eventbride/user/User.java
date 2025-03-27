@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,7 @@ public class User extends Person implements UserDetails{
 
     @Column(name = "profile_picture", nullable = false)
     @NotBlank
+    @URL(message = "Formato de URL inválido")
     @Size(min = 1, max = 1000)
     private String profilePicture;
 

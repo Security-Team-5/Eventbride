@@ -22,21 +22,54 @@ const Register = () => {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setError("")
+
+    if (form.firstName.length > 40) {
+      setError("El nombre no puede tener más de 40 caracteres.")
+      return
+    }
+
+    if (form.lastName.length > 40) {
+      setError("El apellido no puede tener más de 40 caracteres.")
+      return
+    }
+
+    if (form.username.length > 50) {
+      setError("El nombre de usuario no puede tener más de 50 caracteres.")
+      return
+    }
+
+    const dniPattern = /^[0-9]{8}[A-Za-z]$/
+    if (!dniPattern.test(form.dni)) {
+      setError("El DNI es incorrecto.")
+      return
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailPattern.test(form.email)) {
+      setError("El correo electrónico no es válido")
+      return
+    }
+
+    const telephonePattern = /^[0-9]{9}$/
+    if (!telephonePattern.test(form.telephone)) {
+      setError("El teléfono debe tener 9 numeros.")
+      return
+    }
 
     if (!acceptedTerms) {
-      setError("Debes aceptar los términos y condiciones para continuar")
+      setError("Debes aceptar los términos y condiciones para continuar.")
       return
     }
 
     setIsLoading(true)
-    setError(null)
+    
 
     const role = "proveedor" === form.role ? "SUPPLIER" : "CLIENT"
 

@@ -2,10 +2,12 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AlertCircle } from "lucide-react";
 
 function AdminServices() {
     const [services, setServices] = useState([]);
     const [editingService, setEditingService] = useState(null);
+    const [error, setError] = useState("");
     const navigate = useNavigate();
     const currentUser = JSON.parse(localStorage.getItem("user"));
 
@@ -83,22 +85,150 @@ function AdminServices() {
 
     function handleInputChange(e, field) {
         const { name, value } = e.target;
-        setEditingService(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        
+        // Manejo especial para el codigo postal (sólo numeros)
+        if (name === "postalCode") {
+            // Permite solo números
+            const digits = value.replace(/\D/g, '');
+            
+            // Limita la longitud a 5 dígitos
+            const newPostalCode = digits.substring(0, 5);
+            
+            setEditingService(prev => ({
+                ...prev,
+                [name]: newPostalCode
+            }));
+        } 
+        // Manejo especial para la ciudad (sólo letras y espacios)
+        else if (name === "cityAvailable") {
+            // Permite solo letras, espacios y algunos caracteres especiales para ciudades con acentos
+            const letters = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]/g, '');
+            
+            setEditingService(prev => ({
+                ...prev,
+                [name]: letters
+            }));
+        }
+        else {
+            setEditingService(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
     }
 
     function handleEdit(service) {
         setEditingService(service);
     }
 
+    function validateService(service) {
+        setError("");
+        
+        // Comprobar campos obligatorios
+        if (!service.name || !service.cityAvailable || !service.description) {
+            setError("Por favor, complete todos los campos obligatorios.");
+            return false;
+        }
+        
+        // Validar longitud del nombre
+        if (service.name.length > 100) {
+            setError("El nombre del servicio no puede tener más de 100 caracteres.");
+            return false;
+        }
+        
+        // Validar precios
+        if (service.servicePricePerGuest < 0) {
+            setError("El precio por invitado no puede ser negativo.");
+            return false;
+        }
+        
+        if (service.servicePricePerHour < 0) {
+            setError("El precio por hora no puede ser negativo.");
+            return false;
+        }
+        
+        if (service.fixedPrice < 0) {
+            setError("El precio fijo no puede ser negativo.");
+            return false;
+        }
+        
+        // Validar URL de la imagen
+        const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+        if (service.picture && !urlPattern.test(service.picture)) {
+            setError("La URL de la imagen no es válida.");
+            return false;
+        }
+        
+        // Validaciones específicas para venues
+        if (service.type === "venues") {
+            // Validar código postal (5 dígitos para España)
+            const postalCodePattern = /^\d{5}$/;
+            if (!postalCodePattern.test(service.postalCode)) {
+                setError("El código postal debe tener 5 dígitos.");
+                return false;
+            }
+            
+            // Validar capacidad máxima
+            if (service.maxGuests <= 0) {
+                setError("La capacidad máxima debe ser mayor que cero.");
+                return false;
+            }
+            
+            // Validar superficie
+            if (service.surface <= 0) {
+                setError("La superficie debe ser mayor que cero.");
+                return false;
+            }
+            
+            // Validar dirección
+            if (!service.address) {
+                setError("La dirección es obligatoria.");
+                return false;
+            }
+            
+            // Validar horarios
+            if (!service.earliestTime || !service.latestTime) {
+                setError("Los horarios de apertura y cierre son obligatorios.");
+                return false;
+            }
+        }
+        
+        // Validaciones específicas para otros servicios
+        if (service.type === "other-services") {
+            if (!service.otherServiceType) {
+                setError("El tipo de servicio es obligatorio.");
+                return false;
+            }
+            
+            if (!service.extraInformation) {
+                setError("La información extra es obligatoria.");
+                return false;
+            }
+            
+            if (service.extraInformation.length > 1000) {
+                setError("La información extra no puede tener más de 1000 caracteres.");
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
     function handleSave() {
-        updateService(editingService);
+        if (validateService(editingService)) {
+            updateService(editingService);
+        }
     }
 
     return (
         <>
+            {error && (
+                <div className="error-message" style={{ color: "red", padding: "10px", marginBottom: "10px", display: "flex", alignItems: "center", gap: "5px" }}>
+                    <AlertCircle size={18} />
+                    <span>{error}</span>
+                </div>
+            )}
+            
             {currentUser?.role === "ADMIN" ? (
                 services.length > 0 ? (
                     services.map((service, index) => (
@@ -110,7 +240,14 @@ function AdminServices() {
                                         <form onSubmit={handleSave}>
                                             <div className="form-group">
                                                 <label htmlFor="name"><strong>Título del Servicio:</strong></label>
-                                                <input type="text" name="name" value={editingService.name} onChange={handleInputChange} />
+                                                <input 
+                                                    type="text" 
+                                                    name="name" 
+                                                    value={editingService.name} 
+                                                    onChange={handleInputChange} 
+                                                    required 
+                                                    maxLength="100" 
+                                                />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="available"><strong>Disponible:</strong></label>
@@ -121,19 +258,46 @@ function AdminServices() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="cityAvailable"><strong>Ciudad Disponible:</strong></label>
-                                                <input type="text" name="cityAvailable" value={editingService.cityAvailable} onChange={handleInputChange} />
+                                                <input 
+                                                    type="text" 
+                                                    name="cityAvailable" 
+                                                    value={editingService.cityAvailable} 
+                                                    onChange={handleInputChange} 
+                                                    required 
+                                                />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="servicePricePerGuest"><strong>Precio por Invitado:</strong></label>
-                                                <input type="number" name="servicePricePerGuest" value={editingService.servicePricePerGuest} onChange={handleInputChange} />
+                                                <input 
+                                                    type="number" 
+                                                    name="servicePricePerGuest" 
+                                                    value={editingService.servicePricePerGuest} 
+                                                    onChange={handleInputChange} 
+                                                    min="0" 
+                                                    step="0.01" 
+                                                />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="servicePricePerHour"><strong>Precio por Hora:</strong></label>
-                                                <input type="number" name="servicePricePerHour" value={editingService.servicePricePerHour} onChange={handleInputChange} />
+                                                <input 
+                                                    type="number" 
+                                                    name="servicePricePerHour" 
+                                                    value={editingService.servicePricePerHour} 
+                                                    onChange={handleInputChange} 
+                                                    min="0" 
+                                                    step="0.01" 
+                                                />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="fixedPrice"><strong>Precio Fijo:</strong></label>
-                                                <input type="number" name="fixedPrice" value={editingService.fixedPrice} onChange={handleInputChange} />
+                                                <input 
+                                                    type="number" 
+                                                    name="fixedPrice" 
+                                                    value={editingService.fixedPrice} 
+                                                    onChange={handleInputChange} 
+                                                    min="0" 
+                                                    step="0.01" 
+                                                />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="limitedByPricePerGuest"><strong>Limitado por Precio por Invitado:</strong></label>
@@ -164,6 +328,7 @@ function AdminServices() {
                                                         fontSize: "16px"
                                                     }}
                                                     placeholder="Escribe la descripción aquí..."
+                                                    required
                                                 />
                                             </div>
 
@@ -175,31 +340,78 @@ function AdminServices() {
                                                 <>
                                                     <div className="form-group">
                                                         <label htmlFor="postalCode"><strong>Código Postal:</strong></label>
-                                                        <input type="text" name="postalCode" value={editingService.postalCode} onChange={handleInputChange} />
+                                                        <input 
+                                                            type="text" 
+                                                            name="postalCode" 
+                                                            value={editingService.postalCode} 
+                                                            onChange={handleInputChange} 
+                                                            pattern="[0-9]{5}" 
+                                                            maxLength="5"
+                                                            inputMode="numeric"
+                                                            placeholder="12345"
+                                                            required 
+                                                        />
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="coordinates"><strong>Coordenadas:</strong></label>
-                                                        <input type="text" name="coordinates" value={editingService.coordinates} onChange={handleInputChange} />
+                                                        <input 
+                                                            type="text" 
+                                                            name="coordinates" 
+                                                            value={editingService.coordinates} 
+                                                            onChange={handleInputChange} 
+                                                        />
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="address"><strong>Dirección:</strong></label>
-                                                        <input type="text" name="address" value={editingService.address} onChange={handleInputChange} />
+                                                        <input 
+                                                            type="text" 
+                                                            name="address" 
+                                                            value={editingService.address} 
+                                                            onChange={handleInputChange} 
+                                                            required 
+                                                        />
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="maxGuests"><strong>Capacidad Máxima:</strong></label>
-                                                        <input type="number" name="maxGuests" value={editingService.maxGuests} onChange={handleInputChange} />
+                                                        <input 
+                                                            type="number" 
+                                                            name="maxGuests" 
+                                                            value={editingService.maxGuests} 
+                                                            onChange={handleInputChange} 
+                                                            min="1" 
+                                                            required 
+                                                        />
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="surface"><strong>Superficie:</strong></label>
-                                                        <input type="number" name="surface" value={editingService.surface} onChange={handleInputChange} />
+                                                        <input 
+                                                            type="number" 
+                                                            name="surface" 
+                                                            value={editingService.surface} 
+                                                            onChange={handleInputChange} 
+                                                            min="1" 
+                                                            required 
+                                                        />
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="earliestTime"><strong>Hora de apertura:</strong></label>
-                                                        <input type="time" name="earliestTime" value={editingService.earliestTime} onChange={handleInputChange} />
+                                                        <input 
+                                                            type="time" 
+                                                            name="earliestTime" 
+                                                            value={editingService.earliestTime} 
+                                                            onChange={handleInputChange} 
+                                                            required 
+                                                        />
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="latestTime"><strong>Hora de cierre:</strong></label>
-                                                        <input type="time" name="latestTime" value={editingService.latestTime} onChange={handleInputChange} />
+                                                        <input 
+                                                            type="time" 
+                                                            name="latestTime" 
+                                                            value={editingService.latestTime} 
+                                                            onChange={handleInputChange} 
+                                                            required 
+                                                        />
                                                     </div>
                                                 </>
                                             )}

@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Calendar, Users, DollarSign, PartyPopper } from "lucide-react"
+import { Calendar, Users, PartyPopper } from "lucide-react"
 import apiClient from "../apiClient"
+
 import { useNavigate } from "react-router-dom"
 import "../static/resources/css/CreateEvents.css"
 
@@ -17,7 +18,6 @@ function CreateEvents() {
   const [jwtToken] = useState(localStorage.getItem("jwt"));
   const [eventType, setEventType] = useState("")
   const [guests, setGuests] = useState("")
-  const [budget, setBudget] = useState("")
   const [eventDate, setEventDate] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState("")
@@ -29,15 +29,43 @@ function CreateEvents() {
     setError("")
 
     // Simple validation
-    if (!eventType || !guests || !budget || !eventDate) {
+    if (!eventType || !guests || !eventDate) {
       setError("Por favor completa todos los campos")
       return
     }
 
+    // Additional validation for guests
+    const minGuests = 1
+    const maxGuests = 9999
+    if (guests < minGuests || guests > maxGuests) {
+      setError(`El número de invitados debe estar entre ${minGuests} y ${maxGuests}`)
+      return
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+    const selectedDate = new Date(eventDate);
+    
+    // Calcula la diferencia en días
+    const minDaysDifference = Math.ceil((selectedDate - today) / (1000 * 60 * 60 * 24));
+    
+    console.log("Diferencia en días:", minDaysDifference);
+      if (eventType === "CHRISTENING" && minDaysDifference > 30) {
+        setError("Para un bautizo, la fecha debe ser como máximo 30 días después de hoy");
+        return;
+      } else if (eventType === "COMMUNION" && minDaysDifference > 90) {
+        setError("Para una comunión, la fecha debe ser como máximo 90 días después de hoy");
+        return;
+      } else if (eventType === "WEDDING" && minDaysDifference > 120) {
+        setError("Para una boda, la fecha debe ser al como máximo 120 días después de hoy");
+        return;
+      }
+    // }
+
+
     const newEvent = {
       eventType,
       guests,
-      budget,
       eventDate,
       user,
     }
@@ -112,26 +140,11 @@ function CreateEvents() {
               required
               placeholder="Ej: 100"
               min="1"
+              max="9999"
               className="form-input"
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="budget">
-              <DollarSign size={18} className="input-icon" />
-              Presupuesto estimado (€)
-            </label>
-            <input
-              type="number"
-              id="budget"
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
-              required
-              placeholder="Ej: 5000"
-              min="1"
-              className="form-input"
-            />
-          </div>
 
           <div className="form-group">
             <label htmlFor="eventDate">
@@ -145,6 +158,8 @@ function CreateEvents() {
               onChange={(e) => setEventDate(e.target.value)}
               required
               className="form-input"
+              min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split("T")[0]} 
+              max={new Date(new Date().setDate(new Date().getDate() + 120)).toISOString().split("T")[0]}
             />
           </div>
 
