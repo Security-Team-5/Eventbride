@@ -49,15 +49,22 @@ const Register = () => {
     console.log("Formulario enviado:", form);
 
     try {
-      const response = await apiClient.put("/api/invitation", {
-        id: invitationId,
-        maxGuests: invitation.maxGuests,
-        firstName: form.firstName,
-        lastName: form.lastName,
-        numberOfGuests: form.numberOfGuests,
-        email: form.email,
-        telephone: form.telephone,
+      const response = await fetch("/api/invitation", {
+        method: "PUT", // Usamos PUT para actualizar los datos de la invitación
+        headers: {
+          "Content-Type": "application/json", // Especificamos que los datos se envían en formato JSON
+        },
+        body: JSON.stringify({
+          id: invitationId,
+          maxGuests: invitation.maxGuests,
+          firstName: form.firstName,
+          lastName: form.lastName,
+          numberOfGuests: form.numberOfGuests,
+          email: form.email,
+          telephone: form.telephone,
+        }),
       });
+
 
       if (response.data.error) {
         setError("Error: " + response.data.error);
