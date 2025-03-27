@@ -119,8 +119,9 @@ public class EventController {
             }
 
             List<Invitation> i = invitationService.getInvitationByEventId(eventId);
-            invitationService.deleteInvitations(i);
-
+            if (i.size() > 0) {
+                invitationService.deleteInvitations(i);
+            }
             eventService.save(event);
             eventService.deleteEvent(eventId);
         }
