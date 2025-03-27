@@ -21,7 +21,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +38,6 @@ public class Event extends BaseEntity {
 
     @Column(name = "guests", nullable = false)
     @Min(1)
-    @Max(9999)
     private Integer guests;
 
     @Column(name = "budget", precision = 9, scale = 2, nullable = true)

@@ -49,13 +49,13 @@ public class Service extends BaseEntity {
 
     @Column(name = "picture", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 1000)
-    @Pattern(regexp = "^(https?:\\/\\/)?([\\w-]+\\.)+[\\w-]+(\\/[\\w-]*)*(\\?.*)?$")
+    @Size(min = 1, max = 250)
+    // @Pattern(regexp = "^(https?:\\/\\/)?([\\w-]+\\.)+[\\w-]+(\\/[\\w-]*)*(\\?.*)?$")
     private String picture;
 
     @Column(name = "description", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 1000)
+    @Size(min = 1, max = 250)
     private String description;   
 
     @Column(name = "limited_by_price_per_guest", nullable = false)

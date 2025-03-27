@@ -61,7 +61,7 @@ function App() {
                 <Route path="/payment/:id" element={<Payment />} />
                 <Route path="/invitaciones" element={<Invitations />} />
                 <Route path="/invitaciones/:currentEventId" element={<EventInvitations />} />
-                <Route path="/invitaciones/registro/:invitationId" element={<RegisterInvitation />} />
+                
                 <Route path="/invitaciones/confirmar/:invitationId" element={<ConfirmEmailInvitation />} />
               </>
             )}
@@ -97,6 +97,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/terminos-y-condiciones" element={<Terms />} />
             <Route path="/faqs" element={<FAQ />} />
+            <Route path="/invitaciones/registro/:invitationId" element={<RegisterInvitation />} />
           </Routes>
           <FloatingChatButton />
         </div>
