@@ -33,37 +33,6 @@ public class SecurityConfig {
                 http
                                 .csrf(csrf -> csrf.disable()) // Desactiva CSRF para facilitar pruebas
                                 .authorizeHttpRequests(auth -> auth
-                                                // URIS DE PROOVEDOR
-                                                .requestMatchers(
-                                                                "/api/venues/delete/{id}",
-                                                                "/api/venues/add-venue/**",
-                                                                "/api/event-properties/{eventPropertiesId}",
-                                                                "/api/event-properties/pending/{userId}",
-                                                                "/api/event-properties/status/pending/{eventPropertiesId}",
-                                                                "/api/other-services/disable/**",
-                                                                "/api/users/plan",
-                                                                "/api/services/**",
-                                                                "/api/users/profile/plan")
-                                                .hasAuthority("SUPPLIER")
-
-                                                // URIS DE CLIENTE
-                                                .requestMatchers(
-                                                                "/api/venues",
-                                                                "/api/v1/events",
-                                                                "/api/v1/events/{id}",
-                                                                "/api/v1/events/next/**",
-                                                                "/api/event-properties/DTO/**",
-                                                                "/api/event-properties/cancel/**",
-                                                                "/api/event-properties/{eventId}/add-otherservice/{otherServiceId}",
-                                                                "/api/event-properties/cancel/{eventPropertieID}",
-                                                                "/api/invitation/eventInvitations/{eventId}",
-                                                                "/api/invitation/**",
-                                                                "/api/invitation/create/**",
-                                                                "/api/other-services",
-                                                                "/api/other-services/{id}",
-                                                                "/api/event-properties/{eventId}/add-venue/{venueId}/**",
-                                                                "/api/venues")
-                                                .hasAuthority("CLIENT")
 
                                                 // URIS PÚBLICAS
                                                 .requestMatchers("/api/auth/**",
@@ -76,16 +45,40 @@ public class SecurityConfig {
                                                                 "/ws/**",
                                                                 "/ws/info/**",
                                                                 "/api/chat/**",
-                                                                "/api/invitation")
+                                                                "/api/venues/{id}",
+                                                                "/api/venues",
+                                                                "/api/other-services",
+                                                                "/api/other-services/{id}")
                                                 .permitAll()
 
-                                                .requestMatchers("/api/services/admin",
-                                                                "/api/users/**",
-                                                                "/api/**",
-                                                                "/api/v1/events/DTO",
-                                                                "/api/other-services/admin/**",
-                                                                "/api/venues/admin/**")
-                                                .hasRole("ADMIN")
+                                                // URIS DE SUPPLIER
+                                                .requestMatchers(
+                                                                "/api/services/user/{id}",
+                                                                "/api/services/solicitudes/{id}",
+                                                                "/api/venues/delete/{id}",
+                                                                "/api/venues/add-venue/**",
+                                                                "/api/other-services/disable/**",
+                                                                "/api/event-properties/{eventPropertiesId}",
+                                                                "/api/event-properties/pending/{userId}",
+                                                                "/api/event-properties/status/pending/{eventPropertiesId}",
+                                                                "/api/users/plan",
+                                                                "/api/users/profile/plan")
+                                                .hasAnyAuthority("SUPPLIER", "ADMIN") // 🔹 Admin también puede acceder
+
+                                                // URIS DE CLIENTE
+                                                .requestMatchers(
+                                                                "/api/v1/events",
+                                                                "/api/v1/events/{id}",
+                                                                "/api/v1/events/next/**",
+                                                                "/api/event-properties/DTO/**",
+                                                                "/api/event-properties/cancel/**",
+                                                                "/api/event-properties/{eventId}/add-otherservice/{otherServiceId}",
+                                                                "/api/event-properties/{eventId}/add-venue/{venueId}",
+                                                                "/api/event-properties/cancel/{eventPropertieID}",
+                                                                "/api/invitation/eventInvitations/{eventId}",
+                                                                "/api/invitation/**",
+                                                                "/api/invitation/create/**")
+                                                .hasAnyAuthority("CLIENT", "ADMIN")
                                                 .anyRequest().authenticated())
                                 .sessionManagement(manager -> manager
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
