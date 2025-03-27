@@ -40,7 +40,7 @@ public class Event extends BaseEntity {
     @Min(1)
     private Integer guests;
 
-    @Column(name = "budget", precision = 9, scale = 2, nullable = false)
+    @Column(name = "budget", precision = 9, scale = 2, nullable = true)
     @Digits(integer = 7, fraction = 2)
     @DecimalMin("0.0")
     private BigDecimal budget;
@@ -51,10 +51,6 @@ public class Event extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "event_id")
-    private List<Invitation> invitations;
 
     public enum EventType {
         WEDDING,

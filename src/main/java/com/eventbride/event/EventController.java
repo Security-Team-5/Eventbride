@@ -10,6 +10,8 @@ import com.eventbride.dto.EventDTO;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.invitation.Invitation;
+import com.eventbride.invitation.InvitationService;
+
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +31,14 @@ public class EventController {
 
     private final EventService eventService;
     private final EventPropertiesService eventPropertiesService;
+    private final InvitationService invitationService;
 
     @Autowired
     public EventController(EventService eventService,
-            EventPropertiesService eventPropertiesService) {
+            EventPropertiesService eventPropertiesService, InvitationService invitationService) {
         this.eventService = eventService;
         this.eventPropertiesService = eventPropertiesService;
+        this.invitationService = invitationService;
     }
 
     @GetMapping
@@ -44,13 +48,12 @@ public class EventController {
 
     @GetMapping("/DTO")
     public ResponseEntity<?> findAllEventsDTO() {
-		try{
-			List<EventDTO> events = eventService.getAllEventsDTO();
-			return ResponseEntity.ok(events);
-		}
-		catch(Exception e){
-			return ResponseEntity.internalServerError().body(e.getMessage());
-		}
+        try {
+            List<EventDTO> events = eventService.getAllEventsDTO();
+            return ResponseEntity.ok(events);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -70,7 +73,6 @@ public class EventController {
         newEvent.setBudget(event.getBudget());
         newEvent.setEventDate(event.getEventDate());
         newEvent.setUser(event.getUser());
-        newEvent.setInvitations(invitations);
         newEvent.setEventProperties(eventProperties);
         Event savedEvent;
         savedEvent = this.eventService.save(newEvent);
@@ -81,34 +83,32 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> update(@PathVariable("eventId") Integer eventId, @RequestBody @Valid Event event) {
         try {
-			Event updateEvent = eventService.findById(eventId);
-			if (updateEvent == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			} else {
-				updateEvent.setEventType(event.getEventType());
-				updateEvent.setGuests(event.getGuests());
-				updateEvent.setBudget(event.getBudget());
-				updateEvent.setEventDate(event.getEventDate());
-				updateEvent.setUser(event.getUser());
-				updateEvent.setInvitations(event.getInvitations());
+            Event updateEvent = eventService.findById(eventId);
+            if (updateEvent == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                updateEvent.setEventType(event.getEventType());
+                updateEvent.setGuests(event.getGuests());
+                updateEvent.setBudget(event.getBudget());
+                updateEvent.setEventDate(event.getEventDate());
+                updateEvent.setUser(event.getUser());
 
-				Event e = this.eventService.updateEvent(updateEvent, eventId);
-				return new ResponseEntity<>(new EventDTO(e), HttpStatus.OK);
-			}
-		}
-		catch (Exception e) {
-			return ResponseEntity.internalServerError().body(e.getMessage());
-		}
+                Event e = this.eventService.updateEvent(updateEvent, eventId);
+                return new ResponseEntity<>(new EventDTO(e), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
 
     }
 
-	@DeleteMapping("/{eventId}")
-	@ResponseStatus(HttpStatus.OK)
-	public void delete(@PathVariable("eventId") int eventId) {
-        if(eventService.findById(eventId) != null) {
+    @DeleteMapping("/{eventId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable("eventId") int eventId) {
+        if (eventService.findById(eventId) != null) {
             Event event = eventService.findById(eventId);
 
-			event.getEventProperties().clear();
+            event.getEventProperties().clear();
 
             // Poner a null todas las propiedades del eventProperties asociado a Event
             List<EventProperties> eventProperties = event.getEventProperties();
@@ -116,6 +116,11 @@ public class EventController {
                 e.setOtherService(null);
                 e.setVenue(null);
                 eventPropertiesService.save(e);
+            }
+
+            List<Invitation> i = invitationService.getInvitationByEventId(eventId);
+            if (i.size() > 0) {
+                invitationService.deleteInvitations(i);
             }
             eventService.save(event);
             eventService.deleteEvent(eventId);
@@ -144,4 +149,3 @@ public class EventController {
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
 }
-

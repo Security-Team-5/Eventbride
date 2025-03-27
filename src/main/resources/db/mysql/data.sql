@@ -1,22 +1,23 @@
-INSERT IGNORE INTO users (id, username, role, email, first_name, last_name, telephone, dni, profile_picture, password) VALUES 
+INSERT IGNORE INTO users (id, username, role, email, first_name, last_name, telephone, dni, profile_picture, password, plan, payment_plan_date, expire_plan_date) VALUES 
 -- clientes
-(1, 'alice123', 'CLIENT', 'alice@example.com', 'Alice', 'Johnson', '123456789', '00000000A', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Alice_in_wonderland_1951.jpg/1200px-Alice_in_wonderland_1951.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(2, 'bob456', 'CLIENT', 'bob@example.com', 'Bob', 'Smith', '987654321', '11111111A', 'https://i.pinimg.com/1200x/3c/de/d5/3cded5aa576c39ccdad0ddf4180903ca.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(3, 'charlie789', 'CLIENT', 'charlie@example.com', 'Charlie', 'Brown', '567123890', '22222222A', 'https://lavozdetarija.com/wp-content/uploads/2022/11/Charlie-Brown-y-Snoopy.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(4, 'diana001', 'CLIENT', 'diana@example.com', 'Diana', 'Prince', '654321987', '33333333A', 'https://avatarfiles.alphacoders.com/823/82348.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(5, 'edward_dev', 'CLIENT', 'edward@example.com', 'Edward', 'Snowden', '321789654', '44444444A', 'https://proassets.planetadelibros.com/usuaris/seudonimos/fotos/53/original/000052233_1_King_AuthorPhoto_c_Lindsay_Mills_2018.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
+(1, 'D4nielBH', 'CLIENT', 'danbenhid@alum.us.es', 'Daniel', 'Benito Hidalgo', '123456789', '02000000A', 'https://i.pinimg.com/736x/cc/e6/e8/cce6e81540e6282c551f01937049614e.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null),
+(2, 'alice123', 'CLIENT', 'alice@example.com', 'Alice', 'Johnson', '123456789', '00000000A', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Alice_in_wonderland_1951.jpg/1200px-Alice_in_wonderland_1951.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null),
+(3, 'Natalii', 'CLIENT', 'natolmvil@alum.us.es', 'Natalia', 'Olmo Villegas', '567123890', '22222222A', 'https://media.licdn.com/dms/image/v2/D5603AQEG3z5ORRPXow/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1726919084266?e=2147483647&v=beta&t=atwQwaGmE3k9Zi-YdTCTkr5SzHngGKY44vfcAZdhaY4', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null),
+(4, 'PabloCC', 'CLIENT', 'pabcascom@alum.us.es', 'Pablo', 'Castellanos Compaña', '654321987', '33333333A', 'https://i.pinimg.com/736x/06/f0/79/06f07921405f71844818fa78bd8064f0.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null),
+(5, 'MariaCT', 'CLIENT', 'marcartal1@alum.us.es', 'María', 'Carrera Talaverón', '987654321', '11111111A', 'https://pbs.twimg.com/media/EyaRtQoWgAMd7iU.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null),
+(16, 'Fraan', 'CLIENT', 'fraavicar@alum.us.es.com', 'Fran', 'Avilés Carrera', '321789654', '44444444A', 'https://media.licdn.com/dms/image/v2/D4E03AQFk3oiu-3OLDQ/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1731263648526?e=2147483647&v=beta&t=iWb8NwRLUnxVmF34sGj0DReKSFEHm-99wXLlEH5ebPA', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null),
 -- proveedores
-(6, 'El castillo de Maxi', 'SUPPLIER', 'CastilloMaxi@example.com', 'Castillo', 'Maxi', '930348923', '55555555A', 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(7, 'JLMorilla', 'SUPPLIER', 'foto@juanluismorilla.com', 'Juan Luis', 'Morilla', '123456789', '66666666A', 'https://www.juanluismorilla.com/wp-content/uploads/2020/06/JLM_logomarca_RGB.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(8, 'JMGomez', 'SUPPLIER', 'jmgosevilla@gmail.com', 'Jose Manuel', 'Gomez', '123456789', '77777777A', 'https://www.corteganaiberico.com/wp-content/uploads/2021/10/pata-negra-y-jamon-iberico-1.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(9, 'JMGonzalez', 'SUPPLIER', 'gonzalezcaraballojosemanuel@gmail.com', 'Jose Manuel', 'Gonzalez Caraballo', '123456789', '88888888A', 'https://www.jamonibericomatas.com/wp-content/uploads/2022/01/Consejos-sobre-como-cortar-jamon-iberico-de-bellota.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(10, 'FelipeGN', 'SUPPLIER', 'felielectri@gmail.com', 'Felipe', 'G', '123456789', '99999999A', 'https://www.shutterstock.com/image-photo/woman-cutting-cheese-kitchen-slicing-600nw-2441834571.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(11, 'DLDecor', 'SUPPLIER', 'info@davidlaradecor.es', 'David', 'Lara', '123456789', '00000000B', 'https://www.davidlaradecor.es/wp-content/uploads/2018/01/logo-portada.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(12, 'Master Sound', 'SUPPLIER', 'danielvillarrealgallardo@gmail.com', 'Daniel', 'Villareal Gallardo', '123456789', '11111111B', 'https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_54/545096/17370601_800.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(13, 'ARCOS 3 CATERING', 'SUPPLIER', 'mariatrigueros16.maccga@gmail.com', 'Maria', 'Trigueros', '123456789', '22222222B', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvhC6mgSHclnNr2RPV1gDcZl7F0sC-ND4pcw&s', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
-(14, 'Mongo mango', 'SUPPLIER', 'mongomango@example.com', 'Mongo', 'Mango', '932649056', '33333333B', 'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK'),
+(6, 'El castillo de Maxi', 'SUPPLIER', 'CastilloMaxi@example.com', 'Castillo', 'Maxi', '930348923', '55555555A', 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2025-04-20'),
+(7, 'JLMorilla', 'SUPPLIER', 'foto@juanluismorilla.com', 'Juan Luis', 'Morilla', '123456789', '66666666A', 'https://www.juanluismorilla.com/wp-content/uploads/2020/06/JLM_logomarca_RGB.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2025-04-20'),
+(8, 'JMGomez', 'SUPPLIER', 'jmgosevilla@gmail.com', 'Jose Manuel', 'Gomez', '123456789', '77777777A', 'https://www.corteganaiberico.com/wp-content/uploads/2021/10/pata-negra-y-jamon-iberico-1.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2025-04-20'),
+(9, 'JMGonzalez', 'SUPPLIER', 'gonzalezcaraballojosemanuel@gmail.com', 'Jose Manuel', 'Gonzalez Caraballo', '123456789', '88888888A', 'https://www.jamonibericomatas.com/wp-content/uploads/2022/01/Consejos-sobre-como-cortar-jamon-iberico-de-bellota.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
+(10, 'FelipeGN', 'SUPPLIER', 'felielectri@gmail.com', 'Felipe', 'G', '123456789', '99999999A', 'https://www.shutterstock.com/image-photo/woman-cutting-cheese-kitchen-slicing-600nw-2441834571.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
+(11, 'DLDecor', 'SUPPLIER', 'info@davidlaradecor.es', 'David', 'Lara', '123456789', '00000000B', 'https://www.davidlaradecor.es/wp-content/uploads/2018/01/logo-portada.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
+(12, 'Master Sound', 'SUPPLIER', 'danielvillarrealgallardo@gmail.com', 'Daniel', 'Villareal Gallardo', '123456789', '11111111B', 'https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_54/545096/17370601_800.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
+(13, 'ARCOS 3 CATERING', 'SUPPLIER', 'mariatrigueros16.maccga@gmail.com', 'Maria', 'Trigueros', '123456789', '22222222B', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvhC6mgSHclnNr2RPV1gDcZl7F0sC-ND4pcw&s', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
+(14, 'Mongo mango', 'SUPPLIER', 'mongomango@example.com', 'Mongo', 'Mango', '932649056', '33333333B', 'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null),
 -- admin
-(15, 'admin', 'ADMIN', 'admin@example.com', 'Admin', 'Soyadmin', '666666666', '44444144A', 'https://proassets.planetadelibros.com/usuaris/seudonimos/fotos/53/original/000052233_1_King_AuthorPhoto_c_Lindsay_Mills_2018.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK');
+(15, 'admin', 'ADMIN', 'admin@example.com', 'Admin', 'Soyadmin', '666666666', '44444144A', 'https://proassets.planetadelibros.com/usuaris/seudonimos/fotos/53/original/000052233_1_King_AuthorPhoto_c_Lindsay_Mills_2018.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null);
 
 INSERT IGNORE INTO venues (id, postal_code, coordinates, address, max_guests, surface, name, available, city_available, service_price_guest, service_price_hour, picture, description, user_id, limited_by_price_per_guest, limited_by_price_per_hour, fixed_price, earliest_time, latest_time) VALUES 
 (1, '41001', '37.388630, -5.982430', 'Calle Sierpes, 1', 110, 100.00, 'Castillo de Maxi' ,TRUE, 'Sevilla', null, null, 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '¿Sabías que entre nuestros servicios se encuentra la posibilidad de disfrutar de un castillo hinchable? ¡Los más pequeños se lo pasarán en grande!', 6, FALSE, FALSE, 1500.00, '09:00:00', '23:59:00'),
@@ -44,17 +45,17 @@ INSERT IGNORE INTO events (id, event_type, guests, budget, event_date, payment_d
 (10, 'CHRISTENING', 100, 11000.00, '2026-10-30', '2026-08-30', 90, TRUE, 5);
 
 
-INSERT IGNORE INTO invitations (id, first_name, last_name, telephone, email, invitation_type, event_id) VALUES
-(1, 'Antonio', 'Martinez Ares', '654000111', 'oveja@example.com', 'SENT', 1),
-(2, 'Juan Manuel', 'Braza Benitez', '654000112', 'sheriff@example.com', 'SENT', 1),
-(3, 'Juan Carlos', 'Aragon', '654000113', 'veneno@example.com', 'SENT', 2),
-(4, 'Manolo', 'Santander', '654000114', 'viña@example.com', 'SENT', 2),
-(5, 'Jesus', 'Bienvenido', '654000115', 'rata@example.com', 'SENT', 3),
-(6, 'Antonio', 'Martin', '654000116', 'musa@example.com', 'SENT', 3),
-(7, 'Jose', 'Guerrero', '654000117', 'yuyu@example.com', 'SENT', 4),
-(8, 'Francisco', 'Alba', '654000118', 'caleta@example.com', 'SENT', 4),
-(9, 'Kike', 'Remolino', '654000119', 'heavy@example.com', 'SENT', 5),
-(10, 'Julio', 'Pardo', '654000110',  'opera@example.com', 'SENT', 5);
+INSERT IGNORE INTO invitations (id, first_name, last_name, number_of_guests, telephone, email, invitation_type, event_id) VALUES
+(1, 'Antonio', 'Martinez Ares', '1', '654000111', 'oveja@example.com', 'SENT', 1),
+(2, 'Juan Manuel', 'Braza Benitez', '2', '654000112', 'sheriff@example.com', 'SENT', 1),
+(3, 'Juan Carlos', 'Aragon', '3', '654000113', 'veneno@example.com', 'SENT', 2),
+(4, 'Manolo', 'Santander', '3', '654000114', 'viña@example.com', 'SENT', 2),
+(5, 'Jesus', 'Bienvenido', '4', '654000115', 'rata@example.com', 'SENT', 3),
+(6, 'Antonio', 'Martin', '2', '654000116', 'musa@example.com', 'SENT', 3),
+(7, 'Jose', 'Guerrero', '1', '654000117', 'yuyu@example.com', 'SENT', 4),
+(8, 'Francisco', 'Alba', '3', '654000118', 'caleta@example.com', 'SENT', 4),
+(9, 'Kike', 'Remolino', '2', '654000119', 'heavy@example.com', 'SENT', 5),
+(10, 'Julio', 'Pardo', '1', '654000110',  'opera@example.com', 'SENT', 5);
 
 
 INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comment) VALUES

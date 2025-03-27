@@ -1,12 +1,12 @@
+@import url('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
+
 .contenedorPrincipal {
   display: flex;
   min-height: 100vh;
-  max-height: 100vh;
-  max-width: 100vw;
   flex-direction: column;
   align-items: center;
   font-family: Arial, sans-serif;
-  background-color: #FFFDF3;
+  background-color: #fffdf3;
   margin: 0;
   padding: 0;
 }
@@ -17,8 +17,7 @@
   margin: 0 auto;
   border-radius: 10px;
   padding: 0 20px;
-  background-color: #FFFDF3;
-
+  background-color: #fffdf3;
 }
 
 .bannerCompleto {
@@ -41,7 +40,7 @@
   left: 0;
   right: 0;
   bottom: 0%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,18 +88,31 @@
   border-radius: 10px;
   background-image: white;
   padding: 4rem 0;
-  background-color: #FFFDF3;
+  background-color: #fffdf3;
 }
 
 .encabezadoCentrado {
   text-align: center;
   margin-top: 3rem;
   margin-bottom: 3rem;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
 }
 
-.app-container{
-  overflow-x: hidden;
+/* Estructura principal de la aplicación */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.content {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.navbar {
+  width: 100%;
 }
 
 .tituloSeccion {
@@ -108,7 +120,7 @@
   font-weight: bold;
   margin-bottom: 1rem;
   text-align: center;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
 }
 
 .separador {
@@ -159,7 +171,6 @@
 .textoTarjeta {
   color: rgb(0, 0, 0);
   text-align: center;
-
 }
 
 .seccionValores {
@@ -178,7 +189,6 @@
   grid-template-columns: 1fr;
   gap: 2rem;
   margin-top: 3rem;
-
 }
 
 @media (min-width: 768px) {
@@ -229,4 +239,27 @@
   .bannerCompleto {
     height: 50vh;
   }
+}
+
+/* Estilos para normalizar el documento */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/* Asegurarse de que el Router ocupe todo el espacio */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
 }

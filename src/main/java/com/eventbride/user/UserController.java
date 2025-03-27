@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.validation.Valid;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -97,31 +98,29 @@ public class UserController {
 
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
-		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-			List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-			if (roles.contains("ADMIN")) {
-				try {
-					Optional<User> existingUser = userService.getUserById(id);
-					if (existingUser.isEmpty()) {
-						return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
-					}
-					updatedUser.setId(id);
-					User savedUser = userService.updateUser(id, updatedUser);
-					return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
-				} catch (RuntimeException e) {
-					return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-				}
-			}
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		}
-		catch(Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+            List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+            if (roles.contains("ADMIN")) {
+                try {
+                    Optional<User> existingUser = userService.getUserById(id);
+                    if (existingUser.isEmpty()) {
+                        return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+                    }
+                    updatedUser.setId(id);
+                    User savedUser = userService.updateUser(id, updatedUser);
+                    return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+                } catch (RuntimeException e) {
+                    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+                }
+            }
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
-
 
     /**
      * Eliminar un usuario por ID.
@@ -141,7 +140,6 @@ public class UserController {
             }
             ratingService.saveAll(ratings);
 
-
             List<Venue> venues = venueService.getVenuesByUserId(id);
             for (Venue v : venues) {
                 v.setUser(null);
@@ -155,6 +153,62 @@ public class UserController {
             otherServiceService.saveAll(otherServices);
 
             userService.deleteUser(id);
+        }
+    }
+
+    @PutMapping("/api/users/profile/plan")
+    public ResponseEntity<?> updateUserPlan(@Valid @RequestBody User updatedUser) {
+        try {
+            Optional<User> existingUser = userService.getUserById(updatedUser.getId());
+            if (existingUser.isEmpty()) {
+                return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+            }
+            User savedUser = userService.updateUser(updatedUser.getId(), updatedUser);
+            return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Editar el perfil de un usuario por ID.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateOwnProfile(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth);
+        try {
+            Optional<User> existingUser = userService.getUserById(id);
+            if (existingUser.isEmpty()) {
+                return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+            }
+            User savedUser = userService.updateUser(id, updatedUser);
+            return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/premium/{id}")
+    public ResponseEntity<?> updatePlanToPremium(@PathVariable Integer id, @RequestBody String expirationDate) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth);
+        try {
+            Optional<User> existingUser = userService.getUserById(id);
+            if (existingUser.isEmpty()) {
+                return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+            }
+            String cleanDate = expirationDate.replace("\"", ""); 
+            LocalDate date = LocalDate.parse(cleanDate);            User savedUser = userService.setPremium(id, date);
+            return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

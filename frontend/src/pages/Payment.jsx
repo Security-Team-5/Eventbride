@@ -12,6 +12,7 @@ export default function Payment() {
   const [status, setStatus] = useState("CARGANDO")
   const { id } = useParams()
   const [comision, setComision] = useState(0)
+  const commissionRate = 0.05 // Comisión del 5%, con cambiar esta constante cambia toda la lógica de comisión
 
 
   useEffect(() => {
@@ -42,12 +43,15 @@ export default function Payment() {
         setEventProp(data)
 
         if (data.status === "APPROVED") {
-          setStatus("DEPOSITO PARA RESERVA")
-          setPrice(data.depositAmount)
+          setStatus("DEPOSITO PARA RESERVA");
+          const depositCommission = data.depositAmount * commissionRate; // Calcular comisión del depósito
+          setComision(depositCommission);
+          setPrice(data.depositAmount + depositCommission); // Sumar comisión al depósito
         } else {
-          setStatus("CANTIDAD RESTANTE")
-          setComision((data.depositAmount + data.pricePerService) * 0.02)
-          setPrice(data.pricePerService - data.depositAmount + comision)
+          setStatus("CANTIDAD RESTANTE");
+          const remainingCommission = (data.pricePerService - data.depositAmount) * commissionRate; // Calcular comisión del monto restante
+          setComision(remainingCommission);
+          setPrice(data.pricePerService - data.depositAmount + remainingCommission); // Sumar comisión al monto restante
         }
       } catch (error) {
         console.error("Error obteniendo evento:", error)
@@ -115,18 +119,20 @@ export default function Payment() {
                   <div className="summary-content">
                     <div className="summary-item">
                       <span>Precio base</span>
-                      <span className="price">
-                        {price - comision}€
-                      </span>
+                      <span className="price">{(price - comision).toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</span>
+                    </div>
+
+                    <div className="summary-item">
+                      {/* La fórmula saca el porcentaje de comisión de la constante en vez de ser texto fijo */}
+                      <span>Gastos de gestión ({(commissionRate * 100).toFixed(0)}%)</span>
+                      <span className="price">{comision.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</span>
                     </div>
 
                     <div className="separator"></div>
 
                     <div className="summary-item total">
                       <span>Total</span>
-                      <span>{price}€</span>
-                      <b></b>
-                      {comision !== 0 ? <span>Se añadió una comisión de {comision}€ por gastos de gestión</span> : ''}
+                      <span className="price">{price.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</span>
                     </div>
                   </div>
                 </div>
@@ -151,7 +157,7 @@ export default function Payment() {
   )
 }
 
-function VenueDetails({ venue, eventProp,requestDate }) {
+function VenueDetails({ venue, eventProp, requestDate }) {
   return (
     <div className="venue-details">
       <div className="venue-header">
@@ -193,7 +199,7 @@ function VenueDetails({ venue, eventProp,requestDate }) {
           </div>
           <div className="detail-item" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
             <span style={{ fontWeight: "bold" }}>Tarifa</span>
-            {(eventProp.venueDTO.limitedByPricePerGuest == false  && eventProp.venueDTO.limitedByPricePerHour == false)  && (
+            {(eventProp.venueDTO.limitedByPricePerGuest == false && eventProp.venueDTO.limitedByPricePerHour == false) && (
               <span>💰 Precio fijo: {eventProp.venueDTO.fixedPrice}€</span>
             )}
             {(eventProp.venueDTO.limitedByPricePerGuest == true && eventProp.venueDTO.limitedByPricePerHour == false) && (
@@ -249,16 +255,16 @@ function ServiceDetails({ service, eventProp, requestDate }) {
             </span>
           </div>
           <div className="detail-item" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-          <span style={{ fontWeight: "bold" }}>Tarifa</span>
-          {(eventProp.otherServiceDTO.limitedByPricePerGuest == false  && eventProp.otherServiceDTO.limitedByPricePerHour == false)  && (
-            <span>💰 Precio fijo: {eventProp.otherServiceDTO.fixedPrice}€</span>
-          )}
-          {(eventProp.otherServiceDTO.limitedByPricePerGuest == true && eventProp.otherServiceDTO.limitedByPricePerHour == false) && (
-            <span>👤 Precio por invitado: {eventProp.otherServiceDTO.servicePricePerGuest}€</span>
-          )}
-          {(eventProp.otherServiceDTO.limitedByPricePerGuest == false && eventProp.otherServiceDTO.limitedByPricePerHour == true) && (
-            <span>⏳ Precio por hora: {eventProp.otherServiceDTO.servicePricePerHour}€</span>
-          )}
+            <span style={{ fontWeight: "bold" }}>Tarifa</span>
+            {(eventProp.otherServiceDTO.limitedByPricePerGuest == false && eventProp.otherServiceDTO.limitedByPricePerHour == false) && (
+              <span>💰 Precio fijo: {eventProp.otherServiceDTO.fixedPrice}€</span>
+            )}
+            {(eventProp.otherServiceDTO.limitedByPricePerGuest == true && eventProp.otherServiceDTO.limitedByPricePerHour == false) && (
+              <span>👤 Precio por invitado: {eventProp.otherServiceDTO.servicePricePerGuest}€</span>
+            )}
+            {(eventProp.otherServiceDTO.limitedByPricePerGuest == false && eventProp.otherServiceDTO.limitedByPricePerHour == true) && (
+              <span>⏳ Precio por hora: {eventProp.otherServiceDTO.servicePricePerHour}€</span>
+            )}
           </div>
         </div>
       </div>

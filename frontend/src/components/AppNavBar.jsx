@@ -1,67 +1,123 @@
 /* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
 import usuario from "../static/resources/images/user.png";
-import React, { useState } from 'react';
-
 
 function Navbar() {
-  //const {currentUser, loading} = useCurrentUser(null)
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   // Obtener datos user desde localStorage
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  console.log(currentUser)
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const renderNavList = () => {
-    if (!currentUser) {
-      return (
-        null
-      );
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Detectar scroll para cambiar la apariencia del navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Cerrar el dropdown al hacer clic fuera de él
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && !event.target.closest(".nav-dropdown-container")) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
+
+  const renderNavItems = () => {
+    if (!currentUser || !currentUser.role) {
+      return null;
     }
-    // TODO cambiar este tipo de implicaciones por el role correcto
+
     if (currentUser.role === "CLIENT") {
       return (
-        <div className="navbar-flex">
-          <p className="navbar-list"><a href="/events">Mis eventos</a></p>
-          <p className="navbar-list" onClick={toggleDropdown}>
-            <a href="#">Crear evento</a>
-            {isOpen && (
-            <div className="dropdown">
-              <p><a href="/create-events">Desde cero</a></p>
-              <p><a href="/quiz">Cuestionario</a></p>
-        </div>
-        )}
-          </p>
-          <p className="navbar-list"><a href="/venues">Recintos</a></p>
-          <p className="navbar-list"><a href="/other-services">Otros servicios</a></p>
-          <p className="navbar-list"><a href="/invitaciones">Invitaciones</a></p>
-          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
-        </div>
+        <ul className="nav-links">
+          <li>
+            <Link to="/events" className="nav-link">Mis eventos</Link>
+          </li>
+          <li>
+            <Link to="/create-events" className="nav-link">Crear evento</Link>
+          </li>
+          <li>
+            <Link to="/venues" className="nav-link">Recintos</Link>
+          </li>
+          <li>
+            <Link to="/other-services" className="nav-link">Otros servicios</Link>
+          </li>
+          <li>
+            <Link to="/invitaciones" className="nav-link">Invitaciones</Link>
+          </li>
+          <li>
+            <Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link>
+          </li>
+        </ul>
       );
     }
 
     if (currentUser.role === "SUPPLIER") {
       return (
-        <div className="navbar-flex">
-          <p className="navbar-list"><a href="/misservicios">Mis servicios</a></p>
-          <p className="navbar-list"><a href="/terminos-y-condiciones">Términos y Condiciones</a></p>
-          <p className="navbar-list"><a href="/solicitudes">Solicitudes</a></p>
-        </div>
+        <ul className="nav-links">
+          <li>
+            <Link to="/misservicios" className="nav-link">Mis servicios</Link>
+          </li>
+          <li>
+            <Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link>
+          </li>
+          <li>
+            <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
+          </li>
+        </ul>
       );
     }
 
     if (currentUser.role === "ADMIN") {
       return (
-        <div className="navbar-flex">
-          <p className="navbar-list"><a href="/admin-services">Administar servicios</a></p>
-          <p className="navbar-list"><a href="/admin-users">Administar usuarios</a></p>
-          <p className="navbar-list"><a href="/admin-events">Administar eventos</a></p>
-        </div>
+        <ul className="nav-links">
+          <li>
+            <Link to="/admin-services" className="nav-link">Administrar servicios</Link>
+          </li>
+          <li>
+            <Link to="/admin-users" className="nav-link">Administrar usuarios</Link>
+          </li>
+          <li>
+            <Link to="/admin-events" className="nav-link">Administrar eventos</Link>
+          </li>
+        </ul>
       );
     }
 
@@ -69,38 +125,88 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-brand">
-        <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
-        <a href="/"><span className="navbar-title">Inicio</span></a>
+    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <div className="navbar-container">
+        <div className="navbar-brand">
+          {currentUser === "{}" ? (
+            <span className="brand-link disabled-link">
+              <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+              <span className="navbar-title">Inicio</span>
+            </span>
+          ) : (
+            <Link to="/" className="brand-link">
+              <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="navbar-logo" />
+              <span className="navbar-title">Inicio</span>
+            </Link>
+          )}
+        </div>
+
+        {/* Hamburger menu for mobile */}
+        <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+          <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        {/* Navigation links */}
+        <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
+          {renderNavItems()}
+
+          {currentUser && currentUser.role && (
+            <div className="navbar-actions">
+              <Link to="/chats" className="action-icon messages-icon">
+                <img src={carta || "/placeholder.svg"} alt="Mensajes" className="icon-img" />
+                <span className="notification-badge">2</span>
+              </Link>
+
+              <div className="user-menu">
+                <Link to="/profile" className="action-icon user-icon" style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  overflow: "hidden",
+                  background: "transparent",
+                }}>
+                  <div style={{ height: "40px", overflow: "hidden", background: "transparent" }} className="profile-pic-wrapper">
+                    {currentUser.profilePicture?.trim() ? (
+                      <img style={{ maxWidth: "40px", height: "40px", maxHeight: "40px", objectFit: "cover", borderRadius: "50%", background: "transparent" }} src={currentUser.profilePicture} alt="Foto de perfil" />
+                    ) : null
+                    }
+                  </div>
+                </Link>
+                <div className="user-name">{currentUser.username || "Usuario"}</div>
+              </div>
+
+              {currentUser.role === "SUPPLIER" && (
+                <li
+                  className="nav-link"
+                  style={{
+                    background: currentUser.plan === "PREMIUM"
+                      ? "linear-gradient(45deg, #FFD700, #FFC107, #FFA000)"
+                      : "silver",
+                    color: "black",
+                    padding: "8px 12px",
+                    borderRadius: "5px",
+                    fontWeight: "bold",
+                    border: currentUser.plan === "PREMIUM" ? "2px solid #DAA520" : "2px solid rgb(133, 133, 133)",
+                    boxShadow: currentUser.plan === "PREMIUM" ? "0px 0px 10px rgba(114, 114, 114, 0.8)" : "none",
+                  }}
+                >
+                  {currentUser.plan}
+                </li>
+              )}
+              <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
+                Cerrar sesión
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-      {renderNavList()}
-      {currentUser && (
-        <>
-          <div className="navbar-card">
-            <a href="/mensajes">
-              <img src={carta} alt="Carta" className="carta" />
-            </a>
-          </div>
-          <div className="navbar-user">
-            <a href="/perfil">
-              <img src={usuario} alt="Usuario" className="usuario" />
-            </a>
-          </div>
-          <div className="navbar-user">
-            <button
-              type="button"
-              onClick={() => {
-                localStorage.removeItem("jwt");
-                localStorage.removeItem("user");
-                window.location.href = "/";
-              }}
-            >
-              Cerrar sesión
-            </button>
-          </div>
-        </>
-      )}
     </nav>
   );
 }

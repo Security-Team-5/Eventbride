@@ -1,114 +1,176 @@
-/* eslint-disable no-unused-vars */
-import "../static/resources/css/CreateEvents.css";
-import "../static/resources/css/Login.css";
-import { useEffect, useState } from "react";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+"use client"
 
+import { useState } from "react"
+import { Calendar, Users, PartyPopper } from "lucide-react"
+import apiClient from "../apiClient"
+
+import { useNavigate } from "react-router-dom"
+import "../static/resources/css/CreateEvents.css"
 
 const EVENT_TYPES = {
-    WEDDING: "Boda",
-    CHRISTENING: "Bautizo",
-    COMMUNION: "Comunión",
-  };
+  WEDDING: "Boda",
+  CHRISTENING: "Bautizo",
+  COMMUNION: "Comunión",
+}
 
 function CreateEvents() {
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    const [eventType, setEventType] = useState('');
-    const [guests, setGuests] = useState('');
-    const [budget, setBudget] = useState('');
-    const [eventDate, setEventDate] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const user = currentUser;
-    const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("user"))
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
+  const [eventType, setEventType] = useState("")
+  const [guests, setGuests] = useState("")
+  const [eventDate, setEventDate] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState("")
+  const user = currentUser
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    setError("")
+
+    // Simple validation
+    if (!eventType || !guests || !eventDate) {
+      setError("Por favor completa todos los campos")
+      return
+    }
+
+    // Additional validation for guests
+    const minGuests = 1
+    const maxGuests = 9999
+    if (guests < minGuests || guests > maxGuests) {
+      setError(`El número de invitados debe estar entre ${minGuests} y ${maxGuests}`)
+      return
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+    const selectedDate = new Date(eventDate);
+    
+    // Calcula la diferencia en días
+    const minDaysDifference = Math.ceil((selectedDate - today) / (1000 * 60 * 60 * 24));
+    
+    console.log("Diferencia en días:", minDaysDifference);
+      if (eventType === "CHRISTENING" && minDaysDifference > 30) {
+        setError("Para un bautizo, la fecha debe ser como máximo 30 días después de hoy");
+        return;
+      } else if (eventType === "COMMUNION" && minDaysDifference > 90) {
+        setError("Para una comunión, la fecha debe ser como máximo 90 días después de hoy");
+        return;
+      } else if (eventType === "WEDDING" && minDaysDifference > 120) {
+        setError("Para una boda, la fecha debe ser al como máximo 120 días después de hoy");
+        return;
+      }
+    // }
+
 
     const newEvent = {
       eventType,
       guests,
-      budget,
       eventDate,
-      user
-    };
+      user,
+    }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
     try {
-      const response = await axios.post('/api/v1/events', newEvent);
-      console.log(response.data);
+      const response = await fetch(`/api/v1/events`, {
+        method: "POST", // Usamos POST para crear un nuevo evento
+        headers: {
+          "Authorization": `Bearer ${jwtToken}`,
+          "Content-Type": "application/json", // Asegúrate de que el contenido es JSON
+        },
+        body: JSON.stringify(newEvent), // Se envían los datos en el cuerpo de la solicitud
+      });
+
+      console.log(response.data)
       navigate("/events")
-    
     } catch (error) {
-      alert('Error al crear el evento');
-      console.error(error);
+      setError("Error al crear el evento")
+      console.error(error)
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
-    <div className="create-event-form">
-      <h2>Crear Evento</h2>
-      <form onSubmit={handleSubmit}>
-      <div>
-      <label htmlFor="guests">Tipo de evento: </label>
-      <select
-            id="eventType"
-            value={eventType}
-            style={{ marginLeft: "0px",fontSize: "16px", borderRadius: "5px"}}
-            onChange={(e) => setEventType(e.target.value)}
-            required
-          >
-            <option value="" disabled className="no-mostrar">Selecciona un tipo de evento</option>
-            {Object.entries(EVENT_TYPES).map(([key, value]) => (
-              <option key={key} value={key}>
-                {value}
-              </option>
-            ))}
-          </select>
+    <div className="event-container">
+      <div className="event-card">
+        <div className="event-header">
+          <PartyPopper className="event-icon" />
+          <h2>Crear Evento</h2>
+          <p className="event-subtitle">Completa el formulario para crear tu nuevo evento</p>
         </div>
-        
-        <div>
-          <label htmlFor="guests">Número de invitados estimado: </label>
-          <input
-            type="number"
-            id="guests"
-            value={guests}
-            onChange={(e) => setGuests(e.target.value)}
-            required
-          />
-        </div>
-        <div>
 
-          <label htmlFor="budget">Presupuesto estimado: </label>
-          <input
-            type="number"
-            id="budget"
-            value={budget}
-            onChange={(e) => setBudget(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="eventDate">Fecha del evento: </label>
-          <input
-            type="date"
-            id="eventDate"
-            value={eventDate}
-            onChange={(e) => setEventDate(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Creando evento...' : 'Crear evento'}
+        {error && <div className="error-message">{error}</div>}
+
+        <form onSubmit={handleSubmit} className="event-form">
+          <div className="form-group">
+            <label htmlFor="eventType">
+              <PartyPopper size={18} className="input-icon" />
+              Tipo de evento
+            </label>
+            <select
+              id="eventType"
+              value={eventType}
+              onChange={(e) => setEventType(e.target.value)}
+              required
+              className="form-select"
+            >
+              <option value="" disabled>
+                Selecciona un tipo de evento
+              </option>
+              {Object.entries(EVENT_TYPES).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="guests">
+              <Users size={18} className="input-icon" />
+              Número de invitados estimado
+            </label>
+            <input
+              type="number"
+              id="guests"
+              value={guests}
+              onChange={(e) => setGuests(e.target.value)}
+              required
+              placeholder="Ej: 100"
+              min="1"
+              max="9999"
+              className="form-input"
+            />
+          </div>
+
+
+          <div className="form-group">
+            <label htmlFor="eventDate">
+              <Calendar size={18} className="input-icon" />
+              Fecha del evento
+            </label>
+            <input
+              type="date"
+              id="eventDate"
+              value={eventDate}
+              onChange={(e) => setEventDate(e.target.value)}
+              required
+              className="form-input"
+              min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split("T")[0]} 
+              max={new Date(new Date().setDate(new Date().getDate() + 120)).toISOString().split("T")[0]}
+            />
+          </div>
+
+          <button type="submit" className="submit-button" disabled={isSubmitting}>
+            {isSubmitting ? "Creando evento..." : "Crear evento"}
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  );
+  )
 }
 
- export default CreateEvents;
+export default CreateEvents
+

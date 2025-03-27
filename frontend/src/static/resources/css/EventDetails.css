@@ -253,7 +253,6 @@
 .payment-button {
   width: 100%;
   padding: 0.8rem;
-  background-color: #d9be75;
   color: white;
   border: none;
   border-radius: 6px;
@@ -299,7 +298,7 @@
 }
 
 .status-approved {
-  background-color: #3b82f6;
+  background-color: rgba(247, 217, 227, 0.96);
 }
 
 .status-deposit_paid {
