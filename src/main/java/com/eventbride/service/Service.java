@@ -49,7 +49,7 @@ public class Service extends BaseEntity {
 
     @Column(name = "picture", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 250)
+    @Size(min = 1, max = 1000)
     @Pattern(regexp = "^(https?:\\/\\/)?([\\w-]+\\.)+[\\w-]+(\\/[\\w-]*)*(\\?.*)?$")
     private String picture;
 

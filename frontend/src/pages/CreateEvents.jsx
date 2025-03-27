@@ -36,7 +36,7 @@ function CreateEvents() {
 
     // Additional validation for guests
     const minGuests = 1
-    const maxGuests = 3000
+    const maxGuests = 9999
     if (guests < minGuests || guests > maxGuests) {
       setError(`El número de invitados debe estar entre ${minGuests} y ${maxGuests}`)
       return
@@ -140,6 +140,7 @@ function CreateEvents() {
               required
               placeholder="Ej: 100"
               min="1"
+              max="9999"
               className="form-input"
             />
           </div>

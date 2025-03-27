@@ -214,7 +214,7 @@ const EditarServicio = () => {
                                 onChange={handleChange}
                                 required
                                 minLength="1"
-                                maxLength="250"
+                                maxLength="1000"
                                 className="form-input"
                             />
                         </div>

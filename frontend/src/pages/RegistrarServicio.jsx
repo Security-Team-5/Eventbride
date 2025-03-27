@@ -345,7 +345,7 @@ const RegistrarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="250"
+                                    maxLength="1000"
                                     className="form-input"
                                     placeholder="Ej: https://ejemplo.com/imagen.jpg"
                                 />
@@ -478,6 +478,7 @@ const RegistrarServicio = () => {
                                             onChange={handleChange}
                                             required
                                             min="1"
+                                            max="9999"
                                             className="form-input"
                                             placeholder="Ej: 100"
                                         />
