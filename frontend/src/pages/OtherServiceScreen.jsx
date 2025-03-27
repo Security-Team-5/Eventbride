@@ -326,13 +326,19 @@ const OtherServiceScreen = () => {
                 </div>
               </div>
               <div className="card-footer">
-                <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
-                  <Plus size={16} />
-                  Añadir a mi evento
-                </button>
-                <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
-                  💬 Chatear
-                </Link>
+              {service.available ? (
+                <>
+                  <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
+                    <Plus size={16} />
+                    Añadir a mi evento
+                  </button>
+                  <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
+                    💬 Chatear
+                  </Link>
+                  </>
+                ) : (
+                  <div className="not-available-banner">No disponible</div>
+                )}
               </div>
             </div>
           )})}

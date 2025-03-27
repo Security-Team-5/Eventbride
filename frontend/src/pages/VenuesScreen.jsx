@@ -288,13 +288,19 @@ const VenuesScreen = () => {
                 </div>
               </div>
               <div className="card-footer">
-                <button className="add-button" onClick={(e) => handleAddVenueClick(e, venue)}>
-                  <Plus size={16} />
-                  Añadir a mi evento
-                </button>
-                <Link to={`/chat/${venue.userDTO.id}`} className="chat-button">
-                  💬 Chatear
-                </Link>
+              {venue.available ? (
+                <>
+                  <button className="add-button" onClick={(e) => handleAddVenueClick(e, venue)}>
+                    <Plus size={16} />
+                    Añadir a mi evento
+                  </button>
+                  <Link to={`/chat/${venue.userDTO.id}`} className="chat-button">
+                    💬 Chatear
+                  </Link>
+                </>
+                ) : (
+                  <div className="not-available-banner">No disponible</div>
+                )}
               </div>
             </div>
           ))}
