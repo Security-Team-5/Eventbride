@@ -60,6 +60,7 @@ public class SecurityConfig {
                                 "/api/invitation/**",
                                 "/api/invitation/create/**",
                                 "/api/other-services",
+                                "/api/other-services/{id}",
                                 "/api/event-properties/{eventId}/add-venue/{venueId}/**",
                                 "/api/venues")
                         .hasAuthority("CLIENT")

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../static/resources/css/Invitations.css";
 import { useParams } from "react-router-dom";
+import apiClient from "../apiClient"
 
 function EventInvitations() {
   const [invitaciones, setInvitaciones] = useState([]);
@@ -8,6 +9,7 @@ function EventInvitations() {
   const [modalOpen, setModalOpen] = useState(false);
   const [maxGuests, setMaxGuests] = useState("");
   const [eventData, setEventData] = useState(null); // Para guardar info del evento
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
 
   // Obtener la lista de invitaciones
@@ -15,6 +17,7 @@ function EventInvitations() {
     fetch(`/api/invitation/eventInvitations/${currentEventId}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "GET",
     })
@@ -32,6 +35,7 @@ function EventInvitations() {
     fetch(`/api/v1/events/${currentEventId}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "GET",
     })
@@ -78,6 +82,7 @@ function EventInvitations() {
     fetch(`/api/invitation/create/${currentEventId}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "POST",
       body: JSON.stringify(max),
@@ -112,7 +117,7 @@ function EventInvitations() {
       <div className="total-invitations">
         {eventData && (
           <div>
-            <p style={{fontSize:"130%"}}>Invitados estimados: {eventData.guests}</p>
+            <p style={{ fontSize: "130%" }}>Invitados estimados: {eventData.guests}</p>
           </div>
         )}
         <h2>Total de invitados: {totalInvitados}</h2>

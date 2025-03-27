@@ -14,6 +14,7 @@ const EVENT_TYPES = {
 
 function CreateEvents() {
   const currentUser = JSON.parse(localStorage.getItem("user"))
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
   const [eventType, setEventType] = useState("")
   const [guests, setGuests] = useState("")
   const [budget, setBudget] = useState("")
@@ -44,7 +45,15 @@ function CreateEvents() {
     setIsSubmitting(true)
 
     try {
-      const response = await apiClient.post("/api/v1/events", newEvent)
+      const response = await fetch(`/api/v1/events`, {
+        method: "POST", // Usamos POST para crear un nuevo evento
+        headers: {
+          "Authorization": `Bearer ${jwtToken}`,
+          "Content-Type": "application/json", // Asegúrate de que el contenido es JSON
+        },
+        body: JSON.stringify(newEvent), // Se envían los datos en el cuerpo de la solicitud
+      });
+
       console.log(response.data)
       navigate("/events")
     } catch (error) {

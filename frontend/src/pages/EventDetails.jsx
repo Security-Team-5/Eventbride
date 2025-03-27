@@ -13,6 +13,7 @@ function EventDetails() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true)
   const commissionRate = 1.05; // Comisión del 5%
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   // Función para obtener los datos del evento
   function getEvents() {
@@ -20,6 +21,7 @@ function EventDetails() {
     fetch(`/api/v1/events/${id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "GET",
     })
@@ -40,6 +42,7 @@ function EventDetails() {
     fetch(`/api/v1/events/${id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "DELETE",
     })
@@ -65,6 +68,7 @@ function EventDetails() {
     fetch(`/api/event-properties/status/pending/${eventPropertiesId}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
       method: "PUT",
     })
