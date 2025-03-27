@@ -16,7 +16,7 @@ function AdminEvents() {
     CHRISTENING: "Bautizo",
     COMMUNION: "comunión",
   }
-  
+
   useEffect(() => {
     getEvents();
   }, []);
@@ -24,37 +24,37 @@ function AdminEvents() {
   // Validar los datos del evento antes de enviarlos
   function validateEventData(event) {
     setError("");
-    
+
     const eventToValidate = eventData[event.id];
-    
+
     // Comprobar campos obligatorios
     if (!eventToValidate.eventType || !eventToValidate.guests || !eventToValidate.eventDate) {
       setError("Por favor, complete todos los campos obligatorios.");
       return false;
     }
-    
+
     // Validar número de invitados
     if (eventToValidate.guests <= 0) {
       setError("El número de invitados debe ser mayor que cero.");
       return false;
     }
 
-    
+
     // Validar fecha del evento
     const eventDate = new Date(eventToValidate.eventDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     if (isNaN(eventDate.getTime())) {
       setError("La fecha del evento no es válida.");
       return false;
     }
-    
+
     if (eventDate < today) {
       setError("La fecha del evento no puede estar en el pasado.");
       return false;
     }
-    
+
     return true;
   }
 
@@ -149,7 +149,7 @@ function AdminEvents() {
     }));
   }
 
-  function handleOnSubmit(event){
+  function handleOnSubmit(event) {
     console.log(event);
     updateEvent(event);
   }
@@ -162,7 +162,7 @@ function AdminEvents() {
           <span>{error}</span>
         </div>
       )}
-      
+
       {currentUser?.role === "ADMIN" ? (
         events.length > 0 ? (
           events.map((event, index) => (
@@ -268,12 +268,10 @@ function AdminEvents() {
                     )}
                     {editEventId === event.id ? (
                       <div className="button-container">
-                        <button className="save-btn" type="submit" onClick={() => { handleOnSubmit(event) }}>Guardar</button>
                         <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
                       </div>
                     ) : (
                       <div className="button-container">
-                        <button onClick={() => startEditing(event)} className="edit-btn">Editar</button>
                         <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
                       </div>
                     )}
