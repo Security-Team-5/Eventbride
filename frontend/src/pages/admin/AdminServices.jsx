@@ -503,7 +503,7 @@ function AdminServices() {
                                     src={service.picture}
                                     alt={service.name}
                                     className="service-image"
-                                    style={{ cursor: "pointer"}}
+                                    style={{ cursor: "pointer" }}
                                 />
                             )}
                             <div className="button-container">

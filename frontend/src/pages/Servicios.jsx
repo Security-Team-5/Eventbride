@@ -28,13 +28,17 @@ const Servicios = () => {
                     method: "GET",
                 })
 
-                const otherServices = Array.isArray(response.data.otherServices)
-                    ? response.data.otherServices.map((otherService) => ({ ...otherService, type: "otherService" }))
-                    : []
+                if (!response.ok) {
+                    throw new Error(`Error en la respuesta: ${response.status} ${response.statusText}`);
+                }
 
-                const venues = Array.isArray(response.data.venues)
-                    ? response.data.venues.map((venue) => ({ ...venue, type: "venue" }))
-                    : []
+                const data = await response.json()
+
+                console.log(data)
+
+                const otherServices = Array.isArray(data?.otherServices) ? data.otherServices.map(otherService => ({ ...otherService, type: "otherService" })) : [];
+                const venues = Array.isArray(data?.venues) ? data.venues.map(venue => ({ ...venue, type: "venue" })) : [];
+
                 const allServices = [...otherServices, ...venues]
                 const plan = currentUser.plan || "BASIC"
                 const maxAllowed = plan === "PREMIUM" ? 10 : 3

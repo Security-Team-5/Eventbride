@@ -41,10 +41,15 @@ public class OtherServiceService {
     @Transactional
     public List<OtherService> getAllOtherServices() {
         return otherServiceRepo.findAll().stream()
-			.sorted(Comparator.comparing(
-				os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1
-			))
-			.collect(Collectors.toList());
+                .sorted(Comparator.comparing(
+                        os -> {
+                            if (os.getUser() == null || os.getUser().getPlan() == null) {
+                                return 1; // Puede devolver cualquier valor que no afecte al orden, en caso de que sea
+                                          // nulo
+                            }
+                            return os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1;
+                        }))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -80,9 +85,8 @@ public class OtherServiceService {
     @Transactional
     public List<OtherService> getFilteredOtherServices(String name, String city, OtherServiceType type) {
         return otherServiceRepo.findByFilters(name, city, type).stream().sorted(Comparator.comparing(
-				os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1
-			))
-			.collect(Collectors.toList());
+                os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1))
+                .collect(Collectors.toList());
     }
 
     @Transactional
