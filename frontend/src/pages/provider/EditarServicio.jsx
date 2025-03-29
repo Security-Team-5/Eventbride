@@ -231,7 +231,7 @@ const EditarServicio = () => {
                                 onChange={handleChange}
                                 required
                                 minLength="1"
-                                maxLength="1000"
+                                maxLength="10000"
                                 className="form-textarea"
                                 rows="4"
                             />
@@ -480,7 +480,7 @@ const EditarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="1000"
+                                    maxLength="10000"
                                     className="form-textarea"
                                     rows="4"
                                 />

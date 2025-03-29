@@ -15,7 +15,6 @@ public class EventDTO {
     private Integer id;
     private Event.EventType eventType;
     private Integer guests;
-    private BigDecimal budget;
     private LocalDate eventDate;
     private List<EventPropertiesDTO> eventPropertiesDTO;
 
@@ -24,7 +23,6 @@ public class EventDTO {
         this.id = event.getId();
         this.eventType = event.getEventType();
         this.guests = event.getGuests();
-        this.budget = event.getBudget();
         this.eventDate = event.getEventDate();
         this.eventPropertiesDTO = EventPropertiesDTO.fromEntities(event.getEventProperties());
     }

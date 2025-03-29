@@ -441,7 +441,7 @@ function AdminServices() {
                                                             onChange={handleInputChange}
                                                             required
                                                             minLength="1"
-                                                            maxLength="1000"
+                                                            maxLength="10000"
                                                         />
                                                     </div>
                                                 </>

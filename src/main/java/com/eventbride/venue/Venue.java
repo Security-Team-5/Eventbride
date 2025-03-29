@@ -36,7 +36,7 @@ public class Venue extends Service {
 
     @Column(name = "coordinates", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 100)
     private String coordinates;
 
     @Column(name = "address", nullable = false)
