@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../static/resources/css/ChatList.css";
+import "../../static/resources/css/ChatList.css";
 
 const ChatList = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 "use client"
 
 import { useState, useEffect } from "react"
@@ -17,7 +18,7 @@ import {
   CheckCircle,
 } from "lucide-react"
 import { Link } from "react-router-dom"
-import "../static/resources/css/OtherService.css"
+import "../../static/resources/css/OtherService.css"
 
 const OtherServiceScreen = () => {
   const [otherServices, setOtherServices] = useState([])

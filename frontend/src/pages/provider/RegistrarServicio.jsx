@@ -17,7 +17,7 @@ import {
     Package,
     SquareIcon,
 } from "lucide-react"
-import "../static/resources/css/RegistrarServicio.css"
+import "../../static/resources/css/RegistrarServicio.css"
 
 const RegistrarServicio = () => {
     // Obtener datos user desde localStorage

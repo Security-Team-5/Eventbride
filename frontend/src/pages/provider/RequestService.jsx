@@ -1,11 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import apiClient from "../apiClient"
+import apiClient from "../../apiClient"
 import { useNavigate } from "react-router-dom"
-import { MapPin, DollarSign, Users, Clock, Check, X, Plus, Info, Package, CheckCircle, ServerIcon, Calendar } from "lucide-react"
-import "../static/resources/css/RequestService.css"
-import axios from "axios"
+import { MapPin, DollarSign, Users, Clock, Check, X, Plus, Info, Package, CheckCircle, Calendar } from "lucide-react"
+import "../../static/resources/css/RequestService.css"
 
 const Servicios = () => {
     const [eventProps, setEventProps] = useState([])
@@ -13,7 +12,6 @@ const Servicios = () => {
     const navigate = useNavigate()
 
     const currentUser = JSON.parse(localStorage.getItem("user"))
-    const [jwtToken] = useState(localStorage.getItem("jwt"));
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -34,13 +32,7 @@ const Servicios = () => {
     const handleAccept = async (id) => {
         try {
             // SE LE ESTÁ METIENDO EL ID DE UN SERVICIO NO DE UN EVENTPROPERTIES
-            await fetch(`/api/event-properties/${id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwtToken}`,
-                },
-                method: "PUT",
-            })
+            await apiClient.put(`/api/event-properties/${id}`)
             setEventProps(eventProps.filter((service) => service.id !== id)) // Eliminar del estado local
         } catch (error) {
             console.error("Error al aceptar el servicio:", error)
@@ -49,13 +41,7 @@ const Servicios = () => {
 
     const handleReject = async (id) => {
         try {
-            await fetch(`/api/event-properties/${id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwtToken}`,
-                },
-                method: "DELETE",
-            })
+            await apiClient.delete(`/api/event-properties/${id}`)
             setEventProps(eventProps.filter((service) => service.id !== id)) // Eliminar del estado local
         } catch (error) {
             console.error("Error al rechazar el servicio:", error)
@@ -211,8 +197,16 @@ const Servicios = () => {
                     })
                 )}
             </div>
+
+            <div className="create-service-button-container">
+                <button className="create-service-button" onClick={() => navigate("/misservicios/registrar")}>
+                    <Plus size={18} />
+                    Crear nuevo servicio
+                </button>
+            </div>
         </div >
     )
 }
 
 export default Servicios
+

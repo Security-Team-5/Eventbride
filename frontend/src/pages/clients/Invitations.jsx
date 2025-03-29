@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../static/resources/css/Invitations.css";
+import "../../static/resources/css/Invitations.css";
 import { useNavigate } from "react-router-dom";
 
 

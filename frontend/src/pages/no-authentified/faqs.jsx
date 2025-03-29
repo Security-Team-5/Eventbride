@@ -17,7 +17,7 @@ import {
   Shield,
   FileEdit,
 } from "lucide-react"
-import "../static/resources/css/faqs.css"
+import "../../static/resources/css/faqs.css"
 
 const faqs = [
   {

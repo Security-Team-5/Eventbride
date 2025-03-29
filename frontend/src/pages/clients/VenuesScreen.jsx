@@ -16,8 +16,8 @@ import {
   ArrowRight,
 } from "lucide-react"
 import { Link } from "react-router-dom"
-import "../static/resources/css/VenueScreen.css"
-import LeafletMap from "../components/LeafletMap";
+import "../../static/resources/css/VenueScreen.css"
+import LeafletMap from "../../components/LeafletMap";
 
 const VenuesScreen = () => {
   const [venues, setVenues] = useState([])

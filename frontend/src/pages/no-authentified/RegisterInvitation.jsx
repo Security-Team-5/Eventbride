@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import apiClient from "../apiClient";
-import '../static/resources/css/RegisterInvitation.css'
+import apiClient from "../../apiClient";
+import '../../static/resources/css/RegisterInvitation.css'
 
 const Register = () => {
   const { invitationId } = useParams();

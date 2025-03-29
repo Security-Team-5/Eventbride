@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import "../static/resources/css/Payment.css";
-import PaypalButtom from "../components/PaypalButtom";
+import "../../static/resources/css/Payment.css";
+import PaypalButtom from "../../components/PaypalButtom";
 
 export default function Payment() {
   const [eventProp, setEventProp] = useState(null)

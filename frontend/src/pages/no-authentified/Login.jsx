@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Lock, LogIn, AlertCircle } from 'lucide-react';
-import { getCurrentUser } from "../utils/api";
-import apiClient from "../apiClient";
-import '../static/resources/css/Login.css'
+import { getCurrentUser } from "../../utils/api";
+import apiClient from "../../apiClient";
+import '../../static/resources/css/Login.css'
 
 // eslint-disable-next-line react/prop-types
 function Login({ setUser }) {

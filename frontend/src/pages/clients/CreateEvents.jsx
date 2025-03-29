@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 import { Calendar, Users, PartyPopper } from "lucide-react"
-import apiClient from "../apiClient"
+import apiClient from "../../apiClient"
 
 import { useNavigate } from "react-router-dom"
-import "../static/resources/css/CreateEvents.css"
+import "../../static/resources/css/CreateEvents.css"
 
 const EVENT_TYPES = {
   WEDDING: "Boda",

@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import apiClient from "../apiClient"
+import apiClient from "../../apiClient"
 import { useNavigate } from "react-router-dom"
 
 import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff } from "lucide-react"
 
-import "../static/resources/css/Servicios.css"
+import "../../static/resources/css/Servicios.css"
 
 const Servicios = () => {
     const [services, setServices] = useState([])
@@ -65,24 +65,7 @@ const Servicios = () => {
 
         fetchServices()
     }, [currentUser.id, currentUser.plan])
-
-    /*
-        const deleteService = async (serviceId, serviceType) => {
-            if (window.confirm("¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.")) {
-                try {
-                    // Ajustar serviceType para otherService
-                    const normalizedServiceType = serviceType === "otherService" ? "other-services" : `${serviceType}s`;
     
-                    await apiClient.delete(`/api/${normalizedServiceType}/delete/${serviceId}`);
-    
-                    setServices(services.filter((service) => service.id !== serviceId));
-                } catch (error) {
-                    console.error("Error al eliminar el servicio:", error);
-                    alert("No se pudo eliminar el servicio. Por favor, inténtalo de nuevo.");
-                }
-            }
-        };*/
-
     // Función para formatear el tipo de servicio
     const formatServiceType = (type, otherServiceType) => {
         if (type === "venue") return "Recinto para eventos"

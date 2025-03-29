@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import "../static/resources/css/EventDetails.css"
-import PaypalButtonTotal from "../components/PaypalButtomTotal";
+import "../../static/resources/css/EventDetails.css"
+import PaypalButtonTotal from "../../components/PaypalButtomTotal";
 
 function EventDetails() {
   const [evento, setEvento] = useState(null);

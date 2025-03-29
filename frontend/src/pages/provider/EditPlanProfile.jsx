@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../static/resources/css/EditPlanProfile.css";
-import PaypalButtonPlan from "../components/PaypalButtomPlan";
+import "../../static/resources/css/EditPlanProfile.css";
+import PaypalButtonPlan from "../../components/PaypalButtomPlan";
 
 function EditPlanProfile() {
   const [userData, setUserData] = useState({

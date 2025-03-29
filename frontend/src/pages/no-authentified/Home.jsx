@@ -1,8 +1,8 @@
 "use client"
 
-import logo from "../static/resources/images/logo-eventbride.png"
+import logo from "../../static/resources/images/logo-eventbride.png"
 import { Calendar, Handshake, Users, TrendingUp } from 'lucide-react'
-import "../static/resources/css/Home.css"
+import "../../static/resources/css/Home.css"
 
 export default function HomePage() {
   const currentUser = JSON.parse(localStorage.getItem("user") || "{}");

@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { useParams } from "react-router-dom";
-import "../static/resources/css/PrivateChat.css"
-import FloatingBackButton from "../components/FloatingBackButton.jsx";
+import "../../static/resources/css/PrivateChat.css"
+import FloatingBackButton from "../../components/FloatingBackButton.jsx";
 
 const PrivateChat = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));

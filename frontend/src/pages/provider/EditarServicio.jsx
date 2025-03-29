@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { Edit, Check, AlertCircle, Save } from 'lucide-react';
-import apiClient from '../apiClient';
-import "../static/resources/css/EditarServicio.css";
+import apiClient from '../../apiClient';
+import "../../static/resources/css/EditarServicio.css";
 
 const EditarServicio = () => {
     const navigate = useNavigate();
