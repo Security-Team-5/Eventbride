@@ -70,7 +70,6 @@ public class EventController {
         List<EventProperties> eventProperties = new ArrayList<>();
         newEvent.setEventType(event.getEventType());
         newEvent.setGuests(event.getGuests());
-        newEvent.setBudget(event.getBudget());
         newEvent.setEventDate(event.getEventDate());
         newEvent.setUser(event.getUser());
         newEvent.setEventProperties(eventProperties);
@@ -89,7 +88,6 @@ public class EventController {
             } else {
                 updateEvent.setEventType(event.getEventType());
                 updateEvent.setGuests(event.getGuests());
-                updateEvent.setBudget(event.getBudget());
                 updateEvent.setEventDate(event.getEventDate());
                 updateEvent.setUser(event.getUser());
 

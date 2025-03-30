@@ -51,32 +51,7 @@ public class EventService {
 		BeanUtils.copyProperties(event, toUpdate);
 		return save(toUpdate);
 	}
-
-    @Transactional(readOnly = true)
-    public Boolean budgetExceeded(Event event) throws DataAccessException {
-        List<OtherService> otherServices= eventRepository.findOthersServicesByEvent(event);
-        List<Venue> venues= eventRepository.findVenuesByEvent(event);
-        BigDecimal services_price= new BigDecimal(0);
-        for(OtherService otherService: otherServices){
-            if(otherService.getLimitedByPricePerGuest()){
-                services_price=services_price.add(otherService.getServicePricePerGuest().multiply(new BigDecimal(event.getGuests())));
-            } else{
-                services_price=services_price.add(otherService.getFixedPrice());
-            }
-        }
-        for(Venue venue: venues){
-            if(venue.getLimitedByPricePerGuest()){
-                services_price=services_price.add(venue.getServicePricePerGuest().multiply(new BigDecimal(event.getGuests())));
-            } else{
-                services_price=services_price.add(venue.getFixedPrice());
-            }
-        }
-        if(services_price.compareTo(event.getBudget())>0){
-            return null;
-        }
-        return null;
-    }
-
+    
 	@Transactional
 	public void deleteEvent(int id) throws DataAccessException {
 		Event toDelete = findById(id);
