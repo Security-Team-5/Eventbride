@@ -99,9 +99,14 @@ button {
     margin-top: 15px;
     padding: 10px 20px;
     font-weight: bold;
-    border: none;
+    border: none !important;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.editar-profile{
+  color:white;
+  background-color: #d9be75 !important;
 }
 
 .save-btn {

@@ -1,7 +1,14 @@
 package com.eventbride.event;
 
+import com.eventbride.model.MessageResponse;
+import com.eventbride.user.User;
+import com.eventbride.user.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +30,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/events")
@@ -32,13 +42,15 @@ public class EventController {
     private final EventService eventService;
     private final EventPropertiesService eventPropertiesService;
     private final InvitationService invitationService;
+	private final UserService userService;
 
     @Autowired
     public EventController(EventService eventService,
-            EventPropertiesService eventPropertiesService, InvitationService invitationService) {
+            EventPropertiesService eventPropertiesService, InvitationService invitationService, UserService userService) {
         this.eventService = eventService;
         this.eventPropertiesService = eventPropertiesService;
         this.invitationService = invitationService;
+		this.userService = userService;
     }
 
     @GetMapping
@@ -57,7 +69,23 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public EventDTO findById(@PathVariable("id") Integer id) {
+    public EventDTO findById(@PathVariable("id") Integer id) throws IllegalArgumentException, DataAccessException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> user = userService.getUserByUsername(auth.getName());
+
+		Event event = eventService.findById(id);
+
+		if (!user.isPresent()) {
+			throw new IllegalArgumentException("El usuario no existe");
+		}
+
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+		if (!roles.contains("ADMIN") && !event.getUser().getId().equals(user.get().getId())) {
+			throw new IllegalArgumentException("El evento no te pertenece");
+		}
+
         return new EventDTO(eventService.findById(id));
     }
 
@@ -101,7 +129,15 @@ public class EventController {
 
     @DeleteMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("eventId") int eventId) {
+    public ResponseEntity<?> delete(@PathVariable("eventId") int eventId) throws  IllegalArgumentException {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> user = userService.getUserByUsername(auth.getName());
+
+		if (!user.isPresent()) {
+			throw new IllegalArgumentException("El usuario no existe");
+		}
+
         if (eventService.findById(eventId) != null) {
             Event event = eventService.findById(eventId);
 
@@ -115,13 +151,17 @@ public class EventController {
                 eventPropertiesService.save(e);
             }
 
-            List<Invitation> i = invitationService.getInvitationByEventId(eventId);
+            List<Invitation> i = invitationService.getInvitationByEventId(eventId, user.get());
             if (i.size() > 0) {
                 invitationService.deleteInvitations(i);
             }
             eventService.save(event);
             eventService.deleteEvent(eventId);
+			return new ResponseEntity<>(new MessageResponse("El evento se ha eliminado correctamente"), HttpStatus.OK);
         }
+		else{
+			throw new IllegalArgumentException("El evento no existe");
+		}
     }
 
     /*

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../static/resources/css/Invitations.css";
 import { useParams } from "react-router-dom";
+import {Copy, Trash2} from "lucide-react";
 
 function EventInvitations() {
   const [invitaciones, setInvitaciones] = useState([]);
@@ -92,6 +93,7 @@ function EventInvitations() {
           const id = data.id;
           copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${id}`);
           alert("Link a la invitación copiado al portapapeles");
+          setInvitaciones(prev => [...prev, data])
         }
       })
       .catch((error) =>
@@ -102,17 +104,46 @@ function EventInvitations() {
     setMaxGuests("");
   };
 
+  // Formatear fecha
+  const formatearFecha = (fecha) => {
+    const opciones = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(fecha).toLocaleDateString("es-ES", opciones);
+  };
+
+  const handleRemove = (id) => {
+    const isRemoving = confirm("¿Deseas eliminar la invitación?")
+    if(!isRemoving) {return}
+
+    fetch(`/api/invitation/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.error) {
+          const newInvitations = invitaciones.filter(i => i.id!==id)
+          setInvitaciones(newInvitations)
+        } else {
+          alert(data.error)
+        }
+      })
+      .catch((error) =>
+        console.error("Error al crear la invitación:", error)
+      );
+  }
+
   // Calcular el total de invitados (1 por el invitado principal + sus invitados)
   const totalInvitados = invitaciones.reduce(
     (total, invitacion) => total + Number(invitacion.numberOfGuests),
     0
   );
 
-  // Para comprobarlo en consola
-  console.log("Total de invitados calculado:", totalInvitados);
-
   return (
     <div className="event-invitations-container">
+      <h2>Invitaciones estimadas { eventData && (<>del día {formatearFecha(eventData.eventDate)}</>)}</h2>
       <div className="total-invitations">
         {eventData && (
           <div>
@@ -137,20 +168,60 @@ function EventInvitations() {
         </div>
       )}
 
-      {/* Mostrar el total de invitados */}
+      {/* Mostrar todas las invitados */}
       {invitaciones.length > 0 ? (
         <>
           {invitaciones.map((invitacion, index) => (
             <div key={index} className="event-container-i">
               <div>
-                <div className="event-info-i">
-                  <p className="invitation-name">
-                    Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
-                  </p>
-                  <p className="invitation-name">
-                    Invitados de su parte: {invitacion.numberOfGuests}
-                  </p>
-                </div>
+                {
+                  invitacion.invitationType==="ACCEPTED" ? (
+                  <div className="event-info-i">
+                    <div className="left-event">
+                      <p className="invitation-name">
+                        Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
+                      </p>
+                      <p className="invitation-name">
+                        Invitados de su parte: {invitacion.numberOfGuests}
+                      </p>
+                    </div>
+                    <div className="right-event">
+                      <button
+                        onClick={() => {handleRemove(invitacion.id)}}
+                        title="Copiar enlace"
+                        className="trash"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
+                  </div>
+                  ) : (
+                    <div className="event-info-i">
+                      <div className="left-event">
+                        <p className="invitation-name">
+                          Invitación creada
+                        </p>
+                        <p className="invitation-name">
+                          Invitados máximos: {invitacion.maxGuests}
+                        </p>
+                      </div>
+                      <div className="right-event">
+                        <button
+                          onClick={() => {copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${invitacion.id}`)}}
+                          title="Copiar enlace"
+                        >
+                          <Copy size={20} />
+                        </button>
+                        <button
+                          onClick={() => {handleRemove(invitacion.id)}}
+                          title="Copiar enlace"
+                          className="trash"
+                        >
+                          <Trash2 size={20} />
+                        </button>
+                      </div>
+                    </div>
+                )}
               </div>
             </div>
           ))}

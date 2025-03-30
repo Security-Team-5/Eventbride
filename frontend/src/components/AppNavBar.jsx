@@ -85,7 +85,6 @@ function Navbar({ user }) {
           <li><Link to="/create-events" className="nav-link">Crear evento</Link></li>
           <li><Link to="/venues" className="nav-link">Recintos</Link></li>
           <li><Link to="/other-services" className="nav-link">Otros servicios</Link></li>
-          <li><Link to="/invitaciones" className="nav-link">Invitaciones</Link></li>
           <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
         </ul>
       );

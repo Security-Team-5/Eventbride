@@ -31,12 +31,15 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<EventDTO> getAllEventsDTO() {
         List<Event> events = eventRepository.findAll();
-        return EventDTO.fromEntities(events); 
+        return EventDTO.fromEntities(events);
     }
 
     @Transactional(readOnly = true)
-    public Event findById(int id) throws DataAccessException {
-        Optional<Event> g = eventRepository.findById(id); 
+    public Event findById(int id) throws IllegalArgumentException {
+        Optional<Event> g = eventRepository.findById(id);
+		if(!g.isPresent()) {
+			throw new IllegalArgumentException("El evento no existe");
+		}
         return g.get();
     }
 
@@ -51,7 +54,7 @@ public class EventService {
 		BeanUtils.copyProperties(event, toUpdate);
 		return save(toUpdate);
 	}
-    
+
 	@Transactional
 	public void deleteEvent(int id) throws DataAccessException {
 		Event toDelete = findById(id);
