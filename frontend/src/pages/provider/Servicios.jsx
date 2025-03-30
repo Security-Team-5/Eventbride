@@ -119,7 +119,13 @@ const Servicios = () => {
                                     <CheckCircle size={18} className="info-icon" />
                                     <div>
                                         <span className="info-label">Disponible:</span>
-                                        <span className="info-value">{service.available ? "Sí" : "No"}</span>
+                                        <span className="info-value">
+                                            {service.available ? (
+                                                <p style={{ backgroundColor: "#52ba84ca", width:"35%",fontSize:"105%", borderRadius:"7px", textAlign:"center" }}> Sí</p>
+                                            ) : (
+                                                <p style={{ backgroundColor: "#d24e4eca", width:"35%",fontSize:"105%", borderRadius:"7px", textAlign:"center" }}> No</p>
+                                            )}
+                                        </span>
                                     </div>
                                 </div>
 

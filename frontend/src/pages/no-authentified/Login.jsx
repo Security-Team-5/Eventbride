@@ -28,14 +28,16 @@ function Login({ setUser }) {
       const data = await getCurrentUser({ token });
       let user = data.user;
 
-      if(data.user.role === "SUPPLIER"){
-        const expireDate = new Date(data.user.expirePlanDate);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); 
+      if (data.user.role === "SUPPLIER") {
+        if (data.user.plan === "PREMIUM") {
+          const expireDate = new Date(data.user.expirePlanDate);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
 
-        if (expireDate <= today) {
-          const updated = await apiClient.put(`/api/users/planExpired/${data.user.id}`);
-          user = updated.data;
+          if (expireDate <= today) {
+            const updated = await apiClient.put(`/api/users/planExpired/${data.user.id}`);
+            user = updated.data;
+          }
         }
       }
 
@@ -50,16 +52,16 @@ function Login({ setUser }) {
     }
   };
 
-/*
-  fetch(`/api/users/${userData.id}`, {
-    headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken}`,
-    },
-    method: "PUT",
-    body: JSON.stringify(userData),
-})
-*/
+  /*
+    fetch(`/api/users/${userData.id}`, {
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+      },
+      method: "PUT",
+      body: JSON.stringify(userData),
+  })
+  */
   return (
     <div className="split-layout">
       <div className="login-side">
