@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Mail, Phone, Lock, FileText, Image, UserCircle, AlertCircle, UserPlus } from "lucide-react"
+import { AlertCircle } from "lucide-react"
 import "../../static/resources/css/AdminUsers.css";
 
 function AdminUsers() {
@@ -55,10 +55,18 @@ function AdminUsers() {
             })
             .then(data => {
                 console.log("Usuarios obtenidos:", data);
-                setUsers(data);
+
+                // Mapa de prioridad para ordenar por rol
+                const rolePriority = { CLIENT: 1, SUPPLIER: 2, ADMIN: 3 };
+
+                // Ordenar usuarios por rol
+                const sortedUsers = data.sort((a, b) => rolePriority[a.role] - rolePriority[b.role]);
+
+                setUsers(sortedUsers);
             })
             .catch(error => console.error("Error obteniendo usuarios:", error));
     }
+
 
     // Inicia el proceso de edición
     function startEditing(user) {
@@ -286,7 +294,7 @@ function AdminUsers() {
                             )}
 
                             <div className="service-info">
-                                <form style={{width:"100%"}}  onSubmit={e => e.preventDefault()}>
+                                <form style={{ width: "100%" }} onSubmit={e => e.preventDefault()}>
                                     <div className="form-group">
                                         <label>Nombre:</label>
                                         <input
@@ -379,8 +387,8 @@ function AdminUsers() {
                                                             ...prev,
                                                             plan: value,
                                                             ...(value === "BASIC" && {
-                                                                paymentPlanDate: null,
-                                                                expirePlanDate: null,
+                                                                paymentPlanDate: "",
+                                                                expirePlanDate: "",
                                                             })
                                                         }));
                                                     }}
@@ -391,24 +399,26 @@ function AdminUsers() {
                                                 </select>
                                             </div>
 
-                                            {userData.id === user.id && userData.plan === "PREMIUM" && (
+                                            {(userData.id === user.id ? userData.plan : user.plan) === "PREMIUM" && (
                                                 <>
                                                     <div className="form-group">
                                                         <label>Fecha de pago del plan:</label>
                                                         <input
-                                                            type="datetime-local"
+                                                            type="date"
                                                             name="paymentPlanDate"
-                                                            value={userData.paymentPlanDate || ""}
+                                                            value={userData.id === user.id ? (userData.paymentPlanDate || "") : (user.paymentPlanDate || "")}
                                                             onChange={handleInputChange}
+                                                            disabled={editUserId !== user.id}
                                                         />
                                                     </div>
                                                     <div className="form-group">
                                                         <label>Fecha de expiración del plan:</label>
                                                         <input
-                                                            type="datetime-local"
+                                                            type="date"
                                                             name="expirePlanDate"
-                                                            value={userData.expirePlanDate || ""}
+                                                            value={userData.id === user.id ? (userData.expirePlanDate || "") : (user.expirePlanDate || "")}
                                                             onChange={handleInputChange}
+                                                            disabled={editUserId !== user.id}
                                                         />
                                                     </div>
                                                 </>
@@ -418,14 +428,14 @@ function AdminUsers() {
 
                                     <div className="form-group">
                                         <label>Foto de perfil:</label>
-                                        <div className="image-wrapper" style={{backgroundColor:"white"}}>
+                                        <div className="image-wrapper" style={{ backgroundColor: "white" }}>
                                             <img src={user.profilePicture} alt={user.username} className="service-image" />
                                         </div>
                                     </div>
 
                                     <div className="button-container">
                                         {editUserId === user.id ? (
-                                            <button className="save-btn" style={{backgroundColor:"#4CAF50"}} onClick={updateUser}>Guardar</button>
+                                            <button className="save-btn" style={{ backgroundColor: "#4CAF50" }} onClick={updateUser}>Guardar</button>
                                         ) : (
                                             <button className="edit-btn" onClick={() => startEditing(user)}>Editar</button>
                                         )}
@@ -434,12 +444,13 @@ function AdminUsers() {
                             </div>
                         </div>
                     ))}
-                </div>
+                </div >
             ) : (
                 <div className="no-service">
                     <p>No hay usuarios disponibles.</p>
                 </div>
-            )}
+            )
+            }
         </>
     );
 
