@@ -89,7 +89,6 @@ public class EventController {
                 updateEvent.setEventType(event.getEventType());
                 updateEvent.setGuests(event.getGuests());
                 updateEvent.setEventDate(event.getEventDate());
-                updateEvent.setUser(event.getUser());
 
                 Event e = this.eventService.updateEvent(updateEvent, eventId);
                 return new ResponseEntity<>(new EventDTO(e), HttpStatus.OK);

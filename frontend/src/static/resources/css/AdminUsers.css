@@ -80,6 +80,31 @@ select:focus {
   color: #ffffff;
 }
 
+.event-services-box {
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+}
+
+.service-subsection {
+  margin-top: 10px;
+}
+
+.service-subsection h4 {
+  margin-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.service-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
 
 
 /* Botones */
