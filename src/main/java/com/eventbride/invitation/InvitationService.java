@@ -3,6 +3,7 @@ package com.eventbride.invitation;
 import com.eventbride.dto.EventDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
+import com.eventbride.user.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.task.TaskExecutionProperties.Simple;
@@ -27,7 +28,7 @@ public class InvitationService {
 	private JavaMailSender mailSender;
 
 	@Transactional()
-	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests) throws Exception {
+	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests) throws IllegalArgumentException {
 
 		// Comprobamos que en las eventpropeties del evento exista una venue
 		Optional<Event> event = eventRepository.findById(eventId);
@@ -35,10 +36,10 @@ public class InvitationService {
 			boolean hasVenue = event.get().getEventProperties().stream()
 					.anyMatch(eventProperties -> eventProperties.getVenue() != null);
 			if (!hasVenue) {
-				throw new Exception("No se puede crear una invitación para un evento sin venue");
+				throw new IllegalArgumentException("No se puede crear una invitación para un evento sin venue");
 			}
 		} else {
-			throw new Exception("Event not found");
+			throw new IllegalArgumentException("Event not found");
 		}
 		Invitation invitation = new Invitation();
 		invitation.setMaxGuests(maxGuests);
@@ -51,22 +52,30 @@ public class InvitationService {
 	}
 
 	@Transactional(readOnly = true)
-	public Invitation getInvitationById(Integer invitationId) throws Exception {
+	public Invitation getInvitationById(Integer invitationId) throws IllegalArgumentException {
 		Optional<Invitation> invitation = invitationRepository.findById(invitationId);
 		if (invitation.isPresent()) {
 			return invitation.get();
 		} else {
-			throw new Exception("Invitation not found");
+			throw new IllegalArgumentException("Invitation not found");
 		}
 	}
 
 	@Transactional
-	public Invitation fillInvitation(Invitation invitation) throws Exception {
+	public Invitation fillInvitation(Invitation invitation) throws IllegalArgumentException {
 
 		Invitation existingInvitation = invitationRepository.findById(invitation.getId()).orElse(null);
 
 		if (invitation.getNumberOfGuests() > existingInvitation.getMaxGuests()) {
-			throw new Exception("Se supera el límite de invitados");
+			throw new IllegalArgumentException("Se supera el límite de invitados");
+		}
+
+		if(existingInvitation.getInvitationType().equals(Invitation.InvitationType.ACCEPTED)) {
+			throw new IllegalArgumentException("La invitación ya ha sido aceptada");
+		}
+
+		if(invitation.getLastName().trim().equals("") || invitation.getFirstName().trim().equals("")) {
+			throw new IllegalArgumentException("Flatan datos en la invitación");
 		}
 
 		BeanUtils.copyProperties(invitation, existingInvitation, "id", "event", "invitationType");
@@ -98,13 +107,37 @@ public class InvitationService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Invitation> getInvitationByEventId(Integer eventId) {
-		List<Invitation> invitations = invitationRepository.findByEventId(eventId);
-		return invitations;
+	public List<Invitation> getInvitationByEventId(Integer eventId, User user) throws IllegalArgumentException {
+
+		Event event = eventRepository.findById(eventId).orElse(null);
+
+		if(event == null) {
+			throw new IllegalArgumentException("El evento no existe");
+		}
+
+		if(!event.getUser().getId().equals(user.getId())) {
+			throw new IllegalArgumentException("El evento no te pertenece");
+		}
+
+		return invitationRepository.findByEventId(eventId);
 	}
 
 	public void deleteInvitations(List<Invitation> i) {
 		invitationRepository.deleteAll(i);
+	}
+
+	public void deleteInvitationById(Integer invitationId, User user) throws IllegalArgumentException{
+		Invitation invitation = invitationRepository.findById(invitationId).orElse(null);
+
+		if(invitation == null){
+			throw new IllegalArgumentException("La invitación no existe");
+		}
+
+		if(!invitation.getEvent().getUser().getId().equals(user.getId())){
+			throw new IllegalArgumentException("No tienes permiso para eliminar esta invitación");
+		}
+
+		invitationRepository.deleteById(invitationId);
 	}
 
 }

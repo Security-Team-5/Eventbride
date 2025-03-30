@@ -55,6 +55,8 @@ public class SecurityConfig {
                                                 // URIS DE ADMIN
                                                 .requestMatchers(
                                                                 "/api/services/admin",
+																"/api/v1/events",
+																"/api/v1/events/DTO",
                                                                 "/api/other-services/admin/{id}")
                                                 .hasAuthority("ADMIN")
 
@@ -74,7 +76,6 @@ public class SecurityConfig {
 
                                                 // URIS DE CLIENTE
                                                 .requestMatchers(
-                                                                "/api/v1/events",
                                                                 "/api/v1/events/{id}",
                                                                 "/api/v1/events/next/**",
                                                                 "/api/event-properties/DTO/**",
