@@ -46,7 +46,6 @@ const Servicios = () => {
                 ...service,
                 overLimit: excessServiceIds.includes(service.id),
             }))
-
             setServices(markedServices)
         } catch (error) {
             console.error("Error fetching services:", error)
@@ -73,6 +72,52 @@ const Servicios = () => {
                 return "Otro servicio"
         }
     }
+
+    const handleOtherServiceDisable = (id) => {
+      fetch(`/api/other-services/disable/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        method: "PATCH",
+      })
+        .then(response => response.json())
+        .then((data) => {
+          setServices((prevItems) =>
+            prevItems.map((item) =>
+              item.id === id && item.type === "otherService"
+                ? { ...item, available: !item.available }
+                : item
+            )
+          );
+        })
+        .catch((error) => {
+          console.error("Error al cambiar disponibilidad del servicio:", error)
+        })
+    }
+
+  const handleVenuesDisable = (id) => {
+    fetch(`/api/venues/disable/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: "PATCH",
+    })
+      .then(response => response.json())
+      .then((data) => {
+        setServices((prevItems) =>
+          prevItems.map((item) =>
+            item.id === id && item.type === "venue"
+              ? { ...item, available: !item.available }
+              : item
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("Error al cambiar disponibilidad del servicio:", error)
+      })
+  }
 
     return (
         <div className="mis-servicios-container">
@@ -189,13 +234,14 @@ const Servicios = () => {
                             <div className="service-footer">
                                 <button
                                     className={`disable-button ${service.available ? "disable-red" : "enable-green"}`}
-                                    onClick={async () => {
-                                        try {
-                                            await apiClient.patch(`/api/other-services/disable/${service.id}`);
-                                            await fetchServices();
-                                        } catch (error) {
-                                            console.error("Error al cambiar disponibilidad del servicio:", error);
-                                        }
+                                    onClick={() => {
+
+                                      if(service.type==="otherService") {
+                                        handleOtherServiceDisable(service.id)
+                                      } else {
+                                        handleVenuesDisable(service.id)
+                                      }
+
                                     }}
                                 >
                                     {service.available ? <EyeOff size={16} /> : <Eye size={16} />}

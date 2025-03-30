@@ -1,11 +1,9 @@
 package com.eventbride.venue;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.eventbride.otherService.OtherService;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,18 +75,18 @@ public class VenueController {
 	public ResponseEntity<?> deleteVenue(@PathVariable Integer id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		
+
 		System.out.println("Authorities: " + authorities);
-		
+
 		boolean hasSupplierRole = authorities.stream()
 			.map(GrantedAuthority::getAuthority)
 			.anyMatch(role -> role.equals("SUPPLIER") || role.equals("ROLE_SUPPLIER"));
-		
+
 		if (hasSupplierRole) {
 			venueService.deleteVenue(id);
 			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
 		}
-		
+
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 
@@ -151,6 +149,22 @@ public class VenueController {
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
+
+	@PatchMapping("/disable/{id}")
+	public ResponseEntity<?> toggleVenueAvailability(@PathVariable Integer id) {
+		Optional<Venue> optionalService = venueService.getVenueById(id);
+
+		if (optionalService.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(Map.of("error", "Servicio no encontrado"));
+		}
+
+		Venue service = optionalService.get();
+		service.setAvailable(!service.getAvailable());
+		venueService.save(service);
+
+		return ResponseEntity.ok(Map.of("available", service.getAvailable()));
 	}
 
 }
