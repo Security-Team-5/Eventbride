@@ -66,18 +66,18 @@ public class OtherServiceController {
 	public ResponseEntity<?> deleteOtherService(@PathVariable Integer id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		
+
 		System.out.println("Authorities: " + authorities);
-		
+
 		boolean hasSupplierRole = authorities.stream()
-			.map(GrantedAuthority::getAuthority)
-			.anyMatch(role -> role.equals("SUPPLIER") || role.equals("ROLE_SUPPLIER"));
-		
+				.map(GrantedAuthority::getAuthority)
+				.anyMatch(role -> role.equals("SUPPLIER") || role.equals("ROLE_SUPPLIER"));
+
 		if (hasSupplierRole) {
 			otherServiceService.deleteOtherService(id);
 			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
 		}
-		
+
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 
@@ -147,18 +147,19 @@ public class OtherServiceController {
 	}
 
 	@PatchMapping("/disable/{id}")
-	public ResponseEntity<?> disableOtherService(@PathVariable Integer id) {
+	public ResponseEntity<?> toggleOtherServiceAvailability(@PathVariable Integer id) {
 		Optional<OtherService> optionalService = otherServiceService.getOtherServiceById(id);
 
 		if (optionalService.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Servicio no encontrado"));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(Map.of("error", "Servicio no encontrado"));
 		}
 
 		OtherService service = optionalService.get();
-		service.setAvailable(false);
+		service.setAvailable(!service.getAvailable());
 		otherServiceService.save(service);
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(Map.of("available", service.getAvailable()));
 	}
 
 }
