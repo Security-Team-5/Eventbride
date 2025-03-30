@@ -131,7 +131,7 @@ function EditProfile() {
                 </div>
                 <button className="editar-profile" onClick={() => setEditing(true)}>EDITAR</button>
                 {userData.role === "SUPPLIER" && userData.plan === "BASIC" && (
-                    <button onClick={() => navigate("/profile/plan")}>PLANES</button>
+                    <button className="plan-button" onClick={() => navigate("/profile/plan")}>PLANES</button>
                 )}
                 <button className="hover-button" style={{ backgroundColor: "#dc3545", color: "white" }} onClick={handleLogout}>
                     Cerrar sesión

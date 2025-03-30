@@ -176,17 +176,18 @@ button {
     color: black;
     transition: all 0.3s ease;
 }
-
-/* Plan Básico (azul) */
 .modal-buttons button:nth-child(1) {
     background-color: #d0e7ff;
     border-color: #007bff;
 }
 
-/* Plan Premium (dorado) */
 .modal-buttons button:nth-child(2) {
     background-color: #ffe6a3;
     border-color: #c89d00;
+}
+.plan-button {
+    color:white;
+    background: linear-gradient(45deg, #FFD700, #FFC107, #FFA000) !important;
 }
 
 .logout {
