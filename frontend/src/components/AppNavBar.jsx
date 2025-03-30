@@ -172,7 +172,7 @@ function Navbar({ user }) {
                   overflow: "hidden",
                   background: "transparent",
                 }}>
-                  <div className="profile-pic-wrapper" style={{ height: "40px", overflow: "hidden" }}>
+                  <div className="profile-pic-wrapper" style={{ height: "40px", overflow: "hidden", background:"transparent" }}>
                     {currentUser.profilePicture?.trim() && (
                       <img
                         src={currentUser.profilePicture}
