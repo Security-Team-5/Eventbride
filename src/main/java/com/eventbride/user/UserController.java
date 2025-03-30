@@ -156,14 +156,14 @@ public class UserController {
         }
     }
 
-    @PutMapping("/api/users/profile/plan")
-    public ResponseEntity<?> updateUserPlan(@Valid @RequestBody User updatedUser) {
+    @PutMapping("/planExpired/{id}")
+    public ResponseEntity<?> updateUserPlan(@PathVariable Integer id) {
         try {
-            Optional<User> existingUser = userService.getUserById(updatedUser.getId());
+            Optional<User> existingUser = userService.getUserById(id);
             if (existingUser.isEmpty()) {
                 return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
             }
-            User savedUser = userService.updateUser(updatedUser.getId(), updatedUser);
+            User savedUser = userService.downgradeUserPlan(id);
             return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

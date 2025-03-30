@@ -69,7 +69,7 @@ public class SecurityConfig {
                                                                 "/api/event-properties/pending/{userId}",
                                                                 "/api/event-properties/status/pending/{eventPropertiesId}",
                                                                 "/api/users/plan",
-                                                                "/api/users/profile/plan")
+                                                                "/api/users/planExpired/{id}")
                                                 .hasAnyAuthority("SUPPLIER", "ADMIN") // 🔹 Admin también puede acceder
 
                                                 // URIS DE CLIENTE
