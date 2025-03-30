@@ -68,6 +68,32 @@ function EditPlanProfile() {
 
   return (
     <div className="edit-plan-container">
+      <div className="plans-section-container">
+        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Planes</h2>
+        <div className="plans-comparison">
+          <div className="plan-box basic-plan">
+            <h3>Plan Básico</h3>
+            <ul className="plan-features basic-features">
+              <li>Creación y edición de servicios</li>
+              <li>Ofertar hasta tres servicios</li>
+              <li> Gestión de solicitudes</li>
+              <li>Chat con clientes</li>
+              <li>Soporte técnico</li>
+
+            </ul>
+          </div>
+
+          <div className="plan-box premium-plan">
+            <h3>Plan Premium</h3>
+            <ul className="plan-features premium-features">
+              <li>Todo el contenido del Plan Básico</li>
+              <li>Ofertar hasta diez servicios</li>
+              <li>Prioridad en resultados de búsqueda</li>
+              <li><span className="price-tag">50€/mes</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
       <form onSubmit={(e) => e.preventDefault()} className="edit-plan-form">
         <h2>Editar Plan</h2>
 

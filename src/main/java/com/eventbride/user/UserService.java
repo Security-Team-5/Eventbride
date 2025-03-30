@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.UserDTO;
+import com.eventbride.user.User.Plan;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -124,11 +125,11 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUserPlan(Integer id, User updatedUser) {
+    public User downgradeUserPlan(Integer id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        user.setPlan(updatedUser.getPlan());
-        user.setPaymentPlanDate(updatedUser.getPaymentPlanDate());
-        user.setExpirePlanDate(updatedUser.getExpirePlanDate());
+        user.setPlan(Plan.BASIC);
+        user.setPaymentPlanDate(null);
+        user.setExpirePlanDate(null);
         return userRepository.save(user);
     }
 

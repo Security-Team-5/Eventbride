@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import apiClient from "../../apiClient"
 import { useNavigate } from "react-router-dom"
 
-import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff } from "lucide-react"
+import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff, Eye } from "lucide-react"
 
 import "../../static/resources/css/Servicios.css"
 
@@ -16,56 +16,48 @@ const Servicios = () => {
     const currentUser = JSON.parse(localStorage.getItem("user"))
     const [jwtToken] = useState(localStorage.getItem("jwt"));
 
-    useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                setLoading(true)
-                const response = await fetch(`/api/services/user/${currentUser.id}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${jwtToken}`,
-                    },
-                    method: "GET",
-                })
+    const fetchServices = useCallback(async () => {
+        try {
+            setLoading(true)
+            const response = await fetch(`/api/services/user/${currentUser.id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${jwtToken}`,
+                },
+                method: "GET",
+            })
 
-                if (!response.ok) {
-                    throw new Error(`Error en la respuesta: ${response.status} ${response.statusText}`);
-                }
-
-                const data = await response.json()
-
-                console.log(data)
-
-                const otherServices = Array.isArray(data?.otherServices) ? data.otherServices.map(otherService => ({ ...otherService, type: "otherService" })) : [];
-                const venues = Array.isArray(data?.venues) ? data.venues.map(venue => ({ ...venue, type: "venue" })) : [];
-
-                const allServices = [...otherServices, ...venues]
-                const plan = currentUser.plan || "BASIC"
-                const maxAllowed = plan === "PREMIUM" ? 10 : 3
-
-                // 🧠 Solo servicios disponibles
-                const availableServices = allServices.filter(s => s.available)
-                const excessServiceIds = availableServices
-                    .slice(maxAllowed)
-                    .map(s => s.id)
-
-                // Marcar los que están en exceso como overLimit
-                const markedServices = allServices.map(service => ({
-                    ...service,
-                    overLimit: excessServiceIds.includes(service.id),
-                }))
-
-                setServices(markedServices)
-            } catch (error) {
-                console.error("Error fetching services:", error)
-            } finally {
-                setLoading(false)
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta: ${response.status} ${response.statusText}`)
             }
-        }
 
+            const data = await response.json()
+            const otherServices = Array.isArray(data?.otherServices) ? data.otherServices.map(otherService => ({ ...otherService, type: "otherService" })) : []
+            const venues = Array.isArray(data?.venues) ? data.venues.map(venue => ({ ...venue, type: "venue" })) : []
+
+            const allServices = [...otherServices, ...venues]
+            const plan = currentUser.plan || "BASIC"
+            const maxAllowed = plan === "PREMIUM" ? 10 : 3
+
+            const availableServices = allServices.filter(s => s.available)
+            const excessServiceIds = availableServices.slice(maxAllowed).map(s => s.id)
+
+            const markedServices = allServices.map(service => ({
+                ...service,
+                overLimit: excessServiceIds.includes(service.id),
+            }))
+            setServices(markedServices)
+        } catch (error) {
+            console.error("Error fetching services:", error)
+        } finally {
+            setLoading(false)
+        }
+    }, [currentUser.id, currentUser.plan, jwtToken])
+
+    useEffect(() => {
         fetchServices()
-    }, [currentUser.id, currentUser.plan])
-    
+    }, [fetchServices])
+
     // Función para formatear el tipo de servicio
     const formatServiceType = (type, otherServiceType) => {
         if (type === "venue") return "Recinto para eventos"
@@ -80,6 +72,52 @@ const Servicios = () => {
                 return "Otro servicio"
         }
     }
+
+    const handleOtherServiceDisable = (id) => {
+      fetch(`/api/other-services/disable/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        method: "PATCH",
+      })
+        .then(response => response.json())
+        .then((data) => {
+          setServices((prevItems) =>
+            prevItems.map((item) =>
+              item.id === id && item.type === "otherService"
+                ? { ...item, available: !item.available }
+                : item
+            )
+          );
+        })
+        .catch((error) => {
+          console.error("Error al cambiar disponibilidad del servicio:", error)
+        })
+    }
+
+  const handleVenuesDisable = (id) => {
+    fetch(`/api/venues/disable/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: "PATCH",
+    })
+      .then(response => response.json())
+      .then((data) => {
+        setServices((prevItems) =>
+          prevItems.map((item) =>
+            item.id === id && item.type === "venue"
+              ? { ...item, available: !item.available }
+              : item
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("Error al cambiar disponibilidad del servicio:", error)
+      })
+  }
 
     return (
         <div className="mis-servicios-container">
@@ -119,7 +157,13 @@ const Servicios = () => {
                                     <CheckCircle size={18} className="info-icon" />
                                     <div>
                                         <span className="info-label">Disponible:</span>
-                                        <span className="info-value">{service.available ? "Sí" : "No"}</span>
+                                        <span className="info-value">
+                                            {service.available ? (
+                                                <p style={{ backgroundColor: "#52ba84ca", width: "35%", fontSize: "105%", borderRadius: "7px", textAlign: "center" }}> Sí</p>
+                                            ) : (
+                                                <p style={{ backgroundColor: "#d24e4eca", width: "35%", fontSize: "105%", borderRadius: "7px", textAlign: "center" }}> No</p>
+                                            )}
+                                        </span>
                                     </div>
                                 </div>
 
@@ -188,28 +232,21 @@ const Servicios = () => {
                             </div>
 
                             <div className="service-footer">
-                                {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
-                                    <button
-                                        className="disable-button"
-                                        onClick={async () => {
-                                            try {
-                                                await apiClient.patch(`/api/other-services/disable/${service.id}`)
-                                                setServices((prev) =>
-                                                    prev.map((s) =>
-                                                        s.id === service.id
-                                                            ? { ...s, available: false, overLimit: false }
-                                                            : s
-                                                    )
-                                                )
-                                            } catch (error) {
-                                                console.error("Error al desactivar servicio:", error)
-                                            }
-                                        }}
-                                    >
-                                        <EyeOff size={16} />
-                                        Desactivar
-                                    </button>
-                                )}
+                                <button
+                                    className={`disable-button ${service.available ? "disable-red" : "enable-green"}`}
+                                    onClick={() => {
+
+                                      if(service.type==="otherService") {
+                                        handleOtherServiceDisable(service.id)
+                                      } else {
+                                        handleVenuesDisable(service.id)
+                                      }
+
+                                    }}
+                                >
+                                    {service.available ? <EyeOff size={16} /> : <Eye size={16} />}
+                                    {service.available ? "Deshabilitar" : "Habilitar"}
+                                </button>
 
                                 <button
                                     className="edit-button"
