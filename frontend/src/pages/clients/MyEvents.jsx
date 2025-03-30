@@ -148,7 +148,7 @@ function MyEvents() {
               <div
                 key={index}
                 className="event-card"
-                onClick={() => navigate(`/event/${evento.id}`)}
+
               >
                 <div className="event-image-container">
                   <img
@@ -188,9 +188,18 @@ function MyEvents() {
                       </span>
                     </div>
                   </div>
-
                   <div className="event-footer">
-                    <span className="view-details">Ver detalles</span>
+                    <button
+                      className="boton-editar"
+                      onClick={() => navigate(`/event/${evento.id}`)}
+                    >
+                      Ver detalles
+                    </button>
+                    <span className="view-details"
+                          onClick={() => navigate(`/invitaciones/${evento.id}`)}
+                    >
+                      Ver Invitaciones
+                    </span>
                   </div>
                 </div>
               </div>

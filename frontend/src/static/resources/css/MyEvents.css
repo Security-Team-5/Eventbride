@@ -157,7 +157,7 @@
   display: flex;
   justify-content: space-between;
   gap: 3%;
-  margin-top: 2%; 
+  margin-top: 2%;
   max-width: 70%;
   margin-left: auto;
   margin-right: auto;
@@ -179,6 +179,8 @@
 .event-footer {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   padding-top: 1rem;
 }

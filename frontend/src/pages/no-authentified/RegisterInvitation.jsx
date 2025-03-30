@@ -44,7 +44,6 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    setSuccess(true);
     e.preventDefault();
     console.log("Formulario enviado:", form);
 
@@ -64,12 +63,13 @@ const Register = () => {
           telephone: form.telephone,
         }),
       });
-
-
-      if (response.data.error) {
-        setError("Error: " + response.data.error);
+      const data = await response.json();
+      console.log(data)
+      if (data?.error) {
+        setError("Error: " + data?.error);
         return;
       }
+      setSuccess(true);
       navigate(`/invitaciones/confirmar/${invitationId}`);
     } catch (error) {
       console.error("Error en el registro:", error.response?.data || error.message);

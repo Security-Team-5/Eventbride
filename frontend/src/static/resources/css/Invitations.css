@@ -53,7 +53,7 @@
   display: block; /* Para que ocupe todo el ancho disponible */
   width: 100%; /* Hace que el botón sea más ancho */
   max-width: 300px; /* Evita que sea demasiado ancho en pantallas grandes */
-  background-color: rgb(251, 159, 229);
+  background-color: #d9be75;
   color: white;
   font-weight: bold;
   padding: 12px 20px; /* Hace el botón más alargado */
@@ -63,10 +63,15 @@
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
   text-align: center;
+  margin-bottom: 2em;
 }
 
 .boton-editar:hover {
-  background-color: rgba(215, 77, 192, 0.856);
+  background-color: #c5ad69;
+}
+
+.trash {
+  background-color: #e53e3e;
 }
 
 .boton-crear-invitacion {

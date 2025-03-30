@@ -129,7 +129,7 @@ function EditProfile() {
                     ) : null
                     }
                 </div>
-                <button onClick={() => setEditing(true)}>EDITAR</button>
+                <button className="editar-profile" onClick={() => setEditing(true)}>EDITAR</button>
                 {userData.role === "SUPPLIER" && userData.plan === "BASIC" && (
                     <button onClick={() => navigate("/profile/plan")}>PLANES</button>
                 )}
