@@ -177,34 +177,15 @@ function EventInvitations() {
                 {
                   invitacion.invitationType==="ACCEPTED" ? (
                   <div className="event-info-i">
-                    <p className="invitation-name">
-                      Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
-                    </p>
-                    <p className="invitation-name">
-                      Invitados de su parte: {invitacion.numberOfGuests}
-                    </p>
-                    <button
-                      onClick={() => {handleRemove(invitacion.id)}}
-                      title="Copiar enlace"
-                      className="trash"
-                    >
-                      <Trash2 size={20} />
-                    </button>
-                  </div>
-                  ) : (
-                    <div className="event-info-i">
+                    <div className="left-event">
                       <p className="invitation-name">
-                        Invitación creada
+                        Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
                       </p>
                       <p className="invitation-name">
-                        Invitados máximos: {invitacion.maxGuests}
+                        Invitados de su parte: {invitacion.numberOfGuests}
                       </p>
-                      <button
-                        onClick={() => {copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${invitacion.id}`)}}
-                        title="Copiar enlace"
-                      >
-                        <Copy size={20} />
-                      </button>
+                    </div>
+                    <div className="right-event">
                       <button
                         onClick={() => {handleRemove(invitacion.id)}}
                         title="Copiar enlace"
@@ -212,6 +193,33 @@ function EventInvitations() {
                       >
                         <Trash2 size={20} />
                       </button>
+                    </div>
+                  </div>
+                  ) : (
+                    <div className="event-info-i">
+                      <div className="left-event">
+                        <p className="invitation-name">
+                          Invitación creada
+                        </p>
+                        <p className="invitation-name">
+                          Invitados máximos: {invitacion.maxGuests}
+                        </p>
+                      </div>
+                      <div className="right-event">
+                        <button
+                          onClick={() => {copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${invitacion.id}`)}}
+                          title="Copiar enlace"
+                        >
+                          <Copy size={20} />
+                        </button>
+                        <button
+                          onClick={() => {handleRemove(invitacion.id)}}
+                          title="Copiar enlace"
+                          className="trash"
+                        >
+                          <Trash2 size={20} />
+                        </button>
+                      </div>
                     </div>
                 )}
               </div>
