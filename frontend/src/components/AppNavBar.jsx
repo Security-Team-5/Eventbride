@@ -91,19 +91,21 @@ function Navbar({ user }) {
       );
     }
 
-    if (currentUser.role === "SUPPLIER" || !loading) {
-      return (
-        <ul className="nav-links">
-          <li><Link to="/misservicios" className="nav-link">Mis servicios</Link></li>
-          <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
-          <li className="flex items-center gap-1">
-            <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
-            {eventProps && eventProps.length > 0 && (
-              <AlertCircle className="text-red-500 w-4 h-4" />
-            )}
-          </li>
-        </ul>
-      );
+    if (currentUser.role === "SUPPLIER") {
+      if(!loading){
+        return (
+          <ul className="nav-links">
+            <li><Link to="/misservicios" className="nav-link">Mis servicios</Link></li>
+            <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
+            <li className="flex items-center gap-1">
+              <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
+              {eventProps && eventProps.length > 0 && (
+                <AlertCircle className="text-red-500 w-4 h-4" />
+              )}
+            </li>
+          </ul>
+        );
+      }
     }
 
     if (currentUser.role === "ADMIN") {
