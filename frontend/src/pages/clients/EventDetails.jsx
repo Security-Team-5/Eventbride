@@ -4,6 +4,9 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import "../../static/resources/css/EventDetails.css"
 import PaypalButtonTotal from "../../components/PaypalButtomTotal";
+import "../../static/resources/css/OtherService.css"
+import { Link } from "react-router-dom"
+
 
 function EventDetails() {
   const [evento, setEvento] = useState(null);
@@ -294,6 +297,13 @@ function EventDetails() {
                         {decodeText(prop.venueDTO.address)}
                       </p>
                     </div>
+                    <div className="venue-details">
+                      <p className="venue-description">
+                        <span className="detail-label">Horario:</span>
+                        {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} - 
+                        {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
+                      </p>
+                    </div>
                     <div className="payment-container" style={{ width: "200px" }}>
                       {prop.status === "APPROVED" && isReservaExpired() ? (
                         <button
@@ -308,6 +318,7 @@ function EventDetails() {
                           Fecha expirada
                         </button>
                       ) : (
+                        <>
                         <button
                           className={`payment-button ${(prop.status === "PENDING" || prop.status === "COMPLETED") ? "disabled" : ""}`}
                           disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
@@ -318,6 +329,12 @@ function EventDetails() {
                         >
                           {getPaymentStatusText(prop.status)}
                         </button>
+                          <div>
+                          <Link to={`/chat/${prop.venueDTO.userDTO.id}`} className="chat-button">
+                            💬 Chatear
+                          </Link>
+                        </div>
+                      </>
                       )}
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
@@ -356,6 +373,13 @@ function EventDetails() {
                         {decodeText(prop.otherServiceDTO.description)}
                       </p>
                     </div>
+                    <div className="venue-details">
+                      <p className="venue-description">
+                        <span className="detail-label">Horario:</span>
+                        {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} - 
+                        {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
+                      </p>
+                    </div>
                     <div className="payment-container" style={{ width: "200px" }}>
                       {prop.status === "APPROVED" && isReservaExpired() ? (
                         <button
@@ -370,22 +394,29 @@ function EventDetails() {
                           Fecha expirada
                         </button>
                       ) : (
-                        <button
-                          className={`payment-button ${(["PENDING", "COMPLETED"].includes(prop.status)) ? "disabled" : ""}`}
-                          disabled={["PENDING", "COMPLETED"].includes(prop.status)}
-                          onClick={() => {
-                            if (prop.status === "CANCELLED") {
-                              solicitarServicio(prop.id);
-                            } else {
-                              navigate(`/payment/${prop.id}`);
-                            }
-                          }}
-                          style={{
-                            backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
-                          }}
-                        >
-                          {getPaymentStatusText(prop.status)}
-                        </button>
+                        <>
+                          <button
+                            className={`payment-button ${(["PENDING", "COMPLETED"].includes(prop.status)) ? "disabled" : ""}`}
+                            disabled={["PENDING", "COMPLETED"].includes(prop.status)}
+                            onClick={() => {
+                              if (prop.status === "CANCELLED") {
+                                solicitarServicio(prop.id);
+                              } else {
+                                navigate(`/payment/${prop.id}`);
+                              }
+                            }}
+                            style={{
+                              backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
+                            }}
+                          >
+                            {getPaymentStatusText(prop.status)}
+                          </button>
+                          <div>
+                            <Link to={`/chat/${prop.otherServiceDTO.userDTO.id}`} className="chat-button">
+                              💬 Chatear
+                            </Link>
+                          </div>
+                        </>
                       )}
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
