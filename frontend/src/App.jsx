@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom"
-import Login from "./pages/no-authentified/Login"
-import Register from "./pages/no-authentified/Register"
-import Home from "./pages/no-authentified/Home.jsx"
+import Login from "./pages/no-authenticated/Login.jsx"
+import Register from "./pages/no-authenticated/Register.jsx"
+import Home from "./pages/no-authenticated/Home.jsx"
 import OtherServiceScreen from "./pages/clients/OtherServiceScreen.jsx"
 import Servicios from "./pages/provider/Servicios"
 import RegistrarServicio from "./pages/provider/RegistrarServicio.jsx"
@@ -10,7 +10,7 @@ import VenuesScreen from "./pages/clients/VenuesScreen"
 import EditarServicio from "./pages/provider/EditarServicio.jsx"
 import "./App.css"
 import NavBar from "./components/AppNavBar"
-import Terms from "./pages/no-authentified/Terms.jsx"
+import Terms from "./pages/no-authenticated/Terms.jsx"
 import { useCurrentUser } from "./hooks/useCurrentUser"
 import MyEvents from "./pages/clients/MyEvents.jsx"
 import CreateEvents from "./pages/clients/CreateEvents"
@@ -20,17 +20,17 @@ import AdminServices from "./pages/admin/AdminServices";
 import AdminUsers from "./pages/admin/AdminUsers";
 import Invitations from "./pages/clients/Invitations.jsx";
 import EventInvitations from "./pages/clients/EventInvitations";
-import RegisterInvitation from "./pages/no-authentified/RegisterInvitation";
+import RegisterInvitation from "./pages/no-authenticated/RegisterInvitation.jsx";
 import ConfirmEmailInvitation from "./pages/clients/ConfirmEmailInvitation.jsx";
 import Payment from "./pages/clients/Payment.jsx";
-import PrivateChat from "./pages/authentified/PrivateChat.jsx";
+import PrivateChat from "./pages/authenticated/PrivateChat.jsx";
 import FloatingChatButton from "./components/FloatingChatButton";
-import ChatList from "./pages/authentified/ChatList.jsx";
+import ChatList from "./pages/authenticated/ChatList.jsx";
 import Footer from "./components/Footer"
-import EditProfile from "./pages/EditProfile"
-import EditPlanProfile from "./pages/EditPlanProfile"
+import EditProfile from "./pages/authenticated/EditProfile.jsx"
+import EditPlanProfile from "./pages/provider/EditPlanProfile"
 import Notifications from "./pages/Notifications"
-import FAQ from "./pages/no-authentified/faqs.jsx"
+import FAQ from "./pages/no-authenticated/faqs.jsx"
 
 
 function App() {
