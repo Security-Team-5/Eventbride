@@ -349,12 +349,6 @@ const VenuesScreen = () => {
                 <div className="card-info">
                   <MapPin size={18} className="card-icon" />
                   <span className="card-text">
-                    <strong>Ubicación:</strong> {selectedVenue.coordinates}
-                  </span>
-                </div>
-                <div className="card-info">
-                  <MapPin size={18} className="card-icon" />
-                  <span className="card-text">
                     <strong>Código Postal:</strong> {selectedVenue.postalCode}
                   </span>
                 </div>
