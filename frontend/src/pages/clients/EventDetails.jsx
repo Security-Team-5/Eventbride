@@ -12,11 +12,14 @@ function EventDetails() {
   const [evento, setEvento] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCostBreakdownModalOpen, setIsCostBreakdownModalOpen] = useState(false);
+  const [isPaymentBreakdownModalOpen, setIsPaymentBreakdownModalOpen] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true)
   const commissionRate = 1.05; // Comisión del 5%
   const [jwtToken] = useState(localStorage.getItem("jwt"));
+  const [payments, setPayments] = useState([]);
+
 
   // Función para obtener los datos del evento
   function getEvents() {
@@ -33,6 +36,21 @@ function EventDetails() {
         console.log("evento obtenido:", data)
         setEvento(data)
         setIsLoading(false)
+        fetch(`/api/payment/${data.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("payment obtenido:", data)
+            setPayments(data)
+          })
+          .catch((error) => {
+            console.error("Error obteniendo evento:", error)
+          })
       })
       .catch((error) => {
         console.error("Error obteniendo evento:", error)
@@ -65,6 +83,8 @@ function EventDetails() {
   const closeModal = () => setIsDeleteModalOpen(false)
   const openCostBreakdownModal = () => setIsCostBreakdownModalOpen(true);
   const closeCostBreakdownModal = () => setIsCostBreakdownModalOpen(false);
+  const openPaymentBreakdownModal = () => setIsPaymentBreakdownModalOpen(true);
+  const closePaymentBreakdownModal = () => setIsPaymentBreakdownModalOpen(false);
 
   // Función para solicitar servicio
   const solicitarServicio = (eventPropertiesId) => {
@@ -200,6 +220,19 @@ function EventDetails() {
     return evento.eventPropertiesDTO.reduce((total, prop) => total + (prop.setPricePerService || 0), 0);
   };
 
+  const sumaPagado = () => {
+    if (!evento || !evento.eventPropertiesDTO) return 0.0;
+  
+    let amount = 0.0;
+  
+    payments.forEach((pago) => {
+      const sinImpuestos = (pago.amount || 0.0) / 1.05;
+      amount += sinImpuestos;
+    });
+  
+    return amount;
+  };
+
   const reservarOPagarServicios = () => {
     if (!evento || !Array.isArray(evento.eventPropertiesDTO)) return null;
     const estados = evento.eventPropertiesDTO.map(prop =>
@@ -267,6 +300,17 @@ function EventDetails() {
                     onClick={openCostBreakdownModal}
                   >
                     {sumaCosteTotalDeposit().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                  </u>
+                </p>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Pagado:</span>
+                <p className="event-budget">
+                  <u
+                    style={{ cursor: "pointer", color: "green" }}
+                    onClick={openPaymentBreakdownModal}
+                  >
+                    {sumaPagado().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                   </u>
                 </p>
               </div>
@@ -601,6 +645,64 @@ function EventDetails() {
             </p>
             <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <button className="close-button" onClick={closeCostBreakdownModal}>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isPaymentBreakdownModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Desglose de pagos</h3>
+            </div>
+
+            <div
+              className="modal-body"
+              style={{ display: "flex", flexDirection: "column", textAlign: "left", alignItems: "flex-start" }}
+            >
+              {evento?.eventPropertiesDTO?.map((prop, i) => {
+                const nombreServicio = decodeText(
+                  prop.otherServiceDTO?.name || prop.venueDTO?.name || `Servicio ${i + 1}`
+                );
+
+                // Filtrar los payments por eventPropertiesId
+                const pagosAsociados = payments.filter(p => p.eventPropertiesId === prop.id);
+
+                const total = pagosAsociados
+                  .filter(p => p.paymentType === "REMAINING")
+                  .reduce((acc, p) => acc + ((p.amount || 0) / 1.05), 0);
+
+                const deposit = pagosAsociados
+                  .filter(p => p.paymentType === "DEPOSIT")
+                  .reduce((acc, p) => acc + ((p.amount || 0) / 1.05), 0);
+
+                const mostrarTotal = total > 0
+                  ? total.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                  : "Sin pagar";
+
+                const mostrarDeposit = deposit > 0
+                  ? deposit.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                  : "Sin pagar";
+
+                return (
+                  <div key={i} className="price-breakdown-item" style={{ marginBottom: "1rem" }}>
+                    <p style={{ fontWeight: "bold", marginBottom: "0.3rem" }}>{nombreServicio}</p>
+                    <p>Total: {mostrarTotal}</p>
+                    <p>Señal: {mostrarDeposit}</p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <p style={{ justifyContent: "center", display: "flex", flexDirection: "row" }}>
+              No se están aplicando los impuestos.
+            </p>
+
+            <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <button className="close-button" onClick={closePaymentBreakdownModal}>
                 Cerrar
               </button>
             </div>

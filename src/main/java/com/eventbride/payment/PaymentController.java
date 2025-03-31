@@ -2,11 +2,16 @@ package com.eventbride.payment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.eventbride.dto.PaymentDTO;
+
+import java.util.List;
 
 import jakarta.validation.Valid;
 
@@ -16,6 +21,16 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+
+    @GetMapping("/{eventId}")
+    public ResponseEntity<List<PaymentDTO>> getPaymentsFromEventId(@PathVariable Integer eventId) {
+        try {
+            List<Payment> payments = paymentService.getPaymentsFromEventId(eventId);
+            return ResponseEntity.ok(PaymentDTO.fromEntities(payments));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/{eventPropertiesId}/pay-deposit/{userId}")
     public ResponseEntity<?> createPaymentDeposit(@PathVariable Integer eventPropertiesId,
@@ -49,4 +64,5 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
 }
