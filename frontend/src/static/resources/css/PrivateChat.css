@@ -92,6 +92,8 @@
     color: white;
     border: none;
     cursor: pointer;
+    width: 100px;
+    margin-bottom: 12px;
 }
 .date-separator {
     text-align: center;
