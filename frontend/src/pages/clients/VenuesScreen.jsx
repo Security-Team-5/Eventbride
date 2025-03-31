@@ -275,8 +275,10 @@ const VenuesScreen = () => {
               <div className="card-body">
                 <div className="card-info">
                   {
-                    venue.userDTO?.plan === "PREMIUM" && <span className="service-badge">Promocionado</span>
+                    venue.userDTO?.plan === "PREMIUM" && <span className="service-badge premium-badge">Promocionado</span>
                   }
+                </div>
+                <div className="card-info">
                   <MapPin size={18} className="card-icon" />
                   <span className="card-text">
                     {venue.address}, {venue.cityAvailable}

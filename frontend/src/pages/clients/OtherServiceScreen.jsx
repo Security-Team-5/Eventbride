@@ -314,7 +314,7 @@ const OtherServiceScreen = () => {
                 </div>
                 <div className="card-body">
                   {
-                    service.userDTO?.plan === "PREMIUM" && <span className="service-badge">Promocionado</span>
+                    service.userDTO?.plan === "PREMIUM" && <span className="service-badge premium-badge">Promocionado</span>
                   }
                   <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
 
