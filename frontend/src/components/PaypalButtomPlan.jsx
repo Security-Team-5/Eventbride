@@ -2,10 +2,8 @@
 import { useEffect, useRef } from "react";
 import "../static/resources/css/Paypal.css";
 import apiClient from "../apiClient";
-import { useNavigate } from "react-router-dom";
 
 function PaypalButtonPlan({ amount, fechaFin }) {
-  const navigate = useNavigate();
   const paypalRef = useRef(null);
 
   useEffect(() => {
@@ -65,7 +63,7 @@ function PaypalButtonPlan({ amount, fechaFin }) {
 
               localStorage.setItem("user", JSON.stringify(updatedUser));
 
-              navigate("/profile");
+              window.location.href = "/profile";
             } catch (err) {
               console.error(err);
             }
@@ -83,7 +81,7 @@ function PaypalButtonPlan({ amount, fechaFin }) {
         paypalRef.current.innerHTML = "";
       }
     };
-  }, [amount, navigate, fechaFin]);
+  }, [amount, fechaFin]);
 
   return (
     <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center" }}>
