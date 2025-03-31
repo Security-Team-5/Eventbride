@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.eventbride.dto.OtherServiceDTO;
+import com.eventbride.event_properties.EventPropertiesService;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -22,6 +23,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import com.eventbride.otherService.OtherService.OtherServiceType;
+import com.eventbride.venue.Venue;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -31,9 +34,13 @@ public class OtherServiceController {
 	@Autowired
 	private OtherServiceService otherServiceService;
 
+	@Autowired
+	private EventPropertiesService eventPropertiesService;
+
 	@GetMapping
 	public List<OtherServiceDTO> getAllOtherServices() {
-		List<OtherService> otherServices = otherServiceService.getAllOtherServices();
+		List<OtherService> otherServices = otherServiceService.getAllOtherServices().stream()
+				.filter(s -> s.getAvailable() == true).toList();
 		return OtherServiceDTO.fromEntities(otherServices);
 	}
 
@@ -156,10 +163,21 @@ public class OtherServiceController {
 		}
 
 		OtherService service = optionalService.get();
-		service.setAvailable(!service.getAvailable());
-		otherServiceService.save(service);
 
-		return ResponseEntity.ok(Map.of("available", service.getAvailable()));
+		// Asegurarse que no se puede hacer disable si existen eventos asociados al
+		// servicio
+		Boolean otherServices = eventPropertiesService.findAll().stream().filter(e -> e.getOtherService() != null)
+				.anyMatch(e -> e.getOtherService().getId() == service.getId());
+
+		if (!otherServices) {
+			service.setAvailable(!service.getAvailable());
+			otherServiceService.save(service);
+			return ResponseEntity.ok(Map.of("available", service.getAvailable()));
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("error", "No puedes deshabilitar servicios asociados a eventos"));
+		}
+
 	}
 
 }

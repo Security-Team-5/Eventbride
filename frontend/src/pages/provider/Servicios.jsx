@@ -73,51 +73,62 @@ const Servicios = () => {
         }
     }
 
-    const handleOtherServiceDisable = (id) => {
-      fetch(`/api/other-services/disable/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-        },
-        method: "PATCH",
-      })
-        .then(response => response.json())
-        .then((data) => {
-          setServices((prevItems) =>
-            prevItems.map((item) =>
-              item.id === id && item.type === "otherService"
-                ? { ...item, available: !item.available }
-                : item
-            )
-          );
-        })
-        .catch((error) => {
-          console.error("Error al cambiar disponibilidad del servicio:", error)
-        })
-    }
+    const handleOtherServiceDisable = async (id) => {
+        try {
+            const response = await fetch(`/api/other-services/disable/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                method: "PATCH",
+            });
 
-  const handleVenuesDisable = (id) => {
-    fetch(`/api/venues/disable/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken}`,
-      },
-      method: "PATCH",
-    })
-      .then(response => response.json())
-      .then((data) => {
-        setServices((prevItems) =>
-          prevItems.map((item) =>
-            item.id === id && item.type === "venue"
-              ? { ...item, available: !item.available }
-              : item
-          )
-        );
-      })
-      .catch((error) => {
-        console.error("Error al cambiar disponibilidad del servicio:", error)
-      })
-  }
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || "No se pudo deshabilitar el servicio");
+            }
+
+            setServices((prevItems) =>
+                prevItems.map((item) =>
+                    item.id === id && item.type === "otherService"
+                        ? { ...item, available: !item.available }
+                        : item
+                )
+            );
+        } catch (error) {
+            console.error("Error al cambiar disponibilidad del servicio:", error);
+            alert(error.message);
+        }
+    };
+
+    const handleVenuesDisable = async (id) => {
+        try {
+            const response = await fetch(`/api/venues/disable/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                method: "PATCH",
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || "No se pudo deshabilitar el servicio");
+            }
+
+            setServices((prevItems) =>
+                prevItems.map((item) =>
+                    item.id === id && item.type === "venue"
+                        ? { ...item, available: !item.available }
+                        : item
+                )
+            );
+        } catch (error) {
+            console.error("Error al cambiar disponibilidad del servicio:", error);
+            alert(error.message);
+        }
+    };
+
 
     return (
         <div className="mis-servicios-container">
@@ -236,11 +247,11 @@ const Servicios = () => {
                                     className={`disable-button ${service.available ? "disable-red" : "enable-green"}`}
                                     onClick={() => {
 
-                                      if(service.type==="otherService") {
-                                        handleOtherServiceDisable(service.id)
-                                      } else {
-                                        handleVenuesDisable(service.id)
-                                      }
+                                        if (service.type === "otherService") {
+                                            handleOtherServiceDisable(service.id)
+                                        } else {
+                                            handleVenuesDisable(service.id)
+                                        }
 
                                     }}
                                 >
