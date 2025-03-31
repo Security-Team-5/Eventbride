@@ -361,6 +361,7 @@ const VenuesScreen = () => {
               </div>
             </div>
             <div className="modal-footer">
+              {selectedVenue.available &&
               <button
                 className="primary-button"
                 onClick={(e) => {
@@ -371,7 +372,7 @@ const VenuesScreen = () => {
               >
                 <Plus size={16} />
                 Añadir a mi evento
-              </button>
+              </button>}
               <button className="close-button" onClick={() => setSelectedVenue(null)}>
                 Cerrar
               </button>

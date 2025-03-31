@@ -480,17 +480,18 @@ const OtherServiceScreen = () => {
               </div>
             </div>
             <div className="modal-footer">
+            {serviceDetails.available &&
               <button
                 className="primary-button"
                 onClick={(e) => {
-                  e.stopPropagation()
-                  setServiceDetailsVisible(false)
-                  handleAddServiceClick(e, serviceDetails.id)
+                  e.stopPropagation();
+                  setServiceDetailsVisible(false);
+                  handleAddServiceClick(e, serviceDetails.id);
                 }}
               >
                 <Plus size={16} />
                 Añadir a mi evento
-              </button>
+              </button>}
               <button className="secondary-button" onClick={() => setServiceDetailsVisible(false)}>
                 Cerrar
               </button>
