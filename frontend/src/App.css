@@ -245,6 +245,42 @@
 input[type="time"] {
   color-scheme: light;
 }
+/* Estilos de la tarjeta de descripción  */
+.service-description {
+  margin-bottom: 1rem;
+}
+
+.description-label {
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 0.2rem;
+}
+
+.description-text {
+  white-space: pre-wrap;   
+  word-wrap: break-word;   
+  overflow-y: auto;
+  margin: 0;
+}
+
+/* Scrollbar para navegadores basados en WebKit (Chrome, Safari, Edge Chromium...) */
+.description-text::-webkit-scrollbar {
+  width: 8px;
+}
+
+.description-text::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+
+.description-text::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 8px;
+}
+
+.description-text::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 /* Estilos para normalizar el documento */
 html,
