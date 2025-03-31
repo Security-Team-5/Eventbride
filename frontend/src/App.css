@@ -241,6 +241,11 @@
   }
 }
 
+/*Se ha introducido el color-scheme para que detecte que los iconitos y desplegables se usan en un fondo blanco*/
+input[type="time"] {
+  color-scheme: light;
+}
+
 /* Estilos para normalizar el documento */
 html,
 body {
