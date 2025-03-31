@@ -6,10 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
+import com.eventbride.otherService.OtherService;
+import com.eventbride.otherService.OtherServiceService;
 import com.eventbride.user.User;
+import com.eventbride.venue.Venue;
+import com.eventbride.venue.VenueService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,16 +27,22 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/event-properties")
 public class EventPropertiesController {
 
     private final EventPropertiesService eventPropertiesService;
+    private final OtherServiceService otherServiceService;
+    private final VenueService venueService;
 
     @Autowired
-    public EventPropertiesController(EventPropertiesService eventPropertiesService) {
+    public EventPropertiesController(EventPropertiesService eventPropertiesService,
+            OtherServiceService otherServiceService, VenueService venueService) {
         this.eventPropertiesService = eventPropertiesService;
+        this.otherServiceService = otherServiceService;
+        this.venueService = venueService;
     }
 
     @GetMapping
@@ -45,30 +56,60 @@ public class EventPropertiesController {
     }
 
     @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
-    public ResponseEntity<Event> addOtherServiceToEvent(@PathVariable Integer eventId,
+    public ResponseEntity<?> addOtherServiceToEvent(
+            @PathVariable Integer eventId,
             @PathVariable Integer otherServiceId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
-        Event updatedEvent = eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId, startDate, endDate);
-        return ResponseEntity.ok(updatedEvent);
+
+        OtherService o = otherServiceService.getAllOtherServices()
+                .stream()
+                .filter(e -> e.getId().equals(otherServiceId)) // Usar equals() en lugar de ==
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Servicio no encontrado"));
+
+        if (o.getAvailable()) {
+            Event updatedEvent = eventPropertiesService.addOtherServiceToEvent(eventId, otherServiceId, startDate,
+                    endDate);
+            return ResponseEntity.ok(updatedEvent);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "No puedes deshabilitar servicios asociados a eventos"));
+        }
     }
 
     @PutMapping("/{eventId}/add-venue/{venueId}")
-    public ResponseEntity<Event> addVenueToEvent(@PathVariable Integer eventId, @PathVariable Integer venueId,
+    public ResponseEntity<?> addVenueToEvent(
+            @PathVariable Integer eventId,
+            @PathVariable Integer venueId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
+
+        Venue venue = venueService.getAllVenues()
+                .stream()
+                .filter(v -> v.getId().equals(venueId)) // Usar equals() para comparar Integer
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Venue no encontrado"));
+
+        if (!venue.getAvailable()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "No puedes asignar un venue deshabilitado a un evento"));
+        }
+
         Event updatedEvent = eventPropertiesService.addVenueToEvent(eventId, venueId, startDate, endDate);
         return ResponseEntity.ok(updatedEvent);
     }
 
     @PutMapping("/cancel/{eventPropertieID}")
     public ResponseEntity<Void> cancelEvent(@PathVariable Integer eventPropertieID, @RequestBody User user) {
-        EventProperties evenProp = eventPropertiesService.findById(eventPropertieID) ;
+        EventProperties evenProp = eventPropertiesService.findById(eventPropertieID);
         LocalDate fechaEvento = evenProp.getStartTime().toLocalDate();
-        if(evenProp.getVenue() != null){
-            eventPropertiesService.getEventsPropsToCancelVenue(fechaEvento, evenProp.getVenue().getId(), evenProp.getId());
-        }else{
-            eventPropertiesService.getEventsPropsToCancelOtherService(fechaEvento, evenProp.getOtherService().getId(), evenProp.getId());
+        if (evenProp.getVenue() != null) {
+            eventPropertiesService.getEventsPropsToCancelVenue(fechaEvento, evenProp.getVenue().getId(),
+                    evenProp.getId());
+        } else {
+            eventPropertiesService.getEventsPropsToCancelOtherService(fechaEvento, evenProp.getOtherService().getId(),
+                    evenProp.getId());
         }
 
         return ResponseEntity.ok().build();
@@ -106,7 +147,8 @@ public class EventPropertiesController {
     }
 
     @PutMapping("/status/pending/{eventPropertiesId}")
-    public ResponseEntity<EventProperties> updateStatusPending(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
+    public ResponseEntity<EventProperties> updateStatusPending(
+            @PathVariable("eventPropertiesId") Integer eventPropertiesId) {
         EventProperties eventProperties = eventPropertiesService.findById(eventPropertiesId);
         if (eventProperties != null) {
             eventProperties.setStatus(EventProperties.Status.PENDING);
