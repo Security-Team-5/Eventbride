@@ -130,13 +130,6 @@ body {
     margin: 0 auto 2rem;
 }
 
-/* Cards */
-.card-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-}
-
 @media (min-width: 768px) {
     .card-grid {
         grid-template-columns: 1fr 1fr;
