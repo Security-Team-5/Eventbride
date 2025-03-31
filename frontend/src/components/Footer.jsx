@@ -35,6 +35,9 @@ function Footer() {
                             <li>
                                 <Link to="/events">Eventos</Link>
                             </li>
+                            <li>
+                                <Link to="/faqs">FAQ´s</Link>
+                            </li>
                         </ul>
                     </div>
 

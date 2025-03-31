@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import apiClient from "../apiClient"
+import apiClient from "../../apiClient"
 import { useNavigate } from "react-router-dom"
-import { MapPin, DollarSign, Users, Clock, Check, X, Plus, Info, Package, CheckCircle, ServerIcon, Calendar } from "lucide-react"
-import "../static/resources/css/RequestService.css"
+import { MapPin, DollarSign, Users, Clock, Check, X, Plus, Info, Package, CheckCircle, Calendar } from "lucide-react"
+import "../../static/resources/css/RequestService.css"
 
 const Servicios = () => {
     const [eventProps, setEventProps] = useState([])

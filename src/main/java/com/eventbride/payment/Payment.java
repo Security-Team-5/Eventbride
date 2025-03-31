@@ -37,13 +37,14 @@ public class Payment extends BaseEntity {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="event_properties_id", nullable=false)
+    @JoinColumn(name="event_properties_id", nullable=true)
     private EventProperties eventProperties;
 
     public enum PaymentType {
         DEPOSIT,
         REMAINING,
-        COMMISSION
+        COMMISSION,
+        PLAN
     }
     
 }

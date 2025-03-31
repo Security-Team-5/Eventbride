@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.UserDTO;
+import com.eventbride.user.User.Plan;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,7 +74,31 @@ public class UserService {
     public User updateUser(Integer id, User userDetails) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
+    
+        // Comprueba si el username al que se quiere actualizar ya está en uso
+        if (!user.getUsername().equals(userDetails.getUsername()) && 
+            userRepository.existsByUsername(userDetails.getUsername())) {
+            throw new RuntimeException("El nombre de usuario ya está en uso");
+        }
+    
+        // Comprueba si el email al que se quiere actualizar ya está en uso
+        if (!user.getEmail().equals(userDetails.getEmail()) && 
+            userRepository.existsByEmail(userDetails.getEmail())) {
+            throw new RuntimeException("El correo electrónico ya está en uso");
+        }
+    
+        // Comprueba si el DNI al que se quiere actualizar ya está en uso
+        if (!user.getDni().equals(userDetails.getDni()) && 
+            userRepository.existsByDni(userDetails.getDni())) {
+            throw new RuntimeException("El DNI ya está registrado");
+        }
+    
+        // Validar el formato del telefono
+        if (!String.valueOf(userDetails.getTelephone()).matches("^[0-9]{9}$")) {
+            throw new RuntimeException("El teléfono debe tener 9 números");
+        }
+    
+        // Actualizar los campos del usuario
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
         user.setFirstName(userDetails.getFirstName());
@@ -83,6 +109,7 @@ public class UserService {
         user.setPlan(userDetails.getPlan());
         user.setPaymentPlanDate(userDetails.getPaymentPlanDate());
         user.setExpirePlanDate(userDetails.getExpirePlanDate());
+        user.setProfilePicture(userDetails.getProfilePicture());
 
         return userRepository.save(user);
     }
@@ -98,11 +125,19 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUserPlan(Integer id, User updatedUser) {
+    public User downgradeUserPlan(Integer id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        user.setPlan(updatedUser.getPlan());
-        user.setPaymentPlanDate(updatedUser.getPaymentPlanDate());
-        user.setExpirePlanDate(updatedUser.getExpirePlanDate());
+        user.setPlan(Plan.BASIC);
+        user.setPaymentPlanDate(null);
+        user.setExpirePlanDate(null);
+        return userRepository.save(user);
+    }
+
+    public User setPremium(Integer id, LocalDate expirationDate) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        user.setPlan(User.Plan.PREMIUM);
+        user.setPaymentPlanDate(LocalDate.now());
+        user.setExpirePlanDate(expirationDate);
         return userRepository.save(user);
     }
   

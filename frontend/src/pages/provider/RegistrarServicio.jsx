@@ -17,11 +17,12 @@ import {
     Package,
     SquareIcon,
 } from "lucide-react"
-import "../static/resources/css/RegistrarServicio.css"
+import "../../static/resources/css/RegistrarServicio.css"
 
 const RegistrarServicio = () => {
     // Obtener datos user desde localStorage
     const currentUser = JSON.parse(localStorage.getItem("user"))
+    const [jwtToken] = useState(localStorage.getItem("jwt"));
 
     const [generalError, setGeneralError] = useState("") //Error si te pasas del numero de servicios permitidos
 
@@ -92,6 +93,7 @@ const RegistrarServicio = () => {
         fetch("/api/" + serviceType, {
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${jwtToken}`,
             },
             method: "POST",
             body: JSON.stringify(formData),
@@ -335,7 +337,7 @@ const RegistrarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="250"
+                                    maxLength="1000"
                                     className="form-input"
                                     placeholder="Ej: https://ejemplo.com/imagen.jpg"
                                 />
@@ -359,7 +361,7 @@ const RegistrarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="1000"
+                                    maxLength="10000"
                                     className="form-input"
                                     rows={4}
                                     placeholder="Describe tu servicio con detalle..."
@@ -598,7 +600,7 @@ const RegistrarServicio = () => {
                                         onChange={handleChange}
                                         required
                                         minLength="1"
-                                        maxLength="1000"
+                                        maxLength="10000"
                                         className="form-input"
                                         rows={4}
                                         placeholder="Proporciona detalles adicionales sobre tu servicio..."
@@ -619,4 +621,3 @@ const RegistrarServicio = () => {
 }
 
 export default RegistrarServicio
-

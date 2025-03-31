@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import apiClient from "../apiClient"
+import { useState, useEffect, useCallback } from "react"
+import apiClient from "../../apiClient"
 import { useNavigate } from "react-router-dom"
 
-import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, Trash2 } from "lucide-react"
+import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff, Eye } from "lucide-react"
 
-import "../static/resources/css/Servicios.css"
+import "../../static/resources/css/Servicios.css"
 
 const Servicios = () => {
     const [services, setServices] = useState([])
@@ -14,64 +14,49 @@ const Servicios = () => {
     const navigate = useNavigate()
 
     const currentUser = JSON.parse(localStorage.getItem("user"))
+    const [jwtToken] = useState(localStorage.getItem("jwt"));
+
+    const fetchServices = useCallback(async () => {
+        try {
+            setLoading(true)
+            const response = await fetch(`/api/services/user/${currentUser.id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${jwtToken}`,
+                },
+                method: "GET",
+            })
+
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta: ${response.status} ${response.statusText}`)
+            }
+
+            const data = await response.json()
+            const otherServices = Array.isArray(data?.otherServices) ? data.otherServices.map(otherService => ({ ...otherService, type: "otherService" })) : []
+            const venues = Array.isArray(data?.venues) ? data.venues.map(venue => ({ ...venue, type: "venue" })) : []
+
+            const allServices = [...otherServices, ...venues]
+            const plan = currentUser.plan || "BASIC"
+            const maxAllowed = plan === "PREMIUM" ? 10 : 3
+
+            const availableServices = allServices.filter(s => s.available)
+            const excessServiceIds = availableServices.slice(maxAllowed).map(s => s.id)
+
+            const markedServices = allServices.map(service => ({
+                ...service,
+                overLimit: excessServiceIds.includes(service.id),
+            }))
+            setServices(markedServices)
+        } catch (error) {
+            console.error("Error fetching services:", error)
+        } finally {
+            setLoading(false)
+        }
+    }, [currentUser.id, currentUser.plan, jwtToken])
 
     useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                setLoading(true)
-                const response = await apiClient.get(`/api/services/user/${currentUser.id}`)
-
-                const otherServices = Array.isArray(response.data.otherServices)
-                    ? response.data.otherServices.map((otherService) => ({ ...otherService, type: "otherService" }))
-                    : []
-
-                const venues = Array.isArray(response.data.venues)
-                    ? response.data.venues.map((venue) => ({ ...venue, type: "venue" }))
-                    : []
-
-                const allServices = [...otherServices, ...venues]
-                const plan = currentUser.plan || "BASIC"
-                const maxAllowed = plan === "PREMIUM" ? 10 : 3
-
-                // 🧠 Solo servicios disponibles
-                const availableServices = allServices.filter(s => s.available)
-                const excessServiceIds = availableServices
-                    .slice(maxAllowed)
-                    .map(s => s.id)
-
-                // Marcar los que están en exceso como overLimit
-                const markedServices = allServices.map(service => ({
-                    ...service,
-                    overLimit: excessServiceIds.includes(service.id),
-                }))
-
-                setServices(markedServices)
-            } catch (error) {
-                console.error("Error fetching services:", error)
-            } finally {
-                setLoading(false)
-            }
-        }
-
         fetchServices()
-    }, [currentUser.id, currentUser.plan])
-
-
-    const deleteService = async (serviceId, serviceType) => {
-        if (window.confirm("¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.")) {
-          try {
-            // Ajustar serviceType para otherService
-            const normalizedServiceType = serviceType === "otherService" ? "other-services" : `${serviceType}s`;
-      
-            await apiClient.delete(`/api/${normalizedServiceType}/delete/${serviceId}`);
-      
-            setServices(services.filter((service) => service.id !== serviceId));
-          } catch (error) {
-            console.error("Error al eliminar el servicio:", error);
-            alert("No se pudo eliminar el servicio. Por favor, inténtalo de nuevo.");
-          }
-        }
-      };
+    }, [fetchServices])
 
     // Función para formatear el tipo de servicio
     const formatServiceType = (type, otherServiceType) => {
@@ -88,6 +73,52 @@ const Servicios = () => {
         }
     }
 
+    const handleOtherServiceDisable = (id) => {
+      fetch(`/api/other-services/disable/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        method: "PATCH",
+      })
+        .then(response => response.json())
+        .then((data) => {
+          setServices((prevItems) =>
+            prevItems.map((item) =>
+              item.id === id && item.type === "otherService"
+                ? { ...item, available: !item.available }
+                : item
+            )
+          );
+        })
+        .catch((error) => {
+          console.error("Error al cambiar disponibilidad del servicio:", error)
+        })
+    }
+
+  const handleVenuesDisable = (id) => {
+    fetch(`/api/venues/disable/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: "PATCH",
+    })
+      .then(response => response.json())
+      .then((data) => {
+        setServices((prevItems) =>
+          prevItems.map((item) =>
+            item.id === id && item.type === "venue"
+              ? { ...item, available: !item.available }
+              : item
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("Error al cambiar disponibilidad del servicio:", error)
+      })
+  }
+
     return (
         <div className="mis-servicios-container">
             <h1 className="mis-servicios-title">Mis Servicios</h1>
@@ -95,7 +126,7 @@ const Servicios = () => {
             {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
                 <div className="warning-message">
                     <AlertCircle size={20} className="mr-2" />
-                    Has excedido el límite de servicios del plan <strong>BASIC</strong>. Marca algunos como no disponibles para cumplir con el límite.
+                    Has excedido el límite de servicios del plan BASIC. Debe desactivar los sobrantes. El máximo permitido es 3.
                 </div>
             )}
 
@@ -126,7 +157,13 @@ const Servicios = () => {
                                     <CheckCircle size={18} className="info-icon" />
                                     <div>
                                         <span className="info-label">Disponible:</span>
-                                        <span className="info-value">{service.available ? "Sí" : "No"}</span>
+                                        <span className="info-value">
+                                            {service.available ? (
+                                                <p style={{ backgroundColor: "#52ba84ca", width: "35%", fontSize: "105%", borderRadius: "7px", textAlign: "center" }}> Sí</p>
+                                            ) : (
+                                                <p style={{ backgroundColor: "#d24e4eca", width: "35%", fontSize: "105%", borderRadius: "7px", textAlign: "center" }}> No</p>
+                                            )}
+                                        </span>
                                     </div>
                                 </div>
 
@@ -195,32 +232,22 @@ const Servicios = () => {
                             </div>
 
                             <div className="service-footer">
+                                <button
+                                    className={`disable-button ${service.available ? "disable-red" : "enable-green"}`}
+                                    onClick={() => {
 
-                                <button className="delete-button" onClick={() => deleteService(service.id, service.type)}>
-                                    <Trash2 size={16} />
-                                    Eliminar
+                                      if(service.type==="otherService") {
+                                        handleOtherServiceDisable(service.id)
+                                      } else {
+                                        handleVenuesDisable(service.id)
+                                      }
+
+                                    }}
+                                >
+                                    {service.available ? <EyeOff size={16} /> : <Eye size={16} />}
+                                    {service.available ? "Deshabilitar" : "Habilitar"}
                                 </button>
-                                {service.overLimit && currentUser.plan === "BASIC" && (
-                                    <button
-                                        className="disable-button"
-                                        onClick={async () => {
-                                            try {
-                                                await apiClient.patch(`/api/other-services/disable/${service.id}`)
-                                                setServices((prev) =>
-                                                    prev.map((s) =>
-                                                        s.id === service.id
-                                                            ? { ...s, available: false, overLimit: false }
-                                                            : s
-                                                    )
-                                                )
-                                            } catch (error) {
-                                                console.error("Error al desactivar servicio:", error)
-                                            }
-                                        }}
-                                    >
-                                        Desactivar
-                                    </button>
-                                )}
+
                                 <button
                                     className="edit-button"
                                     onClick={() =>

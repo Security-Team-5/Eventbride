@@ -13,8 +13,10 @@ import com.eventbride.rating.RatingRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.eventbride.event_properties.EventPropertiesRepository;
 
@@ -38,7 +40,16 @@ public class OtherServiceService {
 
     @Transactional
     public List<OtherService> getAllOtherServices() {
-        return otherServiceRepo.findAll();
+        return otherServiceRepo.findAll().stream()
+                .sorted(Comparator.comparing(
+                        os -> {
+                            if (os.getUser() == null || os.getUser().getPlan() == null) {
+                                return 1; // Puede devolver cualquier valor que no afecte al orden, en caso de que sea
+                                          // nulo
+                            }
+                            return os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1;
+                        }))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -73,24 +84,9 @@ public class OtherServiceService {
 
     @Transactional
     public List<OtherService> getFilteredOtherServices(String name, String city, OtherServiceType type) {
-        return otherServiceRepo.findByFilters(name, city, type);
-    }
-
-    @Transactional
-    public OtherService ZcreateOtherService(OtherService otherService) {
-        Optional<User> user = userService.getUserById(otherService.getUser().getId());
-        if (user.isPresent()) {
-            ServiceDTO allServices = serviceService.getAllServiceByUserId(otherService.getUser().getId());
-            int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
-            if (slotsCount > 3) {
-                throw new RuntimeException("Slot count exceeded");
-            }
-            otherService.setUser(user.get());
-
-        } else {
-            throw new RuntimeException("User not found");
-        }
-        return otherServiceRepo.save(otherService);
+        return otherServiceRepo.findByFilters(name, city, type).stream().sorted(Comparator.comparing(
+                os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1))
+                .collect(Collectors.toList());
     }
 
     @Transactional

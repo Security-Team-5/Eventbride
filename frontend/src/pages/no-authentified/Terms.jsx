@@ -1,5 +1,5 @@
 import { Scroll, UserCheck, UserPlus, CreditCard, Calendar, Star, AlertTriangle, Copyright, Shield, PenTool, CheckCircle2 } from "lucide-react"
-import "../static/resources/css/Terms.css"
+import "../../static/resources/css/Terms.css"
 
 function Terms() {
   return (

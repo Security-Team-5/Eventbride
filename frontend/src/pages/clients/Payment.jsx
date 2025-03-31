@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import "../static/resources/css/Payment.css";
-import PaypalButtom from "../components/PaypalButtom";
+import "../../static/resources/css/Payment.css";
+import PaypalButtom from "../../components/PaypalButtom";
 
 export default function Payment() {
   const [eventProp, setEventProp] = useState(null)
@@ -12,7 +12,7 @@ export default function Payment() {
   const [status, setStatus] = useState("CARGANDO")
   const { id } = useParams()
   const [comision, setComision] = useState(0)
-  const comisionPercentage = 0.02 // Comisión del 2%, con cambiar esta constante cambia toda la lógica de comisión
+  const commissionRate = 0.05 // Comisión del 5%, con cambiar esta constante cambia toda la lógica de comisión
 
 
   useEffect(() => {
@@ -44,12 +44,12 @@ export default function Payment() {
 
         if (data.status === "APPROVED") {
           setStatus("DEPOSITO PARA RESERVA");
-          const depositCommission = data.depositAmount * comisionPercentage; // Calcular comisión del depósito
+          const depositCommission = data.depositAmount * commissionRate; // Calcular comisión del depósito
           setComision(depositCommission);
           setPrice(data.depositAmount + depositCommission); // Sumar comisión al depósito
         } else {
           setStatus("CANTIDAD RESTANTE");
-          const remainingCommission = (data.pricePerService - data.depositAmount) * comisionPercentage; // Calcular comisión del monto restante
+          const remainingCommission = (data.pricePerService - data.depositAmount) * commissionRate; // Calcular comisión del monto restante
           setComision(remainingCommission);
           setPrice(data.pricePerService - data.depositAmount + remainingCommission); // Sumar comisión al monto restante
         }
@@ -124,7 +124,7 @@ export default function Payment() {
 
                     <div className="summary-item">
                       {/* La fórmula saca el porcentaje de comisión de la constante en vez de ser texto fijo */}
-                      <span>Gastos de gestión ({(comisionPercentage * 100).toFixed(0)}%)</span>
+                      <span>Gastos de gestión ({(commissionRate * 100).toFixed(0)}%)</span>
                       <span className="price">{comision.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</span>
                     </div>
 

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.validation.Valid;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -155,14 +156,14 @@ public class UserController {
         }
     }
 
-    @PutMapping("/api/users/profile/plan")
-    public ResponseEntity<?> updateUserPlan(@Valid @RequestBody User updatedUser) {
+    @PutMapping("/planExpired/{id}")
+    public ResponseEntity<?> updateUserPlan(@PathVariable Integer id) {
         try {
-            Optional<User> existingUser = userService.getUserById(updatedUser.getId());
+            Optional<User> existingUser = userService.getUserById(id);
             if (existingUser.isEmpty()) {
                 return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
             }
-            User savedUser = userService.updateUser(updatedUser.getId(), updatedUser);
+            User savedUser = userService.downgradeUserPlan(id);
             return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -184,6 +185,25 @@ public class UserController {
                 return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
             }
             User savedUser = userService.updateUser(id, updatedUser);
+            return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/premium/{id}")
+    public ResponseEntity<?> updatePlanToPremium(@PathVariable Integer id, @RequestBody String expirationDate) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth);
+        try {
+            Optional<User> existingUser = userService.getUserById(id);
+            if (existingUser.isEmpty()) {
+                return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
+            }
+            String cleanDate = expirationDate.replace("\"", ""); 
+            LocalDate date = LocalDate.parse(cleanDate);            User savedUser = userService.setPremium(id, date);
             return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

@@ -9,6 +9,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,11 +50,12 @@ public class Service extends BaseEntity {
     @Column(name = "picture", nullable = false)
     @NotBlank
     @Size(min = 1, max = 250)
+    // @Pattern(regexp = "^(https?:\\/\\/)?([\\w-]+\\.)+[\\w-]+(\\/[\\w-]*)*(\\?.*)?$")
     private String picture;
 
     @Column(name = "description", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 1000)
+    @Size(min = 1, max = 5000)
     private String description;   
 
     @Column(name = "limited_by_price_per_guest", nullable = false)

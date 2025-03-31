@@ -15,18 +15,18 @@ public class EventDTO {
     private Integer id;
     private Event.EventType eventType;
     private Integer guests;
-    private BigDecimal budget;
     private LocalDate eventDate;
     private List<EventPropertiesDTO> eventPropertiesDTO;
+    private String UserEmail;
 
     // Constructor para simplificar la creación del DTO
     public EventDTO(Event event) {
         this.id = event.getId();
         this.eventType = event.getEventType();
         this.guests = event.getGuests();
-        this.budget = event.getBudget();
         this.eventDate = event.getEventDate();
         this.eventPropertiesDTO = EventPropertiesDTO.fromEntities(event.getEventProperties());
+        this.UserEmail = event.getUser().getEmail();
     }
 
     // Método estático para crear una lista de DTOs a partir de una lista de entidades

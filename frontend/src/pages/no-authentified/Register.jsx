@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { User, Mail, Phone, Lock, FileText, Image, UserCircle, AlertCircle, UserPlus } from "lucide-react"
-import apiClient from "../apiClient"
-import "../static/resources/css/Register.css"
+import apiClient from "../../apiClient"
+import "../../static/resources/css/Register.css"
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -24,21 +23,54 @@ const Register = () => {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setError("")
+
+    if (form.firstName.length > 40) {
+      setError("El nombre no puede tener más de 40 caracteres.")
+      return
+    }
+
+    if (form.lastName.length > 40) {
+      setError("El apellido no puede tener más de 40 caracteres.")
+      return
+    }
+
+    if (form.username.length > 50) {
+      setError("El nombre de usuario no puede tener más de 50 caracteres.")
+      return
+    }
+
+    const dniPattern = /^[0-9]{8}[A-Za-z]$/
+    if (!dniPattern.test(form.dni)) {
+      setError("El DNI es incorrecto.")
+      return
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailPattern.test(form.email)) {
+      setError("El correo electrónico no es válido")
+      return
+    }
+
+    const telephonePattern = /^[0-9]{9}$/
+    if (!telephonePattern.test(form.telephone)) {
+      setError("El teléfono debe tener 9 numeros.")
+      return
+    }
 
     if (!acceptedTerms) {
-      setError("Debes aceptar los términos y condiciones para continuar")
+      setError("Debes aceptar los términos y condiciones para continuar.")
       return
     }
 
     setIsLoading(true)
-    setError(null)
+    
 
     const role = "proveedor" === form.role ? "SUPPLIER" : "CLIENT"
 
@@ -89,7 +121,6 @@ const Register = () => {
 
           {error && (
             <div className="error-message">
-              <AlertCircle size={18} />
               <span>{error}</span>
             </div>
           )}
@@ -99,7 +130,6 @@ const Register = () => {
               <div className="form-group">
                 <label htmlFor="firstName">Nombre</label>
                 <div className="input-wrapper">
-                  <User size={18} className="input-icon" />
                   <input
                     type="text"
                     id="firstName"
@@ -115,7 +145,6 @@ const Register = () => {
               <div className="form-group">
                 <label htmlFor="lastName">Apellido</label>
                 <div className="input-wrapper">
-                  <User size={18} className="input-icon" />
                   <input
                     type="text"
                     id="lastName"
@@ -132,7 +161,6 @@ const Register = () => {
             <div className="form-group">
               <label htmlFor="username">Nombre de usuario</label>
               <div className="input-wrapper">
-                <UserCircle size={18} className="input-icon" />
                 <input
                   type="text"
                   id="username"
@@ -148,7 +176,6 @@ const Register = () => {
             <div className="form-group">
               <label htmlFor="profilePicture">URL de foto de perfil</label>
               <div className="input-wrapper">
-                <Image size={18} className="input-icon" />
                 <input
                   type="url"
                   id="profilePicture"
@@ -164,7 +191,6 @@ const Register = () => {
             <div className="form-group">
               <label htmlFor="email">Correo electrónico</label>
               <div className="input-wrapper">
-                <Mail size={18} className="input-icon" />
                 <input
                   type="email"
                   id="email"
@@ -181,7 +207,6 @@ const Register = () => {
               <div className="form-group">
                 <label htmlFor="telephone">Teléfono</label>
                 <div className="input-wrapper">
-                  <Phone size={18} className="input-icon" />
                   <input
                     type="tel"
                     id="telephone"
@@ -197,7 +222,6 @@ const Register = () => {
               <div className="form-group">
                 <label htmlFor="dni">DNI</label>
                 <div className="input-wrapper">
-                  <FileText size={18} className="input-icon" />
                   <input
                     type="text"
                     id="dni"
@@ -214,7 +238,6 @@ const Register = () => {
             <div className="form-group">
               <label htmlFor="password">Contraseña</label>
               <div className="input-wrapper">
-                <Lock size={18} className="input-icon" />
                 <input
                   type="password"
                   id="password"
@@ -273,7 +296,6 @@ const Register = () => {
                 <span className="loading-spinner"></span>
               ) : (
                 <>
-                  <UserPlus size={18} />
                   <span>Crear cuenta</span>
                 </>
               )}

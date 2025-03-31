@@ -412,3 +412,15 @@
         transform: rotate(360deg);
     }
 }
+.not-available-banner {
+    background-color: #e0e0e0;
+    color: #555;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.875rem;
+  }

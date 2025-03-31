@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../static/resources/css/EditProfile.css";
+import "../../static/resources/css/EditProfile.css";
 
 function EditProfile() {
     const [userData, setUserData] = useState({
@@ -12,6 +12,9 @@ function EditProfile() {
         dni: "",
         profilePicture: "",
         role: "",
+        plan: "",
+        paymentPlanDate: "",
+        expirePlanDate: "",
         receivesEmails: false,
     });
     const [editing, setEditing] = useState(false);
@@ -121,12 +124,15 @@ function EditProfile() {
     return (
         <div className="edit-profile-wrapper">
             <div className="sidebar">
-                <div className="profile-pic-wrapper">
-                    <img src={userData.profilePicture} alt="Perfil" className="profile-pic" />
+                <div style={{ maxHeight: "300px", overflow: "hidden", backgroundColor: "#f8f8f8" }} className="profile-pic-wrapper">
+                {userData.profilePicture?.trim() ? (
+                    <img style={{ maxWidth: "300px", maxHeight: "300px", objectFit: "cover", borderRadius: "50%" }} src={userData.profilePicture} alt="Foto de perfil" />
+                    ) : null
+                    }
                 </div>
-                <button onClick={() => setEditing(true)} className="hover-button" style={{ backgroundColor: "#f1e080", color: "white" }}>EDITAR</button>
-                {userData.role === "SUPPLIER" && (
-                    <button onClick={() => navigate("/profile/plan")}>PLANES</button>
+                <button className="editar-profile" onClick={() => setEditing(true)}>EDITAR</button>
+                {userData.role === "SUPPLIER" && userData.plan === "BASIC" && (
+                    <button className="plan-button" onClick={() => navigate("/profile/plan")}>PLANES</button>
                 )}
                 <button className="hover-button" style={{ backgroundColor: "#dc3545", color: "white" }} onClick={handleLogout}>
                     Cerrar sesión

@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Lock, LogIn, AlertCircle } from 'lucide-react';
-import { getCurrentUser } from "../utils/api";
-import apiClient from "../apiClient";
-import '../static/resources/css/Login.css'
+import { getCurrentUser } from "../../utils/api";
+import apiClient from "../../apiClient";
+import '../../static/resources/css/Login.css'
 
 // eslint-disable-next-line react/prop-types
 function Login({ setUser }) {
@@ -25,11 +26,25 @@ function Login({ setUser }) {
       const response = await apiClient.post("/api/users/auth/login", form);
       const token = response.data.token;
       const data = await getCurrentUser({ token });
+      let user = data.user;
+
+      if (data.user.role === "SUPPLIER") {
+        if (data.user.plan === "PREMIUM") {
+          const expireDate = new Date(data.user.expirePlanDate);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          if (expireDate <= today) {
+            const updated = await apiClient.put(`/api/users/planExpired/${data.user.id}`);
+            user = updated.data;
+          }
+        }
+      }
+
+      setUser(user);
       window.localStorage.setItem("user", JSON.stringify(data.user));
       window.localStorage.setItem("jwt", response.data.token);
-      setUser(data.user);
       navigate("/");
-      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError("Credenciales incorrectas");
     } finally {
@@ -37,6 +52,16 @@ function Login({ setUser }) {
     }
   };
 
+  /*
+    fetch(`/api/users/${userData.id}`, {
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+      },
+      method: "PUT",
+      body: JSON.stringify(userData),
+  })
+  */
   return (
     <div className="split-layout">
       <div className="login-side">
@@ -57,7 +82,6 @@ function Login({ setUser }) {
             <div className="form-group">
               <label htmlFor="username">Usuario</label>
               <div className="input-wrapper">
-                <User size={18} className="input-icon" />
                 <input
                   type="text"
                   id="username"
@@ -73,7 +97,6 @@ function Login({ setUser }) {
             <div className="form-group">
               <label htmlFor="password">Contraseña</label>
               <div className="input-wrapper">
-                <Lock size={18} className="input-icon" />
                 <input
                   type="password"
                   id="password"
