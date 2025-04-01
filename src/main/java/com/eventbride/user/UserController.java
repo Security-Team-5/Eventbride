@@ -1,6 +1,7 @@
 package com.eventbride.user;
 
 import com.eventbride.event.EventService;
+import com.eventbride.invitation.Invitation;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceService;
 import com.eventbride.rating.RatingService;
@@ -211,5 +212,11 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/getAdmin")
+    public ResponseEntity<?> getAdmin() throws Exception {
+		User user = userService.getUserByRole("ADMIN");
+		return new ResponseEntity<>(user.getId(), HttpStatus.OK);
+	}
 
 }

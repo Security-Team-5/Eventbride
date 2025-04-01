@@ -86,6 +86,7 @@ function Navbar({ user }) {
           <li><Link to="/venues" className="nav-link">Recintos</Link></li>
           <li><Link to="/other-services" className="nav-link">Otros servicios</Link></li>
           <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
+          <li><Link to="/support" className="nav-link">Soporte Técnico</Link></li>
         </ul>
       );
     }
@@ -102,6 +103,7 @@ function Navbar({ user }) {
                 <AlertCircle className="text-red-500 w-4 h-4" />
               )}
             </li>
+            <li><Link to="/support" className="nav-link">Soporte Técnico</Link></li>
           </ul>
         );
       }

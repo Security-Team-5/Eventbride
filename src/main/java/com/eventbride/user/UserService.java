@@ -140,5 +140,11 @@ public class UserService {
         user.setExpirePlanDate(expirationDate);
         return userRepository.save(user);
     }
+
+    @Transactional(readOnly = true)
+    public User getUserByRole(String role) throws Exception {
+        User user = userRepository.findByRole(role).orElseThrow(() -> new Exception("Usuario no encontrado"));
+        return userRepository.save(user);
+    }
   
 }
