@@ -120,7 +120,9 @@ public class OtherServiceService {
         OtherService otherService = otherServiceRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se ha encontrado ningun servicio con esa Id"));
 
-        BeanUtils.copyProperties(otherServ, otherService, "id");
+        User usuarioExistente = otherService.getUser();
+        BeanUtils.copyProperties(otherServ, otherService);
+        otherService.setUser(usuarioExistente);
 
         return otherServiceRepo.save(otherService);
 

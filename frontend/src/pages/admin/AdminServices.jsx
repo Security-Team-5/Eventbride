@@ -26,12 +26,13 @@ function AdminServices() {
     })
       .then((res) => res.json())
       .then((data) => {
-        const otherServices = Array.isArray(data[0].otherServices)
-          ? data[0].otherServices.map((s) => ({ ...s, type: "other-services" }))
-          : [];
-        const venues = Array.isArray(data[0].venues)
-          ? data[0].venues.map((v) => ({ ...v, type: "venues" }))
-          : [];
+        const otherServices = data.flatMap(d =>
+          (Array.isArray(d.otherServices) ? d.otherServices.map(s => ({ ...s, type: "other-services" })) : [])
+        );
+        const venues = data.flatMap(d =>
+          (Array.isArray(d.venues) ? d.venues.map(v => ({ ...v, type: "venues" })) : [])
+        );
+
         const allServices = [...otherServices, ...venues];
         setServices(allServices);
       })
@@ -72,6 +73,7 @@ function AdminServices() {
     if (!validateServiceData(service)) return;
 
     const updated = serviceData[service.id];
+    console.log(service.id)
 
     fetch(`/api/${service.type}/admin/${service.id}`, {
       method: "PUT",
@@ -125,11 +127,25 @@ function AdminServices() {
                 setError("");
               }
             }}
-            style={{ padding: "10px", maxWidth: "40%", borderRadius: "8px", border: "1px solid #ccc" }}
+            style={{
+              padding: "10px",
+              maxWidth: "40%",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              backgroundColor: "white",
+              color: "black"
+            }}
           />
           <button
             onClick={searchServiceById}
-            style={{ padding: "10px 16px", borderRadius: "8px", backgroundColor: "#007BFF", color: "white", maxWidth: "20%", border: "none" }}
+            style={{
+              padding: "10px 16px",
+              borderRadius: "8px",
+              backgroundColor: "#007BFF",
+              color: "white",
+              maxWidth: "20%",
+              border: "none"
+            }}
           >
             Buscar
           </button>
@@ -139,7 +155,13 @@ function AdminServices() {
               setFilteredServices([]);
               setError("");
             }}
-            style={{ padding: "10px 16px", borderRadius: "8px", maxWidth: "20%", backgroundColor: "#ccc", border: "none" }}
+            style={{
+              padding: "10px 16px",
+              borderRadius: "8px",
+              maxWidth: "20%",
+              backgroundColor: "#ccc",
+              border: "none"
+            }}
           >
             Limpiar
           </button>
@@ -168,6 +190,15 @@ function AdminServices() {
                       value={serviceData[service.id]?.cityAvailable || service.cityAvailable}
                       onChange={handleInputChange}
                       readOnly={editServiceId !== service.id}
+                      style={{
+                        backgroundColor: "white",
+                        color: "black",
+                        width: "100%",
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        padding: "8px",
+                        fontSize: "16px"
+                      }}
                     />
                   </div>
                   <div className="form-group">
@@ -177,17 +208,20 @@ function AdminServices() {
                       value={serviceData[service.id]?.description || service.description}
                       onChange={handleInputChange}
                       readOnly={editServiceId !== service.id}
+                      // Para que no tenga scroll y se muestre toda la info:
                       style={{
                         backgroundColor: "white",
                         color: "black",
                         width: "100%",
-                        minHeight: "120px",
                         border: "1px solid #ccc",
                         borderRadius: "8px",
                         fontSize: "16px",
                         padding: "10px",
-                        fontFamily: "inherit"
+                        fontFamily: "inherit",
+                        resize: "none",
+                        overflow: "hidden"
                       }}
+                      rows={10}
                     />
                   </div>
                   <div className="form-group">
@@ -198,13 +232,33 @@ function AdminServices() {
                       value={serviceData[service.id]?.fixedPrice || service.fixedPrice}
                       onChange={handleInputChange}
                       readOnly={editServiceId !== service.id}
+                      style={{
+                        backgroundColor: "white",
+                        color: "black",
+                        width: "100%",
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        padding: "8px",
+                        fontSize: "16px"
+                      }}
                     />
                   </div>
                   <div className="button-container">
                     {editServiceId === service.id ? (
-                      <button className="save-btn" style={{ backgroundColor: "#4CAF50" }} onClick={() => updateService(service)}>Guardar</button>
+                      <button
+                        className="save-btn"
+                        style={{ backgroundColor: "#4CAF50", color: "#fff", padding: "8px 16px", border: "none", borderRadius: "8px" }}
+                        onClick={() => updateService(service)}
+                      >
+                        Guardar
+                      </button>
                     ) : (
-                      <button className="edit-btn" onClick={() => startEditing(service)}>Editar</button>
+                      <button
+                        className="edit-btn"
+                        onClick={() => startEditing(service)}
+                      >
+                        Editar
+                      </button>
                     )}
                   </div>
                 </form>
