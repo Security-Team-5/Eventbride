@@ -18,7 +18,9 @@
     flex: 1;
     overflow-y: auto;
     padding: 20px;
-    background-color: #fafafa;
+    background-image: url('../images/fondochat.png');
+    background-size: cover;
+    background-position: center;
 }
 
 .message-row {
