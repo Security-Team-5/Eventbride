@@ -263,12 +263,6 @@ function AdminServices() {
                                 onClick={() => navigate(`/service/${service.id}`)}
                                 style={{ cursor: "pointer" }}
                             />
-                            <div className="button-container">
-                                {editingService?.id !== service.id && (
-                                    <button className="edit-btn" onClick={() => handleEdit(service)}>Editar</button>
-                                )}
-                                <button className="delete-btn" onClick={() => deleteService(service.id, service.type)}>Borrar</button>
-                            </div>
                         </div>
                     ))
                 ) : (

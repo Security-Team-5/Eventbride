@@ -213,17 +213,6 @@ function AdminEvents() {
                     ) : (
                       <p>Este evento no tiene propiedades adicionales.</p>
                     )}
-                      {editEventId === event.id ? (
-                        <div className="button-container">
-                          <button className="save-btn" type="submit" onClick={() => {handleOnSubmit(event)}}>Guardar</button>
-                          <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
-                      </div>
-                      ) : (
-                        <div className="button-container">
-                          <button onClick={() => startEditing(event)} className="edit-btn">Editar</button>
-                          <button className="delete-btn" onClick={() => deleteEvent(event.id)}>Borrar</button>
-                        </div>
-                      )}
                   </form>
                 </div>
               </div>

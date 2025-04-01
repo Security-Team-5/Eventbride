@@ -206,17 +206,7 @@ function AdminUsers() {
                                         <img src={user.profilePicture} alt={user.username} className="service-image" />
                                     </div>
 
-                                    {editUserId === user.id ? (
-                                        <div className="button-container">
-                                            <button className="save-btn" onClick={updateUser}>Guardar</button>
-                                            <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
-                                        </div>
-                                    ) : (
-                                        <div className="button-container">
-                                            <button onClick={() => startEditing(user)} className="edit-btn">Editar</button>
-                                            <button className="delete-btn" onClick={(e) => deleteUser(user.id, e)}>Borrar</button>
-                                        </div>
-                                    )}
+                                    
                                 </form>
                             </div>
                         </div>
