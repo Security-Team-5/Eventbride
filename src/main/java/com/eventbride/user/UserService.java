@@ -142,9 +142,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserByRole(String role) throws Exception {
-        User user = userRepository.findByRole(role).orElseThrow(() -> new Exception("Usuario no encontrado"));
-        return userRepository.save(user);
+    public User getUserByRole(String role ) throws Exception {
+        return userRepository.findByRole(role).orElseThrow(() -> new Exception("Usuario no encontrado"));
     }
   
 }
