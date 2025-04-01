@@ -28,7 +28,6 @@ public class PaymentController {
         }
     }
 
-    // FALTA FUNCIONES PARA PAGO RESTANTE
     @PostMapping("/{eventPropertiesId}/pay-remaining/{userId}")
     public ResponseEntity<?> createPaymentRemaining(@PathVariable Integer eventPropertiesId,
             @PathVariable Integer userId) {
@@ -41,7 +40,7 @@ public class PaymentController {
     }
 
     @PostMapping("/plan/{userId}")
-    public ResponseEntity<?> createPaymentPlan(@PathVariable Integer userId, @RequestBody @Valid Double amount){
+    public ResponseEntity<?> createPaymentPlan(@PathVariable Integer userId, @RequestBody @Valid Double amount) {
         try {
             Payment newPayment = paymentService.payPlan(userId, amount);
             return ResponseEntity.ok(newPayment);

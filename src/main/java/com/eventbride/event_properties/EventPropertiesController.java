@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
+import com.eventbride.event.EventService;
 import com.eventbride.user.User;
+import com.eventbride.user.UserService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,21 +19,50 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/event-properties")
 public class EventPropertiesController {
 
+    private final UserService userService;
+    private final EventService eventService;
     private final EventPropertiesService eventPropertiesService;
 
     @Autowired
-    public EventPropertiesController(EventPropertiesService eventPropertiesService) {
+    public EventPropertiesController(EventPropertiesService eventPropertiesService, UserService userService,
+            EventService eventService) {
         this.eventPropertiesService = eventPropertiesService;
+        this.userService = userService;
+        this.eventService = eventService;
+    }
+
+    private Boolean getOwned(Integer id) {
+        // DEBEMOS COMPROBAR QUE EL EVENT ASOCIADO ES DEL USUARIO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userService.getUserByUsername(auth.getName());
+
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("El usuario no existe");
+        }
+
+        List<Event> ownedEvents = eventService.findEventsByUserId(user.get().getId());
+        Boolean owned = ownedEvents.stream()
+                .anyMatch(e -> e.getEventProperties().stream().anyMatch(ep -> ep.getId().equals(id)));
+
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        return !roles.contains("ADMIN") && !owned;
     }
 
     @GetMapping
@@ -41,6 +72,12 @@ public class EventPropertiesController {
 
     @GetMapping("/DTO/{id}")
     public EventPropertiesDTO findById(@PathVariable("id") Integer id) {
+        // Comprobamos que el evento asociado a ese eventPropertie esta asociado al
+        // usuario
+        if (getOwned(id)) {
+            throw new IllegalArgumentException("Este pago no se puede realizar");
+        }
+
         return eventPropertiesService.findByIdDTO(id);
     }
 
@@ -63,12 +100,14 @@ public class EventPropertiesController {
 
     @PutMapping("/cancel/{eventPropertieID}")
     public ResponseEntity<Void> cancelEvent(@PathVariable Integer eventPropertieID, @RequestBody User user) {
-        EventProperties evenProp = eventPropertiesService.findById(eventPropertieID) ;
+        EventProperties evenProp = eventPropertiesService.findById(eventPropertieID);
         LocalDate fechaEvento = evenProp.getStartTime().toLocalDate();
-        if(evenProp.getVenue() != null){
-            eventPropertiesService.getEventsPropsToCancelVenue(fechaEvento, evenProp.getVenue().getId(), evenProp.getId());
-        }else{
-            eventPropertiesService.getEventsPropsToCancelOtherService(fechaEvento, evenProp.getOtherService().getId(), evenProp.getId());
+        if (evenProp.getVenue() != null) {
+            eventPropertiesService.getEventsPropsToCancelVenue(fechaEvento, evenProp.getVenue().getId(),
+                    evenProp.getId());
+        } else {
+            eventPropertiesService.getEventsPropsToCancelOtherService(fechaEvento, evenProp.getOtherService().getId(),
+                    evenProp.getId());
         }
 
         return ResponseEntity.ok().build();
@@ -106,7 +145,8 @@ public class EventPropertiesController {
     }
 
     @PutMapping("/status/pending/{eventPropertiesId}")
-    public ResponseEntity<EventProperties> updateStatusPending(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
+    public ResponseEntity<EventProperties> updateStatusPending(
+            @PathVariable("eventPropertiesId") Integer eventPropertiesId) {
         EventProperties eventProperties = eventPropertiesService.findById(eventPropertiesId);
         if (eventProperties != null) {
             eventProperties.setStatus(EventProperties.Status.PENDING);
