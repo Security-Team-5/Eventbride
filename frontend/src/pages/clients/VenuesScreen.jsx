@@ -26,6 +26,7 @@ const VenuesScreen = () => {
   const [surface, setSurface] = useState("")
   const [filtersVisible, setFiltersVisible] = useState(false)
   const [jwtToken] = useState(localStorage.getItem("jwt"));
+  const [venuesWithCoordinates, setVenuesWithCoordinates] = useState([]);
 
   // Modal para ver detalles del venue al hacer click en la card
   const [selectedVenue, setSelectedVenue] = useState(null)
@@ -69,6 +70,27 @@ const VenuesScreen = () => {
     }
   }
 
+  const parseCoordinates = (coordinatesString) => {
+    if (!coordinatesString) return null;
+    
+    try {
+      const [latStr, lngStr] = coordinatesString.split(',').map(str => str.trim());
+      
+      const lat = parseFloat(latStr);
+      const lng = parseFloat(lngStr);
+      
+      if (isNaN(lat) || isNaN(lng)) {
+        console.warn("Invalid coordinates:", coordinatesString);
+        return null;
+      }
+      
+      return { lat, lng };
+    } catch (error) {
+      console.error("Error parsing coordinates:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     if (city || maxGuests || surface) {
       getFilteredVenues()
@@ -76,6 +98,35 @@ const VenuesScreen = () => {
       findAllVenues()
     }
   }, [])
+
+  useEffect(() => {
+    console.log("Processing venues for map:", venues);
+    
+    const processedVenues = venues.map(venue => {
+      if (!venue.coordinates) {
+        console.warn("Venue missing coordinates:", venue);
+        return null;
+      }
+      
+      const parsedCoordinates = parseCoordinates(venue.coordinates);
+      
+      if (!parsedCoordinates) {
+        console.warn("Could not parse coordinates for venue:", venue);
+        return null;
+      }
+      
+      return {
+        ...venue,
+        latitude: parsedCoordinates.lat,
+        longitude: parsedCoordinates.lng,
+        coordinates: venue.coordinates
+      };
+    }).filter(Boolean);
+    
+    console.log("Processed venues for map:", processedVenues);
+    setVenuesWithCoordinates(processedVenues);
+  }, [venues]);
+
 
   // ------------------------------------------------------------------------------
   // Lógica de filtros
@@ -252,7 +303,7 @@ const VenuesScreen = () => {
         </div>
       )}
 
-      <LeafletMap venues={venues} />
+      <LeafletMap venues={venuesWithCoordinates} />
 
       {/* Venues grid */}
       {loading ? (
