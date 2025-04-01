@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { AlertCircle } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../../static/resources/css/AdminUsers.css";
 
 function AdminEventProps() {
+  const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const [jwtToken] = useState(localStorage.getItem("jwt"));
   const { eventId, eventPropId } = useParams();
   const [eventPropData, setEventPropData] = useState({});
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(true);
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
 
@@ -27,7 +28,7 @@ function AdminEventProps() {
       .then((res) => res.json())
       .then((data) => {
         setEventPropData(data);
-        console.log(data);
+        /*console.log(data);*/
         setFormData({
           requestDate: data.requestDate?.split("T")[0],
           status: data.status || "PENDING",
@@ -69,6 +70,7 @@ function AdminEventProps() {
       setError("La hora de finalización debe ser posterior a la hora de inicio.");
       return;
     }
+
     /* meter en el payload solo lo esencial que espera el controlador*/
     const payload = {
         startTime: startDateTime,
@@ -76,7 +78,7 @@ function AdminEventProps() {
         status: formData.status,
     };
   
-    console.log("Payload enviado:", payload);
+    /*console.log("Payload enviado:", payload);*/
     fetch(`/api/event-properties/admin/${eventPropId}`, {
       method: "PUT",
       headers: {
@@ -95,6 +97,7 @@ function AdminEventProps() {
       .then((updated) => {
         setEventPropData(updated);
         setEditMode(false);
+        navigate(`/admin-events`);
         setError("");
       })
       .catch(err => {
@@ -106,8 +109,8 @@ function AdminEventProps() {
   const statusOptions = ["PENDING", "APPROVED", "CANCELLED", "COMPLETED", "DEPOSIT_PAID"];
 
   return (
-    <div style={{ marginTop: "6%", padding: "20px" }}>
-      <h2 style={{ marginBottom: "20px" }}>Editar Servicio Asociado</h2>
+    <div className="form-section" style={{ marginTop: "6%", padding: "20px" }}>
+
 
       {error && (
         <div className="error-message" style={{ color: "red", display: "flex", alignItems: "center", gap: "5px" }}>
@@ -121,85 +124,85 @@ function AdminEventProps() {
           {eventPropData.otherServiceDTO ? (
             <>
             <h3 className="service-title">
-                Servicio: {eventPropData.otherServiceDTO?.name || ""}
+                Editar Servicio: {eventPropData.otherServiceDTO?.name || ""}
             </h3>
                 <h3 className="service-title">
-                Para el evento: {eventId}
+                Id del evento asociado: {eventId}
             </h3>
             </>
             ) : eventPropData.venueDTO ? (
             <>
             <h3 className="service-title">
-                Servicio: {eventPropData.venueDTO?.name || ""}
+                Editar Recinto: {eventPropData.venueDTO?.name || ""}
             </h3>
             <h3 className="service-title">
-                Para el evento: {eventId}
+                Id del evento asociado: {eventId}
             </h3>
                 </>
             ) : (
             <h3 className="service-title">Sin servicio asociado</h3>
           )}
-          <div className="service-info">
-            <form onSubmit={(e) => e.preventDefault()}>
-              <div className="form-group">
-                <label>Fecha de solicitud:</label>
-                <input
-                  type="date"
-                  name="requestDate"
-                  value={formData.requestDate}
-                  onChange={handleInputChange}
-                  readOnly={!editMode}
-                />
-              </div>
+          <div className="service-info" style= {{alignItems: 'center'}}>
+                <form onSubmit={(e) => e.preventDefault()}>
+                    <div className="form-group">
+                        <label>Fecha de solicitud:</label>
+                        <input
+                        type="date"
+                        name="requestDate"
+                        value={formData.requestDate}
+                        onChange={handleInputChange}
+                        readOnly={!editMode}
+                        />
+                    </div>
 
-              <div className="form-group">
-                <label>Estado:</label>
-                <select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleInputChange}
-                  disabled={!editMode}
-                >
-                  {statusOptions.map(opt => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-              </div>
+                    <div className="form-group">
+                        <label>Estado:</label>
+                        <select
+                        name="status"
+                        value={formData.status}
+                        onChange={handleInputChange}
+                        disabled={!editMode}
+                        >
+                        {statusOptions.map(opt => (
+                            <option key={opt} value={opt}>{opt}</option>
+                        ))}
+                        </select>
+                    </div>
 
-              <div className="form-group">
-                <label>Hora de inicio:</label>
-                <input
-                  type="time"
-                  name="startTime"
-                  value={formData.startTime}
-                  onChange={handleInputChange}
-                  readOnly={!editMode}
-                />
-              </div>
+                    <div className="form-group">
+                        <label>Hora de inicio:</label>
+                        <input
+                        type="time"
+                        name="startTime"
+                        value={formData.startTime}
+                        onChange={handleInputChange}
+                        readOnly={!editMode}
+                        />
+                    </div>
 
-              <div className="form-group">
-                <label>Hora de finalización:</label>
-                <input
-                  type="time"
-                  name="finishTime"
-                  value={formData.finishTime}
-                  onChange={handleInputChange}
-                  readOnly={!editMode}
-                />
-              </div>
+                    <div className="form-group">
+                        <label>Hora de finalización:</label>
+                        <input
+                        type="time"
+                        name="finishTime"
+                        value={formData.finishTime}
+                        onChange={handleInputChange}
+                        readOnly={!editMode}
+                        />
+                    </div>
 
-              <div className="button-container" style={{ marginTop: "20px" }}>
-                {editMode ? (
-                  <button className="save-btn" style={{ backgroundColor: "#4CAF50" }} onClick={updateEventProp}>
-                    Guardar
-                  </button>
-                ) : (
-                  <button className="edit-btn" onClick={() => setEditMode(true)}>
-                    Editar
-                  </button>
-                )}
-              </div>
-            </form>
+                    <div className="button-container" style={{ marginTop: "20px" }}>
+                        {editMode ? (
+                        <button className="save-btn" style={{ backgroundColor: "#4CAF50" }} onClick={updateEventProp}>
+                            Guardar
+                        </button>
+                        ) : (
+                        <button className="edit-btn" onClick={() => setEditMode(true)}>
+                            Editar
+                        </button>
+                        )}
+                    </div>
+                </form>
           </div>
         </div>
       ) : (
