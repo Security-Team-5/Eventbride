@@ -19,11 +19,13 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import com.eventbride.otherService.OtherService.OtherServiceType;
-import com.eventbride.venue.Venue;
+import com.eventbride.user.User;
+import com.eventbride.user.UserRepository;
 
 import jakarta.validation.Valid;
 
@@ -33,6 +35,9 @@ public class OtherServiceController {
 
 	@Autowired
 	private OtherServiceService otherServiceService;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private EventPropertiesService eventPropertiesService;
@@ -118,6 +123,46 @@ public class OtherServiceController {
 		}
 
 		return ResponseEntity.badRequest().body(errorDetails);
+	}
+
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateServiceUser(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+		if (roles.contains("SUPPLIER")) {
+			try {
+				Optional<OtherService> existingServiceOptional = otherServiceService.getOtherServiceById(id);
+				if (existingServiceOptional.isEmpty()) {
+					return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
+				}
+
+				OtherService existingService = existingServiceOptional.get();
+
+				UserDetails userDetails = (UserDetails) auth.getPrincipal();
+				String username = userDetails.getUsername();
+
+				Optional<User> loggedUserOptional = userRepository.findByUsername(username);
+				if (loggedUserOptional.isEmpty()) {
+					return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
+				}
+
+				User loggedUser = loggedUserOptional.get();
+
+				if (!existingService.getUser().getId().equals(loggedUser.getId())) {
+					return new ResponseEntity<>("You are not allowed to update this service", HttpStatus.FORBIDDEN);
+				}
+
+				updatedService.setId(id);
+				OtherService savedService = otherServiceService.updateOtherService(id, updatedService);
+				return new ResponseEntity<>(new OtherServiceDTO(savedService), HttpStatus.OK);
+			} catch (RuntimeException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+		}
+
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 
 	@PutMapping("/admin/{id}")
