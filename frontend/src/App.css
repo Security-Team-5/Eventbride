@@ -242,7 +242,7 @@
 }
 
 /*Se ha introducido el color-scheme para que detecte que los iconitos y desplegables se usan en un fondo blanco*/
-input[type="time"] {
+input[type="time"], input[type="number"] {
   color-scheme: light;
 }
 /* Estilos de la tarjeta de descripción  */
@@ -264,23 +264,25 @@ input[type="time"] {
 }
 
 /* Scrollbar para navegadores basados en WebKit (Chrome, Safari, Edge Chromium...) */
-.description-text::-webkit-scrollbar {
+.event-services-box::-webkit-scrollbar, .description-text::-webkit-scrollbar {
   width: 8px;
 }
 
-.description-text::-webkit-scrollbar-track {
+.event-services-box::-webkit-scrollbar-track, .description-text::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 8px;
 }
 
-.description-text::-webkit-scrollbar-thumb {
+.event-services-box::-webkit-scrollbar-thumb, .description-text::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 8px;
 }
 
-.description-text::-webkit-scrollbar-thumb:hover {
+.event-services-box::-webkit-scrollbar-thumb:hover, .description-text::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+
 
 /* Estilos para normalizar el documento */
 html,

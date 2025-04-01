@@ -218,7 +218,9 @@ function AdminEvents() {
       {currentUser?.role === "ADMIN" ? (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
           {(filteredEvents.length > 0 ? filteredEvents : events).map((event, index) => (
-            <div key={index} className="service-container">
+
+            /* SI NO OS GUSTA EL QUE SE PUEDA HACER SCROLL, ELIMINADLE EL STYLE*/
+            <div key={index} className="service-container" style={{ height: "90%" }}>
               <h2 className="service-title">Evento ID: {event.id}</h2>
               <h2 className="service-title">De {event.userEmail}</h2>
 
@@ -262,7 +264,9 @@ function AdminEvents() {
                   </div>
 
                   {(event.eventPropertiesDTO?.length > 0 || event.eventProperties?.length > 0) && (
-                    <div className="event-services-box">
+                    
+                    /* SI NO OS GUSTA EL QUE SE PUEDA HACER SCROLL, ELIMINADLE EL STYLE*/
+                    <div className="event-services-box" style={{ height: "300px", overflowY: "auto" }}>
                       <h3>Servicios del Evento</h3>
 
                       {(event.eventPropertiesDTO || []).some(prop => prop.venueDTO) && (
