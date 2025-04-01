@@ -80,6 +80,7 @@ public class SecurityConfig {
                                                                 "/api/v1/events/{id}",
                                                                 "/api/v1/events/next/**",
                                                                 "/api/event-properties/DTO/**",
+                                                                "/api/event-properties/update/**",
                                                                 "/api/event-properties/cancel/**",
                                                                 "/api/event-properties/{eventId}/add-otherservice/{otherServiceId}",
                                                                 "/api/event-properties/{eventId}/add-venue/{venueId}",
