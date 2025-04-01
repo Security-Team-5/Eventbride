@@ -113,7 +113,7 @@ const EditarServicio = () => {
             if (serviceType === 'venue') {
                 await apiClient.put(`/api/venues/${id}`, updatedFormData);
             } else {
-                await apiClient.put(`/api/other-services/${id}`, updatedFormData);
+                await apiClient.put(`/api/other-services/update/${id}`, updatedFormData);
             }
             navigate('/misservicios');
         } catch (error) {

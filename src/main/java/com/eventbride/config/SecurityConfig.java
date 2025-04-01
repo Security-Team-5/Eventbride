@@ -71,6 +71,7 @@ public class SecurityConfig {
                                                                 "/api/event-properties/pending/{userId}",
                                                                 "/api/event-properties/status/pending/{eventPropertiesId}",
                                                                 "/api/users/plan",
+                                                                "/api/users/getAdmin",
                                                                 "/api/users/planExpired/{id}")
                                                 .hasAnyAuthority("SUPPLIER", "ADMIN") // 🔹 Admin también puede acceder
 
@@ -79,12 +80,14 @@ public class SecurityConfig {
                                                                 "/api/v1/events/{id}",
                                                                 "/api/v1/events/next/**",
                                                                 "/api/event-properties/DTO/**",
+                                                                "/api/event-properties/update/**",
                                                                 "/api/event-properties/cancel/**",
                                                                 "/api/event-properties/{eventId}/add-otherservice/{otherServiceId}",
                                                                 "/api/event-properties/{eventId}/add-venue/{venueId}",
                                                                 "/api/event-properties/cancel/{eventPropertieID}",
                                                                 "/api/invitation/eventInvitations/{eventId}",
                                                                 "/api/invitation/**",
+                                                                "/api/users/getAdmin",
                                                                 "/api/invitation/create/**")
                                                 .hasAnyAuthority("CLIENT", "ADMIN")
                                                 .anyRequest().authenticated())
