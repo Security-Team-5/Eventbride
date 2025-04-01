@@ -26,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 import com.eventbride.user.User;
 import com.eventbride.user.UserRepository;
+import com.eventbride.venue.Venue;
 
 import jakarta.validation.Valid;
 
@@ -126,44 +127,44 @@ public class OtherServiceController {
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateServiceUser(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+public ResponseEntity<?> updateServiceUser(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+    List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-		if (roles.contains("SUPPLIER")) {
-			try {
-				Optional<OtherService> existingServiceOptional = otherServiceService.getOtherServiceById(id);
-				if (existingServiceOptional.isEmpty()) {
-					return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
-				}
+    if (roles.contains("SUPPLIER")) {
+        try {
+            Optional<OtherService> existingServiceOptional = otherServiceService.getOtherServiceById(id);
+            if (existingServiceOptional.isEmpty()) {
+                return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
+            }
 
-				OtherService existingService = existingServiceOptional.get();
+            OtherService existingService = existingServiceOptional.get();
 
-				UserDetails userDetails = (UserDetails) auth.getPrincipal();
-				String username = userDetails.getUsername();
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            String username = userDetails.getUsername();
 
-				Optional<User> loggedUserOptional = userRepository.findByUsername(username);
-				if (loggedUserOptional.isEmpty()) {
-					return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
-				}
+            Optional<User> loggedUserOptional = userRepository.findByUsername(username);
+            if (loggedUserOptional.isEmpty()) {
+                return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
+            }
 
-				User loggedUser = loggedUserOptional.get();
+            User loggedUser = loggedUserOptional.get();
 
-				if (!existingService.getUser().getId().equals(loggedUser.getId())) {
-					return new ResponseEntity<>("You are not allowed to update this service", HttpStatus.FORBIDDEN);
-				}
+            if (!existingService.getUser().getId().equals(loggedUser.getId())) {
+                return new ResponseEntity<>("You are not allowed to update this service", HttpStatus.FORBIDDEN);
+            }
 
-				updatedService.setId(id);
-				OtherService savedService = otherServiceService.updateOtherService(id, updatedService);
-				return new ResponseEntity<>(new OtherServiceDTO(savedService), HttpStatus.OK);
-			} catch (RuntimeException e) {
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-			}
-		}
+            updatedService.setId(id);
+            OtherService savedService = otherServiceService.updateOtherService(id, updatedService);
+            return new ResponseEntity<>(new OtherServiceDTO(savedService), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-	}
+    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+}
 
 	@PutMapping("/admin/{id}")
 	public ResponseEntity<?> updateService(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {

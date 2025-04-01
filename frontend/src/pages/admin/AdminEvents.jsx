@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { AlertCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "../../static/resources/css/AdminUsers.css";
 
 function AdminEvents() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [editEventId, setEditEventId] = useState(null);
   const [eventData, setEventData] = useState({});
@@ -31,12 +33,21 @@ function AdminEvents() {
       },
       method: "GET",
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text); // Captura errores tipo 500 con mensaje plano
+        }
+        return res.json();
+      })
       .then((data) => {
         setEvents(data);
-        console.log(data);
+        console.log("Eventos cargados:", data);
       })
-      .catch((err) => console.error("Error obteniendo eventos:", err));
+      .catch((err) => {
+        console.error("Error obteniendo eventos:", err.message);
+        setError("Error al cargar eventos: " + err.message);
+      });
   }
 
   function startEditing(event) {
@@ -263,6 +274,9 @@ function AdminEvents() {
                               <p><strong>Ciudad:</strong> {prop.venueDTO.cityAvailable}</p>
                               <p><strong>Aprobado:</strong> {prop.approved ? "Sí" : "No"}</p>
                               <p><strong>Fecha solicitud:</strong> {new Date(prop.requestDate).toLocaleDateString("es-ES")}</p>
+                              <button type="button" className="cancel-button" onClick={() => navigate(`/admin/event/${event.id}/event-prop/${prop.id}`)}>
+                                  Editar recinto asociado
+                              </button>
                             </div>
                           ))}
                         </div>
@@ -277,6 +291,9 @@ function AdminEvents() {
                               <p><strong>Ciudad:</strong> {prop.otherServiceDTO.cityAvailable}</p>
                               <p><strong>Aprobado:</strong> {prop.approved ? "Sí" : "No"}</p>
                               <p><strong>Fecha solicitud:</strong> {new Date(prop.requestDate).toLocaleDateString("es-ES")}</p>
+                              <button type="button" className="cancel-button" onClick={() => navigate(`/admin/event/${event.id}/event-prop/${prop.id}`)}>
+                                  Editar servicio asociado
+                              </button>
                             </div>
                           ))}
                         </div>
