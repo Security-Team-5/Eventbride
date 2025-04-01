@@ -285,7 +285,12 @@ function EventDetails() {
                         className="service-image"
                         src={prop.venueDTO.picture || "/placeholder.svg"}
                         alt={prop.venueDTO.name}
-                        style={{ objectFit: "cover", maxHeight: "100%" }}
+                        style={{ objectFit: "cover", 
+                          maxHeight: "100%",  
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          overflow: "hidden", }}
                       />
                     </div>
                     <div className="venue-details">
