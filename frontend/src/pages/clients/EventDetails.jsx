@@ -241,7 +241,7 @@ function EventDetails() {
               <h2 className="event-title">Detalles del Evento</h2>
             </div>
 
-            <button className="delete-button" onClick={openModal} style={{ marginLeft: "auto" }}>
+            <button className="delete-button" style={{maxWidth: "10%",marginLeft: "auto"}} onClick={openModal}>
               <i className="delete-icon">✕</i>
               <span>Eliminar</span>
             </button>
@@ -285,7 +285,12 @@ function EventDetails() {
                         className="service-image"
                         src={prop.venueDTO.picture || "/placeholder.svg"}
                         alt={prop.venueDTO.name}
-                        style={{ objectFit: "cover", maxHeight: "100%" }}
+                        style={{ objectFit: "cover", 
+                          maxHeight: "100%",  
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          overflow: "hidden", }}
                       />
                     </div>
                     <div className="venue-details">

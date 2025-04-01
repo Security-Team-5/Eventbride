@@ -30,6 +30,7 @@ import Footer from "./components/Footer"
 import FAQ from "./pages/no-authentified/faqs.jsx"
 import EditProfile from "./pages/authentified/EditProfile.jsx"
 import EditPlanProfile from "./pages/provider/EditPlanProfile"
+import Support from "./pages/authentified/Support.jsx"
 
 function App() {
   const { currentUser, loading, setCurrentUser } = useCurrentUser(null)
@@ -82,6 +83,7 @@ function App() {
                 <Route path="/chat/:id" element={<PrivateChat />} />
                 <Route path="/chats" element={<ChatList />} />
                 <Route path="/profile" element={<EditProfile />} />
+                <Route path="/support" element={<Support />} />
               </>
             )}
             {/*Rutas públicas*/}

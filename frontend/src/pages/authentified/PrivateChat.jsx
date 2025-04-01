@@ -111,10 +111,10 @@ const PrivateChat = () => {
       <FloatingBackButton />
       <div className="chat-container">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <img style={{ width: "10%", height: "100%" }}
+          <img
             src={otherUser?.profilePicture || "/placeholder.svg"}
-            alt="Profile"
-            className="profile-picture"
+            alt="Foto de perfil"
+            className="chat-avatar"
           />
           <b style={{ marginLeft: "1%", fontSize: 18 }}>Chat con {otherUser?.username}</b>
         </div>
