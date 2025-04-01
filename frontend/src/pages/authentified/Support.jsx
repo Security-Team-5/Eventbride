@@ -24,7 +24,7 @@ const getFAQDataByRole = (role) => {
           icon: <CreditCard />,
           topics: [
             { question: "Pago rechazado / no procesado", answer: "Tu pedido no está completo. Intenta el pago nuevamente desde 'Mis Eventos' o prueba otro método." },
-            { question: "He recibido un cargo desconocido", answer: "Revisa tus pedidos recientes. Si el cargo no coincide, contacta con soporte." },
+            { question: "He recibido un cargo desconocido", answer: "Revisa tus eventos recientes. Si el cargo no coincide, contacta con soporte." },
             { question: "¿Cómo solicito un reembolso?", answer: "Accede a tu historial de reservas y selecciona 'Solicitar reembolso' si aplica." },
             { question: "¿Qué métodos de pago aceptáis?", answer: "Tarjeta y PayPal." },
           ],
@@ -44,7 +44,7 @@ const getFAQDataByRole = (role) => {
           icon: <Shield />,
           topics: [
             { question: "¿Cómo cambio mi contraseña?", answer: "Desde tu perfil → Configuración → Cambiar contraseña." },
-            { question: "¿Cómo elimino mi cuenta?", answer: "Ve a tu perfil y selecciona 'Deshabilitar cuenta'. Recuerda: es irreversible." },
+            { question: "¿Cómo elimino mi cuenta?", answer: "Ve a tu perfil y selecciona 'Deshabilitar cuenta'" },
             { question: "¿Cómo actualizo mis datos?", answer: "En la sección de configuración de perfil." },
             { question: "¿Están seguros mis datos?", answer: "Sí. Cumplimos con el GDPR y tus datos solo se comparten con proveedores si haces una solicitud." },
           ],
@@ -76,9 +76,9 @@ const getFAQDataByRole = (role) => {
           category: "Planes de pago",
           icon: <DollarSign />,
           topics: [
-            { question: "¿Se me cobra automáticamente el plan Premium?", answer: "No, tu pagas por adelantado los meses que quieres contratarlo." },
+            { question: "¿Se me cobra automáticamente el plan Premium?", answer: "No, tu pagas por adelantado los meses que quieres contratar." },
             { question: "¿Se me ha terminado el plan Premium que pasa con mis servicios promocionados?", answer: "Una vez expirado tu plan Premium, tus servicios promocionados dejarán de estarlo." },
-            { question: "¿Que pasa cuando se acaba el plan Premium y tengo más de 3 servicios?", answer: "Cuando se acabe tu suscripción premium, tendrás que deshabilitar tanto servicios hasta que llegues a los 3 permitidos por el plan básico." },
+            { question: "¿Que pasa cuando se acaba el plan Premium y tengo más de 3 servicios?", answer: "Cuando se acabe tu suscripción Premium, tendrás que deshabilitar tanto servicios hasta que llegues a los 3 permitidos por el plan Básico." },
           ],
         },
         {
