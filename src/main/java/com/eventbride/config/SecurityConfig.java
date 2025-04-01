@@ -85,7 +85,8 @@ public class SecurityConfig {
                                                                 "/api/event-properties/cancel/{eventPropertieID}",
                                                                 "/api/invitation/eventInvitations/{eventId}",
                                                                 "/api/invitation/**",
-                                                                "/api/invitation/create/**")
+                                                                "/api/invitation/create/**",
+                                                                "/api/v1/events/create")
                                                 .hasAnyAuthority("CLIENT", "ADMIN")
                                                 .anyRequest().authenticated())
                                 .sessionManagement(manager -> manager
