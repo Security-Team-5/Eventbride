@@ -94,7 +94,7 @@ function App() {
           </Routes>
           <FloatingChatButton />
         </div>
-        <Footer />
+        <Footer user={currentUser} />
       </div>
     </Router>
   )

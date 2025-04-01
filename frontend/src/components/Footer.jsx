@@ -2,7 +2,8 @@ import { Link } from "react-router-dom"
 import { Mail, Phone, MapPin, Instagram, Linkedin } from "lucide-react"
 import "../static/resources/css/Footer.css"
 
-function Footer() {
+// eslint-disable-next-line react/prop-types
+function Footer({ user }) {
     return (
         <div className="footer-wrapper">
             <footer className="site-footer">
@@ -20,26 +21,27 @@ function Footer() {
                         </div>
                     </div>
 
-                    <div className="footer-section">
-                        <h3>Enlaces Rápidos</h3>
-                        <ul>
-                            <li>
-                                <Link to="/">Inicio</Link>
-                            </li>
-                            <li>
-                                <Link to="/venues">Venues</Link>
-                            </li>
-                            <li>
-                                <Link to="/other-services">Servicios</Link>
-                            </li>
-                            <li>
-                                <Link to="/events">Eventos</Link>
-                            </li>
-                            <li>
-                                <Link to="/faqs">FAQ´s</Link>
-                            </li>
-                        </ul>
-                    </div>
+                    {
+                        user ? (
+                            <div className="footer-section">
+                                <h3>Enlaces Rápidos</h3>
+                                <ul>
+                                    <li>
+                                        <Link to="/">Inicio</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/venues">Venues</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/other-services">Servicios</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/events">Eventos</Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        ) : ""
+                    }
 
                     <div className="footer-section">
                         <h3>Contacto</h3>
@@ -52,6 +54,9 @@ function Footer() {
                             </li>
                             <li>
                                 <Mail size={16} /> eventbride6@gmail.com
+                            </li>
+                            <li>
+                                <Link to="/faqs">FAQ´s</Link>
                             </li>
                         </ul>
                     </div>
