@@ -44,11 +44,13 @@ public class VenueController {
     }
 
     @GetMapping("/filter")
-    public List<Venue> getFilteredVenues(
+    public ResponseEntity<List<VenueDTO>> getFilteredVenues(
             @RequestParam(required = false) String city,
             @RequestParam(required = false) Integer maxGuests,
             @RequestParam(required = false) Double surface) {
-        return venueService.getFilteredVenues(city, maxGuests, surface);
+        List<Venue> filteredVenues = venueService.getFilteredVenues(city, maxGuests, surface);
+		return ResponseEntity.ok(VenueDTO.fromEntities(filteredVenues));
+
     }
 
     @PostMapping
