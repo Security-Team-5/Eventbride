@@ -241,7 +241,7 @@ function EventDetails() {
               <h2 className="event-title">Detalles del Evento</h2>
             </div>
 
-            <button className="delete-button" onClick={openModal} style={{ marginLeft: "auto" }}>
+            <button className="delete-button" style={{maxWidth: "10%",marginLeft: "auto"}} onClick={openModal}>
               <i className="delete-icon">✕</i>
               <span>Eliminar</span>
             </button>

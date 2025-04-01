@@ -45,6 +45,7 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     font-size: 0.9rem;
+    max-width: 15%;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -58,6 +59,7 @@
 }
 
 .category-button.active {
+    max-width: 20%;
     background-color: #d9be75;
     color: white;
     border-color: #d9be75;
