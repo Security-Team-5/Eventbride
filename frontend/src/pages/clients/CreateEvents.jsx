@@ -56,14 +56,15 @@ function CreateEvents() {
     const minDaysDifference = Math.ceil((selectedDate - today) / (1000 * 60 * 60 * 24));
 
     console.log("Diferencia en días:", minDaysDifference);
-    if (eventType === "CHRISTENING" && minDaysDifference > 30) {
-      setError("Para un bautizo, la fecha debe ser como máximo 30 días después de hoy");
+
+    if (eventType === "CHRISTENING" && minDaysDifference < 30) {
+      setError("Para un bautizo, la fecha debe ser al menos 1 mes después de hoy");
       return;
-    } else if (eventType === "COMMUNION" && minDaysDifference > 90) {
-      setError("Para una comunión, la fecha debe ser como máximo 90 días después de hoy");
+    } else if (eventType === "COMMUNION" && minDaysDifference < 90) {
+      setError("Para una comunión, la fecha debe ser al menos 3 meses después de hoy");
       return;
-    } else if (eventType === "WEDDING" && minDaysDifference > 120) {
-      setError("Para una boda, la fecha debe ser al como máximo 120 días después de hoy");
+    } else if (eventType === "WEDDING" && minDaysDifference < 120) {
+      setError("Para una boda, la fecha debe ser al menos 4 meses después de hoy");
       return;
     }
     // }
@@ -126,13 +127,13 @@ function CreateEvents() {
                 !eventType
                   ? "Ej: Nombre del evento"
                   : eventType === "WEDDING"
-                  ? "Ej: Boda de Roberto y Lucía"
-                  : eventType === "CHRISTENING"
-                  ? "Ej: Bautizo de Pedro"
-                  : eventType === "COMMUNION"
-                  ? "Ej: Comunión de Juan"
-                  : "Ej: Nombre del evento"
-              } 
+                    ? "Ej: Boda de Roberto y Lucía"
+                    : eventType === "CHRISTENING"
+                      ? "Ej: Bautizo de Pedro"
+                      : eventType === "COMMUNION"
+                        ? "Ej: Comunión de Juan"
+                        : "Ej: Nombre del evento"
+              }
               className="form-input"
             />
 
@@ -192,10 +193,11 @@ function CreateEvents() {
               onChange={(e) => setEventDate(e.target.value)}
               required
               className="form-input"
-              min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split("T")[0]}
-              max={new Date(new Date().setDate(new Date().getDate() + 120)).toISOString().split("T")[0]}
+              min={new Date().toISOString().split("T")[0]}
+              max={new Date(new Date().setFullYear(new Date().getFullYear() + 4)).toISOString().split("T")[0]}
             />
           </div>
+
 
           <button type="submit" className="submit-button" disabled={isSubmitting}>
             {isSubmitting ? "Creando evento..." : "Crear evento"}
