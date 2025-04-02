@@ -32,8 +32,8 @@ function AdminEventProps() {
         setFormData({
           requestDate: data.requestDate?.split("T")[0],
           status: data.status || "PENDING",
-          startTime: data.startTime || "00:00:00",
-          finishTime: data.finishTime || "00:00:00",
+          startTime: data.startTime ? data.startTime.substring(0, 5) : "00:00:00",
+          finishTime: data.finishTime ? data.finishTime.substring(0, 5) : "00:00:00",
         });
       })
       .catch((err) => console.error("Error obteniendo las propiedades:", err));
@@ -144,17 +144,6 @@ function AdminEventProps() {
           )}
           <div className="service-info" style= {{alignItems: 'center'}}>
                 <form onSubmit={(e) => e.preventDefault()}>
-                    <div className="form-group">
-                        <label>Fecha de solicitud:</label>
-                        <input
-                        type="date"
-                        name="requestDate"
-                        value={formData.requestDate}
-                        onChange={handleInputChange}
-                        readOnly={!editMode}
-                        />
-                    </div>
-
                     <div className="form-group">
                         <label>Estado:</label>
                         <select

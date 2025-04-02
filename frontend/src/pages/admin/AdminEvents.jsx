@@ -257,9 +257,9 @@ function AdminEvents() {
                     <input
                       type="date"
                       name="eventDate"
-                      value={eventData[event.id]?.eventDate || new Date(event.eventDate).toISOString().split("T")[0]}
+                      value={eventData[event.id]?.eventDate || (event.eventDate ? event.eventDate.split("T")[0] : "")}
                       onChange={handleInputChange}
-                      readOnly={editEventId !== event.id}
+                      readOnly={!(editEventId === event.id && (event.eventPropertiesDTO?.length <= 0 || event.eventProperties?.length <= 0))}
                     />
                   </div>
 
@@ -276,7 +276,7 @@ function AdminEvents() {
                             <div key={idx} className="service-card">
                               <p><strong>Nombre:</strong> {prop.venueDTO.name}</p>
                               <p><strong>Ciudad:</strong> {prop.venueDTO.cityAvailable}</p>
-                              <p><strong>Aprobado:</strong> {prop.approved ? "Sí" : "No"}</p>
+                              <p><strong>Aprobado:</strong> {prop.status=== "APPROVED"? "Sí" : "No"}</p>
                               <p><strong>Fecha solicitud:</strong> {new Date(prop.requestDate).toLocaleDateString("es-ES")}</p>
                               <button type="button" className="cancel-button" onClick={() => navigate(`/admin/event/${event.id}/event-prop/${prop.id}`)}>
                                   Editar recinto asociado
