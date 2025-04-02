@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.eventbride.otherService.OtherService;
 import com.eventbride.venue.Venue;
@@ -26,5 +27,11 @@ public interface EventRepository extends CrudRepository<Event, Integer>{
 
     @Query("SELECT e FROM Event e WHERE e.user.id = :userId")
     List<Event> findAllEventsByUserId(int userId);
+
+    @Query("SELECT DISTINCT e FROM Event e LEFT JOIN e.eventProperties ep ON ep.otherService.id = :serviceId WHERE e.user.id = :userId AND ep IS NULL")
+    List<Event> findAllEventsByUserIdWithoutAService(@Param("userId") int userId, @Param("serviceId") int serviceId);
+
+
+
 
 }

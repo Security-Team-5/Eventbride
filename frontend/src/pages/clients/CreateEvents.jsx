@@ -103,11 +103,13 @@ function CreateEvents() {
   return (
     <div className="event-container">
       <div className="event-card">
-        <div className="event-header">
+      <div className="event-header" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "0.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <PartyPopper className="event-icon" />
-          <h2>Crear Evento</h2>
-          <p className="event-subtitle">Completa el formulario para crear tu nuevo evento</p>
+          <h2 style={{ margin: 0 }}>Crear Evento</h2>
         </div>
+        <p className="event-subtitle">Completa el formulario para crear tu nuevo evento</p>
+      </div>
 
         {error && <div className="error-message">{error}</div>}
 

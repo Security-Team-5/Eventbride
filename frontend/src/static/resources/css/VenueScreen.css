@@ -242,16 +242,22 @@
     justify-content: center;
     padding: 1rem;
     z-index: 50;
+    padding-top: 80px !important;
 }
 
 .modal-content {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    max-width: 42rem;
+    max-width: 600px !important;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh
 }
 
 .modal-header {
@@ -268,6 +274,8 @@
 
 .modal-body {
     padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .modal-footer {
@@ -276,6 +284,10 @@
     display: flex;
     justify-content: flex-end;
     gap: 0.75rem;
+    position: sticky;
+    bottom: 0;
+    background-color: white; 
+    z-index: 2;
 }
 
 .close-button {
@@ -333,6 +345,20 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.premium-badge {
+    background: linear-gradient(45deg, #FFD700, #FFB800, #DAA520);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 3px solid #FFD700;
+    box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.9);
+    animation: shine 1.5s infinite alternate;
+}
+
 .event-title {
     font-size: 1.2rem;
     font-weight: 500;
@@ -347,6 +373,16 @@
     gap: 1rem;
     margin: 1.5rem 0;
 }
+
+.event-card .primary-button {
+    background-color: #4caf50 !important;
+    border-color: #4caf50 !important;
+  }
+  
+  .event-card .primary-button:hover {
+    background-color: #45a049 !important;
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2) !important;
+  }
 
 /* Estados vacíos y de carga */
 .empty-state {

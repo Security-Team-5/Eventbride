@@ -29,6 +29,7 @@
   background-color: #d9be75;
   color: white;
   border: none;
+  max-width: 15%;
   border-radius: 6px;
   padding: 0.7rem 1.2rem;
   font-size: 0.9rem;

@@ -26,6 +26,7 @@ const VenuesScreen = () => {
   const [surface, setSurface] = useState("")
   const [filtersVisible, setFiltersVisible] = useState(false)
   const [jwtToken] = useState(localStorage.getItem("jwt"));
+  const [venuesWithCoordinates, setVenuesWithCoordinates] = useState([]);
 
   // Modal para ver detalles del venue al hacer click en la card
   const [selectedVenue, setSelectedVenue] = useState(null)
@@ -69,6 +70,27 @@ const VenuesScreen = () => {
     }
   }
 
+  const parseCoordinates = (coordinatesString) => {
+    if (!coordinatesString) return null;
+
+    try {
+      const [latStr, lngStr] = coordinatesString.split(',').map(str => str.trim());
+
+      const lat = parseFloat(latStr);
+      const lng = parseFloat(lngStr);
+
+      if (isNaN(lat) || isNaN(lng)) {
+        console.warn("Invalid coordinates:", coordinatesString);
+        return null;
+      }
+
+      return { lat, lng };
+    } catch (error) {
+      console.error("Error parsing coordinates:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     if (city || maxGuests || surface) {
       getFilteredVenues()
@@ -76,6 +98,35 @@ const VenuesScreen = () => {
       findAllVenues()
     }
   }, [])
+
+  useEffect(() => {
+    console.log("Processing venues for map:", venues);
+
+    const processedVenues = venues.map(venue => {
+      if (!venue.coordinates) {
+        console.warn("Venue missing coordinates:", venue);
+        return null;
+      }
+
+      const parsedCoordinates = parseCoordinates(venue.coordinates);
+
+      if (!parsedCoordinates) {
+        console.warn("Could not parse coordinates for venue:", venue);
+        return null;
+      }
+
+      return {
+        ...venue,
+        latitude: parsedCoordinates.lat,
+        longitude: parsedCoordinates.lng,
+        coordinates: venue.coordinates
+      };
+    }).filter(Boolean);
+
+    console.log("Processed venues for map:", processedVenues);
+    setVenuesWithCoordinates(processedVenues);
+  }, [venues]);
+
 
   // ------------------------------------------------------------------------------
   // Lógica de filtros
@@ -149,13 +200,9 @@ const VenuesScreen = () => {
   // para formar un LocalDateTime "yyyy-MM-dd HH:mm:ss"
   // ------------------------------------------------------------------------------
   const combineDateAndTime = (eventDate, time) => {
-    const dateObj = new Date(eventDate)
-    const year = dateObj.getFullYear()
-    const month = String(dateObj.getMonth() + 1).padStart(2, "0")
-    const day = String(dateObj.getDate()).padStart(2, "0")
-    // time es un string tipo "HH:mm", se le añade ":00" para segundos
-    return `${year}-${month}-${day} ${time}:00`
-  }
+    const datePart = eventDate.split("T")[0];
+    return `${datePart}T${time}:00`;
+  };
 
   // ------------------------------------------------------------------------------
   // Envía la petición PUT para añadir el venue al evento
@@ -225,7 +272,14 @@ const VenuesScreen = () => {
                 className="input-field"
                 placeholder="Ej: 100"
                 value={maxGuests}
-                onChange={(e) => setMaxGuests(e.target.value)}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value < 0) {
+                    alert("El número no puede ser negativo");
+                    return;
+                  }
+                  setMaxGuests(value);
+                }}
               />
             </div>
             <div className="input-group">
@@ -235,7 +289,14 @@ const VenuesScreen = () => {
                 className="input-field"
                 placeholder="Ej: 200"
                 value={surface}
-                onChange={(e) => setSurface(e.target.value)}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value < 0) {
+                    alert("El número no puede ser negativo");
+                    return;
+                  }
+                  setSurface(value);
+                }}
               />
             </div>
           </div>
@@ -252,7 +313,7 @@ const VenuesScreen = () => {
         </div>
       )}
 
-      <LeafletMap venues={venues} />
+      <LeafletMap venues={venuesWithCoordinates} />
 
       {/* Venues grid */}
       {loading ? (
@@ -275,8 +336,10 @@ const VenuesScreen = () => {
               <div className="card-body">
                 <div className="card-info">
                   {
-                    venue.userDTO?.plan === "PREMIUM" && <span className="service-badge">Promocionado</span>
+                    venue.userDTO?.plan === "PREMIUM" && <span className="service-badge premium-badge">Promocionado</span>
                   }
+                </div>
+                <div className="card-info">
                   <MapPin size={18} className="card-icon" />
                   <span className="card-text">
                     {venue.address}, {venue.cityAvailable}
@@ -347,29 +410,24 @@ const VenuesScreen = () => {
                 <div className="card-info">
                   <MapPin size={18} className="card-icon" />
                   <span className="card-text">
-                    <strong>Ubicación:</strong> {selectedVenue.coordinates}
-                  </span>
-                </div>
-                <div className="card-info">
-                  <MapPin size={18} className="card-icon" />
-                  <span className="card-text">
                     <strong>Código Postal:</strong> {selectedVenue.postalCode}
                   </span>
                 </div>
               </div>
             </div>
             <div className="modal-footer">
-              <button
-                className="primary-button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setSelectedVenue(null)
-                  handleAddVenueClick(e, selectedVenue)
-                }}
-              >
-                <Plus size={16} />
-                Añadir a mi evento
-              </button>
+              {selectedVenue.available &&
+                <button
+                  className="primary-button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setSelectedVenue(null)
+                    handleAddVenueClick(e, selectedVenue)
+                  }}
+                >
+                  <Plus size={16} />
+                  Añadir a mi evento
+                </button>}
               <button className="close-button" onClick={() => setSelectedVenue(null)}>
                 Cerrar
               </button>
@@ -389,7 +447,7 @@ const VenuesScreen = () => {
               {events.length === 0 ? (
                 <div className="empty-state">
                   <Info size={40} style={{ color: "#d9be75", margin: "0 auto 1rem" }} />
-                  <p>No tienes eventos disponibles.</p>
+                  <p className="empty-text">Tus eventos ya tienen este servicio.</p>
                 </div>
               ) : (
                 events.map((eventObj) => (
