@@ -72,18 +72,18 @@ const VenuesScreen = () => {
 
   const parseCoordinates = (coordinatesString) => {
     if (!coordinatesString) return null;
-    
+
     try {
       const [latStr, lngStr] = coordinatesString.split(',').map(str => str.trim());
-      
+
       const lat = parseFloat(latStr);
       const lng = parseFloat(lngStr);
-      
+
       if (isNaN(lat) || isNaN(lng)) {
         console.warn("Invalid coordinates:", coordinatesString);
         return null;
       }
-      
+
       return { lat, lng };
     } catch (error) {
       console.error("Error parsing coordinates:", error);
@@ -101,20 +101,20 @@ const VenuesScreen = () => {
 
   useEffect(() => {
     console.log("Processing venues for map:", venues);
-    
+
     const processedVenues = venues.map(venue => {
       if (!venue.coordinates) {
         console.warn("Venue missing coordinates:", venue);
         return null;
       }
-      
+
       const parsedCoordinates = parseCoordinates(venue.coordinates);
-      
+
       if (!parsedCoordinates) {
         console.warn("Could not parse coordinates for venue:", venue);
         return null;
       }
-      
+
       return {
         ...venue,
         latitude: parsedCoordinates.lat,
@@ -122,7 +122,7 @@ const VenuesScreen = () => {
         coordinates: venue.coordinates
       };
     }).filter(Boolean);
-    
+
     console.log("Processed venues for map:", processedVenues);
     setVenuesWithCoordinates(processedVenues);
   }, [venues]);
@@ -272,7 +272,14 @@ const VenuesScreen = () => {
                 className="input-field"
                 placeholder="Ej: 100"
                 value={maxGuests}
-                onChange={(e) => setMaxGuests(e.target.value)}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value < 0) {
+                    alert("El número no puede ser negativo");
+                    return;
+                  }
+                  setMaxGuests(value);
+                }}
               />
             </div>
             <div className="input-group">
@@ -282,7 +289,14 @@ const VenuesScreen = () => {
                 className="input-field"
                 placeholder="Ej: 200"
                 value={surface}
-                onChange={(e) => setSurface(e.target.value)}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value < 0) {
+                    alert("El número no puede ser negativo");
+                    return;
+                  }
+                  setSurface(value);
+                }}
               />
             </div>
           </div>
@@ -403,17 +417,17 @@ const VenuesScreen = () => {
             </div>
             <div className="modal-footer">
               {selectedVenue.available &&
-              <button
-                className="primary-button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setSelectedVenue(null)
-                  handleAddVenueClick(e, selectedVenue)
-                }}
-              >
-                <Plus size={16} />
-                Añadir a mi evento
-              </button>}
+                <button
+                  className="primary-button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setSelectedVenue(null)
+                    handleAddVenueClick(e, selectedVenue)
+                  }}
+                >
+                  <Plus size={16} />
+                  Añadir a mi evento
+                </button>}
               <button className="close-button" onClick={() => setSelectedVenue(null)}>
                 Cerrar
               </button>
@@ -433,7 +447,7 @@ const VenuesScreen = () => {
               {events.length === 0 ? (
                 <div className="empty-state">
                   <Info size={40} style={{ color: "#d9be75", margin: "0 auto 1rem" }} />
-                  <p>No tienes eventos disponibles.</p>
+                  <p className="empty-text">Tus eventos ya tienen este servicio.</p>
                 </div>
               ) : (
                 events.map((eventObj) => (
