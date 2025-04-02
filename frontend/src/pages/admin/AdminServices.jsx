@@ -39,6 +39,7 @@ function AdminServices() {
         );
         const allServices = [...otherServices, ...venues];
         setServices(allServices);
+        console.log("Servicios obtenidos:", allServices);
       })
       .catch((err) => console.error("Error obteniendo servicios:", err));
   }
@@ -249,11 +250,13 @@ function AdminServices() {
             (service, index) => {
               const isEditing = editServiceId === service.id;
               const data = serviceData[service.id] || service;
+              console.log("Datos del servicio:", data);
   
               return (
                 <div key={index} className="service-container">
                   <h2 className="service-title">Servicio ID: {service.id}</h2>
                   <h3 className="service-title">{data.name}</h3>
+                  <h2 className="service-title">De {data.userDTO.email}</h2>
   
                   <div className="service-info">
                     <form

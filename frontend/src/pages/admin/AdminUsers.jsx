@@ -219,6 +219,7 @@ function AdminUsers() {
             <div className="user-grid">
                 {(filteredUsers.length > 0 ? filteredUsers : users).map((user, index) => (
                     <div key={index} className="service-container">
+                        <h2 className="service-title">Usuario ID: {user.id}</h2>
                         <h2 className="service-title">{user.firstName} {user.lastName}</h2>
                         <div className="service-info">
                             <form style={{ width: "100%" }} onSubmit={(e) => e.preventDefault()}>
