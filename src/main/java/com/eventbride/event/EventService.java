@@ -9,6 +9,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.EventDTO;
+import com.eventbride.notification.Notification;
+import com.eventbride.notification.NotificationService;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.venue.Venue;
 
@@ -17,9 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EventService {
     private EventRepository eventRepository;
+    private NotificationService notificationService;
 
     @Autowired
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, NotificationService notificationService) {
+        this.notificationService = notificationService;
         this.eventRepository = eventRepository;
     }
 
@@ -45,6 +49,7 @@ public class EventService {
 
     @Transactional
     public Event save(Event event) throws DataAccessException {
+        notificationService.createNotification(Notification.NotificationType.EVENT_CREATED, event.getUser(), event, null);
         return eventRepository.save(event);
     }
 

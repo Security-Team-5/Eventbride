@@ -89,12 +89,11 @@ public class EventController {
         return new EventDTO(eventService.findById(id));
     }
 
-    @PostMapping()
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Event> create(@RequestBody @Valid Event event) {
         Event newEvent = new Event();
         BeanUtils.copyProperties(event, newEvent, "id");
-        List<Invitation> invitations = new ArrayList<>();
         List<EventProperties> eventProperties = new ArrayList<>();
         newEvent.setEventType(event.getEventType());
         newEvent.setGuests(event.getGuests());

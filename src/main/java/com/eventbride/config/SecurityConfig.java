@@ -78,6 +78,7 @@ public class SecurityConfig {
                                                 .requestMatchers(
                                                                 "/api/v1/events/{id}",
                                                                 "/api/v1/events/next/**",
+                                                                "/api/v1/events/create",
                                                                 "/api/event-properties/DTO/**",
                                                                 "/api/event-properties/cancel/**",
                                                                 "/api/event-properties/{eventId}/add-otherservice/{otherServiceId}",

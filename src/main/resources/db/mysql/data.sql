@@ -18,6 +18,8 @@ INSERT IGNORE INTO users (id, username, role, email, first_name, last_name, tele
 (14, 'MongoMango', 'SUPPLIER', 'mongomango@example.com', 'Mongo', 'Mango', '932649056', '33333333B', 'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null, false),
 (17, 'SurMusic', 'SUPPLIER', 'surmusicsevilla@example.com', 'Sur', 'Music', '678006287', '90000000S', 'https://surmusicsevilla.com/wp-content/uploads/2021/01/cropped-cropped-LOGO-BLANCO-1-RECORTADO.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "BASIC", null, null, true),
 (18, 'PandoCatering&Hacienda', 'SUPPLIER', 'gruposaneloy@example.com', 'Pando', 'Catering', '432984728', '11000000P', 'https://cateringpando.com/wp-content/uploads/2024/03/logo-index-catering-pando.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2030-04-20', true),
+-- para probar notificaciones
+(19, 'Urgoneta', 'SUPPLIER', 'gonnavrem@alum.us.es', 'Urgon', 'Furgoneta', '432984729', '452516135J', 'https://carwow-es-wp-0.imgix.net/mercedes-benz_sprinter_panel_van_1.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2030-04-20', true),
 -- admin
 (15, 'Admin', 'ADMIN', 'admin@example.com', 'Admin', 'Soyadmin', '666666666', '44444144A', 'https://proassets.planetadelibros.com/usuaris/seudonimos/fotos/53/original/000052233_1_King_AuthorPhoto_c_Lindsay_Mills_2018.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null, false);
 
@@ -138,3 +140,8 @@ INSERT IGNORE INTO event_properties (id, event_id, other_service_id, venue_id, s
 (32, 10, 3, null, '2026-10-30 13:00:00', '2026-10-30 17:00:00', 'APPROVED', 1600.00 * 0.35, 1600.0, '2025-02-12 22:00:00'),
 (33, 10, 6, null, '2026-10-30 13:00:00', '2026-10-30 16:00:00', 'APPROVED', 600.00 * 0.35, 600.0, '2025-02-12 22:00:00'),
 (34, 10, null, 2, '2026-10-30 12:00:00', '2026-10-30 23:00:00', 'APPROVED', 4400.00 * 0.35, 4400.0, '2025-02-12 22:00:00');
+
+INSERT IGNORE INTO notifications (id, user_id, subject, message, type, created_at) VALUES 
+(1, 2, 'Evento creado', 'Tu evento ha sido creado exitosamente.', 'EVENT_CREATED', '2025-02-12 22:00:00'),
+(2, 14, 'Nueva solicitud de reserva', 'Has recibido una nueva reserva para uno de tus servicios, acepta o rechaza.', 'NEW_REQUEST', '2025-02-12 22:00:00');
+

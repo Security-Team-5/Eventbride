@@ -73,7 +73,7 @@ function CreateEvents() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch(`/api/v1/events`, {
+      const response = await fetch(`/api/v1/events/create`, {
         method: "POST", // Usamos POST para crear un nuevo evento
         headers: {
           "Authorization": `Bearer ${jwtToken}`,
