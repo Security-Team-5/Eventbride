@@ -163,12 +163,11 @@ const OtherServiceScreen = () => {
   }
 
   const combineDateAndTime = (eventDate, time) => {
-    const dateObj = new Date(eventDate)
-    const year = dateObj.getFullYear()
-    const month = String(dateObj.getMonth() + 1).padStart(2, "0")
-    const day = String(dateObj.getDate()).padStart(2, "0")
-    return `${year}-${month}-${day} ${time}:00`
-  }
+    // Extrae la parte de la fecha sin convertir a Date
+    const datePart = eventDate.split("T")[0];
+    // Devuelve en formato ISO estándar usando "T" como separador
+    return `${datePart}T${time}:00`;
+  };
 
   const handleConfirmService = async (eventObj, selectedOtherServiceId) => {
     const times = venueTimes[eventObj.id] || {}

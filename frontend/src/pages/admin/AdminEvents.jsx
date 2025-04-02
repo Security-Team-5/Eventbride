@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { AlertCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "../../static/resources/css/AdminUsers.css";
 
 function AdminEvents() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [editEventId, setEditEventId] = useState(null);
   const [eventData, setEventData] = useState({});
@@ -31,12 +33,21 @@ function AdminEvents() {
       },
       method: "GET",
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text); // Captura errores tipo 500 con mensaje plano
+        }
+        return res.json();
+      })
       .then((data) => {
         setEvents(data);
-        console.log(data);
+        console.log("Eventos cargados:", data);
       })
-      .catch((err) => console.error("Error obteniendo eventos:", err));
+      .catch((err) => {
+        console.error("Error obteniendo eventos:", err.message);
+        setError("Error al cargar eventos: " + err.message);
+      });
   }
 
   function startEditing(event) {
@@ -207,7 +218,9 @@ function AdminEvents() {
       {currentUser?.role === "ADMIN" ? (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
           {(filteredEvents.length > 0 ? filteredEvents : events).map((event, index) => (
-            <div key={index} className="service-container">
+
+            /* SI NO OS GUSTA EL QUE SE PUEDA HACER SCROLL, ELIMINADLE EL STYLE*/
+            <div key={index} className="service-container" style={{ height: "90%" }}>
               <h2 className="service-title">Evento ID: {event.id}</h2>
               <h2 className="service-title">De {event.userEmail}</h2>
 
@@ -244,14 +257,16 @@ function AdminEvents() {
                     <input
                       type="date"
                       name="eventDate"
-                      value={eventData[event.id]?.eventDate || new Date(event.eventDate).toISOString().split("T")[0]}
+                      value={eventData[event.id]?.eventDate || (event.eventDate ? event.eventDate.split("T")[0] : "")}
                       onChange={handleInputChange}
-                      readOnly={editEventId !== event.id}
+                      readOnly={!(editEventId === event.id && (event.eventPropertiesDTO?.length <= 0 || event.eventProperties?.length <= 0))}
                     />
                   </div>
 
                   {(event.eventPropertiesDTO?.length > 0 || event.eventProperties?.length > 0) && (
-                    <div className="event-services-box">
+                    
+                    /* SI NO OS GUSTA EL QUE SE PUEDA HACER SCROLL, ELIMINADLE EL STYLE*/
+                    <div className="event-services-box" style={{ height: "300px", overflowY: "auto" }}>
                       <h3>Servicios del Evento</h3>
 
                       {(event.eventPropertiesDTO || []).some(prop => prop.venueDTO) && (
@@ -261,8 +276,11 @@ function AdminEvents() {
                             <div key={idx} className="service-card">
                               <p><strong>Nombre:</strong> {prop.venueDTO.name}</p>
                               <p><strong>Ciudad:</strong> {prop.venueDTO.cityAvailable}</p>
-                              <p><strong>Aprobado:</strong> {prop.approved ? "Sí" : "No"}</p>
+                              <p><strong>Aprobado:</strong> {prop.status=== "APPROVED"? "Sí" : "No"}</p>
                               <p><strong>Fecha solicitud:</strong> {new Date(prop.requestDate).toLocaleDateString("es-ES")}</p>
+                              <button type="button" className="cancel-button" onClick={() => navigate(`/admin/event/${event.id}/event-prop/${prop.id}`)}>
+                                  Editar recinto asociado
+                              </button>
                             </div>
                           ))}
                         </div>
@@ -277,6 +295,9 @@ function AdminEvents() {
                               <p><strong>Ciudad:</strong> {prop.otherServiceDTO.cityAvailable}</p>
                               <p><strong>Aprobado:</strong> {prop.approved ? "Sí" : "No"}</p>
                               <p><strong>Fecha solicitud:</strong> {new Date(prop.requestDate).toLocaleDateString("es-ES")}</p>
+                              <button type="button" className="cancel-button" onClick={() => navigate(`/admin/event/${event.id}/event-prop/${prop.id}`)}>
+                                  Editar servicio asociado
+                              </button>
                             </div>
                           ))}
                         </div>
