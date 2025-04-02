@@ -3,7 +3,6 @@ package com.eventbride.venue;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.eventbride.otherService.OtherService;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +45,15 @@ public class VenueController {
 				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
+    @GetMapping("/filter")
+    public ResponseEntity<List<VenueDTO>> getFilteredVenues(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Integer maxGuests,
+            @RequestParam(required = false) Double surface) {
+        List<Venue> filteredVenues = venueService.getFilteredVenues(city, maxGuests, surface);
+		return ResponseEntity.ok(VenueDTO.fromEntities(filteredVenues));
 
-	@GetMapping("/filter")
-	public List<Venue> getFilteredVenues(
-			@RequestParam(required = false) String city,
-			@RequestParam(required = false) Integer maxGuests,
-			@RequestParam(required = false) Double surface) {
-		return venueService.getFilteredVenues(city, maxGuests, surface);
-	}
+    }
 
 	@PostMapping
 	public ResponseEntity<?> createVenue(@Valid @RequestBody Venue venue) {

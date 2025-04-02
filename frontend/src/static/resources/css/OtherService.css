@@ -268,6 +268,20 @@
     align-self: flex-start;
 }
 
+.premium-badge {
+    background: linear-gradient(45deg, #FFD700, #FFB800, #DAA520) !important;
+    color: white !important;
+    font-weight: bold !important;
+    font-size: 0.75rem !important; 
+    padding: 0.3rem 0.7rem !important; 
+    border-radius: 15px !important; 
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: 1.5px solid #FFD700 !important; 
+    box-shadow: 0px 0px 8px rgba(255, 215, 0, 0.7) !important;
+    animation: shine 1.5s infinite alternate !important;
+}
+
 .card-footer {
     padding: 1.5rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
@@ -307,16 +321,22 @@
     justify-content: center;
     padding: 1rem;
     z-index: 50;
+    padding-top: 80px !important;
 }
 
 .modal-content {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    max-width: 500px;
+    max-width: 600px !important;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh
 }
 
 .modal-header {
@@ -334,6 +354,8 @@
 
 .modal-body {
     padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .modal-footer {
@@ -342,6 +364,10 @@
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+    position: sticky;
+    bottom: 0;
+    background-color: white; 
+    z-index: 2;
 }
 
 /* Tarjetas de evento en modal */
@@ -428,6 +454,16 @@
     margin-top: 1.5rem;
 }
 
+.event-actions .primary-button {
+    background-color: #4caf50 !important; 
+    border-color: #4caf50 !important;
+  }
+  
+  .event-actions .primary-button:hover {
+    background-color: #45a049 !important;
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2) !important;
+  }
+
 /* Detalles del servicio */
 .service-details {
     padding: 1.5rem;
@@ -503,7 +539,7 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .category-container {
         flex-direction: column;
         align-items: center;
@@ -516,6 +552,13 @@
 
     .event-actions {
         flex-direction: column;
+    }
+    .modal-content {
+        max-width: 95%;
+    }
+    
+    .modal-overlay {
+        padding-top: 60px;
     }
 }
 
@@ -550,4 +593,5 @@
     gap: 6px;
     font-size: 0.875rem;
   }
+
   

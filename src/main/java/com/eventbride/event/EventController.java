@@ -185,4 +185,17 @@ public class EventController {
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
+
+    @GetMapping("/next/{userId}/without/{serviceId}")
+    public ResponseEntity<List<EventDTO>> getEventsByUserIdWithoutAService(@PathVariable Integer userId, @PathVariable Integer serviceId) {
+        List<Event> events = eventService.findEventsByUserIdWithoutAService(userId, serviceId);
+        if (events.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<EventDTO> eventDTOs = new ArrayList<>();
+        for (Event event : events) {
+            eventDTOs.add(new EventDTO(event));
+        }
+        return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
+    }
 }
