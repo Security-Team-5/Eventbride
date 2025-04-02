@@ -222,14 +222,14 @@ function EventDetails() {
 
   const sumaPagado = () => {
     if (!evento || !evento.eventPropertiesDTO) return 0.0;
-  
+
     let amount = 0.0;
-  
+
     payments.forEach((pago) => {
       const sinImpuestos = (pago.amount || 0.0) / 1.05;
       amount += sinImpuestos;
     });
-  
+
     return amount;
   };
 
@@ -277,10 +277,12 @@ function EventDetails() {
               <h2 className="event-title">Detalles del Evento</h2>
             </div>
 
-            <button className="delete-button" onClick={openModal} style={{ marginLeft: "auto" }}>
-              <i className="delete-icon">✕</i>
-              <span>Eliminar</span>
-            </button>
+            {sumaPagado() <= 0 && (
+              <button className="delete-button" onClick={openModal} style={{ marginLeft: "auto" }}>
+                <i className="delete-icon">✕</i>
+                <span>Eliminar</span>
+              </button>
+            )}
           </div>
           <div className="event-info-card">
             <div className="event-info">
@@ -344,7 +346,7 @@ function EventDetails() {
                     <div className="venue-details">
                       <p className="venue-description">
                         <span className="detail-label">Horario:</span>
-                        {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} - 
+                        {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} -
                         {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
                       </p>
                     </div>
@@ -363,22 +365,22 @@ function EventDetails() {
                         </button>
                       ) : (
                         <>
-                        <button
-                          className={`payment-button ${(prop.status === "PENDING" || prop.status === "COMPLETED") ? "disabled" : ""}`}
-                          disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                          onClick={() => navigate(`/payment/${prop.id}`)}
-                          style={{
-                            backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
-                          }}
-                        >
-                          {getPaymentStatusText(prop.status)}
-                        </button>
+                          <button
+                            className={`payment-button ${(prop.status === "PENDING" || prop.status === "COMPLETED") ? "disabled" : ""}`}
+                            disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
+                            onClick={() => navigate(`/payment/${prop.id}`)}
+                            style={{
+                              backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
+                            }}
+                          >
+                            {getPaymentStatusText(prop.status)}
+                          </button>
                           <div>
-                          <Link to={`/chat/${prop.venueDTO.userDTO.id}`} className="chat-button">
-                            💬 Chatear
-                          </Link>
-                        </div>
-                      </>
+                            <Link to={`/chat/${prop.venueDTO.userDTO.id}`} className="chat-button">
+                              💬 Chatear
+                            </Link>
+                          </div>
+                        </>
                       )}
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
@@ -420,7 +422,7 @@ function EventDetails() {
                     <div className="venue-details">
                       <p className="venue-description">
                         <span className="detail-label">Horario:</span>
-                        {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} - 
+                        {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} -
                         {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
                       </p>
                     </div>
