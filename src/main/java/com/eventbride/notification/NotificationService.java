@@ -110,7 +110,7 @@ public class NotificationService {
             case NEW_DEPOSIT_PAYMENT:
                 notification.setType(NotificationType.NEW_DEPOSIT_PAYMENT);
                 notification.setSubject("Nuevo pago de señal");
-                notification.setMessage("El usuario ha pagado la señal de tu reserva de " + 
+                notification.setMessage("El usuario ha pagado la señal de tu reserva de " +
                         (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
                                 : eventProperties.getVenue().getName())
                         + " para el evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
@@ -120,7 +120,7 @@ public class NotificationService {
             case NEW_REMAINING_PAYMENT:
                 notification.setType(NotificationType.NEW_REMAINING_PAYMENT);
                 notification.setSubject("Nuevo pago final");
-                notification.setMessage("El usuario ha pagado el monto restante para la contratación de tu servicio " + 
+                notification.setMessage("El usuario ha pagado el monto restante para la contratación de tu servicio " +
                         (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
                                 : eventProperties.getVenue().getName())
                         + " para el evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
@@ -135,11 +135,13 @@ public class NotificationService {
 
     @Transactional
     public void sendEmailNotification(User to, String subject, String body) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("eventbride6@gmail.com");
-        mailMessage.setTo(to.getEmail());
-        mailMessage.setSubject(subject);
-        mailMessage.setText("Hola " + to.getFirstName() + ",\n" + body + "\n\n Saludos, \n EventBride");
-        mailSender.send(mailMessage);
+        if (to.getReceivesEmails()) {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("eventbride6@gmail.com");
+            mailMessage.setTo(to.getEmail());
+            mailMessage.setSubject(subject);
+            mailMessage.setText("Hola " + to.getFirstName() + ",\n" + body + "\n\n Saludos, \n EventBride");
+            mailSender.send(mailMessage);
+        }
     }
 }

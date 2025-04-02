@@ -56,7 +56,7 @@ public class User extends Person implements UserDetails{
     private LocalDate expirePlanDate;
 
     @Column(name = "receives_emails", nullable = false)
-    private boolean receivesEmails;
+    private Boolean receivesEmails;
 
     @Override
     public Collection< ? extends GrantedAuthority> getAuthorities() {
