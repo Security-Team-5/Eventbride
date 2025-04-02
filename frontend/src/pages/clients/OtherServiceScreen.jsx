@@ -83,6 +83,22 @@ const OtherServiceScreen = () => {
     }
   }
 
+  const getUserEventsWithoutAService = async (serviceId) => {
+    try {
+      const response = await fetch(`/api/v1/events/next/${currentUser.id}/without/${serviceId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken}`
+        },
+        method: "GET",
+      })
+      const data = await response.json()
+      setEvents((prevEvents) => [...prevEvents, ...data])
+    } catch (error) {
+      console.error("Error obteniendo eventos:", error)
+    }
+  }
+
   const getServiceDetails = async (serviceId) => {
     try {
       const response = await axios.get(`/api/other-services/${serviceId}`, { headers: { Authorization: `Bearer ${jwtToken}` } })
@@ -113,7 +129,7 @@ const OtherServiceScreen = () => {
     setSelectedOtherServiceId(serviceId)
     setSelectedService(serviceId)
     setEvents([]) // Limpiar eventos anteriores
-    getUserEvents()
+    getUserEventsWithoutAService(serviceId)
     setModalVisible(true)
   }
 
