@@ -1,5 +1,6 @@
 package com.eventbride.notification;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +8,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.eventbride.event.Event;
+import com.eventbride.event.EventRepository;
+import com.eventbride.event.Event.EventType;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.notification.Notification.NotificationType;
 import com.eventbride.user.User;
@@ -25,6 +29,9 @@ public class NotificationService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     @Autowired
     JavaMailSender mailSender;
@@ -71,8 +78,10 @@ public class NotificationService {
                 break;
             case PAYMENT_REMINDER:
                 notification.setType(NotificationType.PAYMENT_REMINDER);
-                notification.setSubject("Payment Reminder");
-                notification.setMessage("This is a reminder for your upcoming payment.");
+                notification.setSubject("Recordatorio de pago");
+                notification.setMessage("Le recordamos que tiene un pago pendiente para su evento "
+                        + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
+                        + ". Por favor, realice el pago lo antes posible para evitar problemas.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
             case NEW_MESSAGE:
@@ -144,4 +153,38 @@ public class NotificationService {
             mailSender.send(mailMessage);
         }
     }
+
+    
+    @Scheduled(cron = "0 0 8 * * *") // Ejecuta todos los días a las 8:00 AM
+    @Transactional
+    public void sendPaymentReminders() {
+        LocalDate today = LocalDate.now();
+
+        // Bodas: 4 meses antes
+        LocalDate weddingStart = today.plusMonths(4);
+        LocalDate weddingEnd = today.plusMonths(4).plusDays(2);
+        List<Event> weddings = eventRepository.findByTypeAndEventDateBetween(EventType.WEDDING , weddingStart, weddingEnd);
+        sendRemindersForEvents(weddings);
+
+        // Bautizos: 1 mes antes
+        LocalDate christeningStart = today.plusMonths(1);
+        LocalDate christeningEnd = today.plusMonths(1).plusDays(2);
+        List<Event> christenings = eventRepository.findByTypeAndEventDateBetween(EventType.CHRISTENING, christeningStart,
+                christeningEnd);
+        sendRemindersForEvents(christenings);
+
+        // Comuniones: 2 meses antes
+        LocalDate communionStart = today.plusMonths(2);
+        LocalDate communionEnd = today.plusMonths(2).plusDays(2);
+        List<Event> communions = eventRepository.findByTypeAndEventDateBetween(EventType.COMMUNION, communionStart, communionEnd);
+        sendRemindersForEvents(communions);
+    }
+
+    private void sendRemindersForEvents(List<Event> events) {
+        for (Event event : events) {
+            User user = event.getUser();
+            createNotification(Notification.NotificationType.PAYMENT_REMINDER, user, event, null);
+        }
+    }
+
 }

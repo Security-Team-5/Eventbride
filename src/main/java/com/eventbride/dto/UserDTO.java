@@ -42,7 +42,7 @@ public class UserDTO {
         this.plan = user.getPlan();
         this.paymentPlanDate = user.getPaymentPlanDate();
         this.expirePlanDate = user.getExpirePlanDate();
-        this.receivesEmails = user.isReceivesEmails();
+        this.receivesEmails = user.getReceivesEmails();
     }
 
     // Método estático para convertir una lista de usuarios en una lista de DTOs
