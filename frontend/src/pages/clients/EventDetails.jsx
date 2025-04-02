@@ -351,7 +351,8 @@ function EventDetails() {
                     <div className="venue-details">
                       <p className="venue-description">
                         <span className="detail-label">Horario:</span>
-                        {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} -
+                        {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} -{" "}
+                         
                         {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
                       </p>
                     </div>
