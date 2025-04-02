@@ -381,7 +381,7 @@ const OtherServiceScreen = () => {
               {events.length === 0 ? (
                 <div className="empty-state" style={{ boxShadow: "none" }}>
                   <Info size={36} className="empty-icon" />
-                  <p className="empty-text">No tienes eventos disponibles.</p>
+                  <p className="empty-text">Tus eventos ya tienen este servicio.</p>
                 </div>
               ) : (
                 events.map((eventObj) => (
