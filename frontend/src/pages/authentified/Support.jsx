@@ -42,7 +42,7 @@ const getFAQDataByRole = (role) => {
           icon: <Calendar />,
           topics: [
             { question: "¿Puedo cancelar mi reserva?", 
-              answer: "Sí, dependiendo del evento y la antelación. Consulta las condiciones en nuestro FAQ." 
+              answer: "Sí, dependiendo del evento y la antelación. Revisa nuestros Términos y Condiciones." 
             },
             { question: "No he recibido confirmación", 
               answer: "Comprueba tu correo o inicia sesión para verificar el estado del evento." 
