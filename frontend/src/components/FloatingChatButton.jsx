@@ -7,8 +7,9 @@ const FloatingChatButton = () => {
 
   // Detectar si la URL es /chat/loquesea
   const hideOnChatPage = /^\/chat\/\d+$/.test(location.pathname);
+  const hideOnSupport = /^\/support$/.test(location.pathname);
 
-  if (hideOnChatPage) return null;
+  if (hideOnChatPage || hideOnSupport) return null;
 
   const jwt = localStorage.getItem("jwt");
 

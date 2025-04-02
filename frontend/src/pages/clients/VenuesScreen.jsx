@@ -200,13 +200,9 @@ const VenuesScreen = () => {
   // para formar un LocalDateTime "yyyy-MM-dd HH:mm:ss"
   // ------------------------------------------------------------------------------
   const combineDateAndTime = (eventDate, time) => {
-    const dateObj = new Date(eventDate)
-    const year = dateObj.getFullYear()
-    const month = String(dateObj.getMonth() + 1).padStart(2, "0")
-    const day = String(dateObj.getDate()).padStart(2, "0")
-    // time es un string tipo "HH:mm", se le añade ":00" para segundos
-    return `${year}-${month}-${day} ${time}:00`
-  }
+    const datePart = eventDate.split("T")[0];
+    return `${datePart}T${time}:00`;
+  };
 
   // ------------------------------------------------------------------------------
   // Envía la petición PUT para añadir el venue al evento

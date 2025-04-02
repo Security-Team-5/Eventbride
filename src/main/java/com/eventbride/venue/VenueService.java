@@ -124,6 +124,8 @@ public class VenueService {
 		existingVenue.setCoordinates(updatedVenue.getCoordinates());
 		existingVenue.setMaxGuests(updatedVenue.getMaxGuests());
 		existingVenue.setSurface(updatedVenue.getSurface());
+        existingVenue.setEarliestTime(updatedVenue.getEarliestTime());
+        existingVenue.setLatestTime(updatedVenue.getLatestTime());
 
 		// Guardar el Venue actualizado
 		return venueRepository.save(existingVenue);
