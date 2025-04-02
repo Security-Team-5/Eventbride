@@ -319,16 +319,22 @@
     justify-content: center;
     padding: 1rem;
     z-index: 50;
+    padding-top: 80px !important;
 }
 
 .modal-content {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    max-width: 500px;
+    max-width: 600px !important;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh
 }
 
 .modal-header {
@@ -346,6 +352,8 @@
 
 .modal-body {
     padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .modal-footer {
@@ -354,6 +362,10 @@
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+    position: sticky;
+    bottom: 0;
+    background-color: white; 
+    z-index: 2;
 }
 
 /* Tarjetas de evento en modal */
@@ -440,6 +452,16 @@
     margin-top: 1.5rem;
 }
 
+.event-actions .primary-button {
+    background-color: #4caf50 !important; 
+    border-color: #4caf50 !important;
+  }
+  
+  .event-actions .primary-button:hover {
+    background-color: #45a049 !important;
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2) !important;
+  }
+
 /* Detalles del servicio */
 .service-details {
     padding: 1.5rem;
@@ -515,7 +537,7 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .category-container {
         flex-direction: column;
         align-items: center;
@@ -528,6 +550,13 @@
 
     .event-actions {
         flex-direction: column;
+    }
+    .modal-content {
+        max-width: 95%;
+    }
+    
+    .modal-overlay {
+        padding-top: 60px;
     }
 }
 
@@ -562,4 +591,5 @@
     gap: 6px;
     font-size: 0.875rem;
   }
+
   
