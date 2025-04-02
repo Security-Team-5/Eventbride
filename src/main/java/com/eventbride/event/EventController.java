@@ -89,7 +89,7 @@ public class EventController {
         return new EventDTO(eventService.findById(id));
     }
 
-    @PostMapping()
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Event> create(@RequestBody @Valid Event event) {
         Event newEvent = new Event();
@@ -99,6 +99,7 @@ public class EventController {
         newEvent.setEventType(event.getEventType());
         newEvent.setGuests(event.getGuests());
         newEvent.setEventDate(event.getEventDate());
+        newEvent.setName(event.getName());
         newEvent.setUser(event.getUser());
         newEvent.setEventProperties(eventProperties);
         Event savedEvent;

@@ -1,7 +1,7 @@
 "use client"
 
 import logo from "../../static/resources/images/logo-eventbride.png"
-import { Calendar, Handshake, Users, TrendingUp } from 'lucide-react'
+import { Calendar, Handshake, TrendingUp } from 'lucide-react'
 import "../../static/resources/css/Home.css"
 
 export default function HomePage() {
@@ -52,7 +52,7 @@ export default function HomePage() {
         {/* Create Event Section */}
         <section className="create-section">
           <div className="container">
-            <h2 className="section-title">Crear y organiza tu evento</h2><div className="card-grid">
+            <h2 className="section-title">Crear y organiza tu evento</h2>
               <div className="card text-center">
                 <div className="card-header">
                   <h3 className="card-title">Crear de cero</h3>
@@ -71,26 +71,6 @@ export default function HomePage() {
                   </a>
                 </div>
               </div>
-
-              <div className="card text-center">
-                <div className="card-header">
-                  <h3 className="card-title">¿Estás indeciso? Te ayudamos</h3>
-                </div>
-                <div className="card-content">
-                  <p className="card-text">
-                    Te ofrecemos un cuestionario para ayudarte a que puedas encontrar el evento perfecto para ti.
-                  </p>
-                  <div className="icon-container">
-                    <Users className="icon" />
-                  </div>
-                </div>
-                <div className="card-footer">
-                  <a href="/quiz" className="primary-button">
-                    Cuestionario
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
