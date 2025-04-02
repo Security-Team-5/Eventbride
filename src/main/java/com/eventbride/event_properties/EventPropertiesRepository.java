@@ -19,6 +19,9 @@ public interface EventPropertiesRepository extends CrudRepository<EventPropertie
 
     List<EventProperties> findAll();
 
+    @Query("SELECT ep FROM EventProperties ep WHERE ep.venue.user.id=:userId OR ep.otherService.user.id=:userId")
+    public List<EventProperties> findEventPropertiesByUserId(Integer userId);
+
     @Query("SELECT ep FROM Event e JOIN e.eventProperties ep WHERE e = :event")
     public List<EventProperties> findEventPropertiesByEvent(Event event);
 
