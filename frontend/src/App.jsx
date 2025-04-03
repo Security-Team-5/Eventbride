@@ -32,6 +32,7 @@ import FAQ from "./pages/no-authentified/faqs.jsx"
 import EditProfile from "./pages/authentified/EditProfile.jsx"
 import EditPlanProfile from "./pages/provider/EditPlanProfile"
 import Support from "./pages/authentified/Support.jsx"
+import VentasProveedor from "./pages/provider/HistorialVentas"
 
 function App() {
   const { currentUser, loading, setCurrentUser } = useCurrentUser(null)
@@ -68,6 +69,7 @@ function App() {
                 <Route path="/misservicios/registrar" element={<RegistrarServicio />} />
                 <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio />} />
                 <Route path="/profile/plan" element={<EditPlanProfile />} />
+                <Route path="/misVentas" element={<VentasProveedor />} />
               </>
             )}
             {/*Rutas de Admin*/}

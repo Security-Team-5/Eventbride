@@ -88,7 +88,7 @@ public class PaymentService {
 
             p.setUser(user);
             paymentRepository.save(p);
-            
+
         } else {
             p = null;
         }
@@ -115,4 +115,13 @@ public class PaymentService {
         }
         return payments;
     }
+
+    public List<Payment> getPaymentsForProvider(Integer providerUserId) {
+        List<Payment> payments = paymentRepository.findPaymentsByProviderUserId(providerUserId);
+        if (payments.isEmpty()) {
+            throw new RuntimeException("No se han encontrado pagos para el proveedor con ID: " + providerUserId);
+        }
+        return payments;
+    }
+
 }
