@@ -55,8 +55,8 @@ public class SecurityConfig {
                                                 // URIS DE ADMIN
                                                 .requestMatchers(
                                                                 "/api/services/admin",
-							        "/api/v1/events",
-								"/api/v1/events/DTO",
+                                                                "/api/v1/events",
+                                                                "/api/v1/events/DTO",
                                                                 "/api/other-services/admin/{id}")
                                                 .hasAuthority("ADMIN")
 
@@ -73,12 +73,14 @@ public class SecurityConfig {
                                                                 "/api/users/plan",
                                                                 "/api/users/getAdmin",
                                                                 "/api/payment/provider/**",
+                                                                "/api/event-properties/provider/**",
                                                                 "/api/users/planExpired/{id}")
                                                 .hasAnyAuthority("SUPPLIER", "ADMIN") // Admin también puede acceder
 
                                                 // URIS DE CLIENT Y SUPPLIER
-                                                .requestMatchers("/api/event-properties/DTO/**").hasAnyAuthority("CLIENT",
-                                                                "SUPPLIER")
+                                                .requestMatchers(
+                                                                "/api/event-properties/provider/**")
+                                                .hasAnyAuthority("CLIENT", "SUPPLIER")
 
                                                 // URIS DE CLIENTE
                                                 .requestMatchers(

@@ -651,7 +651,6 @@
     justify-content: center;
     background-color: transparent;
     border: 1px solid #eee;
-    color: #666;
     cursor: pointer;
     transition: all 0.2s ease;
 }

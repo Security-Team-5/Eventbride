@@ -11,7 +11,6 @@ import {
     User,
     MessageSquare,
     FileText,
-    Search,
     ArrowUpDown,
     CalendarDays,
     List,
@@ -55,7 +54,6 @@ export default function SupplierDashboard() {
                 if (Array.isArray(requestPair) && requestPair.length >= 2) {
                     const eventProperty = requestPair[0]
                     const user = requestPair[1]
-                    setChatId(user.id)
 
                     // Determinar si es un venue o un otherService
                     const isVenue = eventProperty.venueDTO !== null
@@ -75,13 +73,14 @@ export default function SupplierDashboard() {
 
                     formattedRequests.push({
                         id: eventProperty.id,
+                        clientId: user.id,
                         clientName: `${user.firstName} ${user.lastName}`,
                         clientEmail: user.email || "No disponible",
                         clientPhone: user.telephone || "No disponible",
                         clientUsername: user.username,
                         clientProfilePicture: user.profilePicture,
                         serviceName: serviceName,
-                        eventType: isVenue ? "Venue" : "Servicio",
+                        eventType: isVenue ? "Recinto" : "Servicio",
                         date: date,
                         time: startTime,
                         location: location,
@@ -331,7 +330,7 @@ export default function SupplierDashboard() {
                             <div className="page-title">
                                 <h2>Solicitudes de Servicios</h2>
                                 <p className="page-description">
-                                    Gestiona las solicitudes de tus servicios y visualiza tu calendario de eventos
+                                    Gestiona las solicitudes de tus servicios y visualiza tu calendario de servicios
                                 </p>
                             </div>
                             <div className="view-toggle">
@@ -395,16 +394,15 @@ export default function SupplierDashboard() {
                         {/* Filters and Search */}
                         <div className="filters-container">
                             <div className="search-box">
-                                <Search size={18} className="search-icon" />
                                 <input
                                     type="text"
-                                    placeholder="Buscar por cliente, servicio o tipo de evento..."
+                                    placeholder="Buscar por cliente, servicio o tipo de servicio..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="search-input"
                                 />
                             </div>
-                            <div className="filter-buttons">
+                            <div className="filter-buttons" style={{ maxWidth: "20%", display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "nowrap" }}>
                                 <button
                                     className={`filter-button ${filterStatus === "all" ? "active" : ""}`}
                                     onClick={() => setFilterStatus("all")}
@@ -451,7 +449,7 @@ export default function SupplierDashboard() {
                                             <ArrowUpDown size={14} className="sort-icon" />
                                         </div>
                                         <div className="list-header-item">
-                                            <span>Evento</span>
+                                            <span>Tipo de servicio</span>
                                         </div>
                                         <div className="list-header-item">
                                             <span>Estado</span>
@@ -487,7 +485,7 @@ export default function SupplierDashboard() {
                                                         <span className="service-guests">{request.price}€</span>
                                                     </div>
                                                     <div className="request-event-type">
-                                                        <span className="event-type-badge">{request.isVenue ? "Venue" : "Servicio"}</span>
+                                                        <span className="event-type">{request.eventType}</span>
                                                     </div>
                                                     <div className="request-status">
                                                         <StatusBadge status={request.status} />
@@ -575,8 +573,8 @@ export default function SupplierDashboard() {
                                 <div className="request-details-panel">
                                     <div className="panel-header">
                                         <h3 className="panel-title">Detalles de la Solicitud</h3>
-                                        <button className="close-button" onClick={() => setSelectedRequest(null)}>
-                                            <X size={20} />
+                                        <button style={{ color: "black" }} className="close-button" onClick={() => setSelectedRequest(null)}>
+                                            X
                                         </button>
                                     </div>
 
@@ -703,12 +701,12 @@ export default function SupplierDashboard() {
 
                                             </>
                                         )}
-                                        {selectedRequest.status === "approved" && (
-                                            <button className="action-button contact" onClick={() => navigator(`/chat/${chatId}`)}>
-                                                <MessageSquare size={16} />
-                                                Contactar Cliente
-                                            </button>
-                                        )}
+
+                                        <button className="action-button contact" onClick={() => navigator(`/chat/${selectedRequest.clientId}`)}>
+                                            <MessageSquare size={16} />
+                                            Contactar Cliente
+                                        </button>
+
                                         {selectedRequest.status === "rejected" && (
                                             <></>
                                         )}

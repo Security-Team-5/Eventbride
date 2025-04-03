@@ -221,8 +221,9 @@ function AdminEvents() {
 
             /* SI NO OS GUSTA EL QUE SE PUEDA HACER SCROLL, ELIMINADLE EL STYLE*/
             <div key={index} className="service-container" style={{ height: "90%" }}>
-              <h2 className="service-title">Evento ID: {event.id}</h2>
-              <h2 className="service-title">De {event.userEmail}</h2>
+              <h2 className="service-title">Nombre: {event.name}</h2>
+              <p className="service-title">ID: {event.id}</p>
+              <p className="service-title">De {event.userEmail}</p>
 
               <div className="service-info">
                 <form style={{ width: "100%" }} onSubmit={(e) => e.preventDefault()}>

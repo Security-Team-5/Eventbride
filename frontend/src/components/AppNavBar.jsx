@@ -85,7 +85,6 @@ function Navbar({ user }) {
           <li><Link to="/create-events" className="nav-link">Crear evento</Link></li>
           <li><Link to="/venues" className="nav-link">Recintos</Link></li>
           <li><Link to="/other-services" className="nav-link">Otros servicios</Link></li>
-          <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
           <li><Link to="/support" className="nav-link">Soporte Técnico</Link></li>
         </ul>
       );
@@ -95,17 +94,16 @@ function Navbar({ user }) {
       if (!loading) {
         return (
           <ul className="nav-links">
-            <li><Link to="/dashboard" className="nav-link">Dashboard</Link></li>
             <li><Link to="/misservicios" className="nav-link">Mis servicios</Link></li>
-            <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
             <li className="flex items-center gap-1">
               <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
               {eventProps && eventProps.length > 0 && (
                 <AlertCircle className="text-red-500 w-4 h-4" />
               )}
             </li>
-            <li><Link to="/support" className="nav-link">Soporte Técnico</Link></li>
+            <li><Link to="/dashboard" className="nav-link">Contrataciones</Link></li>
             <li><Link to="/misVentas" className="nav-link">Historial ventas</Link></li>
+            <li><Link to="/support" className="nav-link">Soporte Técnico</Link></li>
           </ul>
         );
       }

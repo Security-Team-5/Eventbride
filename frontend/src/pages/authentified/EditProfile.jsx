@@ -164,7 +164,7 @@ function EditProfile() {
                         </button>
 
                         {userData.role === "SUPPLIER" && userData.plan === "BASIC" && (
-                            <button className="action-button secondary-button" onClick={() => window.location.href = "/profile/plan"}>
+                            <button className="action-button secondary-button" onClick={() => window.location.href = "/profile/plan"} style={{ background: "linear-gradient(45deg, #f0e4a2, #eece6c, #f1ac34)", color: "black" }}>
                                 Ver Planes
                             </button>
                         )}

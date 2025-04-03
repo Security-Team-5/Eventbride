@@ -118,6 +118,17 @@ public class EventPropertiesController {
         return eventPropertiesService.findByIdDTO(id);
     }
 
+    @GetMapping("/provider/{id}")
+    public EventPropertiesDTO findByIdProvider(@PathVariable("id") Integer id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        if (!roles.contains("SUPPLIER")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+        return eventPropertiesService.findByIdDTO(id);
+    }
+
     @GetMapping("/requests/{userId}")
     public List<List<Object>> getAllEventPropertiesAfterNow(@PathVariable("userId") Integer userId) {
         return eventPropertiesService.findAllEventPropertiesAfterNow(userId);

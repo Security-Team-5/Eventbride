@@ -2,14 +2,12 @@
 
 import { useState, useEffect } from "react"
 import apiClient from "../../apiClient"
-import { useNavigate } from "react-router-dom"
-import { MapPin, DollarSign, Users, Clock, Check, X, Plus, Info, Package, CheckCircle, Calendar } from "lucide-react"
+import { MapPin, DollarSign, Users, Clock, Check, X, Info, Package, CheckCircle, Calendar } from "lucide-react"
 import "../../static/resources/css/RequestService.css"
 
 const Servicios = () => {
     const [eventProps, setEventProps] = useState([])
     const [loading, setLoading] = useState(true)
-    const navigate = useNavigate()
 
     const currentUser = JSON.parse(localStorage.getItem("user"))
 
@@ -196,13 +194,6 @@ const Servicios = () => {
                         )
                     })
                 )}
-            </div>
-
-            <div className="create-service-button-container">
-                <button className="create-service-button" onClick={() => navigate("/misservicios/registrar")}>
-                    <Plus size={18} />
-                    Crear nuevo servicio
-                </button>
             </div>
         </div >
     )
