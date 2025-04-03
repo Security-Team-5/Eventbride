@@ -700,20 +700,7 @@ export default function SupplierDashboard() {
                                     <div className="panel-actions">
                                         {selectedRequest.status === "pending" && (
                                             <>
-                                                <button
-                                                    className="action-button accept"
-                                                    onClick={() => handleStatusChange(selectedRequest.id, "approved")}
-                                                >
-                                                    <Check size={16} />
-                                                    Aceptar Solicitud
-                                                </button>
-                                                <button
-                                                    className="action-button reject"
-                                                    onClick={() => handleStatusChange(selectedRequest.id, "rejected")}
-                                                >
-                                                    <X size={16} />
-                                                    Rechazar Solicitud
-                                                </button>
+
                                             </>
                                         )}
                                         {selectedRequest.status === "approved" && (
@@ -723,13 +710,7 @@ export default function SupplierDashboard() {
                                             </button>
                                         )}
                                         {selectedRequest.status === "rejected" && (
-                                            <button
-                                                className="action-button reconsider"
-                                                onClick={() => handleStatusChange(selectedRequest.id, "pending")}
-                                            >
-                                                <Clock size={16} />
-                                                Reconsiderar Solicitud
-                                            </button>
+                                            <></>
                                         )}
                                     </div>
                                 </div>
