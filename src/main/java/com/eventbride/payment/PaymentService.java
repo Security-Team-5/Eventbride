@@ -1,6 +1,7 @@
 package com.eventbride.payment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,7 +88,7 @@ public class PaymentService {
 
             p.setUser(user);
             paymentRepository.save(p);
-            
+
         } else {
             p = null;
         }
@@ -105,4 +106,22 @@ public class PaymentService {
         paymentRepository.save(p);
         return p;
     }
+
+    @Transactional
+    public List<Payment> getPaymentsFromEventId(Integer eventId) {
+        List<Payment> payments = paymentRepository.findPaymentsByEventId(eventId);
+        if (payments.isEmpty()) {
+            throw new RuntimeException("No se han encontrados pagos para este evento");
+        }
+        return payments;
+    }
+
+    public List<Payment> getPaymentsForProvider(Integer providerUserId) {
+        List<Payment> payments = paymentRepository.findPaymentsByProviderUserId(providerUserId);
+        if (payments.isEmpty()) {
+            throw new RuntimeException("No se han encontrado pagos para el proveedor con ID: " + providerUserId);
+        }
+        return payments;
+    }
+
 }

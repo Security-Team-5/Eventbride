@@ -55,7 +55,9 @@ public class UserManagementService {
             
             user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
             user.setDni(registrationRequest.getDni());
-            user.setProfilePicture(registrationRequest.getProfilePicture());
+            if (registrationRequest.getProfilePicture()==null || registrationRequest.getProfilePicture()==""){
+                user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
+            }            
             user.setRole(registrationRequest.getRole());
             User userResult = userRepo.save(user);
             if (userResult.getId()>0) {

@@ -32,7 +32,7 @@ public class OtherService extends Service {
 
     @Column(name = "extra_information", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 1000)
+    @Size(min = 1, max = 5000)
     private String extraInformation;
 
     public enum OtherServiceType {

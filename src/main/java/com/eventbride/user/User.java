@@ -24,16 +24,14 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter
 @Setter
-public class User extends Person implements UserDetails{
+public class User extends Person implements UserDetails {
     @Column(name = "dni", nullable = false, unique = true)
     @NotBlank
     @Size(min = 1, max = 9)
     private String dni;
 
-    @Column(name = "profile_picture", nullable = false)
-    @NotBlank
-    @URL(message = "Formato de URL inválido")
-    @Size(min = 1, max = 1000)
+    @Column(name = "profile_picture", nullable = true)
+    @Size(max = 50000)
     private String profilePicture;
 
     @Column(name = "role", nullable = false)
@@ -56,7 +54,7 @@ public class User extends Person implements UserDetails{
     private LocalDate expirePlanDate;
 
     @Override
-    public Collection< ? extends GrantedAuthority> getAuthorities() {
-        return List.of( new SimpleGrantedAuthority(role));
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
     }
 }

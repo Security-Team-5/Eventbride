@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.UserDTO;
+import com.eventbride.user.User.Plan;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -65,7 +66,9 @@ public class UserService {
 
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-
+        if (user.getProfilePicture()==null || user.getProfilePicture()==""){
+            user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
+        }
         return userRepository.save(user);
     }
 
@@ -90,6 +93,9 @@ public class UserService {
         if (!user.getDni().equals(userDetails.getDni()) && 
             userRepository.existsByDni(userDetails.getDni())) {
             throw new RuntimeException("El DNI ya está registrado");
+        }
+        if (user.getProfilePicture()==null || user.getProfilePicture()==""){
+            user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
         }
     
         // Validar el formato del telefono
@@ -124,11 +130,11 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUserPlan(Integer id, User updatedUser) {
+    public User downgradeUserPlan(Integer id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        user.setPlan(updatedUser.getPlan());
-        user.setPaymentPlanDate(updatedUser.getPaymentPlanDate());
-        user.setExpirePlanDate(updatedUser.getExpirePlanDate());
+        user.setPlan(Plan.BASIC);
+        user.setPaymentPlanDate(null);
+        user.setExpirePlanDate(null);
         return userRepository.save(user);
     }
 
@@ -138,6 +144,11 @@ public class UserService {
         user.setPaymentPlanDate(LocalDate.now());
         user.setExpirePlanDate(expirationDate);
         return userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByRole(String role ) throws Exception {
+        return userRepository.findByRole(role).orElseThrow(() -> new Exception("Usuario no encontrado"));
     }
   
 }

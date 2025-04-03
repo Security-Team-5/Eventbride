@@ -97,7 +97,7 @@ public class OtherServiceService {
             User existingUser = user.get();
             ServiceDTO allServices = serviceService.getAllServiceByUserId(existingUser.getId());
 
-            int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
+            int slotsCount = (int) allServices.getOtherServices().stream().filter(s -> s.getAvailable()).count() + (int) allServices.getVenues().stream().filter(s -> s.getAvailable()).count();
 
             String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
 
@@ -120,7 +120,9 @@ public class OtherServiceService {
         OtherService otherService = otherServiceRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se ha encontrado ningun servicio con esa Id"));
 
-        BeanUtils.copyProperties(otherServ, otherService, "id");
+        User usuarioExistente = otherService.getUser();
+        BeanUtils.copyProperties(otherServ, otherService);
+        otherService.setUser(usuarioExistente);
 
         return otherServiceRepo.save(otherService);
 

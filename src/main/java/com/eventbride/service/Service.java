@@ -55,7 +55,7 @@ public class Service extends BaseEntity {
 
     @Column(name = "description", nullable = false)
     @NotBlank
-    @Size(min = 1, max = 250)
+    @Size(min = 1, max = 5000)
     private String description;   
 
     @Column(name = "limited_by_price_per_guest", nullable = false)

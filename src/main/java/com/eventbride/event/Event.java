@@ -22,6 +22,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,11 +41,6 @@ public class Event extends BaseEntity {
     @Column(name = "guests", nullable = false)
     @Min(1)
     private Integer guests;
-
-    @Column(name = "budget", precision = 9, scale = 2, nullable = true)
-    @Digits(integer = 7, fraction = 2)
-    @DecimalMin("0.0")
-    private BigDecimal budget;
 
     @Column(name = "event_date", nullable = false)
     private LocalDate eventDate;
@@ -80,4 +77,9 @@ public class Event extends BaseEntity {
 
     @Column(name = "paid", nullable = true)
     private Boolean paid;
+
+    @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(min = 1, max = 50)
+    private String name;
 }

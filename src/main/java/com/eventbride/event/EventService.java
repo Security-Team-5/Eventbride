@@ -31,12 +31,15 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<EventDTO> getAllEventsDTO() {
         List<Event> events = eventRepository.findAll();
-        return EventDTO.fromEntities(events); 
+        return EventDTO.fromEntities(events);
     }
 
     @Transactional(readOnly = true)
-    public Event findById(int id) throws DataAccessException {
-        Optional<Event> g = eventRepository.findById(id); 
+    public Event findById(int id) throws IllegalArgumentException {
+        Optional<Event> g = eventRepository.findById(id);
+		if(!g.isPresent()) {
+			throw new IllegalArgumentException("El evento no existe");
+		}
         return g.get();
     }
 
@@ -52,31 +55,6 @@ public class EventService {
 		return save(toUpdate);
 	}
 
-    @Transactional(readOnly = true)
-    public Boolean budgetExceeded(Event event) throws DataAccessException {
-        List<OtherService> otherServices= eventRepository.findOthersServicesByEvent(event);
-        List<Venue> venues= eventRepository.findVenuesByEvent(event);
-        BigDecimal services_price= new BigDecimal(0);
-        for(OtherService otherService: otherServices){
-            if(otherService.getLimitedByPricePerGuest()){
-                services_price=services_price.add(otherService.getServicePricePerGuest().multiply(new BigDecimal(event.getGuests())));
-            } else{
-                services_price=services_price.add(otherService.getFixedPrice());
-            }
-        }
-        for(Venue venue: venues){
-            if(venue.getLimitedByPricePerGuest()){
-                services_price=services_price.add(venue.getServicePricePerGuest().multiply(new BigDecimal(event.getGuests())));
-            } else{
-                services_price=services_price.add(venue.getFixedPrice());
-            }
-        }
-        if(services_price.compareTo(event.getBudget())>0){
-            return null;
-        }
-        return null;
-    }
-
 	@Transactional
 	public void deleteEvent(int id) throws DataAccessException {
 		Event toDelete = findById(id);
@@ -91,6 +69,11 @@ public class EventService {
     @Transactional
     public List<Event> findEventsByUserId(Integer userId) {
         return eventRepository.findAllEventsByUserId(userId);
+    }
+
+    @Transactional
+    public List<Event> findEventsByUserIdWithoutAService(Integer userId, Integer serviceId) {
+        return eventRepository.findAllEventsByUserIdWithoutAService(userId, serviceId);
     }
 
     public void saveAll(List<Event> events) {
