@@ -21,7 +21,7 @@ INSERT IGNORE INTO users (id, username, role, email, first_name, last_name, tele
 -- para probar notificaciones
 (19, 'Urgoneta', 'SUPPLIER', 'gonnavrem@alum.us.es', 'Urgon', 'Furgoneta', '432984729', '452516135J', 'https://carwow-es-wp-0.imgix.net/mercedes-benz_sprinter_panel_van_1.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2030-04-20', true),
 -- admin
-(15, 'Admin', 'ADMIN', 'admin@example.com', 'Admin', 'Soyadmin', '666666666', '44444144A', 'https://proassets.planetadelibros.com/usuaris/seudonimos/fotos/53/original/000052233_1_King_AuthorPhoto_c_Lindsay_Mills_2018.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null, false);
+(15, 'Admin', 'ADMIN', 'admin@example.com', 'Admin', 'Soyadmin', '666666666', '44444144A', 'https://iili.io/3R8p4yu.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null, false);
 
 INSERT IGNORE INTO venues (id, postal_code, coordinates, address, max_guests, surface, name, available, city_available, service_price_guest, service_price_hour, picture, description, user_id, limited_by_price_per_guest, limited_by_price_per_hour, fixed_price, earliest_time, latest_time) VALUES 
 (1, '41000', '37.42571305296568, -5.82959169111589', 'Cam. Rocío, 404', 110, 100.00, 'Castillo de Maxi' ,TRUE, 'Sevilla', null, null, 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '¿Sabías que entre nuestros servicios se encuentra la posibilidad de disfrutar de un castillo hinchable? ¡Los más pequeños se lo pasarán en grande!', 6, FALSE, FALSE, 1500.00, '09:00:00', '23:59:00'),
@@ -41,17 +41,17 @@ INSERT IGNORE INTO other_services (id, other_service_type, extra_information, na
 (6, 'ENTERTAINMENT', 'Sonido para eventos',  'Master Sound' ,TRUE, 'Sevilla', null, 200.00, 'https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_54/545096/17370601_800.jpg', 'Con nosotros no te perderás nada. En Master Sound, te escuchamos.', 12, FALSE, TRUE, null),
 (7, 'CATERING', 'Catering para eventos',  'ARCOS 3 CATERING' ,FALSE, 'Sevilla', 200.00, null, 'https://cdn0.bodas.net/vendor/16070/3_2/960/jpeg/whatsapp-image-2022-11-17-at-1-15-18-pm_1_16070-166868815185642.jpeg', 'Nos ponemos a tu servicio con nuestro equipo de profesionales preocupados por que todo salga perfecto en cualquier tipo de evento o celebración que realicen.', 13, TRUE, FALSE, null);
 
-INSERT IGNORE INTO events (id, event_type, guests, event_date, payment_date, confirmed_guests, paid, user_id) VALUES
-(1, 'WEDDING', 120, '2026-12-31', '2026-08-31', 115, TRUE, 1),
-(2, 'CHRISTENING', 50, '2026-12-31', '2026-10-31', 40, TRUE, 2),
-(3, 'WEDDING', 200, '2026-12-31', '2026-08-31', 190, TRUE, 3),
-(4, 'COMMUNION', 100, '2026-12-31', '2026-11-30', 90, TRUE, 4),
-(5, 'WEDDING', 100, '2026-12-31', '2026-08-31', 90, TRUE, 5),
-(6, 'WEDDING', 100, '2026-06-30', '2026-02-28', 90, TRUE, 1),
-(7, 'CHRISTENING', 50, '2026-07-30', '2026-05-30', 40, TRUE, 2),
-(8, 'COMMUNION', 30, '2026-08-30', '2026-07-30', 25, TRUE, 3),
-(9, 'WEDDING', 200, '2026-09-30', '2026-05-30', 190, TRUE, 4),
-(10, 'CHRISTENING', 100, '2026-10-30', '2026-08-30', 90, TRUE, 5);
+INSERT IGNORE INTO events (id, event_type, guests, event_date, payment_date, confirmed_guests, paid, user_id, name) VALUES
+(1, 'WEDDING', 120, '2026-12-31', '2026-08-31', 115, TRUE, 1, "Boda de Daniel y Paula"),
+(2, 'CHRISTENING', 50, '2026-12-31', '2026-10-31', 40, TRUE, 2, "Bautizo de Juan Carlos"),
+(3, 'WEDDING', 200, '2026-12-31', '2026-08-31', 190, TRUE, 3, "Boda de Manolo y Lucía"),
+(4, 'COMMUNION', 100, '2026-12-31', '2026-11-30', 90, TRUE, 4, "Comunión de Jesús"),
+(6, 'WEDDING', 100, '2026-06-30', '2026-02-28', 90, TRUE, 1, "Boda de Antonio y María del Mar"),
+(5, 'WEDDING', 100, '2026-12-31', '2026-08-31', 90, TRUE, 5, "Boda de Juan y Nerea"),
+(7, 'CHRISTENING', 50, '2026-07-30', '2026-05-30', 40, TRUE, 2, "Bautizo de Pedro"),
+(8, 'COMMUNION', 30, '2026-08-30', '2026-07-30', 25, TRUE, 3, "Comunión de Pilar"),
+(9, 'WEDDING', 200, '2026-09-30', '2026-05-30', 190, TRUE, 4, "Boda de Pau y Sofía"),
+(10, 'CHRISTENING', 100, '2026-10-30', '2026-08-30', 90, TRUE, 5, "Bautizo de María");
 
 
 INSERT IGNORE INTO invitations (id, first_name, last_name, number_of_guests, max_guests, telephone, email, invitation_type, event_id) VALUES

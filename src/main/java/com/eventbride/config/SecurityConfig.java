@@ -37,6 +37,7 @@ public class SecurityConfig {
                                                 // URIS PÚBLICAS
                                                 .requestMatchers("/api/auth/**",
                                                                 "/api/users",
+                                                                "/api/users/{id}",
                                                                 "/api/users/**",
                                                                 "/api/users/auth/register",
                                                                 "/api/users/auth/login",
@@ -55,8 +56,8 @@ public class SecurityConfig {
                                                 // URIS DE ADMIN
                                                 .requestMatchers(
                                                                 "/api/services/admin",
-																"/api/v1/events",
-																"/api/v1/events/DTO",
+                                                                "/api/v1/events",
+                                                                "/api/v1/events/DTO",
                                                                 "/api/other-services/admin/{id}")
                                                 .hasAuthority("ADMIN")
 
@@ -71,8 +72,16 @@ public class SecurityConfig {
                                                                 "/api/event-properties/pending/{userId}",
                                                                 "/api/event-properties/status/pending/{eventPropertiesId}",
                                                                 "/api/users/plan",
+                                                                "/api/users/getAdmin",
+                                                                "/api/payment/provider/**",
+                                                                "/api/event-properties/provider/**",
                                                                 "/api/users/planExpired/{id}")
-                                                .hasAnyAuthority("SUPPLIER", "ADMIN") // 🔹 Admin también puede acceder
+                                                .hasAnyAuthority("SUPPLIER", "ADMIN") // Admin también puede acceder
+
+                                                // URIS DE CLIENT Y SUPPLIER
+                                                .requestMatchers(
+                                                                "/api/event-properties/provider/**")
+                                                .hasAnyAuthority("CLIENT", "SUPPLIER")
 
                                                 // URIS DE CLIENTE
                                                 .requestMatchers(
@@ -80,13 +89,16 @@ public class SecurityConfig {
                                                                 "/api/v1/events/next/**",
                                                                 "/api/v1/events/create",
                                                                 "/api/event-properties/DTO/**",
+                                                                "/api/event-properties/update/**",
                                                                 "/api/event-properties/cancel/**",
                                                                 "/api/event-properties/{eventId}/add-otherservice/{otherServiceId}",
                                                                 "/api/event-properties/{eventId}/add-venue/{venueId}",
                                                                 "/api/event-properties/cancel/{eventPropertieID}",
                                                                 "/api/invitation/eventInvitations/{eventId}",
                                                                 "/api/invitation/**",
-                                                                "/api/invitation/create/**")
+                                                                "/api/users/getAdmin",
+                                                                "/api/invitation/create/**",
+                                                                "/api/v1/events/create")
                                                 .hasAnyAuthority("CLIENT", "ADMIN")
                                                 .anyRequest().authenticated())
                                 .sessionManagement(manager -> manager

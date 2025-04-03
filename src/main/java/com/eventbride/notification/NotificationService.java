@@ -55,7 +55,7 @@ public class NotificationService {
                 notification.setMessage("Tu solicitud de reserva de "
                         + (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
                                 : eventProperties.getVenue().getName())
-                        + " para el evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
+                        + " para el evento " + event.getName()
                         + " ha sido cancelada por el proveedor.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
@@ -65,7 +65,7 @@ public class NotificationService {
                 notification.setMessage("Tu solicitud de reserva de "
                         + (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
                                 : eventProperties.getVenue().getName())
-                        + " para el evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
+                        + " para el evento " + event.getName()
                         + " ha sido cancelada automáticamente ya que otro usuario ha reservado en la misma franja. Pruebe a solicitar una nueva o a buscar otro servicio.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
@@ -73,14 +73,14 @@ public class NotificationService {
                 notification.setType(NotificationType.EVENT_CREATED);
                 notification.setSubject("Evento creado");
                 notification.setMessage(
-                        "Tu evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)" + " ha sido creado con éxito.");
+                        "Tu evento " + event.getName() + " ha sido creado con éxito.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
             case PAYMENT_REMINDER:
                 notification.setType(NotificationType.PAYMENT_REMINDER);
                 notification.setSubject("Recordatorio de pago");
                 notification.setMessage("Le recordamos que tiene un pago pendiente para su evento "
-                        + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
+                        + event.getName()
                         + ". Por favor, realice el pago lo antes posible para evitar problemas.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
@@ -96,7 +96,7 @@ public class NotificationService {
                 notification.setMessage("Tu solicitud reserva de "
                         + (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
                                 : eventProperties.getVenue().getName())
-                        + " para el evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
+                        + " para el evento " + event.getName()
                         + " ha sido confirmada. Paga la señal cuanto antes para terminar de reservarlo. ¡Que no te lo quiten!");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
@@ -112,7 +112,7 @@ public class NotificationService {
                 notification.setMessage("Has recibido una nueva solicitud de tu servicio "
                         + (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
                                 : eventProperties.getVenue().getName())
-                        + " para el evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
+                        + " para el evento " + event.getName()
                         + ". Revisa la petición y áceptala para permitir al cliente pagar la señal o recházala en caso de no poder ofrecer el servicio.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
@@ -122,7 +122,7 @@ public class NotificationService {
                 notification.setMessage("El usuario ha pagado la señal de tu reserva de " +
                         (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
                                 : eventProperties.getVenue().getName())
-                        + " para el evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
+                        + " para el evento " + event.getName()
                         + ". Estamos procesando el pago. Si no lo recibes en los próximos días, por favor, contacta con el soporte de EventBride.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
@@ -132,7 +132,7 @@ public class NotificationService {
                 notification.setMessage("El usuario ha pagado el monto restante para la contratación de tu servicio " +
                         (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
                                 : eventProperties.getVenue().getName())
-                        + " para el evento " + "event.getName(PONEDLE NOMBRE AL EVENTO YA)"
+                        + " para el evento " + event.getName()
                         + ". Estamos procesando el pago. Si no lo recibes en los próximos días, por favor, contacta con el soporte de EventBride.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;

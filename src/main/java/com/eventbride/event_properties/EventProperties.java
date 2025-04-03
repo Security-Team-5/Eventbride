@@ -10,7 +10,6 @@ import com.eventbride.payment.Payment;
 import com.eventbride.venue.Venue;
 /*import com.fasterxml.jackson.annotation.JsonIgnore;*/
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
@@ -21,11 +20,11 @@ import lombok.Setter;
 @Setter
 public class EventProperties extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "other_service_id", nullable = true)
     private OtherService otherService;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "venue_id", nullable = true)
     private Venue venue;
 

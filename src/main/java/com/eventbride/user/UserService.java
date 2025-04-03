@@ -66,7 +66,9 @@ public class UserService {
 
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-
+        if (user.getProfilePicture()==null || user.getProfilePicture()==""){
+            user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
+        }
         return userRepository.save(user);
     }
 
@@ -92,6 +94,9 @@ public class UserService {
             userRepository.existsByDni(userDetails.getDni())) {
             throw new RuntimeException("El DNI ya está registrado");
         }
+        if (user.getProfilePicture()==null || user.getProfilePicture()==""){
+            user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
+        }
     
         // Validar el formato del telefono
         if (!String.valueOf(userDetails.getTelephone()).matches("^[0-9]{9}$")) {
@@ -110,6 +115,7 @@ public class UserService {
         user.setPaymentPlanDate(userDetails.getPaymentPlanDate());
         user.setExpirePlanDate(userDetails.getExpirePlanDate());
         user.setProfilePicture(userDetails.getProfilePicture());
+        user.setReceivesEmails(userDetails.getReceivesEmails());
 
         return userRepository.save(user);
     }
@@ -139,6 +145,11 @@ public class UserService {
         user.setPaymentPlanDate(LocalDate.now());
         user.setExpirePlanDate(expirationDate);
         return userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByRole(String role ) throws Exception {
+        return userRepository.findByRole(role).orElseThrow(() -> new Exception("Usuario no encontrado"));
     }
   
 }

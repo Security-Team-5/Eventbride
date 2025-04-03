@@ -1,6 +1,7 @@
 package com.eventbride.user;
 
 import com.eventbride.event.EventService;
+import com.eventbride.invitation.Invitation;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceService;
 import com.eventbride.rating.RatingService;
@@ -88,7 +89,7 @@ public class UserController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user) {
         logger.info("Intentando registrar usuario: {}", user.getUsername());
 
-        try {
+        try {  
             User newUser = userService.registerUser(user);
             return ResponseEntity.ok(newUser);
         } catch (RuntimeException e) {
@@ -108,6 +109,9 @@ public class UserController {
                     if (existingUser.isEmpty()) {
                         return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
                     }
+                    if (updatedUser.getProfilePicture() == null || updatedUser.getProfilePicture().trim().isEmpty()) {
+                        updatedUser.setProfilePicture("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.es%2Ficono-gratis%2Fimagen-de-usuario-con-fondo-negro_17004&psig=AOvVaw2uqkuLeXpbAgKF0TwS8o6j&ust=1743779005580000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJCG9pORvIwDFQAAAAAdAAAAABAT");
+                    } 
                     updatedUser.setId(id);
                     User savedUser = userService.updateUser(id, updatedUser);
                     return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
@@ -211,5 +215,11 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/getAdmin")
+    public ResponseEntity<?> getAdmin() throws Exception {
+		User user = userService.getUserByRole("ADMIN");
+		return new ResponseEntity<>(user.getId(), HttpStatus.OK);
+	}
 
 }

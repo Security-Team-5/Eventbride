@@ -84,7 +84,7 @@ const Register = () => {
         dni: form.dni,
         password: form.password,
         role: role,
-        profilePicture: form.profilePicture,
+        profilePicture: form.profilePicture?.trim() === "" ? null : form.profilePicture,
       })
 
       if (response.data.error) {
@@ -183,7 +183,6 @@ const Register = () => {
                   placeholder="https://foto.de/perfil"
                   value={form.profilePicture}
                   onChange={handleChange}
-                  required
                 />
               </div>
             </div>

@@ -76,6 +76,11 @@ public class EventService {
         return eventRepository.findAllEventsByUserId(userId);
     }
 
+    @Transactional
+    public List<Event> findEventsByUserIdWithoutAService(Integer userId, Integer serviceId) {
+        return eventRepository.findAllEventsByUserIdWithoutAService(userId, serviceId);
+    }
+
     public void saveAll(List<Event> events) {
         eventRepository.saveAll(events);
     }

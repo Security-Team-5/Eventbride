@@ -22,6 +22,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -75,4 +77,9 @@ public class Event extends BaseEntity {
 
     @Column(name = "paid", nullable = true)
     private Boolean paid;
+
+    @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(min = 1, max = 50)
+    private String name;
 }

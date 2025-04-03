@@ -2,10 +2,8 @@
 import { useEffect, useRef } from "react";
 import "../static/resources/css/Paypal.css";
 import apiClient from "../apiClient"
-import { useNavigate } from "react-router-dom";
 
 function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
-  const navigate = useNavigate();
   const paypalRef = useRef(null); // Referencia segura al div
   const commissionRate = 1.05; // Comisión del 5%, con cambiar esta constante cambia toda la lógica de la comisión
 
@@ -50,7 +48,7 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
               );
 
               await Promise.all(cancelRequests);
-              navigate("/events");
+              window.location.href = "/events";
               alert(`Pago completado por ${details.payer.name.given_name}`);
             } catch (err) {
               alert("Error al procesar el pago");
@@ -70,7 +68,7 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
         paypalRef.current.innerHTML = "";
       }
     };
-  }, [amount, paymentType, eventPropsIds, navigate]);
+  }, [amount, paymentType, eventPropsIds]);
 
   return (
     <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center" }}>
