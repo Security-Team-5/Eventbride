@@ -72,8 +72,13 @@ public class SecurityConfig {
                                                                 "/api/event-properties/status/pending/{eventPropertiesId}",
                                                                 "/api/users/plan",
                                                                 "/api/users/getAdmin",
+                                                                "/api/payment/provider/**",
                                                                 "/api/users/planExpired/{id}")
-                                                .hasAnyAuthority("SUPPLIER", "ADMIN") // 🔹 Admin también puede acceder
+                                                .hasAnyAuthority("SUPPLIER", "ADMIN") // Admin también puede acceder
+
+                                                // URIS DE CLIENT Y SUPPLIER
+                                                .requestMatchers("/api/event-properties/DTO/**").hasAnyAuthority("CLIENT",
+                                                                "SUPPLIER")
 
                                                 // URIS DE CLIENTE
                                                 .requestMatchers(

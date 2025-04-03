@@ -63,5 +63,15 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+
+    @GetMapping("/provider/{userId}")
+    public ResponseEntity<List<PaymentDTO>> getPaymentsForProvider(@PathVariable Integer userId) {
+        try {
+            List<Payment> payments = paymentService.getPaymentsForProvider(userId);
+            return ResponseEntity.ok(PaymentDTO.fromEntities(payments));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
