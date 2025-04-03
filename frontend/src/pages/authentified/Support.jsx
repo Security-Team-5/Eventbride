@@ -106,7 +106,7 @@ const getFAQDataByRole = (role) => {
               answer: "En el menú lateral, sección 'Solicitudes'." 
             },
             { question: "¿Puedo deshabilitar un servicio?",
-               answer: "Si, haz clic en el icono de deshabilitar junto al servicio de tu lista."
+               answer: "Sí, haz clic en el icono de deshabilitar junto al servicio de tu lista."
             },
             {
               question: "¿Puedo cancelar un servicio que ya ha sido reservado por un cliente?",
@@ -125,7 +125,7 @@ const getFAQDataByRole = (role) => {
             { question: "¿Se me ha terminado el plan Premium que pasa con mis servicios promocionados?", 
               answer: "Una vez expirado tu plan Premium, tus servicios promocionados dejarán de estarlo." 
             },
-            { question: "¿Que pasa cuando se acaba el plan Premium y tengo más de 3 servicios?", 
+            { question: "¿Qué pasa cuando se acaba el plan Premium y tengo más de 3 servicios?", 
               answer: "Cuando se acabe tu suscripción Premium, tendrás que deshabilitar tanto servicios hasta que llegues a los 3 permitidos por el plan Básico." 
             },
           ],
