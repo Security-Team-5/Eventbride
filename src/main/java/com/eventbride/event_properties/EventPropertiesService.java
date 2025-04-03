@@ -6,8 +6,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.EventPropertiesDTO;
+import com.eventbride.dto.UserDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.event_properties.EventProperties.Status;
@@ -27,6 +31,8 @@ import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueRepository;
 import com.eventbride.venue.VenueService;
+
+import ch.qos.logback.core.joran.sanity.Pair;
 
 import org.springframework.stereotype.Service;
 
@@ -117,10 +123,40 @@ public class EventPropertiesService {
     }
 
     @Transactional(readOnly = true)
-    public List<EventPropertiesDTO> findAllEventPropertiesAfterNow(Integer userId) {
-        List<EventProperties> allOfUser = eventPropertiesRepository.findEventPropertiesByUserId(userId);
-        List<EventPropertiesDTO> res = allOfUser.stream().filter(e -> e.getStartTime().isAfter(LocalDateTime.now()))
-                .map(e -> new EventPropertiesDTO(e)).toList();
+    public List<List<Object>> findAllEventPropertiesAfterNow(Integer userId) {
+
+        // Encontrar todos los eventproperties que tienen como dueño al usuario
+
+        List<EventProperties> allOfUser = new ArrayList<>();
+
+        for (EventProperties ep : eventPropertiesRepository.findAll()) {
+
+            if (ep.getVenue() == null && ep.getOtherService().getUser().getId() == userId) {
+                allOfUser.add(ep);
+            } else if (ep.getOtherService() == null && ep.getVenue().getUser().getId() == userId) {
+                allOfUser.add(ep);
+            }
+        }
+
+        // List<EventPropertiesDTO> res = allOfUser.stream().filter(e ->
+        // e.getStartTime().isAfter(LocalDateTime.now()))
+        // .map(e -> new EventPropertiesDTO(e)).toList();
+
+        List<List<Object>> res = new ArrayList<>();
+
+        for (Event e : eventRepository.findAll()) {
+            List<EventProperties> epAsociadosEvento = e.getEventProperties();
+            for (EventProperties ep : allOfUser) {
+                for (EventProperties epAsociado : epAsociadosEvento) {
+                    if (ep.getId() == epAsociado.getId()) {
+                        List<Object> r = new ArrayList<>();
+                        r.add(new EventPropertiesDTO(ep));
+                        r.add(new UserDTO(e.getUser()));
+                        res.add(r);
+                    }
+                }
+            }
+        }
 
         return res;
     }

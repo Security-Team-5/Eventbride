@@ -1,10 +1,25 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Calendar, ChevronRight, ChevronLeft, Filter, Check, X, Clock, MapPin, User, Phone, Mail, MessageSquare, FileText, MoreHorizontal, Search, ArrowUpDown, CalendarDays, ListFilter, Grid, List } from 'lucide-react'
+import {
+    Calendar,
+    ChevronRight,
+    ChevronLeft,
+    Check,
+    X,
+    Clock,
+    User,
+    MessageSquare,
+    FileText,
+    Search,
+    ArrowUpDown,
+    CalendarDays,
+    List,
+} from "lucide-react"
 import logo from "../../static/resources/images/logo-eventbride.png"
 import "../../static/resources/css/ProviderDashboard.css"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 export default function SupplierDashboard() {
     const [currentView, setCurrentView] = useState("list") // "list" or "calendar"
@@ -16,119 +31,86 @@ export default function SupplierDashboard() {
     const [sortBy, setSortBy] = useState("date") // "date", "client", "service"
     const [sortOrder, setSortOrder] = useState("asc") // "asc" or "desc"
     const [requests, setRequests] = useState("")
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    const [jwtToken] = useState(localStorage.getItem("jwt"));
+    const currentUser = JSON.parse(localStorage.getItem("user"))
+    const [jwtToken] = useState(localStorage.getItem("jwt"))
+    const [chatId, setChatId] = useState("")
+    const navigator = useNavigate();
 
     // Mock data for service requests
-    const [serviceRequests, setServiceRequests] = useState([
-        {
-            id: 1,
-            clientName: "María García",
-            clientEmail: "maria.garcia@example.com",
-            clientPhone: "+34 612 345 678",
-            serviceName: "Catering Premium",
-            eventType: "Boda",
-            date: new Date(2025, 3, 15), // April 15, 2025
-            time: "18:00",
-            location: "Finca El Olivar, Madrid",
-            guests: 120,
-            status: "pending",
-            message: "Necesitamos un menú que incluya opciones vegetarianas y veganas. También nos gustaría incluir una mesa de postres variados.",
-            createdAt: new Date(2025, 2, 10)
-        },
-        {
-            id: 2,
-            clientName: "Carlos Rodríguez",
-            clientEmail: "carlos.rodriguez@example.com",
-            clientPhone: "+34 623 456 789",
-            serviceName: "Fotografía Completa",
-            eventType: "Bautizo",
-            date: new Date(2025, 3, 22), // April 22, 2025
-            time: "12:00",
-            location: "Iglesia San Miguel, Barcelona",
-            guests: 50,
-            status: "accepted",
-            message: "Queremos un reportaje completo que incluya la ceremonia y la celebración posterior. Nos interesan especialmente las fotos familiares.",
-            createdAt: new Date(2025, 2, 15)
-        },
-        {
-            id: 3,
-            clientName: "Laura Martínez",
-            clientEmail: "laura.martinez@example.com",
-            clientPhone: "+34 634 567 890",
-            serviceName: "Decoración Floral",
-            eventType: "Comunión",
-            date: new Date(2025, 4, 8), // May 8, 2025
-            time: "11:30",
-            location: "Salón Celebraciones Royale, Valencia",
-            guests: 80,
-            status: "rejected",
-            message: "Buscamos una decoración en tonos pastel con flores de temporada. Necesitamos centros de mesa, decoración para la mesa principal y un arco floral.",
-            createdAt: new Date(2025, 3, 1)
-        },
-        {
-            id: 4,
-            clientName: "Javier López",
-            clientEmail: "javier.lopez@example.com",
-            clientPhone: "+34 645 678 901",
-            serviceName: "DJ y Sonido",
-            eventType: "Boda",
-            date: new Date(2025, 4, 29), // May 29, 2025
-            time: "20:00",
-            location: "Hotel Miramar, Málaga",
-            guests: 150,
-            status: "pending",
-            message: "Necesitamos un DJ para la recepción y la fiesta. Tenemos una lista de canciones específicas que nos gustaría incluir. También necesitamos micrófono para los discursos.",
-            createdAt: new Date(2025, 3, 20)
-        },
-        {
-            id: 5,
-            clientName: "Ana Sánchez",
-            clientEmail: "ana.sanchez@example.com",
-            clientPhone: "+34 656 789 012",
-            serviceName: "Catering Premium",
-            eventType: "Comunión",
-            date: new Date(2025, 5, 5), // June 5, 2025
-            time: "13:00",
-            location: "Jardines La Rosaleda, Sevilla",
-            guests: 70,
-            status: "accepted",
-            message: "Buscamos un menú infantil para 20 niños y menú de adultos para el resto. Nos gustaría incluir una fuente de chocolate con frutas.",
-            createdAt: new Date(2025, 4, 10)
-        },
-        {
-            id: 6,
-            clientName: "Pedro Gómez",
-            clientEmail: "pedro.gomez@example.com",
-            clientPhone: "+34 667 890 123",
-            serviceName: "Fotografía Completa",
-            eventType: "Bautizo",
-            date: new Date(2025, 5, 12), // June 12, 2025
-            time: "11:00",
-            location: "Parroquia Santa Teresa, Zaragoza",
-            guests: 40,
-            status: "pending",
-            message: "Queremos fotos de la ceremonia y un pequeño reportaje familiar antes del evento. También nos gustaría algunas fotos del bebé en un entorno natural.",
-            createdAt: new Date(2025, 4, 25)
-        }
-    ])
+    const [serviceRequests, setServiceRequests] = useState([])
 
+    // Reemplazar la función getRequests() con esta nueva versión
     async function getRequests() {
         try {
-            const response = await axios.get(`/api/event-properties/requests/${currentUser.id}`, { headers: { Authorization: `Bearer ${jwtToken}` } })
-            setRequests(response.data)
+            setIsLoading(true)
+            const response = await axios.get(`/api/event-properties/requests/${currentUser.id}`, {
+                headers: { Authorization: `Bearer ${jwtToken}` },
+            })
+
+            // Transformar los datos de la API al formato que espera el componente
+            const formattedRequests = []
+
+            // La respuesta es un array de arrays, donde cada subarray contiene [eventProperty, user]
+            response.data.forEach((requestPair) => {
+                if (Array.isArray(requestPair) && requestPair.length >= 2) {
+                    const eventProperty = requestPair[0]
+                    const user = requestPair[1]
+                    setChatId(user.id)
+
+                    // Determinar si es un venue o un otherService
+                    const isVenue = eventProperty.venueDTO !== null
+                    const serviceName = isVenue
+                        ? eventProperty.venueDTO?.name || "Venue sin nombre"
+                        : eventProperty.otherServiceDTO?.name || "Servicio sin nombre"
+
+                    const location = isVenue
+                        ? `${eventProperty.venueDTO?.cityAvailable || ""}`
+                        : `${eventProperty.otherServiceDTO?.cityAvailable || ""}`
+
+                    // Convertir la fecha de string a objeto Date
+                    const date = new Date(eventProperty.requestDate)
+
+                    // Formatear la hora de inicio
+                    const startTime = eventProperty.startTime ? eventProperty.startTime.substring(0, 5) : "00:00"
+
+                    formattedRequests.push({
+                        id: eventProperty.id,
+                        clientName: `${user.firstName} ${user.lastName}`,
+                        clientEmail: user.email || "No disponible",
+                        clientPhone: user.telephone || "No disponible",
+                        clientUsername: user.username,
+                        clientProfilePicture: user.profilePicture,
+                        serviceName: serviceName,
+                        eventType: isVenue ? "Venue" : "Servicio",
+                        date: date,
+                        time: startTime,
+                        location: location,
+                        status: eventProperty.status?.toLowerCase() || "pending",
+                        price: eventProperty.setPricePerService,
+                        depositAmount: eventProperty.depositAmount,
+                        finishTime: eventProperty.finishTime ? eventProperty.finishTime.substring(0, 5) : "00:00",
+                        isVenue: isVenue,
+                        venueDTO: eventProperty.venueDTO,
+                        otherServiceDTO: eventProperty.otherServiceDTO,
+                        rawData: eventProperty, // Guardamos los datos originales por si los necesitamos
+                    })
+                }
+            })
+
+            setServiceRequests(formattedRequests)
+            setIsLoading(false)
         } catch (error) {
             console.error("Error fetching data:", error)
+            setIsLoading(false)
         }
     }
 
     useEffect(() => {
-        setIsLoading(false)
         getRequests()
     }, [])
 
     // Filter requests based on status and search query
-    const filteredRequests = serviceRequests.filter(request => {
+    const filteredRequests = serviceRequests.filter((request) => {
         const matchesStatus = filterStatus === "all" || request.status === filterStatus
         const matchesSearch =
             request.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -164,15 +146,26 @@ export default function SupplierDashboard() {
     }, {})
 
     // Handle status change
-    const handleStatusChange = (requestId, newStatus) => {
-        setServiceRequests(prevRequests =>
-            prevRequests.map(req =>
-                req.id === requestId ? { ...req, status: newStatus } : req
+    const handleStatusChange = async (requestId, newStatus) => {
+        try {
+            // Aquí deberías hacer la llamada a la API para actualizar el estado
+            // Por ejemplo:
+            // await axios.put(`/api/event-properties/requests/${requestId}/status`,
+            //   { status: newStatus },
+            //   { headers: { Authorization: `Bearer ${jwtToken}` } }
+            // )
+
+            // Por ahora, solo actualizamos el estado local
+            setServiceRequests((prevRequests) =>
+                prevRequests.map((req) => (req.id === requestId ? { ...req, status: newStatus } : req)),
             )
-        )
-        // Close detail panel if the current selected request status was changed
-        if (selectedRequest && selectedRequest.id === requestId) {
-            setSelectedRequest({ ...selectedRequest, status: newStatus })
+
+            // Actualizar el detalle si está seleccionado
+            if (selectedRequest && selectedRequest.id === requestId) {
+                setSelectedRequest({ ...selectedRequest, status: newStatus })
+            }
+        } catch (error) {
+            console.error("Error updating status:", error)
         }
     }
 
@@ -214,14 +207,24 @@ export default function SupplierDashboard() {
 
     // Get day of week names
     const getDayNames = () => {
-        return ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+        return ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
     }
 
     // Get month name
     const getMonthName = (date) => {
         const months = [
-            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
         ]
         return `${months[date.getMonth()]} ${date.getFullYear()}`
     }
@@ -250,8 +253,8 @@ export default function SupplierDashboard() {
 
     // Format date
     const formatDate = (date) => {
-        const options = { day: 'numeric', month: 'long', year: 'numeric' }
-        return date.toLocaleDateString('es-ES', options)
+        const options = { day: "numeric", month: "long", year: "numeric" }
+        return date.toLocaleDateString("es-ES", options)
     }
 
     // Status badge component
@@ -266,7 +269,7 @@ export default function SupplierDashboard() {
                 textColor = "text-amber-800"
                 statusText = "Pendiente"
                 break
-            case "accepted":
+            case "approved":
                 bgColor = "bg-green-100"
                 textColor = "text-green-800"
                 statusText = "Aceptada"
@@ -279,11 +282,13 @@ export default function SupplierDashboard() {
             default:
                 bgColor = "bg-gray-100"
                 textColor = "text-gray-800"
-                statusText = "Desconocido"
+                statusText = status || "Desconocido"
         }
 
         return (
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bgColor} ${textColor}`}>
+            <span
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bgColor} ${textColor}`}
+            >
                 {statusText}
             </span>
         )
@@ -325,7 +330,9 @@ export default function SupplierDashboard() {
                         <div className="page-header">
                             <div className="page-title">
                                 <h2>Solicitudes de Servicios</h2>
-                                <p className="page-description">Gestiona las solicitudes de tus servicios y visualiza tu calendario de eventos</p>
+                                <p className="page-description">
+                                    Gestiona las solicitudes de tus servicios y visualiza tu calendario de eventos
+                                </p>
                             </div>
                             <div className="view-toggle">
                                 <button
@@ -352,7 +359,7 @@ export default function SupplierDashboard() {
                                     <Clock size={24} />
                                 </div>
                                 <div className="stat-content">
-                                    <h3 className="stat-value">{serviceRequests.filter(r => r.status === "pending").length}</h3>
+                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "pending").length}</h3>
                                     <p className="stat-label">Pendientes</p>
                                 </div>
                             </div>
@@ -361,7 +368,7 @@ export default function SupplierDashboard() {
                                     <Check size={24} />
                                 </div>
                                 <div className="stat-content">
-                                    <h3 className="stat-value">{serviceRequests.filter(r => r.status === "accepted").length}</h3>
+                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "approved").length}</h3>
                                     <p className="stat-label">Aceptadas</p>
                                 </div>
                             </div>
@@ -370,7 +377,7 @@ export default function SupplierDashboard() {
                                     <X size={24} />
                                 </div>
                                 <div className="stat-content">
-                                    <h3 className="stat-value">{serviceRequests.filter(r => r.status === "rejected").length}</h3>
+                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "rejected").length}</h3>
                                     <p className="stat-label">Rechazadas</p>
                                 </div>
                             </div>
@@ -411,8 +418,8 @@ export default function SupplierDashboard() {
                                     Pendientes
                                 </button>
                                 <button
-                                    className={`filter-button ${filterStatus === "accepted" ? "active" : ""}`}
-                                    onClick={() => setFilterStatus("accepted")}
+                                    className={`filter-button ${filterStatus === "approved" ? "active" : ""}`}
+                                    onClick={() => setFilterStatus("approved")}
                                 >
                                     Aceptadas
                                 </button>
@@ -456,16 +463,18 @@ export default function SupplierDashboard() {
 
                                     {sortedRequests.length > 0 ? (
                                         <div className="requests-list">
-                                            {sortedRequests.map(request => (
+                                            {sortedRequests.map((request) => (
                                                 <div
                                                     key={request.id}
-                                                    className={`request-item ${selectedRequest && selectedRequest.id === request.id ? 'selected' : ''}`}
+                                                    className={`request-item ${selectedRequest && selectedRequest.id === request.id ? "selected" : ""}`}
                                                     onClick={() => setSelectedRequest(request)}
                                                 >
                                                     <div className="request-date">
                                                         <div className="date-badge">
                                                             <span className="date-day">{request.date.getDate()}</span>
-                                                            <span className="date-month">{request.date.toLocaleString('es-ES', { month: 'short' })}</span>
+                                                            <span className="date-month">
+                                                                {request.date.toLocaleString("es-ES", { month: "short" })}
+                                                            </span>
                                                         </div>
                                                         <span className="date-time">{request.time}</span>
                                                     </div>
@@ -475,10 +484,10 @@ export default function SupplierDashboard() {
                                                     </div>
                                                     <div className="request-service">
                                                         <span className="service-name">{request.serviceName}</span>
-                                                        <span className="service-guests">{request.guests} invitados</span>
+                                                        <span className="service-guests">{request.price}€</span>
                                                     </div>
                                                     <div className="request-event-type">
-                                                        <span className="event-type-badge">{request.eventType}</span>
+                                                        <span className="event-type-badge">{request.isVenue ? "Venue" : "Servicio"}</span>
                                                     </div>
                                                     <div className="request-status">
                                                         <StatusBadge status={request.status} />
@@ -525,21 +534,23 @@ export default function SupplierDashboard() {
                                     <div className="calendar-grid">
                                         {/* Day names */}
                                         {getDayNames().map((day, index) => (
-                                            <div key={index} className="calendar-day-name">{day}</div>
+                                            <div key={index} className="calendar-day-name">
+                                                {day}
+                                            </div>
                                         ))}
 
                                         {/* Calendar days */}
                                         {generateCalendarDays().map((day, index) => (
                                             <div
                                                 key={index}
-                                                className={`calendar-day ${!day ? 'empty' : ''} ${hasRequests(day) ? 'has-events' : ''}`}
+                                                className={`calendar-day ${!day ? "empty" : ""} ${hasRequests(day) ? "has-events" : ""}`}
                                             >
                                                 {day && (
                                                     <>
                                                         <span className="day-number">{day.getDate()}</span>
                                                         {hasRequests(day) && (
                                                             <div className="day-events">
-                                                                {getRequestsForDate(day).map(request => (
+                                                                {getRequestsForDate(day).map((request) => (
                                                                     <div
                                                                         key={request.id}
                                                                         className={`day-event ${request.status}`}
@@ -564,71 +575,124 @@ export default function SupplierDashboard() {
                                 <div className="request-details-panel">
                                     <div className="panel-header">
                                         <h3 className="panel-title">Detalles de la Solicitud</h3>
-                                        <button
-                                            className="close-button"
-                                            onClick={() => setSelectedRequest(null)}
-                                        >
+                                        <button className="close-button" onClick={() => setSelectedRequest(null)}>
                                             <X size={20} />
                                         </button>
                                     </div>
 
                                     <div className="panel-content">
                                         <div className="detail-section">
-                                            <h4 className="detail-section-title">Información del Evento</h4>
+                                            <h4 className="detail-section-title">Información del Servicio</h4>
                                             <div className="detail-row">
-                                                <span className="detail-label">Servicio:</span>
-                                                <span className="detail-value">{selectedRequest.serviceName}</span>
+                                                <span className="detail-label">Tipo:</span>
+                                                <span className="detail-value">{selectedRequest.isVenue ? "Venue" : "Servicio"}</span>
                                             </div>
                                             <div className="detail-row">
-                                                <span className="detail-label">Tipo de Evento:</span>
-                                                <span className="detail-value">{selectedRequest.eventType}</span>
+                                                <span className="detail-label">Nombre:</span>
+                                                <span className="detail-value">{selectedRequest.serviceName}</span>
                                             </div>
                                             <div className="detail-row">
                                                 <span className="detail-label">Fecha:</span>
                                                 <span className="detail-value">{formatDate(selectedRequest.date)}</span>
                                             </div>
                                             <div className="detail-row">
-                                                <span className="detail-label">Hora:</span>
+                                                <span className="detail-label">Hora inicio:</span>
                                                 <span className="detail-value">{selectedRequest.time}</span>
+                                            </div>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Hora fin:</span>
+                                                <span className="detail-value">{selectedRequest.finishTime}</span>
                                             </div>
                                             <div className="detail-row">
                                                 <span className="detail-label">Ubicación:</span>
                                                 <span className="detail-value">{selectedRequest.location}</span>
                                             </div>
                                             <div className="detail-row">
-                                                <span className="detail-label">Invitados:</span>
-                                                <span className="detail-value">{selectedRequest.guests}</span>
+                                                <span className="detail-label">Precio:</span>
+                                                <span className="detail-value">{selectedRequest.price}€</span>
+                                            </div>
+                                            <div className="detail-row">
+                                                <span className="detail-label">Depósito:</span>
+                                                <span className="detail-value">{selectedRequest.depositAmount || 0}€</span>
                                             </div>
                                         </div>
 
                                         <div className="detail-section">
                                             <h4 className="detail-section-title">Información del Cliente</h4>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Nombre:</span>
-                                                <span className="detail-value">{selectedRequest.clientName}</span>
-                                            </div>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Email:</span>
-                                                <span className="detail-value">{selectedRequest.clientEmail}</span>
-                                            </div>
-                                            <div className="detail-row">
-                                                <span className="detail-label">Teléfono:</span>
-                                                <span className="detail-value">{selectedRequest.clientPhone}</span>
+                                            <div className="client-info">
+                                                {selectedRequest.clientProfilePicture && (
+                                                    <div className="client-avatar">
+                                                        <img
+                                                            src={selectedRequest.clientProfilePicture || "/placeholder.svg"}
+                                                            alt={selectedRequest.clientName}
+                                                            className="client-profile-picture"
+                                                        />
+                                                    </div>
+                                                )}
+                                                <div className="client-details">
+                                                    <div className="detail-row">
+                                                        <span className="detail-label">Nombre:</span>
+                                                        <span className="detail-value">{selectedRequest.clientName}</span>
+                                                    </div>
+                                                    <div className="detail-row">
+                                                        <span className="detail-label">Usuario:</span>
+                                                        <span className="detail-value">{selectedRequest.clientUsername}</span>
+                                                    </div>
+                                                    <div className="detail-row">
+                                                        <span className="detail-label">Email:</span>
+                                                        <span className="detail-value">{selectedRequest.clientEmail}</span>
+                                                    </div>
+                                                    <div className="detail-row">
+                                                        <span className="detail-label">Teléfono:</span>
+                                                        <span className="detail-value">{selectedRequest.clientPhone}</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div className="detail-section">
-                                            <h4 className="detail-section-title">Mensaje del Cliente</h4>
-                                            <div className="client-message">
-                                                {selectedRequest.message}
+                                        {selectedRequest.isVenue && selectedRequest.venueDTO && (
+                                            <div className="detail-section">
+                                                <h4 className="detail-section-title">Información del Venue</h4>
+                                                <div className="detail-row">
+                                                    <span className="detail-label">ID:</span>
+                                                    <span className="detail-value">{selectedRequest.venueDTO.id}</span>
+                                                </div>
+                                                <div className="detail-row">
+                                                    <span className="detail-label">Ciudad:</span>
+                                                    <span className="detail-value">{selectedRequest.venueDTO.cityAvailable}</span>
+                                                </div>
+                                                <div className="detail-row">
+                                                    <span className="detail-label">Disponible:</span>
+                                                    <span className="detail-value">{selectedRequest.venueDTO.available ? "Sí" : "No"}</span>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
+
+                                        {!selectedRequest.isVenue && selectedRequest.otherServiceDTO && (
+                                            <div className="detail-section">
+                                                <h4 className="detail-section-title">Información del Servicio</h4>
+                                                <div className="detail-row">
+                                                    <span className="detail-label">ID:</span>
+                                                    <span className="detail-value">{selectedRequest.otherServiceDTO.id}</span>
+                                                </div>
+                                                <div className="detail-row">
+                                                    <span className="detail-label">Ciudad:</span>
+                                                    <span className="detail-value">{selectedRequest.otherServiceDTO.cityAvailable}</span>
+                                                </div>
+                                                <div className="detail-row">
+                                                    <span className="detail-label">Disponible:</span>
+                                                    <span className="detail-value">
+                                                        {selectedRequest.otherServiceDTO.available ? "Sí" : "No"}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
 
                                         <div className="detail-section">
                                             <h4 className="detail-section-title">Estado de la Solicitud</h4>
                                             <div className="status-container">
                                                 <StatusBadge status={selectedRequest.status} />
-                                                <span className="status-date">Creada el {selectedRequest.createdAt.toLocaleDateString('es-ES')}</span>
+                                                <span className="status-date">Fecha de solicitud: {formatDate(selectedRequest.date)}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -638,7 +702,7 @@ export default function SupplierDashboard() {
                                             <>
                                                 <button
                                                     className="action-button accept"
-                                                    onClick={() => handleStatusChange(selectedRequest.id, "accepted")}
+                                                    onClick={() => handleStatusChange(selectedRequest.id, "approved")}
                                                 >
                                                     <Check size={16} />
                                                     Aceptar Solicitud
@@ -652,10 +716,8 @@ export default function SupplierDashboard() {
                                                 </button>
                                             </>
                                         )}
-                                        {selectedRequest.status === "accepted" && (
-                                            <button
-                                                className="action-button contact"
-                                            >
+                                        {selectedRequest.status === "approved" && (
+                                            <button className="action-button contact" onClick={() => navigator(`/chat/${chatId}`)}>
                                                 <MessageSquare size={16} />
                                                 Contactar Cliente
                                             </button>
@@ -679,3 +741,4 @@ export default function SupplierDashboard() {
         </div>
     )
 }
+

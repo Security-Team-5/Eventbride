@@ -95,6 +95,7 @@ function Navbar({ user }) {
       if (!loading) {
         return (
           <ul className="nav-links">
+            <li><Link to="/dashboard" className="nav-link">Dashboard</Link></li>
             <li><Link to="/misservicios" className="nav-link">Mis servicios</Link></li>
             <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
             <li className="flex items-center gap-1">

@@ -119,7 +119,7 @@ public class EventPropertiesController {
     }
 
     @GetMapping("/requests/{userId}")
-    public List<EventPropertiesDTO> getAllEventPropertiesAfterNow(@PathVariable("userId") Integer userId) {
+    public List<List<Object>> getAllEventPropertiesAfterNow(@PathVariable("userId") Integer userId) {
         return eventPropertiesService.findAllEventPropertiesAfterNow(userId);
     }
 
