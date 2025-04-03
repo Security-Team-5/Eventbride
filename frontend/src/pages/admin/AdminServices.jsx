@@ -295,6 +295,7 @@ function AdminServices() {
                                             checked={data.available}
                                             onChange={(e) => handleInputChange(e, service.id)}
                                             className="form-checkbox"
+                                            disabled={!isEditing}
                                         />
                                         <span>Servicio disponible para reservas</span>
                                     </div>

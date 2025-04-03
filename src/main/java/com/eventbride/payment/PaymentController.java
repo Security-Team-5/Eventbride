@@ -56,7 +56,7 @@ public class PaymentController {
     }
 
     @PostMapping("/plan/{userId}")
-    public ResponseEntity<?> createPaymentPlan(@PathVariable Integer userId, @RequestBody @Valid Double amount){
+    public ResponseEntity<?> createPaymentPlan(@PathVariable Integer userId, @RequestBody @Valid Double amount) {
         try {
             Payment newPayment = paymentService.payPlan(userId, amount);
             return ResponseEntity.ok(newPayment);
@@ -64,5 +64,15 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+
+    @GetMapping("/provider/{userId}")
+    public ResponseEntity<List<PaymentDTO>> getPaymentsForProvider(@PathVariable Integer userId) {
+        try {
+            List<Payment> payments = paymentService.getPaymentsForProvider(userId);
+            return ResponseEntity.ok(PaymentDTO.fromEntities(payments));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
