@@ -22,7 +22,8 @@ function Footer({ user }) {
                     </div>
 
                     {
-                        user ? (
+                        user &&
+                            user.role === "CLIENT" ? (
                             <div className="footer-section">
                                 <h3>Enlaces Rápidos</h3>
                                 <ul>
@@ -57,6 +58,9 @@ function Footer({ user }) {
                             </li>
                             <li>
                                 <Link to="/faqs">FAQ´s</Link>
+                            </li>
+                            <li>
+                                <Link to="/terminos-y-condiciones">Terminos y condiciones</Link>
                             </li>
                         </ul>
                     </div>
