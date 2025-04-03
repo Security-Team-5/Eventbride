@@ -30,9 +30,8 @@ public class User extends Person implements UserDetails {
     @Size(min = 1, max = 9)
     private String dni;
 
-    @Column(name = "profile_picture", nullable = false)
-    @NotBlank
-    @Size(min = 1, max = 50000)
+    @Column(name = "profile_picture", nullable = true)
+    @Size(max = 50000)
     private String profilePicture;
 
     @Column(name = "role", nullable = false)

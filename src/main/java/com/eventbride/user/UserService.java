@@ -66,7 +66,9 @@ public class UserService {
 
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-
+        if (user.getProfilePicture()==null || user.getProfilePicture()==""){
+            user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
+        }
         return userRepository.save(user);
     }
 
@@ -91,6 +93,9 @@ public class UserService {
         if (!user.getDni().equals(userDetails.getDni()) && 
             userRepository.existsByDni(userDetails.getDni())) {
             throw new RuntimeException("El DNI ya está registrado");
+        }
+        if (user.getProfilePicture()==null || user.getProfilePicture()==""){
+            user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
         }
     
         // Validar el formato del telefono

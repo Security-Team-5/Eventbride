@@ -190,7 +190,16 @@ function EditProfile() {
                         <div className="info-container">
                             <div className="info-section">
                                 <h2>Información Personal</h2>
-                                <div className="info-grid">
+                                <div
+                                className="info-grid"
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(3, 1fr)", 
+                                    gap: "1.5rem",
+                                    wordBreak: "break-word", 
+                                }}
+                                >
+
                                     <div className="info-item">
                                         <span className="info-label">Nombre</span>
                                         <span className="info-value">{userData.firstName}</span>

@@ -76,7 +76,7 @@ const HistorialVentas = ({ userId }) => {
             })
             .catch(error => {
                 console.error("Error obteniendo pagos:", error);
-                setError("No se pudieron cargar los pagos. Por favor, inténtalo de nuevo más tarde.");
+                setError("No hay pagos todavia.");
                 setIsLoading(false);
             });
     }
@@ -98,9 +98,8 @@ const HistorialVentas = ({ userId }) => {
     if (error) {
         return (
             <div className="error-container">
-                <div className="error-icon">!</div>
                 <p>{error}</p>
-                <button className="retry-button" onClick={getPaymentsForProvider}>
+                <button style={{width:"25%"}} className="retry-button" onClick={getPaymentsForProvider}>
                     Reintentar
                 </button>
             </div>
