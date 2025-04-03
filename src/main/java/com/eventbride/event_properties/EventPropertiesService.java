@@ -24,6 +24,9 @@ import com.eventbride.dto.UserDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.event_properties.EventProperties.Status;
+import com.eventbride.notification.Notification;
+import com.eventbride.notification.NotificationService;
+import com.eventbride.notification.Notification.NotificationType;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceRepository;
 import com.eventbride.otherService.OtherServiceService;
@@ -42,15 +45,17 @@ public class EventPropertiesService {
     private EventRepository eventRepository;
     private VenueService venueService;
     private OtherServiceService otherServiceService;
+    private NotificationService notificationService;
 
     @Autowired
     public EventPropertiesService(EventPropertiesRepository eventPropertiesRepository,
-            EventRepository eventRepository, VenueService venueService, OtherServiceService otherServiceService) {
+            EventRepository eventRepository, VenueService venueService, OtherServiceService otherServiceService,
+            NotificationService notificationService) {
         this.eventPropertiesRepository = eventPropertiesRepository;
         this.eventRepository = eventRepository;
         this.venueService = venueService;
         this.otherServiceService = otherServiceService;
-
+        this.notificationService = notificationService;
     }
 
     @Autowired
@@ -94,13 +99,16 @@ public class EventPropertiesService {
     public EventProperties updateEventProperties(EventProperties eventProperties, int id) throws DataAccessException {
         EventProperties toUpdate = findById(id);
         BeanUtils.copyProperties(eventProperties, toUpdate);
+        if(eventProperties.getStatus() == EventProperties.Status.APPROVED) {
+            Optional<Event> event = eventRepository.findByEventPropertiesId(eventProperties.getId());
+            notificationService.createNotification(NotificationType.REQUEST_CONFIRMED, event.get().getUser(), event.get(), eventProperties);
+        }
         return save(toUpdate);
     }
 
     @Transactional
     public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException {
         EventProperties toUpdate = findById(id);
-        System.out.println("ANTES DEL CAMBIO -> status: " + toUpdate.getStatus());
         toUpdate.setStatus(EventProperties.Status.CANCELLED);
         EventProperties saved = updateEventProperties(toUpdate, id);
         System.out.println("DESPUÉS DEL CAMBIO -> status: " + saved.getStatus());
@@ -169,6 +177,7 @@ public class EventPropertiesService {
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
             User user = event.getUser();
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, user, event, eP);
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6@gmail.com");
             mailMessage.setTo(user.getEmail());
@@ -190,6 +199,7 @@ public class EventPropertiesService {
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
             User user = event.getUser();
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, user, event, eP);
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6gmail.com");
             mailMessage.setTo(user.getEmail());
@@ -219,7 +229,7 @@ public class EventPropertiesService {
         }
         for (EventProperties e : eventPropertiesEvent) {
             if (e.getOtherService() != null && e.getOtherService().getId() == otherServiceId) {
-                throw new RuntimeException("Este servicio ya estÃ¡ asociado a este evento");
+                throw new RuntimeException("Este servicio ya está asociado a este evento");
             }
         }
         EventProperties eventProperties = new EventProperties();
@@ -243,6 +253,7 @@ public class EventPropertiesService {
         eventProperties.setPricePerService(priceService);
         eventProperties.setDepositAmount(priceService.doubleValue() * 0.35);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
+        notificationService.createNotification(NotificationType.NEW_REQUEST, eventProperties.getOtherService().getUser(), event.get(), eventProperties);
         event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
         return event.get();
@@ -280,14 +291,28 @@ public class EventPropertiesService {
         eventProperties.setPricePerService(priceService);
         eventProperties.setDepositAmount(priceService.doubleValue() * 0.35);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
+        notificationService.createNotification(NotificationType.NEW_REQUEST, eventProperties.getVenue().getUser(), event.get(), eventProperties);
         event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
         return event.get();
     }
 
     @Transactional
-    public void deleteEventProperties(int id) throws DataAccessException {
+    public void deleteEventProperties(int id, Venue venue, OtherService otherService) throws DataAccessException {
+        EventProperties eventProperties = new EventProperties();
+        eventProperties = eventPropertiesRepository.findById(id).orElse(null);
+        Optional<Event> event = eventRepository.findByEventPropertiesId(id);
+        if (otherService == null) {
+            eventProperties.setVenue(venue);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties);
+            eventProperties.setVenue(null);
+        } else {
+            eventProperties.setOtherService(otherService);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties);
+            eventProperties.setOtherService(null);
+        }
         eventPropertiesRepository.deleteById(id);
+
     }
 
     @Transactional

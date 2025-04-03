@@ -94,7 +94,6 @@ public class EventController {
     public ResponseEntity<Event> create(@RequestBody @Valid Event event) {
         Event newEvent = new Event();
         BeanUtils.copyProperties(event, newEvent, "id");
-        List<Invitation> invitations = new ArrayList<>();
         List<EventProperties> eventProperties = new ArrayList<>();
         newEvent.setEventType(event.getEventType());
         newEvent.setGuests(event.getGuests());

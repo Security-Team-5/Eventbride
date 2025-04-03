@@ -18,6 +18,7 @@ function EditProfile() {
         plan: "",
         paymentPlanDate: "",
         expirePlanDate: "",
+        receivesEmails: false,
     })
     const [editing, setEditing] = useState(false)
     const [jwtToken, setJwtToken] = useState("")
@@ -39,12 +40,12 @@ function EditProfile() {
     }, [])
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target
+        const { name, type, value, checked } = e.target;
         setUserData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }))
-    }
+          ...prevData,
+          [name]: type === "checkbox" ? checked : value,
+        }));
+    };
 
     const getRoleText = (role) => {
         switch (role) {
@@ -82,7 +83,7 @@ function EditProfile() {
         try {
             // Create a copy of userData to avoid modifying state directly
             const userDataToUpdate = { ...userData, password: "no-password" }
-
+            console.log(userDataToUpdate)
             // Update user profile
             const response = await fetch(`/api/users/${userData.id}`, {
                 method: "PUT",
@@ -174,7 +175,6 @@ function EditProfile() {
                         </button>
                     </div>
                 </div>
-
                 <div className="profile-info">
                     {editing && (
                         <div className="warning-banner">
@@ -223,6 +223,10 @@ function EditProfile() {
                                     <div className="info-item">
                                         <span className="info-label">DNI</span>
                                         <span className="info-value">{userData.dni}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="info-label">Recibe Emails</span>
+                                        <span className="info-value">{userData.receivesEmails ? "Sí" : "No"}</span>
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +308,35 @@ function EditProfile() {
                                         placeholder="https://ejemplo.com/mi-foto.jpg"
                                     />
                                 </div>
-
+                                <div
+                                    className="form-group full-width"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        gap: "0.5rem",
+                                    }}
+                                    >
+                                    <input
+                                        type="checkbox"
+                                        id="receivesEmails"
+                                        name="receivesEmails"
+                                        style={{ transform: "scale(1.2)" }}
+                                        checked={userData.receivesEmails}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label
+                                        htmlFor="receivesEmails"
+                                        style={{
+                                        margin: 0,
+                                        fontSize: "1rem",
+                                        cursor: "pointer",
+                                        userSelect: "none",
+                                        }}
+                                    >
+                                        Quiero recibir notificaciones por email
+                                    </label>
+                                </div>
                                 <div className="form-actions">
                                     <button type="button" className="cancel-button" onClick={() => setEditing(false)}>
                                         Cancelar

@@ -115,6 +115,7 @@ public class UserService {
         user.setPaymentPlanDate(userDetails.getPaymentPlanDate());
         user.setExpirePlanDate(userDetails.getExpirePlanDate());
         user.setProfilePicture(userDetails.getProfilePicture());
+        user.setReceivesEmails(userDetails.getReceivesEmails());
 
         return userRepository.save(user);
     }

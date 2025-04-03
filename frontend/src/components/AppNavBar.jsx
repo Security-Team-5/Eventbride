@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
+import mensaje from "../static/resources/images/mensaje.png";
 import usuario from "../static/resources/images/user.png";
 import apiClient from "../apiClient"
 import { AlertCircle } from "lucide-react";
@@ -153,14 +154,18 @@ function Navbar({ user }) {
               </div>
             </div>
 
-            <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
-              {renderNavItems()}
-              {currentUser && currentUser.role && (
-                <div className="navbar-actions">
-                  <Link to="/chats" className="action-icon messages-icon">
-                    <img src={carta} alt="Mensajes" className="icon-img" />
-                    <span className="notification-badge">2</span>
-                  </Link>
+        <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
+          {renderNavItems()}
+          {currentUser && currentUser.role && (
+            <div className="navbar-actions">
+              <Link to="/notifications" className="action-icon messages-icon">
+                <img src={carta} alt="Notificaciones" className="icon-img" />
+                <span className="notification-badge">2</span>
+              </Link>
+              <Link to="/chats" className="action-icon messages-icon">
+                <img src={mensaje} alt="Mensajes" className="icon-img" />
+                <span className="notification-badge">2</span>
+              </Link>
 
                   <div className="user-menu">
                     <Link to="/profile" className="action-icon user-icon" style={{

@@ -209,14 +209,15 @@ public class EventPropertiesController {
     }
 
     @DeleteMapping("/{eventPropertiesId}")
-    @ResponseStatus(HttpStatus.CREATED)
     public void rejectService(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
         EventProperties eventProperties = eventPropertiesService.findById(eventPropertiesId);
         if (eventProperties != null) {
+            Venue venue = eventProperties.getVenue();
+            OtherService otherService = eventProperties.getOtherService();
             eventProperties.setOtherService(null);
             eventProperties.setVenue(null);
             EventProperties eventPropertiesSaved = eventPropertiesService.save(eventProperties);
-            eventPropertiesService.deleteEventProperties(eventPropertiesSaved.getId());
+            eventPropertiesService.deleteEventProperties(eventPropertiesSaved.getId(), venue, otherService);
         }
     }
 

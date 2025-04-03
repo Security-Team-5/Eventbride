@@ -37,6 +37,7 @@ public class SecurityConfig {
                                                 // URIS PÚBLICAS
                                                 .requestMatchers("/api/auth/**",
                                                                 "/api/users",
+                                                                "/api/users/{id}",
                                                                 "/api/users/**",
                                                                 "/api/users/auth/register",
                                                                 "/api/users/auth/login",
@@ -86,6 +87,7 @@ public class SecurityConfig {
                                                 .requestMatchers(
                                                                 "/api/v1/events/{id}",
                                                                 "/api/v1/events/next/**",
+                                                                "/api/v1/events/create",
                                                                 "/api/event-properties/DTO/**",
                                                                 "/api/event-properties/update/**",
                                                                 "/api/event-properties/cancel/**",

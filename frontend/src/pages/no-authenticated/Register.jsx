@@ -16,6 +16,7 @@ const Register = () => {
     dni: "",
     role: "CLIENT",
     profilePicture: "",
+    receivesEmails: false,
   })
   const [acceptedTerms, setAcceptedTerms] = useState(false)
 
@@ -100,6 +101,14 @@ const Register = () => {
       setIsLoading(false)
     }
   }
+
+  const handleChangeNot = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   return (
     <div className="split-layout register-layout">
@@ -248,6 +257,21 @@ const Register = () => {
                   <option value="cliente">Cliente</option>
                   <option value="proveedor">Proveedor</option>
                 </select>
+              </div>
+            </div>
+
+            <div className="form-group terms-checkbox-container">
+              <div className="checkbox-wrapper">
+                <input
+                  type="checkbox"
+                  id="receivesEmails"
+                  name="receivesEmails"
+                  checked={form.receivesEmails}
+                  onChange={handleChangeNot}
+                />
+                <label htmlFor="receivesEmails" className="terms-label">
+                  Deseo recibir notificaciones y novedades
+                </label>
               </div>
             </div>
 
