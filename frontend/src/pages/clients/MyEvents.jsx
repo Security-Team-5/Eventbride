@@ -168,7 +168,7 @@ function MyEvents() {
                 </div>
 
                 <div className="event-content">
-                  <h2 className="event-title">{tipoDeEvento(evento.eventType)} de {currentUser.username}</h2>
+                  <h2 className="event-title">{evento.name}</h2>
 
                   <div className="event-details">
                     <div className="detail-item">

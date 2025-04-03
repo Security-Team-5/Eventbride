@@ -89,7 +89,7 @@ public class EventController {
         return new EventDTO(eventService.findById(id));
     }
 
-    @PostMapping()
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Event> create(@RequestBody @Valid Event event) {
         Event newEvent = new Event();
@@ -99,6 +99,7 @@ public class EventController {
         newEvent.setEventType(event.getEventType());
         newEvent.setGuests(event.getGuests());
         newEvent.setEventDate(event.getEventDate());
+        newEvent.setName(event.getName());
         newEvent.setUser(event.getUser());
         newEvent.setEventProperties(eventProperties);
         Event savedEvent;
@@ -176,6 +177,19 @@ public class EventController {
     @GetMapping("/next/{userId}")
     public ResponseEntity<List<EventDTO>> getEventsByUserId(@PathVariable Integer userId) {
         List<Event> events = eventService.findEventsByUserId(userId);
+        if (events.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<EventDTO> eventDTOs = new ArrayList<>();
+        for (Event event : events) {
+            eventDTOs.add(new EventDTO(event));
+        }
+        return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping("/next/{userId}/without/{serviceId}")
+    public ResponseEntity<List<EventDTO>> getEventsByUserIdWithoutAService(@PathVariable Integer userId, @PathVariable Integer serviceId) {
+        List<Event> events = eventService.findEventsByUserIdWithoutAService(userId, serviceId);
         if (events.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

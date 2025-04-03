@@ -83,6 +83,22 @@ const OtherServiceScreen = () => {
     }
   }
 
+  const getUserEventsWithoutAService = async (serviceId) => {
+    try {
+      const response = await fetch(`/api/v1/events/next/${currentUser.id}/without/${serviceId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken}`
+        },
+        method: "GET",
+      })
+      const data = await response.json()
+      setEvents((prevEvents) => [...prevEvents, ...data])
+    } catch (error) {
+      console.error("Error obteniendo eventos:", error)
+    }
+  }
+
   const getServiceDetails = async (serviceId) => {
     try {
       const response = await axios.get(`/api/other-services/${serviceId}`, { headers: { Authorization: `Bearer ${jwtToken}` } })
@@ -113,7 +129,7 @@ const OtherServiceScreen = () => {
     setSelectedOtherServiceId(serviceId)
     setSelectedService(serviceId)
     setEvents([]) // Limpiar eventos anteriores
-    getUserEvents()
+    getUserEventsWithoutAService(serviceId)
     setModalVisible(true)
   }
 
@@ -163,12 +179,11 @@ const OtherServiceScreen = () => {
   }
 
   const combineDateAndTime = (eventDate, time) => {
-    const dateObj = new Date(eventDate)
-    const year = dateObj.getFullYear()
-    const month = String(dateObj.getMonth() + 1).padStart(2, "0")
-    const day = String(dateObj.getDate()).padStart(2, "0")
-    return `${year}-${month}-${day} ${time}:00`
-  }
+    // Extrae la parte de la fecha sin convertir a Date
+    const datePart = eventDate.split("T")[0];
+    // Devuelve en formato ISO estándar usando "T" como separador
+    return `${datePart}T${time}:00`;
+  };
 
   const handleConfirmService = async (eventObj, selectedOtherServiceId) => {
     const times = venueTimes[eventObj.id] || {}
@@ -314,7 +329,7 @@ const OtherServiceScreen = () => {
                 </div>
                 <div className="card-body">
                   {
-                    service.userDTO?.plan === "PREMIUM" && <span className="service-badge">Promocionado</span>
+                    service.userDTO?.plan === "PREMIUM" && <span className="service-badge premium-badge">Promocionado</span>
                   }
                   <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
 
@@ -366,7 +381,7 @@ const OtherServiceScreen = () => {
               {events.length === 0 ? (
                 <div className="empty-state" style={{ boxShadow: "none" }}>
                   <Info size={36} className="empty-icon" />
-                  <p className="empty-text">No tienes eventos disponibles.</p>
+                  <p className="empty-text">Tus eventos ya tienen este servicio.</p>
                 </div>
               ) : (
                 events.map((eventObj) => (
@@ -480,17 +495,18 @@ const OtherServiceScreen = () => {
               </div>
             </div>
             <div className="modal-footer">
+            {serviceDetails.available &&
               <button
                 className="primary-button"
                 onClick={(e) => {
-                  e.stopPropagation()
-                  setServiceDetailsVisible(false)
-                  handleAddServiceClick(e, serviceDetails.id)
+                  e.stopPropagation();
+                  setServiceDetailsVisible(false);
+                  handleAddServiceClick(e, serviceDetails.id);
                 }}
               >
                 <Plus size={16} />
                 Añadir a mi evento
-              </button>
+              </button>}
               <button className="secondary-button" onClick={() => setServiceDetailsVisible(false)}>
                 Cerrar
               </button>

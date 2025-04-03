@@ -18,6 +18,7 @@ import EventDetails from "./pages/clients/EventDetails";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminServices from "./pages/admin/AdminServices";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminEventProps from "./pages/admin/AdminEventProps";
 import Invitations from "./pages/clients/Invitations.jsx";
 import EventInvitations from "./pages/clients/EventInvitations";
 import RegisterInvitation from "./pages/no-authentified/RegisterInvitation";
@@ -31,6 +32,7 @@ import FAQ from "./pages/no-authentified/faqs.jsx"
 import EditProfile from "./pages/authentified/EditProfile.jsx"
 import EditPlanProfile from "./pages/provider/EditPlanProfile"
 import ProviderDashboard from "./pages/provider/ProviderDashboard.jsx"
+import Support from "./pages/authentified/Support.jsx"
 
 function App() {
   const { currentUser, loading, setCurrentUser } = useCurrentUser(null)
@@ -76,6 +78,7 @@ function App() {
                 <Route path="/admin-events" element={<AdminEvents />} />
                 <Route path="/admin-users" element={<AdminUsers />} />
                 <Route path="/admin-services" element={<AdminServices />} />
+                <Route path="/admin/event/:eventId/event-prop/:eventPropId" element={<AdminEventProps />} />
               </>
             )}
             {/*Rutas de cualquier usuario autenticado*/}
@@ -84,6 +87,7 @@ function App() {
                 <Route path="/chat/:id" element={<PrivateChat />} />
                 <Route path="/chats" element={<ChatList />} />
                 <Route path="/profile" element={<EditProfile />} />
+                <Route path="/support" element={<Support />} />
               </>
             )}
             {/*Rutas públicas*/}
