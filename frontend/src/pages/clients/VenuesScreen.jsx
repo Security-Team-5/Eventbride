@@ -452,10 +452,10 @@ const VenuesScreen = () => {
               ) : (
                 events.map((eventObj) => (
                   <div key={eventObj.id} className="event-card">
-                    <div className="event-header">
+                    <div className="event-header" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       <div>
                         <span className="event-badge">{eventObj.eventType}</span>
-                        <h3 className="event-title">Evento del {formatDate(eventObj.eventDate)}</h3>
+                        <h3 className="event-title" style={{ height: "10%"}}>Evento del {formatDate(eventObj.eventDate)}</h3>
                       </div>
                       <div className="card-info">
                         <Users size={16} className="card-icon" />
