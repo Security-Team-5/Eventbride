@@ -6,8 +6,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.EventPropertiesDTO;
+import com.eventbride.dto.UserDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.event_properties.EventProperties.Status;
@@ -27,6 +31,8 @@ import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueRepository;
 import com.eventbride.venue.VenueService;
+
+import ch.qos.logback.core.joran.sanity.Pair;
 
 import org.springframework.stereotype.Service;
 
@@ -55,7 +61,6 @@ public class EventPropertiesService {
 
     @Autowired
     JavaMailSender mailSender;
-    
 
     @Transactional(readOnly = true)
     public List<EventProperties> findAll() {
@@ -93,11 +98,11 @@ public class EventPropertiesService {
     }
 
     @Transactional
-    public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException{
+    public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException {
         EventProperties toUpdate = findById(id);
         System.out.println("ANTES DEL CAMBIO -> status: " + toUpdate.getStatus());
         toUpdate.setStatus(EventProperties.Status.CANCELLED);
-        EventProperties saved = updateEventProperties(toUpdate,id);
+        EventProperties saved = updateEventProperties(toUpdate, id);
         System.out.println("DESPUÉS DEL CAMBIO -> status: " + saved.getStatus());
         return saved;
     }
@@ -117,9 +122,49 @@ public class EventPropertiesService {
         return eventPropertiesRepository.findEventPropertiesByVenueId(venueId);
     }
 
+    @Transactional(readOnly = true)
+    public List<List<Object>> findAllEventPropertiesAfterNow(Integer userId) {
+
+        // Encontrar todos los eventproperties que tienen como dueño al usuario
+
+        List<EventProperties> allOfUser = new ArrayList<>();
+
+        for (EventProperties ep : eventPropertiesRepository.findAll()) {
+
+            if (ep.getVenue() == null && ep.getOtherService().getUser().getId() == userId) {
+                allOfUser.add(ep);
+            } else if (ep.getOtherService() == null && ep.getVenue().getUser().getId() == userId) {
+                allOfUser.add(ep);
+            }
+        }
+
+        // List<EventPropertiesDTO> res = allOfUser.stream().filter(e ->
+        // e.getStartTime().isAfter(LocalDateTime.now()))
+        // .map(e -> new EventPropertiesDTO(e)).toList();
+
+        List<List<Object>> res = new ArrayList<>();
+
+        for (Event e : eventRepository.findAll()) {
+            List<EventProperties> epAsociadosEvento = e.getEventProperties();
+            for (EventProperties ep : allOfUser) {
+                for (EventProperties epAsociado : epAsociadosEvento) {
+                    if (ep.getId() == epAsociado.getId()) {
+                        List<Object> r = new ArrayList<>();
+                        r.add(new EventPropertiesDTO(ep));
+                        r.add(new UserDTO(e.getUser()));
+                        res.add(r);
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
     @Transactional
-    public void getEventsPropsToCancelVenue(LocalDate fecha, Integer venueId, Integer eventPropId){
-        List<EventProperties> listToCancelVenues = eventPropertiesRepository.findVenuesToCancel(fecha, venueId, eventPropId);
+    public void getEventsPropsToCancelVenue(LocalDate fecha, Integer venueId, Integer eventPropId) {
+        List<EventProperties> listToCancelVenues = eventPropertiesRepository.findVenuesToCancel(fecha, venueId,
+                eventPropId);
         for (EventProperties eP : listToCancelVenues) {
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
@@ -128,17 +173,19 @@ public class EventPropertiesService {
             mailMessage.setFrom("eventbride6@gmail.com");
             mailMessage.setTo(user.getEmail());
             mailMessage.setSubject("Recinto cancelado");
-            mailMessage.setText("El recinto " + eP.getVenue().getName() + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
-            ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
-            "\n\n Saludos, \n EventBride");
+            mailMessage.setText("El recinto " + eP.getVenue().getName() + " ha sido cancelado para el evento del dia "
+                    + eP.getStartTime().toLocalDate() +
+                    ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
+                    "\n\n Saludos, \n EventBride");
             mailSender.send(mailMessage);
             updateEventPropertiesToCancelled(eP.getId());
         }
     }
 
     @Transactional
-    public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId){
-        List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha, otherServiceId, eventPropId);
+    public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId) {
+        List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha,
+                otherServiceId, eventPropId);
         for (EventProperties eP : listToCancelOtherServices) {
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
@@ -147,9 +194,10 @@ public class EventPropertiesService {
             mailMessage.setFrom("eventbride6gmail.com");
             mailMessage.setTo(user.getEmail());
             mailMessage.setSubject("Servicio cancelado");
-            mailMessage.setText("El servicio " + eP.getOtherService().getName() + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
-            ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
-            "\n\n Saludos, \n EventBride");
+            mailMessage.setText("El servicio " + eP.getOtherService().getName()
+                    + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
+                    ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
+                    "\n\n Saludos, \n EventBride");
             mailSender.send(mailMessage);
             updateEventPropertiesToCancelled(eP.getId());
 

@@ -36,12 +36,13 @@ const HistorialVentas = ({ userId }) => {
             .then(async data => {
                 const pagosConDetalles = await Promise.all(
                     data.map(async (pago) => {
+                        console.log("pago", pago);
                         let serviceName = "Sin nombre";
                         let eventProp = null;
 
                         try {
                             // 1. Obtener eventPropertiesDTO
-                            const epRes = await fetch(`/api/event-properties/DTO/${pago.eventPropertiesId}`, {
+                            const epRes = await fetch(`/api/event-properties/provider/${pago.eventPropertiesId}`, {
                                 headers: {
                                     "Content-Type": "application/json",
                                     Authorization: `Bearer ${jwtToken}`,

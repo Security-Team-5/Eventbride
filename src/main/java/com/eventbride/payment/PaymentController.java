@@ -43,7 +43,6 @@ public class PaymentController {
         }
     }
 
-    // FALTA FUNCIONES PARA PAGO RESTANTE
     @PostMapping("/{eventPropertiesId}/pay-remaining/{userId}")
     public ResponseEntity<?> createPaymentRemaining(@PathVariable Integer eventPropertiesId,
             @PathVariable Integer userId) {

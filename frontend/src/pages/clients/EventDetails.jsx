@@ -274,7 +274,7 @@ function EventDetails() {
           <div className="event-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div className="event-title-container">
               <span className="event-type-badge">{tipoDeEvento(evento?.eventType)}</span>
-              <h2 className="event-title">Detalles del Evento</h2>
+              <h2 style={{height:"60%"}} className="event-title">Detalles del Evento</h2>
             </div>
 
             {sumaPagado() <= 0 && (
@@ -652,7 +652,7 @@ function EventDetails() {
               La señal se descontará en el pago final.
             </p>
             <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <button className="close-button" onClick={closeCostBreakdownModal}>
+              <button style={{borderRadius:"10%", backgroundColor:"red", color:"white", width:"20%", height:"4%"}} className="close-button" onClick={closeCostBreakdownModal}>
                 Cerrar
               </button>
             </div>
@@ -710,7 +710,7 @@ function EventDetails() {
             </p>
 
             <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <button className="close-button" onClick={closePaymentBreakdownModal}>
+              <button style={{borderRadius:"10%", backgroundColor:"red", color:"white", width:"20%", height:"4%"}} className="close-button" onClick={closePaymentBreakdownModal}>
                 Cerrar
               </button>
             </div>

@@ -10,9 +10,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.eventbride.dto.EventPropertiesDTO;
 import com.eventbride.event.Event;
+import com.eventbride.event.EventService;
+import com.eventbride.user.User;
+import com.eventbride.user.UserService;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceService;
-import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueService;
 
@@ -24,10 +26,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,16 +43,38 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/event-properties")
 public class EventPropertiesController {
 
+    private final UserService userService;
+    private final EventService eventService;
     private final EventPropertiesService eventPropertiesService;
     private final OtherServiceService otherServiceService;
     private final VenueService venueService;
 
     @Autowired
-    public EventPropertiesController(EventPropertiesService eventPropertiesService,
-            OtherServiceService otherServiceService, VenueService venueService) {
+    public EventPropertiesController(EventPropertiesService eventPropertiesService, UserService userService,
+            EventService eventService, OtherServiceService otherServiceService, VenueService venueService) {
         this.eventPropertiesService = eventPropertiesService;
+        this.userService = userService;
+        this.eventService = eventService;
         this.otherServiceService = otherServiceService;
         this.venueService = venueService;
+    }
+
+    private Boolean getOwned(Integer id) {
+        // DEBEMOS COMPROBAR QUE EL EVENT ASOCIADO ES DEL USUARIO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userService.getUserByUsername(auth.getName());
+
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("El usuario no existe");
+        }
+
+        List<Event> ownedEvents = eventService.findEventsByUserId(user.get().getId());
+        Boolean owned = ownedEvents.stream()
+                .anyMatch(e -> e.getEventProperties().stream().anyMatch(ep -> ep.getId().equals(id)));
+
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        return !roles.contains("ADMIN") && !owned;
     }
 
     @GetMapping
@@ -59,33 +83,55 @@ public class EventPropertiesController {
     }
 
     @PutMapping("/admin/{id}")
-	public ResponseEntity<?> updateService(@PathVariable Integer id, @Valid @RequestBody EventProperties updatedService) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-		if (roles.contains("ADMIN")) {
-			try {
-				Optional<EventProperties> existingServiceOptional = eventPropertiesService.findByIdOptional(id);
-				if (existingServiceOptional.isEmpty()) {
-					return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
-				}
+    public ResponseEntity<?> updateService(@PathVariable Integer id,
+            @Valid @RequestBody EventProperties updatedService) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        if (roles.contains("ADMIN")) {
+            try {
+                Optional<EventProperties> existingServiceOptional = eventPropertiesService.findByIdOptional(id);
+                if (existingServiceOptional.isEmpty()) {
+                    return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
+                }
                 EventProperties existingService = existingServiceOptional.get();
-				existingService.setStartTime(updatedService.getStartTime());
+                existingService.setStartTime(updatedService.getStartTime());
                 existingService.setEndTime(updatedService.getEndTime());
                 existingService.setStatus(updatedService.getStatus());
-				EventProperties savedService = eventPropertiesService.updateEventProperties(existingService, id);
-				return new ResponseEntity<>(new EventPropertiesDTO(savedService), HttpStatus.OK);
-			} catch (RuntimeException e) {
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-			}
-		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-	}
-
+                EventProperties savedService = eventPropertiesService.updateEventProperties(existingService, id);
+                return new ResponseEntity<>(new EventPropertiesDTO(savedService), HttpStatus.OK);
+            } catch (RuntimeException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
 
     @GetMapping("/DTO/{id}")
     public EventPropertiesDTO findById(@PathVariable("id") Integer id) {
+        // Comprobamos que el evento asociado a ese eventPropertie esta asociado al
+        // usuario
+        if (getOwned(id)) {
+            throw new IllegalArgumentException("Este pago no se puede realizar");
+        }
+
         return eventPropertiesService.findByIdDTO(id);
+    }
+
+    @GetMapping("/provider/{id}")
+    public EventPropertiesDTO findByIdProvider(@PathVariable("id") Integer id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        if (!roles.contains("SUPPLIER")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+        return eventPropertiesService.findByIdDTO(id);
+    }
+
+    @GetMapping("/requests/{userId}")
+    public List<List<Object>> getAllEventPropertiesAfterNow(@PathVariable("userId") Integer userId) {
+        return eventPropertiesService.findAllEventPropertiesAfterNow(userId);
     }
 
     @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
