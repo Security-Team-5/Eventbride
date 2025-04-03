@@ -138,7 +138,7 @@ const HistorialVentas = ({ userId }) => {
                         ))}
                     </tbody>
                 </table>
-                <p style={{ marginTop: "1%" }}>
+                <p style={{ marginTop: "1.1%" }}>
                     A todos los pagos se le aplicará una comisión del 2.5% tal y como indican los términos y condiciones.
                 </p>
             </div>
