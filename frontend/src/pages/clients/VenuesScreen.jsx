@@ -510,7 +510,7 @@ const VenuesScreen = () => {
               )}
             </div>
             <div className="modal-footer">
-              <button className="close-button" onClick={() => setAddModalVisible(false)}>
+              <button style={{width:"10%"}}className="close-button" onClick={() => setAddModalVisible(false)}>
                 Cerrar
               </button>
             </div>
