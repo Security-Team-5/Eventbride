@@ -4,10 +4,8 @@ import com.eventbride.event.EventService;
 import com.eventbride.invitation.Invitation;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceService;
-import com.eventbride.rating.RatingService;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueService;
-import com.eventbride.rating.Rating;
 import com.eventbride.event.Event;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +41,6 @@ public class UserController {
 
     @Autowired
     private EventService eventService;
-
-    @Autowired
-    private RatingService ratingService;
 
     @Autowired
     private VenueService venueService;
@@ -137,12 +132,6 @@ public class UserController {
                 e.setUser(null);
             }
             eventService.saveAll(events);
-
-            List<Rating> ratings = ratingService.findRatingsByUserId(id);
-            for (Rating r : ratings) {
-                r.setUser(null);
-            }
-            ratingService.saveAll(ratings);
 
             List<Venue> venues = venueService.getVenuesByUserId(id);
             for (Venue v : venues) {

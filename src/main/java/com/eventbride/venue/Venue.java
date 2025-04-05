@@ -4,7 +4,6 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.eventbride.rating.Rating;
 import com.eventbride.service.Service;
 import com.eventbride.user.User;
 

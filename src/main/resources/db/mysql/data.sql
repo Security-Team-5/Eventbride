@@ -66,35 +66,6 @@ INSERT IGNORE INTO invitations (id, first_name, last_name, number_of_guests, max
 (9, 'Kike', 'Remolino', 2, 2, '654000119', 'heavy@example.com', 'ACCEPTED', 5),
 (10, 'Julio', 'Pardo', 1, 1, '654000110',  'opera@example.com', 'ACCEPTED', 5);
 
-
-INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comment) VALUES
---user 1
-(1, 1, null, 1, 5, 'Great venue, had an amazing time!'),
-(2, 1, 1, null, 4, 'Great photography service, would recommend!'),
-(3, 1, 2, null, 4, 'Great service, would recommend!'),
---user2
-(4, 2, null, 1, 3, 'Good venue, but could be better.'),
-(5, 2, 1, null, 5, 'Great photography service, would recommend!'),
-(6, 1, 3, null, 4, 'Great service, would recommend!'),
-(7, 1, 6, null, 4, 'Great service, would recommend!'),
---user3
-(8, 3, null, 1, 5, 'Great venue, had an amazing time!'),
-(9, 3, 1, null, 4, 'Great photography service, would recommend!'),
-(10, 1, 4, null, 4, 'Great service, would recommend!'),
-(11, 1, 5, null, 4, 'Great service, would recommend!'),
-(12, 1, 6, null, 4, 'Great service, would recommend!'),
---user4
-(13, 4, null, 2, 3, 'Good venue, but could be better.'),
-(14, 4, 7, null, 5, 'Great photography service, would recommend!'),
-(15, 1, 5, null, 4, 'Great service, would recommend!'),
-(16, 1, 6, null, 4, 'Great service, would recommend!'),
---user5
-(17, 5, null, 2, 5, 'Great venue, had an amazing time!'),
-(18, 5, 2, null, 5, 'Great photography service, would recommend!'),
-(19, 1, 3, null, 4, 'Great service, would recommend!'),
-(20, 1, 5, null, 4, 'Great service, would recommend!'),
-(21, 1, 6, null, 4, 'Great service, would recommend!');
-
 INSERT IGNORE INTO event_properties (id, event_id, other_service_id, venue_id, start_time, end_time, status, deposit_amount, price_per_service, book_date) VALUES
 --user1
 (1, 1, 3, null, '2026-12-31 13:00:00', '2026-12-31 22:00:00', 'APPROVED', 3600.00 * 0.35, 3600.0, '2025-02-12 22:00:00'),
