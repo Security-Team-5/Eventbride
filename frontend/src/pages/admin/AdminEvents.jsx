@@ -234,8 +234,7 @@ function AdminEvents() {
                     <select
                       name="eventType"
                       value={eventData[event.id]?.eventType || event.eventType}
-                      onChange={
-                        InputChange}
+                      onChange={handleInputChange}
                       disabled={editEventId !== event.id}
                     >
                       {Object.keys(eventTypeMap).map((type) => (

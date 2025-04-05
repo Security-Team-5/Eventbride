@@ -57,7 +57,9 @@ public class UserManagementService {
             user.setDni(registrationRequest.getDni());
             if (registrationRequest.getProfilePicture()==null || registrationRequest.getProfilePicture()==""){
                 user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
-            }            
+            }
+            user.setReceivesEmails(registrationRequest.getReceivesEmails());
+            
             user.setRole(registrationRequest.getRole());
             User userResult = userRepo.save(user);
             if (userResult.getId()>0) {
