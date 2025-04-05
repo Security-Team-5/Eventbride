@@ -79,9 +79,9 @@ public class NotificationService {
             case PAYMENT_REMINDER:
                 notification.setType(NotificationType.PAYMENT_REMINDER);
                 notification.setSubject("Recordatorio de pago");
-                notification.setMessage("Le recordamos que tiene un pago pendiente para su evento "
+                notification.setMessage("Te recordamos que tienes un pago pendiente para tu evento "
                         + event.getName()
-                        + ". Por favor, realice el pago lo antes posible para evitar problemas.");
+                        + ". Por favor, realiza el pago lo antes posible para evitar problemas.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
             case NEW_MESSAGE:
@@ -98,12 +98,6 @@ public class NotificationService {
                                 : eventProperties.getVenue().getName())
                         + " para el evento " + event.getName()
                         + " ha sido confirmada. Paga la señal cuanto antes para terminar de reservarlo. ¡Que no te lo quiten!");
-                sendEmailNotification(user, notification.getSubject(), notification.getMessage());
-                break;
-            case DEPOSIT_REMINDER:
-                notification.setType(NotificationType.DEPOSIT_REMINDER);
-                notification.setSubject("Deposit Reminder");
-                notification.setMessage("This is a reminder for your deposit payment.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
             case NEW_REQUEST:
