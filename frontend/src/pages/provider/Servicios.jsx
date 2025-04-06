@@ -88,7 +88,7 @@ const Servicios = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.message || "No se pudo deshabilitar el servicio");
+                throw new Error(data.message || "No se pudo habilitar el servicio");
             }
 
             setServices((prevItems) =>
@@ -116,7 +116,7 @@ const Servicios = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.error || "No se pudo deshabilitar el servicio");
+                throw new Error(data.error || "No se pudo habilitar el servicio");
             }
 
             setServices((prevItems) =>

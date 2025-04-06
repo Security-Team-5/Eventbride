@@ -33,7 +33,10 @@ function Login({ setUser }) {
           'Authorization': `Bearer ${token}`
         }
       });
-      const user = updated.data;
+      const user = await updated.json();
+
+      console.log(user);
+      
 
       setUser(user);
       window.localStorage.setItem("user", JSON.stringify(data.user));

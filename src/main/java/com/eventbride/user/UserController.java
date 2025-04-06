@@ -21,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +50,8 @@ public class UserController {
     private boolean hasRole(String role) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .anyMatch(r -> r.equals(role));
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(r -> r.equals(role));
     }
 
     @GetMapping
@@ -84,7 +86,8 @@ public class UserController {
     }
 
     @PutMapping("/admin/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser) throws IllegalArgumentException {
+    public ResponseEntity<?> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser)
+            throws IllegalArgumentException {
         if (!hasRole("ADMIN")) {
             throw new IllegalArgumentException("No tienes permiso para realizar esta acción");
         }
@@ -93,7 +96,8 @@ public class UserController {
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         if (updatedUser.getProfilePicture() == null || updatedUser.getProfilePicture().trim().isEmpty()) {
-            updatedUser.setProfilePicture("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.es%2Ficono-gratis%2Fimagen-de-usuario-con-fondo-negro_17004&psig=AOvVaw2uqkuLeXpbAgKF0TwS8o6j&ust=1743779005580000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJCG9pORvIwDFQAAAAAdAAAAABAT");
+            updatedUser.setProfilePicture(
+                    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.es%2Ficono-gratis%2Fimagen-de-usuario-con-fondo-negro_17004&psig=AOvVaw2uqkuLeXpbAgKF0TwS8o6j&ust=1743779005580000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJCG9pORvIwDFQAAAAAdAAAAABAT");
         }
 
         updatedUser.setId(id);
@@ -133,24 +137,32 @@ public class UserController {
         }
     }
 
-	@GetMapping("/planExpired")
-	public ResponseEntity<?> checkUserPlan() throws IllegalArgumentException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> existingUser = userService.getUserByUsername(auth.getName());
+    @GetMapping("/planExpired")
+    public ResponseEntity<?> checkUserPlan() throws IllegalArgumentException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> existingUser = userService.getUserByUsername(auth.getName());
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 
-		if (existingUser.isEmpty()) {
-			throw new IllegalArgumentException("Usuario no encontrado");
-		}
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        if (!roles.contains("SUPPLIER")) {
+            return existingUser.map(user -> new ResponseEntity<>(new UserDTO(user), HttpStatus.OK))
+                    .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        }
 
-		User savedUser = userService.downgradeUserPlan(existingUser.get());
-		return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
-	}
+        if (existingUser.isEmpty()) {
+            throw new IllegalArgumentException("Usuario no encontrado");
+        }
+
+        User savedUser = userService.downgradeUserPlan(existingUser.get());
+        return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+    }
 
     /**
      * Editar el perfil de un usuario por ID.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateOwnProfile(@PathVariable Integer id, @Valid @RequestBody User updatedUser) throws IllegalArgumentException {
+    public ResponseEntity<?> updateOwnProfile(@PathVariable Integer id, @Valid @RequestBody User updatedUser)
+            throws IllegalArgumentException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         User existingUser = userService.getUserById(id)
@@ -167,9 +179,9 @@ public class UserController {
         return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
     }
 
-
     @PutMapping("/premium/{id}")
-    public ResponseEntity<?> updatePlanToPremium(@PathVariable Integer id, @RequestBody String expirationDate) throws IllegalArgumentException {
+    public ResponseEntity<?> updatePlanToPremium(@PathVariable Integer id, @RequestBody String expirationDate)
+            throws IllegalArgumentException {
         User targetUser = userService.getUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
@@ -198,11 +210,10 @@ public class UserController {
         return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
     }
 
-
     @GetMapping("/getAdmin")
     public ResponseEntity<?> getAdmin() throws Exception {
-		User user = userService.getUserByRole("ADMIN");
-		return new ResponseEntity<>(user.getId(), HttpStatus.OK);
-	}
+        User user = userService.getUserByRole("ADMIN");
+        return new ResponseEntity<>(user.getId(), HttpStatus.OK);
+    }
 
 }
