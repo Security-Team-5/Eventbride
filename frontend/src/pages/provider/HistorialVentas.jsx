@@ -115,7 +115,7 @@ const HistorialVentas = ({ userId }) => {
                         <tr>
                             <th>Servicio</th>
                             <th>Cantidad</th>
-                            <th>Cantidad final</th>
+                            <th>Sin comisones</th>
                             <th>Fecha del pago</th>
                             <th>Tipo de pago</th>
                         </tr>

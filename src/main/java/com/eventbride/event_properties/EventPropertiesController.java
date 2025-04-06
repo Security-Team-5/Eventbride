@@ -30,10 +30,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.HttpStatus;
 
-
+import java.nio.file.attribute.UserPrincipal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -56,7 +57,8 @@ public class EventPropertiesController {
 
     @Autowired
     public EventPropertiesController(EventPropertiesService eventPropertiesService, UserService userService,
-            EventService eventService, OtherServiceService otherServiceService, VenueService venueService, EventPropertiesMapper eventPropertiesMapper, EventPropertiesRepository eventPropertiesRepository) {
+            EventService eventService, OtherServiceService otherServiceService, VenueService venueService,
+            EventPropertiesMapper eventPropertiesMapper, EventPropertiesRepository eventPropertiesRepository) {
         this.eventPropertiesService = eventPropertiesService;
         this.userService = userService;
         this.eventService = eventService;
@@ -107,7 +109,7 @@ public class EventPropertiesController {
                 existingService.setStatus(updatedService.getStatus());
                 Event evento = eventPropertiesRepository.findEventByEventPropertiesId(id);
                 EventProperties savedService = eventPropertiesService.updateEventProperties(existingService, id);
-                return new ResponseEntity<>(eventPropertiesMapper.toDTO(savedService,evento), HttpStatus.OK);
+                return new ResponseEntity<>(eventPropertiesMapper.toDTO(savedService, evento), HttpStatus.OK);
             } catch (RuntimeException e) {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
@@ -126,12 +128,13 @@ public class EventPropertiesController {
         return eventPropertiesService.findByIdDTO(id);
     }
 
+    // DONE
     @GetMapping("/provider/{id}")
     public EventPropertiesDTO findByIdProvider(@PathVariable("id") Integer id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
         User user = userService.getUserByUsername(auth.getName())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
         Integer userId = user.getId();
 
         EventPropertiesDTO eventprop = eventPropertiesService.findByIdDTO(id);
@@ -151,36 +154,61 @@ public class EventPropertiesController {
         }
 
         if (!roles.contains("ADMIN") && !roles.contains("SUPPLIER")) {
-			throw new IllegalArgumentException("El servicio no te pertenece");
-		}
+            throw new IllegalArgumentException("El servicio no te pertenece");
+        }
 
         if (roles.contains("SUPPLIER")) {
-            if(eventprop.getOtherServiceDTO() !=null){
-                if (eventprop.getOtherServiceDTO().getUserDTO().getId() != userId){
+            if (eventprop.getOtherServiceDTO() != null) {
+                if (eventprop.getOtherServiceDTO().getUserDTO().getId() != userId) {
                     throw new IllegalArgumentException("El servicio no te pertenece");
                 }
             }
-            if (eventprop.getVenueDTO() !=null){
-                if (eventprop.getVenueDTO().getUserDTO().getId() != userId){
-                    throw new IllegalArgumentException("El servicio no te pertenece");
+            if (eventprop.getVenueDTO() != null) {
+                if (eventprop.getVenueDTO().getUserDTO().getId() != userId) {
+                    throw new IllegalArgumentException("El recinto no te pertenece");
                 }
             }
-		}
-
+        }
         return eventPropertiesService.findByIdDTO(id);
     }
 
+    // DONE
     @GetMapping("/requests/{userId}")
-    public List<List<Object>> getAllEventPropertiesAfterNow(@PathVariable("userId") Integer userId) {
-        return eventPropertiesService.findAllEventPropertiesAfterNow(userId);
+    public List<List<Object>> getAllEventPropertiesAfterNow(@PathVariable("userId") Integer userId,
+            @AuthenticationPrincipal User userPrincipal) {
+        if (!userPrincipal.getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para ver estos datos");
+        }
+        List<List<Object>> result = eventPropertiesService.findAllEventPropertiesAfterNow(userId);
+        return result;
     }
 
+    // DONE
     @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
     public ResponseEntity<?> addOtherServiceToEvent(
             @PathVariable Integer eventId,
             @PathVariable Integer otherServiceId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        User user = userService.getUserByUsername(auth.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        Integer userId = user.getId();
+
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+        if (!roles.contains("ADMIN") && !roles.contains("CLIENT")) {
+            throw new IllegalArgumentException("El evento no te pertenece");
+        }
+
+        // Verificar que el evento existe y que le pertenece al usuario autenticado
+        Event event = Optional.ofNullable(eventService.findById(eventId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
+        if (!event.getUser().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El evento no te pertenece");
+        }
 
         OtherService o = otherServiceService.getAllOtherServices()
                 .stream()
@@ -198,12 +226,32 @@ public class EventPropertiesController {
         }
     }
 
+    // DONE
     @PutMapping("/{eventId}/add-venue/{venueId}")
     public ResponseEntity<?> addVenueToEvent(
             @PathVariable Integer eventId,
             @PathVariable Integer venueId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        User user = userService.getUserByUsername(auth.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        Integer userId = user.getId();
+
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+        if (!roles.contains("ADMIN") && !roles.contains("CLIENT")) {
+            throw new IllegalArgumentException("El evento no te pertenece");
+        }
+
+        // Verificar que el evento existe y que le pertenece al usuario autenticado
+        Event event = Optional.ofNullable(eventService.findById(eventId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
+        if (!event.getUser().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El evento no te pertenece");
+        }
 
         Venue venue = venueService.getAllVenues()
                 .stream()
@@ -220,8 +268,10 @@ public class EventPropertiesController {
         return ResponseEntity.ok(updatedEvent);
     }
 
+    // q se crea un payment y q el eventproperties de ese payment sea el que se ha
+    // cancelado
     @PutMapping("/cancel/{eventPropertieID}")
-    public ResponseEntity<Void> cancelEvent(@PathVariable Integer eventPropertieID, @RequestBody User user) {
+    public ResponseEntity<Void> cancelEventPropertie(@PathVariable Integer eventPropertieID, @RequestBody User user) {
         EventProperties evenProp = eventPropertiesService.findById(eventPropertieID);
         LocalDate fechaEvento = evenProp.getStartTime().toLocalDate();
         if (evenProp.getVenue() != null) {
@@ -235,23 +285,78 @@ public class EventPropertiesController {
         return ResponseEntity.ok().build();
     }
 
+    // DONE
     @PutMapping("/{eventPropertiesId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<EventProperties> acceptService(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
         EventProperties updateEventProperties = eventPropertiesService.findById(eventPropertiesId);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        User user = userService.getUserByUsername(auth.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        Integer userId = user.getId();
+
         if (updateEventProperties == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            updateEventProperties.setStatus(EventProperties.Status.APPROVED);
-            return new ResponseEntity<>(
-                    this.eventPropertiesService.updateEventProperties(updateEventProperties, eventPropertiesId),
-                    HttpStatus.OK);
         }
+
+        if (!roles.contains("ADMIN") && !roles.contains("SUPPLIER")) {
+            throw new IllegalArgumentException("El servicio no te pertenece");
+        }
+
+        // Verificar que el OtherService o Venue asociado pertenezca al usuario
+        // autenticado
+        if (updateEventProperties.getVenue() != null) {
+            if (!updateEventProperties.getVenue().getUser().getId().equals(userId)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El venue no pertenece al usuario autenticado");
+            }
+        } else if (updateEventProperties.getOtherService() != null) {
+            if (!updateEventProperties.getOtherService().getUser().getId().equals(userId)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "El otherService no pertenece al usuario autenticado");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se encuentra un servicio asociado al evento");
+        }
+
+        updateEventProperties.setStatus(EventProperties.Status.APPROVED);
+        return new ResponseEntity<>(
+                this.eventPropertiesService.updateEventProperties(updateEventProperties, eventPropertiesId),
+                HttpStatus.OK);
     }
 
+    // DONE
     @DeleteMapping("/{eventPropertiesId}")
     public void rejectService(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
         EventProperties eventProperties = eventPropertiesService.findById(eventPropertiesId);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        User user = userService.getUserByUsername(auth.getName())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        Integer userId = user.getId();
+
+        if (!roles.contains("ADMIN") && !roles.contains("SUPPLIER")) {
+            throw new IllegalArgumentException("El servicio no te pertenece");
+        }
+
+        // Verificar que el OtherService o Venue asociado pertenezca al usuario
+        // autenticado
+        if (eventProperties.getVenue() != null) {
+            if (!eventProperties.getVenue().getUser().getId().equals(userId)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El venue no pertenece al usuario autenticado");
+            }
+        } else if (eventProperties.getOtherService() != null) {
+            if (!eventProperties.getOtherService().getUser().getId().equals(userId)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "El otherService no pertenece al usuario autenticado");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se encuentra un servicio asociado al evento");
+        }
         if (eventProperties != null) {
             Venue venue = eventProperties.getVenue();
             OtherService otherService = eventProperties.getOtherService();
@@ -262,8 +367,14 @@ public class EventPropertiesController {
         }
     }
 
+    // DONE
     @GetMapping("/pending/{userId}")
-    public List<EventPropertiesDTO> getPendingEventPropertiesByUserId(@PathVariable("userId") Integer userId) {
+    public List<EventPropertiesDTO> getPendingEventPropertiesByUserId(@PathVariable("userId") Integer userId,
+            @AuthenticationPrincipal User userPrincipal) {
+        if (!userPrincipal.getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para ver estos datos");
+        }
+
         return eventPropertiesService.findEventPropertiesPendingByUserId(userId);
     }
 
