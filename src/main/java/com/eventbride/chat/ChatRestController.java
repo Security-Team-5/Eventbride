@@ -1,5 +1,6 @@
 package com.eventbride.chat;
 
+import com.eventbride.dto.MessageDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventService;
 import com.eventbride.event_properties.EventPropertiesService;
@@ -80,9 +81,7 @@ public class ChatRestController {
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok(messages);
+		return ResponseEntity.ok(MessageDTO.fromEntities(messages));
 	}
-
-
 
 }
