@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.eventbride.dto.EventPropertiesDTO;
+import com.eventbride.dto.EventPropertiesMapper;
 import com.eventbride.event.Event;
+import com.eventbride.event.EventRepository;
 import com.eventbride.event.EventService;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
@@ -31,6 +33,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.HttpStatus;
 
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -48,15 +51,19 @@ public class EventPropertiesController {
     private final EventPropertiesService eventPropertiesService;
     private final OtherServiceService otherServiceService;
     private final VenueService venueService;
+    private final EventPropertiesMapper eventPropertiesMapper;
+    private final EventPropertiesRepository eventPropertiesRepository;
 
     @Autowired
     public EventPropertiesController(EventPropertiesService eventPropertiesService, UserService userService,
-            EventService eventService, OtherServiceService otherServiceService, VenueService venueService) {
+            EventService eventService, OtherServiceService otherServiceService, VenueService venueService, EventPropertiesMapper eventPropertiesMapper, EventPropertiesRepository eventPropertiesRepository) {
         this.eventPropertiesService = eventPropertiesService;
         this.userService = userService;
         this.eventService = eventService;
         this.otherServiceService = otherServiceService;
         this.venueService = venueService;
+        this.eventPropertiesMapper = eventPropertiesMapper;
+        this.eventPropertiesRepository = eventPropertiesRepository;
     }
 
     private Boolean getOwned(Integer id) {
@@ -98,8 +105,9 @@ public class EventPropertiesController {
                 existingService.setStartTime(updatedService.getStartTime());
                 existingService.setEndTime(updatedService.getEndTime());
                 existingService.setStatus(updatedService.getStatus());
+                Event evento = eventPropertiesRepository.findEventByEventPropertiesId(id);
                 EventProperties savedService = eventPropertiesService.updateEventProperties(existingService, id);
-                return new ResponseEntity<>(new EventPropertiesDTO(savedService), HttpStatus.OK);
+                return new ResponseEntity<>(eventPropertiesMapper.toDTO(savedService,evento), HttpStatus.OK);
             } catch (RuntimeException e) {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
@@ -122,10 +130,43 @@ public class EventPropertiesController {
     public EventPropertiesDTO findByIdProvider(@PathVariable("id") Integer id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        User user = userService.getUserByUsername(auth.getName())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        Integer userId = user.getId();
+
+        EventPropertiesDTO eventprop = eventPropertiesService.findByIdDTO(id);
+
         List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         if (!roles.contains("SUPPLIER")) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
+
+        Event evento = eventService.findById(eventprop.getEventDTO().getId());
+        if (evento == null) {
+            throw new IllegalArgumentException("El evento no existe");
+        }
+
+        if (eventprop.getEventDTO() == null) {
+            throw new IllegalArgumentException("Este EventProperties no tiene un Event asociado");
+        }
+
+        if (!roles.contains("ADMIN") && !roles.contains("SUPPLIER")) {
+			throw new IllegalArgumentException("El servicio no te pertenece");
+		}
+
+        if (roles.contains("SUPPLIER")) {
+            if(eventprop.getOtherServiceDTO() !=null){
+                if (eventprop.getOtherServiceDTO().getUserDTO().getId() != userId){
+                    throw new IllegalArgumentException("El servicio no te pertenece");
+                }
+            }
+            if (eventprop.getVenueDTO() !=null){
+                if (eventprop.getVenueDTO().getUserDTO().getId() != userId){
+                    throw new IllegalArgumentException("El servicio no te pertenece");
+                }
+            }
+		}
+
         return eventPropertiesService.findByIdDTO(id);
     }
 

@@ -180,7 +180,7 @@ public class UserController {
         String username = auth.getName();
 
         boolean isAdmin = hasRole("ADMIN");
-        boolean isSupplier = hasRole("ADMIN");
+        boolean isSupplier = hasRole("SUPPLIER");
 
         if (!isAdmin && !isSupplier) {
             throw new IllegalArgumentException("No tienes permiso para realizar esta acción");

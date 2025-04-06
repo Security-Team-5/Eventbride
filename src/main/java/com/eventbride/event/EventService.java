@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.EventDTO;
+import com.eventbride.dto.EventMapper;
 import com.eventbride.notification.Notification;
 import com.eventbride.notification.NotificationService;
 import com.eventbride.otherService.OtherService;
@@ -20,11 +21,13 @@ import org.springframework.stereotype.Service;
 public class EventService {
     private EventRepository eventRepository;
     private NotificationService notificationService;
+    private EventMapper eventMapper;
 
     @Autowired
-    public EventService(EventRepository eventRepository, NotificationService notificationService) {
+    public EventService(EventRepository eventRepository, NotificationService notificationService, EventMapper eventMapper) {
         this.notificationService = notificationService;
         this.eventRepository = eventRepository;
+        this.eventMapper = eventMapper;
     }
 
     @Transactional(readOnly = true)
@@ -35,7 +38,7 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<EventDTO> getAllEventsDTO() {
         List<Event> events = eventRepository.findAll();
-        return EventDTO.fromEntities(events);
+        return eventMapper.toDTOList(events);
     }
 
     @Transactional(readOnly = true)

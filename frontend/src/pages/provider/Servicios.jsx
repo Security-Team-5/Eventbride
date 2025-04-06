@@ -279,7 +279,7 @@ const Servicios = () => {
                     ))}
                 </div>
             )}
-           {currentUser.plan === "BASIC" && (
+           {currentUser.plan && (
                 services.filter((s) => s.available ).length < (currentUser.plan == "PREMIUM" ? 10: 3) ? (
                     <div className="create-service-container">
                     <button

@@ -20,6 +20,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.EventPropertiesDTO;
+import com.eventbride.dto.EventPropertiesMapper;
 import com.eventbride.dto.UserDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
@@ -46,16 +47,19 @@ public class EventPropertiesService {
     private VenueService venueService;
     private OtherServiceService otherServiceService;
     private NotificationService notificationService;
+    private EventPropertiesMapper eventPropertiesMapper;
 
     @Autowired
     public EventPropertiesService(EventPropertiesRepository eventPropertiesRepository,
             EventRepository eventRepository, VenueService venueService, OtherServiceService otherServiceService,
-            NotificationService notificationService) {
+            NotificationService notificationService, EventPropertiesMapper eventPropertiesMapper) {
         this.eventPropertiesRepository = eventPropertiesRepository;
         this.eventRepository = eventRepository;
         this.venueService = venueService;
         this.otherServiceService = otherServiceService;
         this.notificationService = notificationService;
+        this.eventPropertiesMapper = eventPropertiesMapper;
+
     }
 
     @Autowired
@@ -75,7 +79,8 @@ public class EventPropertiesService {
     @Transactional(readOnly = true)
     public EventPropertiesDTO findByIdDTO(int id) throws DataAccessException {
         Optional<EventProperties> g = eventPropertiesRepository.findById(id);
-        return EventPropertiesDTO.fromEntity(g.get());
+        Event e = eventPropertiesRepository.findEventByEventPropertiesId(id);
+        return eventPropertiesMapper.toDTO(g.get(), e);
     }
 
     @Transactional(readOnly = true)
@@ -121,6 +126,11 @@ public class EventPropertiesService {
     }
 
     @Transactional(readOnly = true)
+    public Event findEventByEventPropertiesId(Integer eventPropertiesId) {
+        return eventPropertiesRepository.findEventByEventPropertiesId(eventPropertiesId);
+    }
+
+    @Transactional(readOnly = true)
     public List<EventProperties> findEventPropertiesByOtherService(Integer otherServiceId) {
         return eventPropertiesRepository.findEventPropertiesByOtherServiceId(otherServiceId);
     }
@@ -146,10 +156,6 @@ public class EventPropertiesService {
             }
         }
 
-        // List<EventPropertiesDTO> res = allOfUser.stream().filter(e ->
-        // e.getStartTime().isAfter(LocalDateTime.now()))
-        // .map(e -> new EventPropertiesDTO(e)).toList();
-
         List<List<Object>> res = new ArrayList<>();
 
         for (Event e : eventRepository.findAll()) {
@@ -158,7 +164,7 @@ public class EventPropertiesService {
                 for (EventProperties epAsociado : epAsociadosEvento) {
                     if (ep.getId() == epAsociado.getId()) {
                         List<Object> r = new ArrayList<>();
-                        r.add(new EventPropertiesDTO(ep));
+                        r.add(eventPropertiesMapper.toDTO(ep, e));
                         r.add(new UserDTO(e.getUser()));
                         res.add(r);
                     }
@@ -322,15 +328,27 @@ public class EventPropertiesService {
         List<EventPropertiesDTO> res = new ArrayList<>();
 
         for (OtherService otherService : otherServices) {
-            res.addAll(eventPropertiesRepository.findByOtherServiceAndStatus(otherService,
-                    EventProperties.Status.PENDING).stream().map(e -> new EventPropertiesDTO(e)).toList());
+            List<EventProperties> props = eventPropertiesRepository.findByOtherServiceAndStatus(
+                    otherService, EventProperties.Status.PENDING);
+
+            for (EventProperties ep : props) {
+                Event event = eventPropertiesRepository.findEventByEventPropertiesId(ep.getId());
+                res.add(eventPropertiesMapper.toDTO(ep, event));
+            }
         }
 
         for (Venue venue : venues) {
-            res.addAll(eventPropertiesRepository.findByVenueAndStatus(venue,
-                    EventProperties.Status.PENDING).stream().map(e -> new EventPropertiesDTO(e)).toList());
+            List<EventProperties> props = eventPropertiesRepository.findByVenueAndStatus(
+                    venue, EventProperties.Status.PENDING);
+
+            for (EventProperties ep : props) {
+                Event event = eventPropertiesRepository.findEventByEventPropertiesId(ep.getId());
+                res.add(eventPropertiesMapper.toDTO(ep, event));
+            }
         }
+
         return res;
     }
+
 
 }
