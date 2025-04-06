@@ -28,37 +28,51 @@ public class InvitationService {
 	private JavaMailSender mailSender;
 
 	@Transactional()
-	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests) throws IllegalArgumentException {
+	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests, User user) throws IllegalArgumentException {
 
 		// Comprobamos que en las eventpropeties del evento exista una venue
-		Optional<Event> event = eventRepository.findById(eventId);
-		if (event.isPresent()) {
-			boolean hasVenue = event.get().getEventProperties().stream()
-					.anyMatch(eventProperties -> eventProperties.getVenue() != null);
-			if (!hasVenue) {
-				throw new IllegalArgumentException("No se puede crear una invitación para un evento sin venue");
-			}
-		} else {
-			throw new IllegalArgumentException("Event not found");
+		Event event = eventRepository.findById(eventId).orElse(null);
+
+		if (event == null) {
+			throw new IllegalArgumentException("El evento no existe");
 		}
+
+		if(!event.getUser().getId().equals(user.getId())) {
+			throw new IllegalArgumentException("El evento no te pertenece");
+		}
+
+		boolean hasVenue = event.getEventProperties().stream()
+				.anyMatch(eventProperties -> eventProperties.getVenue() != null);
+
+		if (!hasVenue) {
+			throw new IllegalArgumentException("No se puede crear una invitación para un evento sin venue");
+		}
+
 		Invitation invitation = new Invitation();
 		invitation.setMaxGuests(maxGuests);
 		String randomEmail = "randomEmail" + Math.random() + "@gmail.com";
 		invitation.setEmail(randomEmail);
-		invitation.setEvent(event.get());
+		invitation.setEvent(event);
 		invitation.setInvitationType(Invitation.InvitationType.SENT);
 
 		return invitationRepository.save(invitation);
 	}
 
-	@Transactional(readOnly = true)
-	public Invitation getInvitationById(Integer invitationId) throws IllegalArgumentException {
-		Optional<Invitation> invitation = invitationRepository.findById(invitationId);
-		if (invitation.isPresent()) {
-			return invitation.get();
-		} else {
-			throw new IllegalArgumentException("Invitation not found");
+	public Invitation getInvitationById(Integer invitationId, User user) throws IllegalArgumentException {
+		Optional<Invitation> invitationOpt = invitationRepository.findById(invitationId);
+	
+		if (!invitationOpt.isPresent()) {
+			throw new IllegalArgumentException("La invitación no existe");
 		}
+	
+		Invitation invitation = invitationOpt.get();
+		Event event = invitation.getEvent();
+	
+		if (!event.getUser().getId().equals(user.getId())) {
+			throw new IllegalArgumentException("La invitación no te pertenece");
+		}
+	
+		return invitation;
 	}
 
 	@Transactional
@@ -75,7 +89,7 @@ public class InvitationService {
 		}
 
 		if(invitation.getLastName().trim().equals("") || invitation.getFirstName().trim().equals("")) {
-			throw new IllegalArgumentException("Flatan datos en la invitación");
+			throw new IllegalArgumentException("Faltan datos en la invitación");
 		}
 
 		BeanUtils.copyProperties(invitation, existingInvitation, "id", "event", "invitationType");
