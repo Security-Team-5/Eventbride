@@ -38,8 +38,8 @@ public class UserManagementController {
     @GetMapping("/auth/current-user")
     public ResponseEntity<ReqRes> getMyProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        ReqRes response = userManagementService.getMyInfo(email);
+        String username = authentication.getName();
+        ReqRes response = userManagementService.getMyInfo(username);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 

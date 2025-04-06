@@ -18,13 +18,18 @@ const Register = () => {
     profilePicture: "",
     receivesEmails: false,
   })
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value, type, checked } = e.target
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: type === "checkbox" ? checked : value,
+    }))
   }
 
   const handleSubmit = async (e) => {
@@ -70,9 +75,8 @@ const Register = () => {
     }
 
     setIsLoading(true)
-    
 
-    const role = "proveedor" === form.role ? "SUPPLIER" : "CLIENT"
+    const role = form.role === "proveedor" ? "SUPPLIER" : "CLIENT"
 
     try {
       const response = await apiClient.post("/api/users/auth/register", {
@@ -84,6 +88,7 @@ const Register = () => {
         dni: form.dni,
         password: form.password,
         role: role,
+        receivesEmails: Boolean(form.receivesEmails),
         profilePicture: form.profilePicture?.trim() === "" ? null : form.profilePicture,
       })
 
@@ -101,14 +106,6 @@ const Register = () => {
       setIsLoading(false)
     }
   }
-
-  const handleChangeNot = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm((prevForm) => ({
-      ...prevForm,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
   return (
     <div className="split-layout register-layout">
@@ -267,7 +264,7 @@ const Register = () => {
                   id="receivesEmails"
                   name="receivesEmails"
                   checked={form.receivesEmails}
-                  onChange={handleChangeNot}
+                  onChange={handleChange}
                 />
                 <label htmlFor="receivesEmails" className="terms-label">
                   Deseo recibir notificaciones y novedades
@@ -285,7 +282,7 @@ const Register = () => {
                   required
                 />
                 <label htmlFor="termsAccept" className="terms-label">
-                  <a href="/terminos-y-condiciones">Acepto los Terminos y Condiciones de Eventbride</a>
+                  <a href="/terminos-y-condiciones">Acepto los Términos y Condiciones de Eventbride</a>
                 </label>
               </div>
             </div>
@@ -294,9 +291,7 @@ const Register = () => {
               {isLoading ? (
                 <span className="loading-spinner"></span>
               ) : (
-                <>
-                  <span>Crear cuenta</span>
-                </>
+                <span>Crear cuenta</span>
               )}
             </button>
           </form>
