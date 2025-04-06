@@ -42,7 +42,7 @@ function MyEvents() {
       })
       .catch(error => {
         console.error("Error obteniendo eventos:", error);
-        setError("No se pudieron cargar los eventos. Por favor, inténtalo de nuevo más tarde.");
+        setError("No hay eventos todavia.");
         setIsLoading(false);
       });
   }
@@ -109,9 +109,8 @@ function MyEvents() {
   if (error) {
     return (
       <div className="error-container">
-        <div className="error-icon">!</div>
         <p>{error}</p>
-        <button className="retry-button" onClick={getEvents}>
+        <button style={{width:"25%"}} className="retry-button" onClick={getEvents}>
           Reintentar
         </button>
       </div>
@@ -168,7 +167,7 @@ function MyEvents() {
                 </div>
 
                 <div className="event-content">
-                  <h2 className="event-title">{tipoDeEvento(evento.eventType)} de {currentUser.username}</h2>
+                  <h2 className="event-title">{evento.name}</h2>
 
                   <div className="event-details">
                     <div className="detail-item">

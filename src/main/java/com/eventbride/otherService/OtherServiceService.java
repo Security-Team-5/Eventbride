@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.BeanUtils;
 
 import com.eventbride.otherService.OtherService.OtherServiceType;
-import com.eventbride.rating.RatingRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,9 +33,6 @@ public class OtherServiceService {
 
     @Autowired
     private EventPropertiesRepository eventPropertiesRepository;
-
-    @Autowired
-    private RatingRepository ratingRepository;
 
     @Transactional
     public List<OtherService> getAllOtherServices() {
@@ -97,7 +93,7 @@ public class OtherServiceService {
             User existingUser = user.get();
             ServiceDTO allServices = serviceService.getAllServiceByUserId(existingUser.getId());
 
-            int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
+            int slotsCount = (int) allServices.getOtherServices().stream().filter(s -> s.getAvailable()).count() + (int) allServices.getVenues().stream().filter(s -> s.getAvailable()).count();
 
             String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
 
@@ -120,7 +116,9 @@ public class OtherServiceService {
         OtherService otherService = otherServiceRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se ha encontrado ningun servicio con esa Id"));
 
-        BeanUtils.copyProperties(otherServ, otherService, "id");
+        User usuarioExistente = otherService.getUser();
+        BeanUtils.copyProperties(otherServ, otherService);
+        otherService.setUser(usuarioExistente);
 
         return otherServiceRepo.save(otherService);
 
@@ -134,7 +132,6 @@ public class OtherServiceService {
         // Elimina EventProperties asociadas para evitar fallos con la foreign key
         eventPropertiesRepository.deleteByOtherService(otherService);
         // Elimina Ratings asociadas para evitar fallos con la foreign key
-        ratingRepository.deleteByOtherService(otherService);
 
         // Elimina OtherService
         otherServiceRepo.delete(otherService);

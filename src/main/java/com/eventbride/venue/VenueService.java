@@ -2,7 +2,6 @@ package com.eventbride.venue;
 
 import com.eventbride.dto.ServiceDTO;
 import com.eventbride.event_properties.EventPropertiesRepository;
-import com.eventbride.rating.RatingRepository;
 import com.eventbride.service.ServiceService;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
@@ -31,9 +30,6 @@ public class VenueService {
 
     @Autowired
     private EventPropertiesRepository eventPropertiesRepository;
-
-    @Autowired
-    private RatingRepository ratingRepository;
 
     @Transactional
     public List<Venue> getAllVenues() {
@@ -124,6 +120,8 @@ public class VenueService {
 		existingVenue.setCoordinates(updatedVenue.getCoordinates());
 		existingVenue.setMaxGuests(updatedVenue.getMaxGuests());
 		existingVenue.setSurface(updatedVenue.getSurface());
+        existingVenue.setEarliestTime(updatedVenue.getEarliestTime());
+        existingVenue.setLatestTime(updatedVenue.getLatestTime());
 
 		// Guardar el Venue actualizado
 		return venueRepository.save(existingVenue);
@@ -136,8 +134,7 @@ public class VenueService {
 
 		// Eliminar EventProperties asociadas al Venue
 		eventPropertiesRepository.deleteByVenue(venue);
-        //Eliminar Ratings asociadas al Venue
-        ratingRepository.deleteByVenue(venue);
+
 
 		// Eliminar Venue
 		venueRepository.deleteById(id);

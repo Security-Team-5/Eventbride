@@ -26,6 +26,7 @@ public class EventPropertiesDTO {
     private BigDecimal pricePerService;
     private LocalTime startTime;
     private LocalTime finishTime;
+    private EventDTO eventDTO;
 
     // Constructor para simplificar la creación del DTO
     public EventPropertiesDTO(EventProperties eventProperties) {
@@ -44,6 +45,7 @@ public class EventPropertiesDTO {
         }
         this.setPricePerService = eventProperties.getPricePerService();
         this.depositAmount = eventProperties.getDepositAmount();
+        
     }
 
     // Método estático para crear una lista de DTOs a partir de una lista de

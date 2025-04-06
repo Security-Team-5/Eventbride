@@ -86,7 +86,7 @@ public class InvitationService {
 		mailMessage.setTo(existingInvitation.getEmail());
 		mailMessage.setSubject("Invitación a evento");
 		mailMessage.setText("Hola " + existingInvitation.getFirstName() + " " + existingInvitation.getLastName() +
-				". \nHas confirmado tu asistencia al evento: " + "existingInvitation.getEvent().getName()" +
+				". \nHas confirmado tu asistencia al evento: " + existingInvitation.getEvent().getName() +
 				". \nEl evento se llevará a cabo en la fecha: " + existingInvitation.getEvent().getEventDate() +
 				", en "
 				+ existingInvitation.getEvent().getEventProperties().stream()

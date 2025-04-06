@@ -16,14 +16,20 @@ const Register = () => {
     dni: "",
     role: "CLIENT",
     profilePicture: "",
+    receivesEmails: false,
   })
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value, type, checked } = e.target
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: type === "checkbox" ? checked : value,
+    }))
   }
 
   const handleSubmit = async (e) => {
@@ -69,9 +75,8 @@ const Register = () => {
     }
 
     setIsLoading(true)
-    
 
-    const role = "proveedor" === form.role ? "SUPPLIER" : "CLIENT"
+    const role = form.role === "proveedor" ? "SUPPLIER" : "CLIENT"
 
     try {
       const response = await apiClient.post("/api/users/auth/register", {
@@ -83,7 +88,8 @@ const Register = () => {
         dni: form.dni,
         password: form.password,
         role: role,
-        profilePicture: form.profilePicture,
+        receivesEmails: Boolean(form.receivesEmails),
+        profilePicture: form.profilePicture?.trim() === "" ? null : form.profilePicture,
       })
 
       if (response.data.error) {
@@ -174,7 +180,6 @@ const Register = () => {
                   placeholder="https://foto.de/perfil"
                   value={form.profilePicture}
                   onChange={handleChange}
-                  required
                 />
               </div>
             </div>
@@ -256,13 +261,28 @@ const Register = () => {
               <div className="checkbox-wrapper">
                 <input
                   type="checkbox"
+                  id="receivesEmails"
+                  name="receivesEmails"
+                  checked={form.receivesEmails}
+                  onChange={handleChange}
+                />
+                <label htmlFor="receivesEmails" className="terms-label">
+                  Deseo recibir notificaciones y novedades
+                </label>
+              </div>
+            </div>
+
+            <div className="form-group terms-checkbox-container">
+              <div className="checkbox-wrapper">
+                <input
+                  type="checkbox"
                   id="termsAccept"
                   checked={acceptedTerms}
                   onChange={(e) => setAcceptedTerms(e.target.checked)}
                   required
                 />
                 <label htmlFor="termsAccept" className="terms-label">
-                  <a href="/terminos-y-condiciones">Acepto los Terminos y Condiciones de Eventbride</a>
+                  <a href="/terminos-y-condiciones">Acepto los Términos y Condiciones de Eventbride</a>
                 </label>
               </div>
             </div>
@@ -271,9 +291,7 @@ const Register = () => {
               {isLoading ? (
                 <span className="loading-spinner"></span>
               ) : (
-                <>
-                  <span>Crear cuenta</span>
-                </>
+                <span>Crear cuenta</span>
               )}
             </button>
           </form>

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../../static/resources/css/EditPlanProfile.css";
 import PaypalButtonPlan from "../../components/PaypalButtomPlan";
 
@@ -12,7 +11,6 @@ function EditPlanProfile() {
   });
 
   const [jwtToken] = useState(localStorage.getItem("jwt"));
-  const navigate = useNavigate();
   const [durationMonths, setDurationMonths] = useState(1);
   const [amount, setAmount] = useState(50.0);
 
@@ -137,7 +135,7 @@ function EditPlanProfile() {
         )}
 
         <div className="btn-group">
-          <button className="cancel-btn" onClick={() => navigate("/profile")}>
+          <button className="cancel-btn" onClick={() => window.location.href = "/profile"}>
             Cancelar
           </button>
         </div>

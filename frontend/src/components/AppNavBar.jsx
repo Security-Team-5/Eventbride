@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
 import carta from "../static/resources/images/carta.png";
+import mensaje from "../static/resources/images/mensaje.png";
 import usuario from "../static/resources/images/user.png";
 import apiClient from "../apiClient"
 import { AlertCircle } from "lucide-react";
@@ -19,7 +20,7 @@ function Navbar({ user }) {
   const currentUser = user;
 
   useEffect(() => {
-    if(currentUser){
+    if (currentUser) {
       if (currentUser.role === "SUPPLIER") {
         setLoading(true);
       }
@@ -31,7 +32,7 @@ function Navbar({ user }) {
   };
 
   useEffect(() => {
-    if(currentUser && currentUser.role === "SUPPLIER"){
+    if (currentUser && currentUser.role === "SUPPLIER") {
       const fetchServices = async () => {
         try {
           setLoading(true);
@@ -85,24 +86,24 @@ function Navbar({ user }) {
           <li><Link to="/create-events" className="nav-link">Crear evento</Link></li>
           <li><Link to="/venues" className="nav-link">Recintos</Link></li>
           <li><Link to="/other-services" className="nav-link">Otros servicios</Link></li>
-          <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
           <li><Link to="/support" className="nav-link">Soporte Técnico</Link></li>
         </ul>
       );
     }
 
     if (currentUser.role === "SUPPLIER") {
-      if(!loading){
+      if (!loading) {
         return (
           <ul className="nav-links">
             <li><Link to="/misservicios" className="nav-link">Mis servicios</Link></li>
-            <li><Link to="/terminos-y-condiciones" className="nav-link">Términos y Condiciones</Link></li>
             <li className="flex items-center gap-1">
               <Link to="/solicitudes" className="nav-link">Solicitudes</Link>
               {eventProps && eventProps.length > 0 && (
                 <AlertCircle className="text-red-500 w-4 h-4" />
               )}
             </li>
+            <li><Link to="/dashboard" className="nav-link">Contrataciones</Link></li>
+            <li><Link to="/misVentas" className="nav-link">Historial ventas</Link></li>
             <li><Link to="/support" className="nav-link">Soporte Técnico</Link></li>
           </ul>
         );
@@ -128,101 +129,105 @@ function Navbar({ user }) {
 
   return (
     <div>
-    {currentUser &&(
-    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-      <div className="navbar-container">
-        <div className="navbar-brand">
-          {currentUser === "{}" ? (
-            <span className="brand-link disabled-link">
-              <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
-              <span className="navbar-title">Inicio</span>
-            </span>
-          ) : (
-            <Link to="/" className="brand-link">
-              <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
-              <span className="navbar-title">Inicio</span>
-            </Link>
-          )}
-        </div>
+      {currentUser && (
+        <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+          <div className="navbar-container">
+            <div className="navbar-brand">
+              {currentUser === "{}" ? (
+                <span className="brand-link disabled-link">
+                  <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
+                  <span className="navbar-title">Inicio</span>
+                </span>
+              ) : (
+                <Link to="/" className="brand-link">
+                  <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
+                  <span className="navbar-title">Inicio</span>
+                </Link>
+              )}
+            </div>
 
-        <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
-          <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
+            <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+              <div className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
 
         <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
           {renderNavItems()}
           {currentUser && currentUser.role && (
             <div className="navbar-actions">
+              <Link to="/notifications" className="action-icon messages-icon">
+                <img src={carta} alt="Notificaciones" className="icon-img" />
+                <span className="notification-badge">2</span>
+              </Link>
               <Link to="/chats" className="action-icon messages-icon">
-                <img src={carta} alt="Mensajes" className="icon-img" />
+                <img src={mensaje} alt="Mensajes" className="icon-img" />
                 <span className="notification-badge">2</span>
               </Link>
 
-              <div className="user-menu">
-                <Link to="/profile" className="action-icon user-icon" style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  overflow: "hidden",
-                  background: "transparent",
-                }}>
-                  <div className="profile-pic-wrapper" style={{ height: "40px", overflow: "hidden", background:"transparent" }}>
-                    {currentUser.profilePicture?.trim() && (
-                      <img
-                        src={currentUser.profilePicture}
-                        alt="Foto de perfil"
-                        style={{
-                          maxWidth: "40px",
-                          height: "40px",
-                          objectFit: "cover",
-                          borderRadius: "50%",
-                        }}
-                      />
-                    )}
+                  <div className="user-menu">
+                    <Link to="/profile" className="action-icon user-icon" style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      overflow: "hidden",
+                      background: "transparent",
+                    }}>
+                      <div className="profile-pic-wrapper" style={{ height: "40px", overflow: "hidden", background: "transparent" }}>
+                        {currentUser.profilePicture?.trim() && (
+                          <img
+                            src={currentUser.profilePicture}
+                            alt="Foto de perfil"
+                            style={{
+                              maxWidth: "40px",
+                              height: "40px",
+                              objectFit: "cover",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        )}
+                      </div>
+                    </Link>
+                    <div className="user-name">{currentUser.username || "Usuario"}</div>
                   </div>
-                </Link>
-                <div className="user-name">{currentUser.username || "Usuario"}</div>
-              </div>
 
-              {currentUser.role === "SUPPLIER" && (
-                <li
-                  className="nav-link"
-                  style={{
-                    background: currentUser.plan === "PREMIUM"
-                      ? "linear-gradient(45deg, #FFD700, #FFC107, #FFA000)"
-                      : "silver",
-                    color: "black",
-                    padding: "8px 12px",
-                    borderRadius: "5px",
-                    fontWeight: "bold",
-                    border: currentUser.plan === "PREMIUM"
-                      ? "2px solid #DAA520"
-                      : "2px solid rgb(133, 133, 133)",
-                    boxShadow: currentUser.plan === "PREMIUM"
-                      ? "0px 0px 10px rgba(114, 114, 114, 0.8)"
-                      : "none",
-                  }}
-                >
-                  {currentUser.plan}
-                </li>
+                  {currentUser.role === "SUPPLIER" && (
+                    <li
+                      className="nav-link"
+                      style={{
+                        background: currentUser.plan === "PREMIUM"
+                          ? "linear-gradient(45deg, #FFD700, #FFC107, #FFA000)"
+                          : "silver",
+                        color: "black",
+                        padding: "8px 12px",
+                        borderRadius: "5px",
+                        fontWeight: "bold",
+                        border: currentUser.plan === "PREMIUM"
+                          ? "2px solid #DAA520"
+                          : "2px solid rgb(133, 133, 133)",
+                        boxShadow: currentUser.plan === "PREMIUM"
+                          ? "0px 0px 10px rgba(114, 114, 114, 0.8)"
+                          : "none",
+                      }}
+                    >
+                      {currentUser.plan}
+                    </li>
+                  )}
+
+                  <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
+                    Cerrar sesión
+                  </button>
+                </div>
               )}
-
-              <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
-                Cerrar sesión
-              </button>
             </div>
-          )}
-        </div>
-      </div>
-    </nav>
-    )}
+          </div>
+        </nav>
+      )}
     </div>
   );
 }

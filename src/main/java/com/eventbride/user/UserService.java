@@ -51,51 +51,56 @@ public class UserService {
     }
 
     @Transactional
-    public User registerUser(User user) {
+    public User registerUser(User user)  throws IllegalArgumentException{
         if (user.getId() != null) {
-            throw new RuntimeException("No se puede registrar un usuario con ID preexistente");
+            throw new IllegalArgumentException("No se puede registrar un usuario con ID preexistente");
         }
 
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("El username ya está en uso");
+            throw new IllegalArgumentException("El username ya está en uso");
         }
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("El email ya está registrado");
+            throw new IllegalArgumentException("El email ya está registrado");
         }
 
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-
+        if (user.getProfilePicture()==null || user.getProfilePicture()==""){
+            user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
+        }
         return userRepository.save(user);
     }
 
     @Transactional
-    public User updateUser(Integer id, User userDetails) {
+    public User updateUser(Integer id, User userDetails) throws IllegalArgumentException {
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
     
         // Comprueba si el username al que se quiere actualizar ya está en uso
         if (!user.getUsername().equals(userDetails.getUsername()) && 
             userRepository.existsByUsername(userDetails.getUsername())) {
-            throw new RuntimeException("El nombre de usuario ya está en uso");
+            throw new IllegalArgumentException("El nombre de usuario ya está en uso");
         }
     
         // Comprueba si el email al que se quiere actualizar ya está en uso
         if (!user.getEmail().equals(userDetails.getEmail()) && 
             userRepository.existsByEmail(userDetails.getEmail())) {
-            throw new RuntimeException("El correo electrónico ya está en uso");
+            throw new IllegalArgumentException("El correo electrónico ya está en uso");
         }
     
         // Comprueba si el DNI al que se quiere actualizar ya está en uso
         if (!user.getDni().equals(userDetails.getDni()) && 
             userRepository.existsByDni(userDetails.getDni())) {
-            throw new RuntimeException("El DNI ya está registrado");
+            throw new IllegalArgumentException("El DNI ya está registrado");
+        }
+        if (user.getProfilePicture()==null || user.getProfilePicture()==""){
+            user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
         }
     
         // Validar el formato del telefono
         if (!String.valueOf(userDetails.getTelephone()).matches("^[0-9]{9}$")) {
-            throw new RuntimeException("El teléfono debe tener 9 números");
+            throw new IllegalArgumentException("El teléfono debe tener 9 números");
         }
     
         // Actualizar los campos del usuario
@@ -110,6 +115,7 @@ public class UserService {
         user.setPaymentPlanDate(userDetails.getPaymentPlanDate());
         user.setExpirePlanDate(userDetails.getExpirePlanDate());
         user.setProfilePicture(userDetails.getProfilePicture());
+        user.setReceivesEmails(userDetails.getReceivesEmails());
 
         return userRepository.save(user);
     }
@@ -125,16 +131,16 @@ public class UserService {
     }
 
     @Transactional
-    public User downgradeUserPlan(Integer id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    public User downgradeUserPlan(Integer id)  throws IllegalArgumentException {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         user.setPlan(Plan.BASIC);
         user.setPaymentPlanDate(null);
         user.setExpirePlanDate(null);
         return userRepository.save(user);
     }
 
-    public User setPremium(Integer id, LocalDate expirationDate) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    public User setPremium(Integer id, LocalDate expirationDate)  throws IllegalArgumentException {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         user.setPlan(User.Plan.PREMIUM);
         user.setPaymentPlanDate(LocalDate.now());
         user.setExpirePlanDate(expirationDate);
@@ -142,8 +148,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserByRole(String role ) throws Exception {
-        return userRepository.findByRole(role).orElseThrow(() -> new Exception("Usuario no encontrado"));
+    public User getUserByRole(String role ) throws IllegalArgumentException {
+        return userRepository.findByRole(role).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+    }
+
+    public Optional<User> getUserByEmail(String currentEmail) {
+        return userRepository.findByEmail(currentEmail);
     }
   
 }

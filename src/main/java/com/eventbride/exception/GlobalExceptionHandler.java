@@ -52,4 +52,10 @@ public class GlobalExceptionHandler {
 		ErrorResponse error = new ErrorResponse(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<ErrorResponse> handleDataAccessException(DataAccessException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Database error: " + ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

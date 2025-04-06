@@ -6,8 +6,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.EventPropertiesDTO;
+import com.eventbride.dto.UserDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.event_properties.EventProperties.Status;
+import com.eventbride.notification.Notification;
+import com.eventbride.notification.NotificationService;
+import com.eventbride.notification.Notification.NotificationType;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherServiceRepository;
 import com.eventbride.otherService.OtherServiceService;
@@ -27,6 +34,8 @@ import com.eventbride.user.User;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueRepository;
 import com.eventbride.venue.VenueService;
+
+import ch.qos.logback.core.joran.sanity.Pair;
 
 import org.springframework.stereotype.Service;
 
@@ -36,15 +45,17 @@ public class EventPropertiesService {
     private EventRepository eventRepository;
     private VenueService venueService;
     private OtherServiceService otherServiceService;
+    private NotificationService notificationService;
 
     @Autowired
     public EventPropertiesService(EventPropertiesRepository eventPropertiesRepository,
-            EventRepository eventRepository, VenueService venueService, OtherServiceService otherServiceService) {
+            EventRepository eventRepository, VenueService venueService, OtherServiceService otherServiceService,
+            NotificationService notificationService) {
         this.eventPropertiesRepository = eventPropertiesRepository;
         this.eventRepository = eventRepository;
         this.venueService = venueService;
         this.otherServiceService = otherServiceService;
-
+        this.notificationService = notificationService;
     }
 
     @Autowired
@@ -55,7 +66,6 @@ public class EventPropertiesService {
 
     @Autowired
     JavaMailSender mailSender;
-    
 
     @Transactional(readOnly = true)
     public List<EventProperties> findAll() {
@@ -74,6 +84,12 @@ public class EventPropertiesService {
         return g.get();
     }
 
+    @Transactional(readOnly = true)
+    public Optional<EventProperties> findByIdOptional(int id) throws DataAccessException {
+        Optional<EventProperties> g = eventPropertiesRepository.findById(id);
+        return g;
+    }
+
     @Transactional
     public EventProperties save(EventProperties eventProperties) throws DataAccessException {
         return eventPropertiesRepository.save(eventProperties);
@@ -83,15 +99,18 @@ public class EventPropertiesService {
     public EventProperties updateEventProperties(EventProperties eventProperties, int id) throws DataAccessException {
         EventProperties toUpdate = findById(id);
         BeanUtils.copyProperties(eventProperties, toUpdate);
+        if(eventProperties.getStatus() == EventProperties.Status.APPROVED) {
+            Optional<Event> event = eventRepository.findByEventPropertiesId(eventProperties.getId());
+            notificationService.createNotification(NotificationType.REQUEST_CONFIRMED, event.get().getUser(), event.get(), eventProperties);
+        }
         return save(toUpdate);
     }
 
     @Transactional
-    public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException{
+    public EventProperties updateEventPropertiesToCancelled(Integer id) throws DataAccessException {
         EventProperties toUpdate = findById(id);
-        System.out.println("ANTES DEL CAMBIO -> status: " + toUpdate.getStatus());
         toUpdate.setStatus(EventProperties.Status.CANCELLED);
-        EventProperties saved = updateEventProperties(toUpdate,id);
+        EventProperties saved = updateEventProperties(toUpdate, id);
         System.out.println("DESPUÉS DEL CAMBIO -> status: " + saved.getStatus());
         return saved;
     }
@@ -111,39 +130,84 @@ public class EventPropertiesService {
         return eventPropertiesRepository.findEventPropertiesByVenueId(venueId);
     }
 
+    @Transactional(readOnly = true)
+    public List<List<Object>> findAllEventPropertiesAfterNow(Integer userId) {
+
+        // Encontrar todos los eventproperties que tienen como dueño al usuario
+
+        List<EventProperties> allOfUser = new ArrayList<>();
+
+        for (EventProperties ep : eventPropertiesRepository.findAll()) {
+
+            if (ep.getVenue() == null && ep.getOtherService().getUser().getId() == userId) {
+                allOfUser.add(ep);
+            } else if (ep.getOtherService() == null && ep.getVenue().getUser().getId() == userId) {
+                allOfUser.add(ep);
+            }
+        }
+
+        // List<EventPropertiesDTO> res = allOfUser.stream().filter(e ->
+        // e.getStartTime().isAfter(LocalDateTime.now()))
+        // .map(e -> new EventPropertiesDTO(e)).toList();
+
+        List<List<Object>> res = new ArrayList<>();
+
+        for (Event e : eventRepository.findAll()) {
+            List<EventProperties> epAsociadosEvento = e.getEventProperties();
+            for (EventProperties ep : allOfUser) {
+                for (EventProperties epAsociado : epAsociadosEvento) {
+                    if (ep.getId() == epAsociado.getId()) {
+                        List<Object> r = new ArrayList<>();
+                        r.add(new EventPropertiesDTO(ep));
+                        r.add(new UserDTO(e.getUser()));
+                        res.add(r);
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
     @Transactional
-    public void getEventsPropsToCancelVenue(LocalDate fecha, Integer venueId, Integer eventPropId){
-        List<EventProperties> listToCancelVenues = eventPropertiesRepository.findVenuesToCancel(fecha, venueId, eventPropId);
+    public void getEventsPropsToCancelVenue(LocalDate fecha, Integer venueId, Integer eventPropId) {
+        List<EventProperties> listToCancelVenues = eventPropertiesRepository.findVenuesToCancel(fecha, venueId,
+                eventPropId);
         for (EventProperties eP : listToCancelVenues) {
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
             User user = event.getUser();
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, user, event, eP);
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6@gmail.com");
             mailMessage.setTo(user.getEmail());
             mailMessage.setSubject("Recinto cancelado");
-            mailMessage.setText("El recinto " + eP.getVenue().getName() + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
-            ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
-            "\n\n Saludos, \n EventBride");
+            mailMessage.setText("El recinto " + eP.getVenue().getName() + " ha sido cancelado para el evento del dia "
+                    + eP.getStartTime().toLocalDate() +
+                    ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
+                    "\n\n Saludos, \n EventBride");
             mailSender.send(mailMessage);
             updateEventPropertiesToCancelled(eP.getId());
         }
     }
 
     @Transactional
-    public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId){
-        List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha, otherServiceId, eventPropId);
+    public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId) {
+        List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha,
+                otherServiceId, eventPropId);
         for (EventProperties eP : listToCancelOtherServices) {
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
             User user = event.getUser();
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, user, event, eP);
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6gmail.com");
             mailMessage.setTo(user.getEmail());
             mailMessage.setSubject("Servicio cancelado");
-            mailMessage.setText("El servicio " + eP.getOtherService().getName() + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
-            ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
-            "\n\n Saludos, \n EventBride");
+            mailMessage.setText("El servicio " + eP.getOtherService().getName()
+                    + " ha sido cancelado para el evento del dia " + eP.getStartTime().toLocalDate() +
+                    ". \n Puede volver a solicitar el servicio mediante la aplicacion." +
+                    "\n\n Saludos, \n EventBride");
             mailSender.send(mailMessage);
             updateEventPropertiesToCancelled(eP.getId());
 
@@ -165,7 +229,7 @@ public class EventPropertiesService {
         }
         for (EventProperties e : eventPropertiesEvent) {
             if (e.getOtherService() != null && e.getOtherService().getId() == otherServiceId) {
-                throw new RuntimeException("Este servicio ya estÃ¡ asociado a este evento");
+                throw new RuntimeException("Este servicio ya está asociado a este evento");
             }
         }
         EventProperties eventProperties = new EventProperties();
@@ -189,6 +253,7 @@ public class EventPropertiesService {
         eventProperties.setPricePerService(priceService);
         eventProperties.setDepositAmount(priceService.doubleValue() * 0.35);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
+        notificationService.createNotification(NotificationType.NEW_REQUEST, eventProperties.getOtherService().getUser(), event.get(), eventProperties);
         event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
         return event.get();
@@ -226,14 +291,28 @@ public class EventPropertiesService {
         eventProperties.setPricePerService(priceService);
         eventProperties.setDepositAmount(priceService.doubleValue() * 0.35);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
+        notificationService.createNotification(NotificationType.NEW_REQUEST, eventProperties.getVenue().getUser(), event.get(), eventProperties);
         event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
         return event.get();
     }
 
     @Transactional
-    public void deleteEventProperties(int id) throws DataAccessException {
+    public void deleteEventProperties(int id, Venue venue, OtherService otherService) throws DataAccessException {
+        EventProperties eventProperties = new EventProperties();
+        eventProperties = eventPropertiesRepository.findById(id).orElse(null);
+        Optional<Event> event = eventRepository.findByEventPropertiesId(id);
+        if (otherService == null) {
+            eventProperties.setVenue(venue);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties);
+            eventProperties.setVenue(null);
+        } else {
+            eventProperties.setOtherService(otherService);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties);
+            eventProperties.setOtherService(null);
+        }
         eventPropertiesRepository.deleteById(id);
+
     }
 
     @Transactional
