@@ -160,11 +160,9 @@ function Navbar({ user }) {
             <div className="navbar-actions">
               <Link to="/notifications" className="action-icon messages-icon">
                 <img src={carta} alt="Notificaciones" className="icon-img" />
-                <span className="notification-badge">2</span>
               </Link>
               <Link to="/chats" className="action-icon messages-icon">
                 <img src={mensaje} alt="Mensajes" className="icon-img" />
-                <span className="notification-badge">2</span>
               </Link>
 
                   <div className="user-menu">
