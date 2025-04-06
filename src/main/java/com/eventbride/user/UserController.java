@@ -88,14 +88,14 @@ public class UserController {
         if (!hasRole("ADMIN")) {
             throw new IllegalArgumentException("No tienes permiso para realizar esta acción");
         }
-    
+
         User existingUser = userService.getUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-    
+
         if (updatedUser.getProfilePicture() == null || updatedUser.getProfilePicture().trim().isEmpty()) {
             updatedUser.setProfilePicture("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.es%2Ficono-gratis%2Fimagen-de-usuario-con-fondo-negro_17004&psig=AOvVaw2uqkuLeXpbAgKF0TwS8o6j&ust=1743779005580000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJCG9pORvIwDFQAAAAAdAAAAABAT");
         }
-    
+
         updatedUser.setId(id);
         User savedUser = userService.updateUser(id, updatedUser);
         return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
@@ -133,21 +133,18 @@ public class UserController {
         }
     }
 
-    @PutMapping("/planExpired/{id}")
-    public ResponseEntity<?> updateUserPlan(@PathVariable Integer id) throws IllegalArgumentException {
-        try {
-            Optional<User> existingUser = userService.getUserById(id);
-            if (existingUser.isEmpty()) {
-                return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
-            }
-            User savedUser = userService.downgradeUserPlan(id);
-            return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	@GetMapping("/planExpired")
+	public ResponseEntity<?> checkUserPlan() throws IllegalArgumentException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> existingUser = userService.getUserByUsername(auth.getName());
+
+		if (existingUser.isEmpty()) {
+			throw new IllegalArgumentException("Usuario no encontrado");
+		}
+
+		User savedUser = userService.downgradeUserPlan(existingUser.get());
+		return new ResponseEntity<>(new UserDTO(savedUser), HttpStatus.OK);
+	}
 
     /**
      * Editar el perfil de un usuario por ID.

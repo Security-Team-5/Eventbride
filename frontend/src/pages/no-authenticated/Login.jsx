@@ -26,20 +26,14 @@ function Login({ setUser }) {
       const response = await apiClient.post("/api/users/auth/login", form);
       const token = response.data.token;
       const data = await getCurrentUser({ token });
-      let user = data.user;
-
-      if (data.user.role === "SUPPLIER") {
-        if (data.user.plan === "PREMIUM") {
-          const expireDate = new Date(data.user.expirePlanDate);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-
-          if (expireDate <= today) {
-            const updated = await apiClient.put(`/api/users/planExpired/${data.user.id}`);
-            user = updated.data;
-          }
+      const updated = await fetch(`/api/users/planExpired`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
-      }
+      });
+      const user = updated.data;
 
       setUser(user);
       window.localStorage.setItem("user", JSON.stringify(data.user));

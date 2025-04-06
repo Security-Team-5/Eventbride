@@ -4,6 +4,8 @@ import com.eventbride.dto.ServiceDTO;
 import com.eventbride.service.ServiceService;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
+import com.eventbride.venue.Venue;
+import com.eventbride.venue.VenueRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +14,7 @@ import com.eventbride.otherService.OtherService.OtherServiceType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.List;
@@ -24,6 +27,9 @@ public class OtherServiceService {
 
     @Autowired
     private OtherServiceRepository otherServiceRepo;
+
+	@Autowired
+	private VenueRepository venueRepository;
 
     @Autowired
     private UserService userService;
@@ -86,27 +92,36 @@ public class OtherServiceService {
     }
 
     @Transactional
-    public OtherService createOtherService(OtherService otherService) {
-        Optional<User> user = userService.getUserById(otherService.getUser().getId());
+    public OtherService createOtherService(OtherService otherService) throws IllegalArgumentException{
+		if(otherService.getAvailable()){
+			Optional<User> user = userService.getUserById(otherService.getUser().getId());
 
-        if (user.isPresent()) {
-            User existingUser = user.get();
-            ServiceDTO allServices = serviceService.getAllServiceByUserId(existingUser.getId());
+			if (user.isPresent()) {
+				User existingUser = user.get();
+				List<com.eventbride.service.Service> allServices = new ArrayList<>();
+				List<OtherService> otherServices = otherServiceRepo.findByUserId(user.get().getId());
+				List<Venue> venues = venueRepository.findByUserId(user.get().getId());
 
-            int slotsCount = (int) allServices.getOtherServices().stream().filter(s -> s.getAvailable()).count() + (int) allServices.getVenues().stream().filter(s -> s.getAvailable()).count();
+				allServices.addAll(otherServices);
+				allServices.addAll(venues);
 
-            String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
+				allServices = allServices.stream().filter(s -> s.getAvailable()).toList();
 
-            if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
-                throw new RuntimeException("Has alcanzado el límite de servicios en el plan BASIC.");
-            } else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
-                throw new RuntimeException("Has alcanzado el límite de servicios en el plan PREMIUM.");
-            }
+				int slotsCount = allServices.size();
 
-            otherService.setUser(existingUser);
-        } else {
-            throw new RuntimeException("User not found");
-        }
+				String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
+
+				if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
+					throw new IllegalArgumentException("Has alcanzado el límite de servicios en el plan BASIC.");
+				} else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
+					throw new IllegalArgumentException("Has alcanzado el límite de servicios en el plan PREMIUM.");
+				}
+
+				otherService.setUser(existingUser);
+			} else {
+				throw new IllegalArgumentException("User not found");
+			}
+		}
 
         return otherServiceRepo.save(otherService);
     }
@@ -147,7 +162,36 @@ public class OtherServiceService {
         otherServiceRepo.saveAll(otherServices);
     }
 
-    public void save(OtherService service) {
-        otherServiceRepo.save(service);
+    public OtherService save(OtherService otherService) {
+		if(otherService.getAvailable()){
+			Optional<User> user = userService.getUserById(otherService.getUser().getId());
+
+			if (user.isPresent()) {
+				User existingUser = user.get();
+				List<com.eventbride.service.Service> allServices = new ArrayList<>();
+				List<OtherService> otherServices = otherServiceRepo.findByUserId(user.get().getId());
+				List<Venue> venues = venueRepository.findByUserId(user.get().getId());
+
+				allServices.addAll(otherServices);
+				allServices.addAll(venues);
+
+				allServices = allServices.stream().filter(s -> s.getAvailable()).toList();
+
+				int slotsCount = allServices.size();
+
+				String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
+
+				if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
+					throw new IllegalArgumentException("Has alcanzado el límite de servicios en el plan BASIC.");
+				} else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
+					throw new IllegalArgumentException("Has alcanzado el límite de servicios en el plan PREMIUM.");
+				}
+
+				otherService.setUser(existingUser);
+			} else {
+				throw new IllegalArgumentException("User not found");
+			}
+		}
+		return otherServiceRepo.save(otherService);
     }
 }
