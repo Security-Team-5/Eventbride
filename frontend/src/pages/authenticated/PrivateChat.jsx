@@ -19,6 +19,8 @@ const PrivateChat = () => {
   const stompClient = useRef(null);
   const chatBoxRef = useRef(null);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
   useEffect(() => {
     fetch(`/api/chat/${id}`, {
       headers: {
@@ -45,7 +47,7 @@ const PrivateChat = () => {
       .then((data) => setOtherUser(data))
       .catch((err) => console.error("Error obteniendo usuario:", err));
 
-    const socket = () => new SockJS("http://localhost:8080/ws");
+    const socket = () => new SockJS(`${API_BASE_URL}/ws`);
     stompClient.current = new Client({
       webSocketFactory: socket,
       connectHeaders: {
