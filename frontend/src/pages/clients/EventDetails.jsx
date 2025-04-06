@@ -106,6 +106,32 @@ function EventDetails() {
       .catch((error) => console.error("Error solicitando el servicio:", error));
   };
 
+  const deleteEventProperty = (eventPropertiesId) => {
+    setIsLoading(true)
+
+    fetch(`/api/event-properties/client/${eventPropertiesId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error status: ${response.status}`)
+        }
+        console.log("Servicio eliminado correctamente")
+        getEvents()
+      })
+      .catch((error) => {
+        console.error("Error eliminando el servicio:", error)
+        alert("Error al eliminar el servicio. Por favor, inténtelo de nuevo.")
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
+
   // Cargar evento al montar el componente
   useEffect(() => {
     console.log("eventoId", id)
@@ -392,6 +418,12 @@ function EventDetails() {
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
                         <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
                       </div>
+                      {(prop.status === "PENDING" || prop.status === "APPROVED" || prop.status === "CANCELLED") && (
+                        <button className="delete-property-button" onClick={() => deleteEventProperty(prop.id)}>
+                          <i className="delete-property-icon">✕</i>
+                          Eliminar recinto
+                        </button>
+                      )}
                     </div>
                   </div>
                 ) : null,
@@ -469,6 +501,12 @@ function EventDetails() {
                             </Link>
                           </div>
                         </>
+                      )}
+                      {(prop.status === "PENDING" || prop.status === "APPROVED" || prop.status === "CANCELLED") && (
+                        <button className="delete-property-button" onClick={() => deleteEventProperty(prop.id)}>
+                          <i className="delete-property-icon">✕</i>
+                          Eliminar servicio
+                        </button>
                       )}
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>

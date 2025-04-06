@@ -192,6 +192,81 @@ public class EventPropertiesService {
     }
 
     @Transactional
+    public void clientCancelOtherService(Integer eventPropId) {
+        EventProperties eventProperty = eventPropertiesRepository.findById(eventPropId).get();
+        
+        Event event = eventPropertiesRepository.findEventByEventPropertiesId(eventPropId);
+
+        if (Status.APPROVED.equals(eventProperty.getStatus())) {
+            User client = event.getUser();
+            User provider = eventProperty.getOtherService().getUser();
+            
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty);
+            
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("eventbride6@gmail.com");
+            mailMessage.setTo(provider.getEmail());
+            mailMessage.setSubject("Servicio cancelado por cliente");
+            mailMessage.setText("El cliente " + client.getFirstName() + " " + client.getLastName() + 
+                    " ha cancelado el servicio \"" + eventProperty.getOtherService().getName() + 
+                    "\" para el evento del día " + eventProperty.getStartTime().toLocalDate() + 
+                    ".\n\nSaludos,\nEventBride");
+            mailSender.send(mailMessage);
+        }
+        System.out.println("Eliminando servicio con ID: " + eventProperty.getId());
+        
+        Optional<Event> eventOpt = eventRepository.findByEventPropertiesId(eventPropId);
+        if (eventOpt.isPresent()) {
+            Event event2 = eventOpt.get();
+            event2.getEventProperties().removeIf(ep -> ep.getId().equals(eventPropId));
+            eventRepository.save(event2);
+        }
+        
+        eventProperty.setOtherService(null);
+        eventProperty.setVenue(null);
+        eventPropertiesRepository.save(eventProperty);
+        
+        eventPropertiesRepository.delete(eventProperty);
+    }
+
+    @Transactional
+    public void clientCancelVenue(Integer eventPropertiesId) {
+        EventProperties eventProperty = eventPropertiesRepository.findById(eventPropertiesId).get();
+        
+        Event event = eventPropertiesRepository.findEventByEventPropertiesId(eventPropertiesId);
+
+        if (Status.APPROVED.equals(eventProperty.getStatus())) {
+            User client = event.getUser();
+            User provider = eventProperty.getVenue().getUser();
+            
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty);
+            
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("eventbride6@gmail.com");
+            mailMessage.setTo(provider.getEmail());
+            mailMessage.setSubject("Recinto cancelado por cliente");
+            mailMessage.setText("El cliente " + client.getFirstName() + " " + client.getLastName() + 
+                    " ha cancelado la reserva del recinto \"" + eventProperty.getVenue().getName() + 
+                    "\" para el evento del día " + eventProperty.getStartTime().toLocalDate() + 
+                    ".\n\nSaludos,\nEventBride");
+            mailSender.send(mailMessage);
+        }
+        
+        Optional<Event> eventOpt = eventRepository.findByEventPropertiesId(eventPropertiesId);
+        if (eventOpt.isPresent()) {
+            Event event2 = eventOpt.get();
+            event2.getEventProperties().removeIf(ep -> ep.getId().equals(eventPropertiesId));
+            eventRepository.save(event2);
+        }
+        
+        eventProperty.setOtherService(null);
+        eventProperty.setVenue(null);
+        eventPropertiesRepository.save(eventProperty);
+        
+        eventPropertiesRepository.delete(eventProperty);
+    }
+
+    @Transactional
     public void getEventsPropsToCancelOtherService(LocalDate fecha, Integer otherServiceId, Integer eventPropId) {
         List<EventProperties> listToCancelOtherServices = eventPropertiesRepository.findOtherServicesToCancel(fecha,
                 otherServiceId, eventPropId);
