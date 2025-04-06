@@ -75,7 +75,7 @@ public class SecurityConfig {
                                                                 "/api/users/getAdmin",
                                                                 "/api/payment/provider/**",
                                                                 "/api/event-properties/provider/**",
-                                                                "/api/users/planExpired/{id}")
+                                                                "/api/users/planExpired")
                                                 .hasAnyAuthority("SUPPLIER", "ADMIN") // Admin también puede acceder
 
                                                 // URIS DE CLIENT Y SUPPLIER
