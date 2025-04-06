@@ -67,62 +67,83 @@ function EditProfile() {
     }
 
     const updateUser = async () => {
-        // Validate required fields
-        if (
-            !userData.firstName ||
-            !userData.lastName ||
-            !userData.username ||
-            !userData.email ||
-            !userData.telephone ||
-            !userData.dni
-        ) {
-            alert("Por favor, completa todos los campos obligatorios.")
-            return
+        // Validación similar a Register.jsx
+        if (!userData.firstName || userData.firstName.length > 40) {
+          alert("El nombre no puede estar vacío ni tener más de 40 caracteres.");
+          return;
         }
-
+      
+        if (!userData.lastName || userData.lastName.length > 40) {
+          alert("El apellido no puede estar vacío ni tener más de 40 caracteres.");
+          return;
+        }
+      
+        if (!userData.username || userData.username.length > 50) {
+          alert("El nombre de usuario no puede estar vacío ni tener más de 50 caracteres.");
+          return;
+        }
+      
+        const dniPattern = /^[0-9]{8}[A-Za-z]$/;
+        if (!dniPattern.test(userData.dni)) {
+          alert("El DNI es incorrecto. Debe tener 8 números seguidos de una letra.");
+          return;
+        }
+      
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(userData.email)) {
+          alert("El correo electrónico no es válido.");
+          return;
+        }
+      
+        const telephonePattern = /^[0-9]{9}$/;
+        if (!telephonePattern.test(userData.telephone)) {
+          alert("El teléfono debe contener exactamente 9 dígitos.");
+          return;
+        }
+      
         try {
-            // Create a copy of userData to avoid modifying state directly
-            const userDataToUpdate = { ...userData, password: "no-password" }
-            console.log(userDataToUpdate)
-            // Update user profile
-            const response = await fetch(`/api/users/${userData.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwtToken}`,
-                },
-                body: JSON.stringify(userDataToUpdate),
-            })
-
-            if (!response.ok) {
-                throw new Error("Error al actualizar el perfil")
-            }
-
-            const updatedUser = await response.json()
-
-            // Update localStorage with new user data
-            localStorage.setItem("user", JSON.stringify(updatedUser))
-
-            // Update state with new user data
-            setUserData(updatedUser)
-            setEditing(false)
-
-            // Check if username was changed - if so, force logout immediately
-            if (originalUsername !== userData.username) {
-                alert("Has cambiado tu nombre de usuario. Por favor, inicia sesión nuevamente con tu nuevo nombre de usuario.")
-                // Ejecutar logout inmediatamente sin continuar con el resto del código
-                handleLogout()
-                return // Importante: detener la ejecución aquí
-            }
-
-            // Solo llegamos aquí si el username NO cambió
-            alert("Perfil actualizado con éxito")
-            window.location.href = "/profile"
+          const userDataToUpdate = {
+            ...userData,
+            password: "no-password",
+          };
+      
+          console.log(userDataToUpdate);
+      
+          const response = await fetch(`/api/users/${userData.id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwtToken}`,
+            },
+            body: JSON.stringify(userDataToUpdate),
+          });
+      
+          const data = await response.json();
+      
+          if (!response.ok) {
+            const errorMessage = data.message || data.error || "Error al actualizar el perfil.";
+            throw new Error(errorMessage);
+          }
+      
+          localStorage.setItem("user", JSON.stringify(data));
+          setUserData(data);
+          setEditing(false);
+      
+          if (originalUsername !== userData.username) {
+            alert("Has cambiado tu nombre de usuario. Por favor, inicia sesión nuevamente.");
+            handleLogout();
+            return;
+          }
+      
+          alert("Perfil actualizado con éxito");
+          window.location.href = "/profile";
         } catch (error) {
-            console.error("Error actualizando perfil:", error)
-            alert("Error al actualizar el perfil")
+          console.error("Error actualizando perfil:", error);
+          alert(error.message || "Error al actualizar el perfil.");
         }
-    }
+      };
+      
+      
 
     const formatDateTime = (dateString) => {
         if (!dateString) return "-"

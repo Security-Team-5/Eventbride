@@ -29,6 +29,7 @@ public class ReqRes {
     private String dni;
     private String profilePicture;
     private String role;
+    private Boolean receivesEmails;
 
     private UserDTO user;
     private List<User> usersList;    
