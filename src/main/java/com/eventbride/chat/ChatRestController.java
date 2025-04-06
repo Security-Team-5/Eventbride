@@ -42,13 +42,13 @@ public class ChatRestController {
 
 		List<ChatMessage> allMessages = chatRepository.findAllMessagesForUser(currentUser);
 
-		Map<Integer, ChatMessage> lastMessagesPerUser = new LinkedHashMap<>();
+		Map<Integer, MessageDTO> lastMessagesPerUser = new LinkedHashMap<>();
 
 		for (ChatMessage msg : allMessages) {
 			User other = msg.getSender().getId().equals(currentUser.getId()) ? msg.getReceiver() : msg.getSender();
 
 			if (!lastMessagesPerUser.containsKey(other.getId())) {
-				lastMessagesPerUser.put(other.getId(), msg);
+				lastMessagesPerUser.put(other.getId(), MessageDTO.fromEntities(List.of(msg)).get(0));
 			}
 		}
 
