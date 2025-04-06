@@ -59,7 +59,6 @@ public class ChatRestController {
 
 	@GetMapping("/{recieverId}")
 	public ResponseEntity<?> findAllMessagesByUsers(@PathVariable Integer recieverId) {
-
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Optional<User> sender = userService.getUserByUsername(auth.getName());
 		Optional<User> reciver = userService.getUserById(recieverId);
@@ -67,12 +66,20 @@ public class ChatRestController {
 			return ResponseEntity.notFound().build();
 		}
 
-		// List<ChatMessage> messages = chatRepository.findAll().stream().filter(m -> (m.getSender().equals(sender.get()) && m.getReceiver().equals(reciver.get())) || (m.getSender().equals(reciver.get()) && m.getSender().equals(reciver.get()))).collect(Collectors.toList());
-		//List<ChatMessage> messages = chatRepository.findMessagesBetweenUsers(recieverId, sender.get().getId());
-		// List<ChatMessage> preMessages = chatRepository.findAll();
-		// List<ChatMessage> messages = preMessages.stream()
-		// 	.filter(m -> (m.getSender().getId().equals(sender.get().getId()) && m.getReceiver().getId().equals(reciver.get().getId())) || (m.getSender().getId().equals(reciver.get().getId()) && m.getSender().getId().equals(reciver.get().getId()))).collect(Collectors.toList());
+		if(sender.get().getRole().equals("CLIENT") && reciver.get().getRole().equals("CLIENT")) {
+			return ResponseEntity.notFound().build();
+		}
+
+		if(sender.get().getRole().equals("SUPPLIER") && reciver.get().getRole().equals("SUPPLIER")) {
+			return ResponseEntity.notFound().build();
+		}
+
 		List<ChatMessage> messages = chatRepository.findMessagesBetweenUsers2(sender.get(), reciver.get());
+
+		if(sender.get().getRole().equals("SUPPLIER") && reciver.get().getRole().equals("CLIENT") && messages.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+
 		return ResponseEntity.ok(messages);
 	}
 
