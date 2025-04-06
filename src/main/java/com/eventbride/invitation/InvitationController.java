@@ -32,13 +32,27 @@ public class InvitationController {
 
 	@PostMapping("/create/{id}")
 	public ResponseEntity<?> createInvitation(@PathVariable int id, @RequestBody int maxGuests) throws IllegalArgumentException{
-		Invitation res = invitationService.createVoidInvitation(id, maxGuests);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> user = userService.getUserByUsername(auth.getName());
+	
+		if (!user.isPresent()) {
+			throw new IllegalArgumentException("El usuario no existe");
+		}
+	
+		Invitation res = invitationService.createVoidInvitation(id, maxGuests, user.get());
 		return new ResponseEntity<>(res, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getInvitation(@PathVariable int id) throws IllegalArgumentException {
-		Invitation invitation = invitationService.getInvitationById(id);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> user = userService.getUserByUsername(auth.getName());
+	
+		if (!user.isPresent()) {
+			throw new IllegalArgumentException("El usuario no existe");
+		}
+	
+		Invitation invitation = invitationService.getInvitationById(id, user.get());
 		return new ResponseEntity<>(invitation, HttpStatus.OK);
 	}
 
