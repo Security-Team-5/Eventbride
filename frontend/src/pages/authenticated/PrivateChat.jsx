@@ -34,7 +34,7 @@ const PrivateChat = () => {
         navigate("/chats")
       })
 
-    fetch(`/api/users/${id}`, {
+    fetch(`/api/users/chat/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
