@@ -81,6 +81,9 @@ public class UsersIntegrationTest {
         adminUser.setTelephone(123456789);
         adminUser.setRole("ADMIN");
         adminUser.setReceivesEmails(true);
+        adminUser.setPlan(null);
+        adminUser.setPaymentPlanDate(null);
+        adminUser.setExpirePlanDate(null);
         adminUser = userRepository.saveAndFlush(adminUser);
 
         // normal user
@@ -94,6 +97,9 @@ public class UsersIntegrationTest {
         normalUser.setTelephone(987654321);
         normalUser.setRole("USER");
         normalUser.setReceivesEmails(true);
+        normalUser.setPlan(User.Plan.BASIC);
+        normalUser.setPaymentPlanDate(null);
+        normalUser.setExpirePlanDate(null);
         normalUser = userRepository.saveAndFlush(normalUser);
 
         // supplier user
@@ -107,11 +113,9 @@ public class UsersIntegrationTest {
         supplierUser.setTelephone(111111111);
         supplierUser.setRole("SUPPLIER");
         supplierUser.setReceivesEmails(true);
-
         supplierUser.setPlan(User.Plan.PREMIUM);
         supplierUser.setExpirePlanDate(LocalDate.now().minusDays(1)); 
         supplierUser.setPaymentPlanDate(LocalDate.now().minusMonths(1)); 
-
         supplierUser = userRepository.saveAndFlush(supplierUser);
 
         // client user
@@ -125,8 +129,12 @@ public class UsersIntegrationTest {
         clientUser.setTelephone(222222222);
         clientUser.setRole("CLIENT");
         clientUser.setReceivesEmails(true);
+        clientUser.setPlan(null);
+        clientUser.setPaymentPlanDate(null);
+        clientUser.setExpirePlanDate(null);
         clientUser = userRepository.saveAndFlush(clientUser);
     }
+
 
     // 1. GET /api/users (getAllUsers)
     @Test
