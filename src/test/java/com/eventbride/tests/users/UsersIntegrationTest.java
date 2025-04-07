@@ -107,6 +107,11 @@ public class UsersIntegrationTest {
         supplierUser.setTelephone(111111111);
         supplierUser.setRole("SUPPLIER");
         supplierUser.setReceivesEmails(true);
+
+        supplierUser.setPlan(User.Plan.PREMIUM);
+        supplierUser.setExpirePlanDate(LocalDate.now().minusDays(1)); 
+        supplierUser.setPaymentPlanDate(LocalDate.now().minusMonths(1)); 
+
         supplierUser = userRepository.saveAndFlush(supplierUser);
 
         // client user
@@ -249,13 +254,13 @@ public class UsersIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
-    // 7. PUT /api/users/planExpired/{id}
-/*     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    // 7. GET /api/users/planExpired/{id}
+    @Test
+    @WithMockUser(username = "proveedor1", authorities = {"SUPPLIER"})
     void shouldDowngradePlan() throws Exception {
-        mockMvc.perform(put("/api/users/planExpired/" + adminUser.getId()))
+        mockMvc.perform(get("/api/users/planExpired"))
                 .andExpect(status().isOk());
-    } */
+    } 
 
     // 8. PUT /api/users/{id} (updateOwnProfile)
     @Test
