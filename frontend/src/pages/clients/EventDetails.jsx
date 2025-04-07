@@ -23,7 +23,8 @@ function EventDetails() {
 
   // Función para obtener los datos del evento
   function getEvents() {
-    setIsLoading(true)
+    setIsLoading(true);
+  
     fetch(`/api/v1/events/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -33,9 +34,10 @@ function EventDetails() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("evento obtenido:", data)
-        setEvento(data)
-        setIsLoading(false)
+        console.log("evento obtenido:", data);
+        setEvento(data);
+        setIsLoading(false);
+  
         fetch(`/api/payment/${data.id}`, {
           headers: {
             "Content-Type": "application/json",
@@ -45,18 +47,20 @@ function EventDetails() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("payment obtenido:", data)
-            setPayments(data)
+            console.log("payment obtenido:", data);
+            setPayments(data);
           })
           .catch((error) => {
-            console.error("Error obteniendo evento:", error)
-          })
+            console.error("Error obteniendo pagos:", error);
+            setPayments([]);
+          });
       })
       .catch((error) => {
-        console.error("Error obteniendo evento:", error)
-        setIsLoading(false)
-      })
+        console.error("Error obteniendo evento:", error);
+        setIsLoading(false);
+      });
   }
+  
 
   // Función para eliminar el evento
   function deleteEvent() {
@@ -398,9 +402,16 @@ function EventDetails() {
                       ) : (
                         <>
                           <button
-                            className={`payment-button ${(prop.status === "PENDING" || prop.status === "COMPLETED") ? "disabled" : ""}`}
-                            disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                            onClick={() => navigate(`/payment/${prop.id}`)}
+                            className={`payment-button ${(["PENDING", "COMPLETED"].includes(prop.status)) ? "disabled" : ""}`}
+                            disabled={["PENDING", "COMPLETED"].includes(prop.status)}
+                            onClick={() => {
+                              if (prop.status === "CANCELLED") {
+                                solicitarServicio(prop.id);
+                                return;
+                              } else {
+                                navigate(`/payment/${prop.id}`);
+                              }
+                            }}
                             style={{
                               backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
                             }}
@@ -485,6 +496,7 @@ function EventDetails() {
                             onClick={() => {
                               if (prop.status === "CANCELLED") {
                                 solicitarServicio(prop.id);
+                                return;
                               } else {
                                 navigate(`/payment/${prop.id}`);
                               }
