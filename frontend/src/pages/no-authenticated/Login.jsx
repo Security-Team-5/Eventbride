@@ -49,16 +49,6 @@ function Login({ setUser }) {
     }
   };
 
-  /*
-    fetch(`/api/users/${userData.id}`, {
-      headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-      },
-      method: "PUT",
-      body: JSON.stringify(userData),
-  })
-  */
   return (
     <div className="split-layout">
       <div className="login-side">

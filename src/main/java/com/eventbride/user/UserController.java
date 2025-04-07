@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.core.Authentication;
 
+import com.eventbride.dto.UserChatDTO;
 import com.eventbride.dto.UserDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,9 +81,27 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) throws IllegalArgumentException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
         User user = userService.getUserById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        if (!hasRole("ADMIN")) {
+            if(!username.equals(user.getUsername())){
+                throw new IllegalArgumentException("No tienes permiso para realizar esta acción");
+            }
+
+            throw new IllegalArgumentException("No tienes permiso para realizar esta acción");
+        }
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/chat/{id}")
+    public ResponseEntity<UserChatDTO> getUserByIdChat(@PathVariable Integer id) throws IllegalArgumentException {
+        User user = userService.getUserById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        
+        return ResponseEntity.ok(UserChatDTO.fromEntity(user));
     }
 
     @PutMapping("/admin/{id}")

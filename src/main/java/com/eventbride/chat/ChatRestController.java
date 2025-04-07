@@ -1,5 +1,6 @@
 package com.eventbride.chat;
 
+import com.eventbride.dto.MessageDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventService;
 import com.eventbride.event_properties.EventPropertiesService;
@@ -41,13 +42,13 @@ public class ChatRestController {
 
 		List<ChatMessage> allMessages = chatRepository.findAllMessagesForUser(currentUser);
 
-		Map<Integer, ChatMessage> lastMessagesPerUser = new LinkedHashMap<>();
+		Map<Integer, MessageDTO> lastMessagesPerUser = new LinkedHashMap<>();
 
 		for (ChatMessage msg : allMessages) {
 			User other = msg.getSender().getId().equals(currentUser.getId()) ? msg.getReceiver() : msg.getSender();
 
 			if (!lastMessagesPerUser.containsKey(other.getId())) {
-				lastMessagesPerUser.put(other.getId(), msg);
+				lastMessagesPerUser.put(other.getId(), MessageDTO.fromEntities(List.of(msg)).get(0));
 			}
 		}
 
@@ -80,9 +81,7 @@ public class ChatRestController {
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok(messages);
+		return ResponseEntity.ok(MessageDTO.fromEntities(messages));
 	}
-
-
 
 }
