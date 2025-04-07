@@ -49,6 +49,8 @@ public class SecurityConfig {
                                                                 "/api/venues/{id}",
                                                                 "/api/venues",
                                                                 "/api/other-services",
+                                                                "/api/invitation",
+                                                                "/api/invitation/{id}",
                                                                 "/api/invitation/**",
                                                                 "/api/other-services/{id}")
                                                 .permitAll()

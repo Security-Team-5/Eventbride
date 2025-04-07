@@ -77,10 +77,6 @@ public class ChatRestController {
 
 		List<ChatMessage> messages = chatRepository.findMessagesBetweenUsers2(sender.get(), reciver.get());
 
-		if(sender.get().getRole().equals("SUPPLIER") && reciver.get().getRole().equals("CLIENT") && messages.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-
 		return ResponseEntity.ok(MessageDTO.fromEntities(messages));
 	}
 

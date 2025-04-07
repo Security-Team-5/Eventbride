@@ -6,6 +6,7 @@ import "../../static/resources/css/EventDetails.css"
 import PaypalButtonTotal from "../../components/PaypalButtomTotal";
 import "../../static/resources/css/OtherService.css"
 import { Link } from "react-router-dom"
+import { AlertCircle } from "lucide-react"; 
 
 
 function EventDetails() {
@@ -26,7 +27,7 @@ function EventDetails() {
   // Función para obtener los datos del evento
   function getEvents() {
     setIsLoading(true);
-  
+
     fetch(`/api/v1/events/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +40,7 @@ function EventDetails() {
         console.log("evento obtenido:", data);
         setEvento(data);
         setIsLoading(false);
-  
+
         fetch(`/api/payment/${data.id}`, {
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +63,7 @@ function EventDetails() {
         setIsLoading(false);
       });
   }
-  
+
 
   // Función para eliminar el evento
   function deleteEvent() {
@@ -311,10 +312,10 @@ function EventDetails() {
 
   const reservarOPagarServicios = () => {
     if (!evento || !Array.isArray(evento.eventPropertiesDTO)) return null;
-    const estados = evento.eventPropertiesDTO.map(prop => 
+    const estados = evento.eventPropertiesDTO.map(prop =>
       prop.status?.trim().toUpperCase()
-  );
-    const todosSonFinales = estados.every(status => 
+    );
+    const todosSonFinales = estados.every(status =>
       status === 'PENDING' || status === 'COMPLETED' || status === 'CANCELLED'
     );
     if (todosSonFinales) return null;
@@ -343,6 +344,20 @@ function EventDetails() {
     return totales;
   };
 
+    // Determinar los meses límite de pago según el tipo de evento
+    const getMesesLimitePago = () => {
+      switch (evento?.eventType) {
+        case "WEDDING":
+          return 5;
+        case "COMMUNION":
+          return 3;
+        case "CHRISTENING":
+          return 1;
+        default:
+          return 0; // Si no coincide con ningún tipo, devolvemos 0
+      }
+    };
+
   return (
     <>
       <div className="event-contain">
@@ -350,16 +365,24 @@ function EventDetails() {
           <div className="event-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div className="event-title-container">
               <span className="event-type-badge">{tipoDeEvento(evento?.eventType)}</span>
-              <h2 style={{height:"60%"}} className="event-title">Detalles del Evento</h2>
+              <h2 style={{ height: "60%" }} className="event-title">Detalles del Evento</h2>
             </div>
 
             {sumaPagado() <= 0 && (
-              <button className="delete-button" style={{maxWidth: "10%",marginLeft: "auto"}} onClick={openModal}>
+              <button className="delete-button" style={{ maxWidth: "10%", marginLeft: "auto" }} onClick={openModal}>
                 <i className="delete-icon">✕</i>
                 <span>Eliminar</span>
               </button>
             )}
           </div>
+
+          
+          <div className="warning-message" style={{ marginTop: "1rem" }}>
+            <AlertCircle size={20} className="mr-2" />
+            La fecha límite de pago es antes de&nbsp;<b>{getMesesLimitePago()}</b> &nbsp;mes(es) del evento.
+            <br />
+          </div>
+
           <div className="event-info-card">
             <div className="event-info">
               <div className="info-item">
@@ -374,8 +397,8 @@ function EventDetails() {
                 <span className="info-label">Coste acumulado:</span>
                 <p className="event-budget">
                   <u
-                  style={{ cursor: "pointer", color: "blue" }}
-                  onClick={openCostBreakdownModal}
+                    style={{ cursor: "pointer", color: "blue" }}
+                    onClick={openCostBreakdownModal}
                   >
                     {sumaCosteTotalDeposit().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                   </u>
@@ -384,10 +407,10 @@ function EventDetails() {
               <div className="info-item">
                 <span className="info-label">Pagado:</span>
                 <p className="event-budget">
-                  <u 
-                  style={{ cursor: "pointer", color: "green" }}
-                   onClick={openPaymentBreakdownModal}
-                   >
+                  <u
+                    style={{ cursor: "pointer", color: "green" }}
+                    onClick={openPaymentBreakdownModal}
+                  >
                     {sumaPagado().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                   </u>
                 </p>
@@ -410,12 +433,14 @@ function EventDetails() {
                         className="service-image"
                         src={prop.venueDTO.picture || "/placeholder.svg"}
                         alt={prop.venueDTO.name}
-                        style={{ objectFit: "cover",
+                        style={{
+                          objectFit: "cover",
                           maxHeight: "100%",
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          overflow: "hidden", }}
+                          overflow: "hidden",
+                        }}
                       />
                     </div>
                     <div className="venue-details">
@@ -637,11 +662,11 @@ function EventDetails() {
                 <span>
                   {reservarOPagarServicios()
                     ? Object.values(obtenerDepositosActivos())
-                        .reduce((acc, val) => acc + val * commissionRate, 0)
-                        .toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                      .reduce((acc, val) => acc + val * commissionRate, 0)
+                      .toLocaleString("es-ES", { style: "currency", currency: "EUR" })
                     : Object.values(obetenerTotales())
-                        .reduce((acc, val) => acc + val * commissionRate, 0)
-                        .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                      .reduce((acc, val) => acc + val * commissionRate, 0)
+                      .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                 </span>
               </div>
             </div>
@@ -652,60 +677,60 @@ function EventDetails() {
             <div className="text-center font-semibold text-lg">
               {reservarOPagarServicios() ? (
                 (() => {
-                    // Si la reserva ha expirado, mostramos el botón rojo en lugar del PaypalButtonTotal
-                    if (isReservaExpired()) {
-                      return (
-                        <div
-                          style={{
-                            backgroundColor: "red",
-                            width: "100px",
-                            height: "100px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            color: "white",
-                            marginTop: "1rem"
-                          }}
-                        >
-                          Fecha expirada
-                        </div>
-                      );
-                    }
-                    const depositos = obtenerDepositosActivos();
-                    const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
-                    const ids = depositos ? Object.keys(depositos).map(Number) : [];
+                  // Si la reserva ha expirado, mostramos el botón rojo en lugar del PaypalButtonTotal
+                  if (isReservaExpired()) {
                     return (
-                      <span>
-                        <h3 className="summary-title" style={{ marginTop: '1rem' }}>
-                          Pagar con
-                        </h3>
-                        <PaypalButtonTotal
+                      <div
+                        style={{
+                          backgroundColor: "red",
+                          width: "100px",
+                          height: "100px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "white",
+                          marginTop: "1rem"
+                        }}
+                      >
+                        Fecha expirada
+                      </div>
+                    );
+                  }
+                  const depositos = obtenerDepositosActivos();
+                  const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
+                  const ids = depositos ? Object.keys(depositos).map(Number) : [];
+                  return (
+                    <span>
+                      <h3 className="summary-title" style={{ marginTop: '1rem' }}>
+                        Pagar con
+                      </h3>
+                      <PaypalButtonTotal
                         amount={total}
                         paymentType={'DEPOSITO PARA RESERVA'}
                         eventPropsIds={ids}
-                        />
-                      </span>
-                    );
-                  })()
-                ) : (
-                  (() => {
-                    const totales = obetenerTotales();
-                    const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
-                    const ids = totales ? Object.keys(totales).map(Number) : [];
-                    return (
-                      <span>
-                        <h3 className="summary-title" style={{ marginTop: '1rem' }}>
-                          Pagar con
-                        </h3>
-                        <PaypalButtonTotal
+                      />
+                    </span>
+                  );
+                })()
+              ) : (
+                (() => {
+                  const totales = obetenerTotales();
+                  const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
+                  const ids = totales ? Object.keys(totales).map(Number) : [];
+                  return (
+                    <span>
+                      <h3 className="summary-title" style={{ marginTop: '1rem' }}>
+                        Pagar con
+                      </h3>
+                      <PaypalButtonTotal
                         amount={total}
                         paymentType={'CANTIDAD RESTANTE'}
                         eventPropsIds={ids}
-                        />
-                      </span>
-                    );
-                  })()
-                  )}
+                      />
+                    </span>
+                  );
+                })()
+              )}
             </div>
           )}
         </div>
@@ -748,7 +773,7 @@ function EventDetails() {
               La señal se descontará en el pago final.
             </p>
             <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <button style={{borderRadius:"10%", backgroundColor:"red", color:"white", width:"20%", height:"4%"}} className="close-button" onClick={closeCostBreakdownModal}>
+              <button style={{ borderRadius: "10%", backgroundColor: "red", color: "white", width: "20%", height: "4%" }} className="close-button" onClick={closeCostBreakdownModal}>
                 Cerrar
               </button>
             </div>
@@ -784,12 +809,12 @@ function EventDetails() {
                   .reduce((acc, p) => acc + ((p.amount || 0) / 1.05), 0);
 
                 const mostrarTotal = total > 0
-                ? total.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
-                : "Sin pagar";
+                  ? total.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                  : "Sin pagar";
 
                 const mostrarDeposit = deposit > 0
-                ? deposit.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
-                : "Sin pagar";
+                  ? deposit.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                  : "Sin pagar";
 
                 return (
                   <div key={i} className="price-breakdown-item" style={{ marginBottom: "1rem" }}>
@@ -806,7 +831,7 @@ function EventDetails() {
             </p>
 
             <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <button style={{borderRadius:"10%", backgroundColor:"red", color:"white", width:"20%", height:"4%"}} className="close-button" onClick={closePaymentBreakdownModal}>
+              <button style={{ borderRadius: "10%", backgroundColor: "red", color: "white", width: "20%", height: "4%" }} className="close-button" onClick={closePaymentBreakdownModal}>
                 Cerrar
               </button>
             </div>

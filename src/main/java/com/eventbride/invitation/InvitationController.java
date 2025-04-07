@@ -1,6 +1,7 @@
 package com.eventbride.invitation;
 
 import com.eventbride.config.jwt.services.UserManagementService;
+import com.eventbride.dto.InvitationDTO;
 import com.eventbride.event.Event;
 import com.eventbride.model.MessageResponse;
 import com.eventbride.otherService.OtherService;
@@ -40,20 +41,16 @@ public class InvitationController {
 		}
 	
 		Invitation res = invitationService.createVoidInvitation(id, maxGuests, user.get());
-		return new ResponseEntity<>(res, HttpStatus.CREATED);
+		InvitationDTO invitationDTO = new InvitationDTO(res);
+		return new ResponseEntity<>(invitationDTO, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getInvitation(@PathVariable int id) throws IllegalArgumentException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> user = userService.getUserByUsername(auth.getName());
-	
-		if (!user.isPresent()) {
-			throw new IllegalArgumentException("El usuario no existe");
-		}
-	
-		Invitation invitation = invitationService.getInvitationById(id, user.get());
-		return new ResponseEntity<>(invitation, HttpStatus.OK);
+
+		Invitation invitation = invitationService.getInvitationById(id);
+		InvitationDTO invitationDTO = new InvitationDTO(invitation);
+		return new ResponseEntity<>(invitationDTO, HttpStatus.OK);
 	}
 
 	@GetMapping("/eventInvitations/{eventId}")
@@ -65,7 +62,7 @@ public class InvitationController {
 			throw new IllegalArgumentException("El usuario no existe");
 		}
 
-		List<Invitation> invitations = invitationService.getInvitationByEventId(eventId, user.get());
+		List<InvitationDTO> invitations = invitationService.getInvitationByEventId(eventId, user.get());
 
 		return new ResponseEntity<>(invitations, HttpStatus.OK);
 	}
@@ -73,7 +70,8 @@ public class InvitationController {
 	@PutMapping
 	public ResponseEntity<?> fillInvitation(@RequestBody @Valid Invitation invitation) throws IllegalArgumentException {
 		Invitation res = invitationService.fillInvitation(invitation);
-		return new ResponseEntity<>(res, HttpStatus.CREATED);
+		InvitationDTO invitationDTO = new InvitationDTO(invitation);
+		return new ResponseEntity<>(invitationDTO, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")

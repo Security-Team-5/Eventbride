@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.dto.EventDTO;
 import com.eventbride.dto.EventMapper;
+import com.eventbride.dto.InvitationDTO;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.invitation.Invitation;
@@ -173,7 +174,7 @@ public class EventController {
                 eventPropertiesService.save(e);
             }
 
-            List<Invitation> i = invitationService.getInvitationByEventId(eventId, user.get());
+            List<Invitation> i = invitationService.getInvitationByEventIdNotDTO(eventId, user.get());
             if (i.size() > 0) {
                 invitationService.deleteInvitations(i);
             }

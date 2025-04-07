@@ -171,7 +171,7 @@ const Register = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="profilePicture">URL de foto de perfil</label>
+              <label htmlFor="profilePicture">URL de foto de perfil (Opcional)</label>
               <div className="input-wrapper">
                 <input
                   type="url"

@@ -42,16 +42,16 @@ INSERT IGNORE INTO other_services (id, other_service_type, extra_information, na
 (7, 'CATERING', 'Catering para eventos',  'ARCOS 3 CATERING' ,FALSE, 'Sevilla', 200.00, null, 'https://cdn0.bodas.net/vendor/16070/3_2/960/jpeg/whatsapp-image-2022-11-17-at-1-15-18-pm_1_16070-166868815185642.jpeg', 'Nos ponemos a tu servicio con nuestro equipo de profesionales preocupados por que todo salga perfecto en cualquier tipo de evento o celebración que realicen.', 13, TRUE, FALSE, null);
 
 INSERT IGNORE INTO events (id, event_type, guests, event_date, payment_date, confirmed_guests, paid, user_id, name) VALUES
-(1, 'WEDDING', 120, '2026-12-31', '2026-08-31', 115, TRUE, 1, "Boda de Daniel y Paula"),
-(2, 'CHRISTENING', 50, '2026-12-31', '2026-10-31', 40, TRUE, 2, "Bautizo de Juan Carlos"),
-(3, 'WEDDING', 200, '2026-12-31', '2026-08-31', 190, TRUE, 3, "Boda de Manolo y Lucía"),
-(4, 'COMMUNION', 100, '2026-12-31', '2026-11-30', 90, TRUE, 4, "Comunión de Jesús"),
-(6, 'WEDDING', 100, '2026-06-30', '2026-02-28', 90, TRUE, 1, "Boda de Antonio y María del Mar"),
-(5, 'WEDDING', 100, '2026-12-31', '2026-08-31', 90, TRUE, 5, "Boda de Juan y Nerea"),
-(7, 'CHRISTENING', 50, '2026-07-30', '2026-05-30', 40, TRUE, 2, "Bautizo de Pedro"),
-(8, 'COMMUNION', 30, '2026-08-30', '2026-07-30', 25, TRUE, 3, "Comunión de Pilar"),
-(9, 'WEDDING', 200, '2026-09-30', '2026-05-30', 190, TRUE, 4, "Boda de Pau y Sofía"),
-(10, 'CHRISTENING', 100, '2026-10-30', '2026-08-30', 90, TRUE, 5, "Bautizo de María");
+(1, 'WEDDING', 120, '2026-12-31', '2026-07-31', 115, TRUE, 1, "Boda de Daniel y Paula"),
+(2, 'CHRISTENING', 50, '2026-12-31', '2026-11-31', 40, TRUE, 2, "Bautizo de Juan Carlos"),
+(3, 'WEDDING', 200, '2026-12-31', '2026-07-31', 190, TRUE, 3, "Boda de Manolo y Lucía"),
+(4, 'COMMUNION', 100, '2026-12-31', '2026-09-30', 90, TRUE, 4, "Comunión de Jesús"),
+(6, 'WEDDING', 100, '2026-06-30', '2026-01-28', 90, TRUE, 1, "Boda de Antonio y María del Mar"),
+(5, 'WEDDING', 100, '2026-12-31', '2026-07-31', 90, TRUE, 5, "Boda de Juan y Nerea"),
+(7, 'CHRISTENING', 50, '2026-07-30', '2026-06-30', 40, TRUE, 2, "Bautizo de Pedro"),
+(8, 'COMMUNION', 30, '2026-08-30', '2026-05-30', 25, TRUE, 3, "Comunión de Pilar"),
+(9, 'WEDDING', 200, '2026-09-30', '2026-04-30', 190, TRUE, 4, "Boda de Pau y Sofía"),
+(10, 'CHRISTENING', 100, '2026-10-30', '2026-09-30', 90, TRUE, 5, "Bautizo de María");
 
 
 INSERT IGNORE INTO invitations (id, first_name, last_name, number_of_guests, max_guests, telephone, email, invitation_type, event_id) VALUES

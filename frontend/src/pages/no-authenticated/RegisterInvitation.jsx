@@ -12,7 +12,7 @@ const Register = () => {
     id: invitationId,
     firstName: "",
     lastName: "",
-    numberOfGuests: 1,
+    numberOfGuests: "",
     email: "",
     telephone: "",
   });
@@ -25,8 +25,7 @@ const Register = () => {
   useEffect(() => {
     fetch(`/api/invitation/${invitationId}`, {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken}`,
+        "Content-Type": "application/json"
       },
       method: "GET",
     })
@@ -107,7 +106,7 @@ const Register = () => {
             max={invitation?.maxGuests}
             step="1"
             name="numberOfGuests"
-            placeholder="Nº Acompañantes"
+            placeholder={`Nº Acompañantes (Máximo ${invitation?.maxGuests})`}
             value={form.numberOfGuests}
             onChange={handleChange}
             required

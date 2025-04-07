@@ -1,6 +1,7 @@
 package com.eventbride.invitation;
 
 import com.eventbride.dto.EventDTO;
+import com.eventbride.dto.InvitationDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.user.User;
@@ -58,7 +59,7 @@ public class InvitationService {
 		return invitationRepository.save(invitation);
 	}
 
-	public Invitation getInvitationById(Integer invitationId, User user) throws IllegalArgumentException {
+	public Invitation getInvitationById(Integer invitationId) throws IllegalArgumentException {
 		Optional<Invitation> invitationOpt = invitationRepository.findById(invitationId);
 	
 		if (!invitationOpt.isPresent()) {
@@ -67,11 +68,7 @@ public class InvitationService {
 	
 		Invitation invitation = invitationOpt.get();
 		Event event = invitation.getEvent();
-	
-		if (!event.getUser().getId().equals(user.getId())) {
-			throw new IllegalArgumentException("La invitación no te pertenece");
-		}
-	
+
 		return invitation;
 	}
 
@@ -121,7 +118,7 @@ public class InvitationService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Invitation> getInvitationByEventId(Integer eventId, User user) throws IllegalArgumentException {
+	public List<InvitationDTO> getInvitationByEventId(Integer eventId, User user) throws IllegalArgumentException {
 
 		Event event = eventRepository.findById(eventId).orElse(null);
 
@@ -132,8 +129,24 @@ public class InvitationService {
 		if(!event.getUser().getId().equals(user.getId())) {
 			throw new IllegalArgumentException("El evento no te pertenece");
 		}
+		List<Invitation> invitations = invitationRepository.findByEventId(eventId);
+		return InvitationDTO.fromEntities(invitations);
+	}
 
-		return invitationRepository.findByEventId(eventId);
+	@Transactional(readOnly = true)
+	public List<Invitation> getInvitationByEventIdNotDTO(Integer eventId, User user) throws IllegalArgumentException {
+
+		Event event = eventRepository.findById(eventId).orElse(null);
+
+		if(event == null) {
+			throw new IllegalArgumentException("El evento no existe");
+		}
+
+		if(!event.getUser().getId().equals(user.getId())) {
+			throw new IllegalArgumentException("El evento no te pertenece");
+		}
+		List<Invitation> invitations = invitationRepository.findByEventId(eventId);
+		return invitations;
 	}
 
 	public void deleteInvitations(List<Invitation> i) {

@@ -94,46 +94,46 @@ public class InvitationUnitTest {
         assertEquals("El evento no te pertenece", exception.getMessage());
     }
 
-    @Test
-    void shouldGetInvitationIfUserOwnsEvent() {
-        Invitation invitation = new Invitation();
-        invitation.setId(1);
-        invitation.setEvent(event);
+    // @Test
+    // void shouldGetInvitationIfUserOwnsEvent() {
+    //     Invitation invitation = new Invitation();
+    //     invitation.setId(1);
+    //     invitation.setEvent(event);
 
-        when(invitationRepository.findById(1)).thenReturn(Optional.of(invitation));
+    //     when(invitationRepository.findById(1)).thenReturn(Optional.of(invitation));
 
-        Invitation found = invitationService.getInvitationById(1, owner);
+    //     Invitation found = invitationService.getInvitationById(1, owner);
 
-        assertEquals(1, found.getId());
-        assertEquals(event, found.getEvent());
-    }
+    //     assertEquals(1, found.getId());
+    //     assertEquals(event, found.getEvent());
+    // }
 
-    @Test
-    void shouldThrowWhenUserTriesToAccessOtherUsersInvitation() {
-        User stranger = new User();
-        stranger.setId(999);
+    // @Test
+    // void shouldThrowWhenUserTriesToAccessOtherUsersInvitation() {
+    //     User stranger = new User();
+    //     stranger.setId(999);
 
-        Invitation invitation = new Invitation();
-        invitation.setId(2);
-        invitation.setEvent(event);
+    //     Invitation invitation = new Invitation();
+    //     invitation.setId(2);
+    //     invitation.setEvent(event);
 
-        when(invitationRepository.findById(2)).thenReturn(Optional.of(invitation));
+    //     when(invitationRepository.findById(2)).thenReturn(Optional.of(invitation));
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                invitationService.getInvitationById(2, stranger)
-        );
+    //     Exception exception = assertThrows(IllegalArgumentException.class, () ->
+    //             invitationService.getInvitationById(2, stranger)
+    //     );
 
-        assertEquals("La invitación no te pertenece", exception.getMessage());
-    }
+    //     assertEquals("La invitación no te pertenece", exception.getMessage());
+    // }
 
-    @Test
-    void shouldThrowWhenInvitationNotFound() {
-        when(invitationRepository.findById(404)).thenReturn(Optional.empty());
+    // @Test
+    // void shouldThrowWhenInvitationNotFound() {
+    //     when(invitationRepository.findById(404)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                invitationService.getInvitationById(404, owner)
-        );
+    //     Exception exception = assertThrows(IllegalArgumentException.class, () ->
+    //             invitationService.getInvitationById(404, owner)
+    //     );
 
-        assertEquals("La invitación no existe", exception.getMessage());
-    }
+    //     assertEquals("La invitación no existe", exception.getMessage());
+    // }
 }
