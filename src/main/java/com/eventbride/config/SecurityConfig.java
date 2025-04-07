@@ -97,8 +97,7 @@ public class SecurityConfig {
                                                                 "/api/invitation/eventInvitations/{eventId}",
                                                                 "/api/invitation/**",
                                                                 "/api/users/getAdmin",
-                                                                "/api/invitation/create/**",
-                                                                "/api/v1/events/create")
+                                                                "/api/invitation/create/**")
                                                 .hasAnyAuthority("CLIENT", "ADMIN")
                                                 .anyRequest().authenticated())
                                 .sessionManagement(manager -> manager
