@@ -158,11 +158,8 @@ function Navbar({ user }) {
           {renderNavItems()}
           {currentUser && currentUser.role && (
             <div className="navbar-actions">
-              <Link to="/notifications" className="action-icon messages-icon">
+              <Link to="/notifications" >
                 <img src={carta} alt="Notificaciones" className="icon-img" />
-              </Link>
-              <Link to="/chats" className="action-icon messages-icon">
-                <img src={mensaje} alt="Mensajes" className="icon-img" />
               </Link>
 
                   <div className="user-menu">
