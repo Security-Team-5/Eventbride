@@ -11,6 +11,8 @@ import { Link } from "react-router-dom"
 function EventDetails() {
   const [evento, setEvento] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeletePropertyModalOpen, setIsDeletePropertyModalOpen] = useState(false);
+  const [propertyToDelete, setPropertyToDelete] = useState(null);
   const [isCostBreakdownModalOpen, setIsCostBreakdownModalOpen] = useState(false);
   const [isPaymentBreakdownModalOpen, setIsPaymentBreakdownModalOpen] = useState(false);
   const { id } = useParams();
@@ -86,6 +88,18 @@ function EventDetails() {
   const openPaymentBreakdownModal = () => setIsPaymentBreakdownModalOpen(true);
   const closePaymentBreakdownModal = () => setIsPaymentBreakdownModalOpen(false);
 
+  // Abrir modal de confirmación para eliminar propiedad
+  const openDeletePropertyModal = (propertyId) => {
+    setPropertyToDelete(propertyId)
+    setIsDeletePropertyModalOpen(true)
+  }
+
+  // Cerrar modal de confirmación para eliminar propiedad
+  const closeDeletePropertyModal = () => {
+    setIsDeletePropertyModalOpen(false)
+    setPropertyToDelete(null)
+  }
+
   // Función para solicitar servicio
   const solicitarServicio = (eventPropertiesId) => {
     fetch(`/api/event-properties/status/pending/${eventPropertiesId}`, {
@@ -129,7 +143,15 @@ function EventDetails() {
       })
       .finally(() => {
         setIsLoading(false)
+        closeDeletePropertyModal()
       })
+  }
+
+  // Confirmar eliminación de propiedad
+  const confirmDeleteProperty = () => {
+    if (propertyToDelete) {
+      deleteEventProperty(propertyToDelete)
+    }
   }
 
   // Cargar evento al montar el componente
@@ -210,6 +232,30 @@ function EventDetails() {
     return diffInMonths < threshold;
   }
 
+  // Obtener el nombre del servicio o recinto a eliminar
+  const getPropertyName = () => {
+    if (!propertyToDelete || !evento || !evento.eventPropertiesDTO) return ""
+
+    const property = evento.eventPropertiesDTO.find((prop) => prop.id === propertyToDelete)
+    if (!property) return ""
+
+    if (property.venueDTO) {
+      return decodeText(property.venueDTO.name)
+    } else if (property.otherServiceDTO) {
+      return decodeText(property.otherServiceDTO.name)
+    }
+
+    return ""
+  }
+
+  // Determinar si el servicio a eliminar es un recinto o un servicio
+  const isVenue = () => {
+    if (!propertyToDelete || !evento || !evento.eventPropertiesDTO) return false
+
+    const property = evento.eventPropertiesDTO.find((prop) => prop.id === propertyToDelete)
+    return property && property.venueDTO
+  }
+
   // Renderizar carga o mensaje de evento no encontrado
   if (isLoading) {
     return (
@@ -261,10 +307,10 @@ function EventDetails() {
 
   const reservarOPagarServicios = () => {
     if (!evento || !Array.isArray(evento.eventPropertiesDTO)) return null;
-    const estados = evento.eventPropertiesDTO.map(prop =>
+    const estados = evento.eventPropertiesDTO.map(prop => 
       prop.status?.trim().toUpperCase()
-    );
-    const todosSonFinales = estados.every(status =>
+  );
+    const todosSonFinales = estados.every(status => 
       status === 'PENDING' || status === 'COMPLETED' || status === 'CANCELLED'
     );
     if (todosSonFinales) return null;
@@ -324,8 +370,8 @@ function EventDetails() {
                 <span className="info-label">Coste acumulado:</span>
                 <p className="event-budget">
                   <u
-                    style={{ cursor: "pointer", color: "blue" }}
-                    onClick={openCostBreakdownModal}
+                  style={{ cursor: "pointer", color: "blue" }}
+                  onClick={openCostBreakdownModal}
                   >
                     {sumaCosteTotalDeposit().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                   </u>
@@ -334,10 +380,10 @@ function EventDetails() {
               <div className="info-item">
                 <span className="info-label">Pagado:</span>
                 <p className="event-budget">
-                  <u
-                    style={{ cursor: "pointer", color: "green" }}
-                    onClick={openPaymentBreakdownModal}
-                  >
+                  <u 
+                  style={{ cursor: "pointer", color: "green" }}
+                   onClick={openPaymentBreakdownModal}
+                   >
                     {sumaPagado().toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                   </u>
                 </p>
@@ -360,8 +406,8 @@ function EventDetails() {
                         className="service-image"
                         src={prop.venueDTO.picture || "/placeholder.svg"}
                         alt={prop.venueDTO.name}
-                        style={{ objectFit: "cover", 
-                          maxHeight: "100%",  
+                        style={{ objectFit: "cover",
+                          maxHeight: "100%",
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
@@ -378,7 +424,7 @@ function EventDetails() {
                       <p className="venue-description">
                         <span className="detail-label">Horario:</span>
                         {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} -{" "}
-                         
+
                         {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
                       </p>
                     </div>
@@ -419,7 +465,7 @@ function EventDetails() {
                         <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
                       </div>
                       {(prop.status === "PENDING" || prop.status === "APPROVED" || prop.status === "CANCELLED") && (
-                        <button className="delete-property-button" onClick={() => deleteEventProperty(prop.id)}>
+                        <button className="delete-property-button" onClick={() => openDeletePropertyModal(prop.id)}>
                           <i className="delete-property-icon">✕</i>
                           Eliminar recinto
                         </button>
@@ -503,7 +549,7 @@ function EventDetails() {
                         </>
                       )}
                       {(prop.status === "PENDING" || prop.status === "APPROVED" || prop.status === "CANCELLED") && (
-                        <button className="delete-property-button" onClick={() => deleteEventProperty(prop.id)}>
+                        <button className="delete-property-button" onClick={() => openDeletePropertyModal(prop.id)}>
                           <i className="delete-property-icon">✕</i>
                           Eliminar servicio
                         </button>
@@ -579,11 +625,11 @@ function EventDetails() {
                 <span>
                   {reservarOPagarServicios()
                     ? Object.values(obtenerDepositosActivos())
-                      .reduce((acc, val) => acc + val * commissionRate, 0)
-                      .toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                        .reduce((acc, val) => acc + val * commissionRate, 0)
+                        .toLocaleString("es-ES", { style: "currency", currency: "EUR" })
                     : Object.values(obetenerTotales())
-                      .reduce((acc, val) => acc + val * commissionRate, 0)
-                      .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                        .reduce((acc, val) => acc + val * commissionRate, 0)
+                        .toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
                 </span>
               </div>
             </div>
@@ -594,60 +640,60 @@ function EventDetails() {
             <div className="text-center font-semibold text-lg">
               {reservarOPagarServicios() ? (
                 (() => {
-                  // Si la reserva ha expirado, mostramos el botón rojo en lugar del PaypalButtonTotal
-                  if (isReservaExpired()) {
+                    // Si la reserva ha expirado, mostramos el botón rojo en lugar del PaypalButtonTotal
+                    if (isReservaExpired()) {
+                      return (
+                        <div
+                          style={{
+                            backgroundColor: "red",
+                            width: "100px",
+                            height: "100px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "white",
+                            marginTop: "1rem"
+                          }}
+                        >
+                          Fecha expirada
+                        </div>
+                      );
+                    }
+                    const depositos = obtenerDepositosActivos();
+                    const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
+                    const ids = depositos ? Object.keys(depositos).map(Number) : [];
                     return (
-                      <div
-                        style={{
-                          backgroundColor: "red",
-                          width: "100px",
-                          height: "100px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          color: "white",
-                          marginTop: "1rem"
-                        }}
-                      >
-                        Fecha expirada
-                      </div>
-                    );
-                  }
-                  const depositos = obtenerDepositosActivos();
-                  const total = depositos ? Object.values(depositos).reduce((acc, val) => acc + val, 0) : 0;
-                  const ids = depositos ? Object.keys(depositos).map(Number) : [];
-                  return (
-                    <span>
-                      <h3 className="summary-title" style={{ marginTop: '1rem' }}>
-                        Pagar con
-                      </h3>
-                      <PaypalButtonTotal
+                      <span>
+                        <h3 className="summary-title" style={{ marginTop: '1rem' }}>
+                          Pagar con
+                        </h3>
+                        <PaypalButtonTotal
                         amount={total}
                         paymentType={'DEPOSITO PARA RESERVA'}
                         eventPropsIds={ids}
-                      />
-                    </span>
-                  );
-                })()
-              ) : (
-                (() => {
-                  const totales = obetenerTotales();
-                  const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
-                  const ids = totales ? Object.keys(totales).map(Number) : [];
-                  return (
-                    <span>
-                      <h3 className="summary-title" style={{ marginTop: '1rem' }}>
-                        Pagar con
-                      </h3>
-                      <PaypalButtonTotal
+                        />
+                      </span>
+                    );
+                  })()
+                ) : (
+                  (() => {
+                    const totales = obetenerTotales();
+                    const total = totales ? Object.values(totales).reduce((acc, val) => acc + val, 0) : 0;
+                    const ids = totales ? Object.keys(totales).map(Number) : [];
+                    return (
+                      <span>
+                        <h3 className="summary-title" style={{ marginTop: '1rem' }}>
+                          Pagar con
+                        </h3>
+                        <PaypalButtonTotal
                         amount={total}
                         paymentType={'CANTIDAD RESTANTE'}
                         eventPropsIds={ids}
-                      />
-                    </span>
-                  );
-                })()
-              )}
+                        />
+                      </span>
+                    );
+                  })()
+                  )}
             </div>
           )}
         </div>
@@ -726,12 +772,12 @@ function EventDetails() {
                   .reduce((acc, p) => acc + ((p.amount || 0) / 1.05), 0);
 
                 const mostrarTotal = total > 0
-                  ? total.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
-                  : "Sin pagar";
+                ? total.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                : "Sin pagar";
 
                 const mostrarDeposit = deposit > 0
-                  ? deposit.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
-                  : "Sin pagar";
+                ? deposit.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+                : "Sin pagar";
 
                 return (
                   <div key={i} className="price-breakdown-item" style={{ marginBottom: "1rem" }}>
@@ -771,6 +817,31 @@ function EventDetails() {
                 Cancelar
               </button>
               <button className="confirm-button" onClick={deleteEvent}>
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación de eliminación de propiedad */}
+      {isDeletePropertyModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>¿Estás seguro de que quieres eliminar este {isVenue() ? "recinto" : "servicio"}?</h3>
+            </div>
+            <div className="modal-body">
+              <p>
+                Esta acción no se puede deshacer. El {isVenue() ? "recinto" : "servicio"} {getPropertyName()} será
+                eliminado permanentemente.
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button className="cancel-button" onClick={closeDeletePropertyModal}>
+                Cancelar
+              </button>
+              <button className="confirm-button" onClick={confirmDeleteProperty}>
                 Eliminar
               </button>
             </div>
