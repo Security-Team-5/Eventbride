@@ -86,6 +86,18 @@ const HistorialVentas = ({ userId }) => {
         getPaymentsForProvider();
     }, [userId]);
 
+    const statusMap = {
+        COMMISSION: 'comisión',
+        DEPOSIT: 'reserva',
+        PLAN: 'plan',
+        REMAINING: 'restante'
+      };
+      
+      function parseStatus(status) {
+        return statusMap[status] || 'desconocido';
+      }
+      
+
     if (isLoading) {
         return (
             <div className="loading-container">
@@ -133,7 +145,7 @@ const HistorialVentas = ({ userId }) => {
                                 <td>{(venta.amount / 1.05).toFixed(2)}€</td>
                                 <td>{((venta.amount / 1.05) * 0.975).toFixed(2)}€</td>
                                 <td>{new Date(venta.dateTime).toLocaleDateString()}</td>
-                                <td>{venta.paymentType}</td>
+                                <td>{parseStatus(venta.paymentType)}</td>
                             </tr>
                         ))}
                     </tbody>
