@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import "../../static/resources/css/PrivateChat.css"
 import FloatingBackButton from "../../components/FloatingBackButton.jsx";
 
@@ -9,6 +9,7 @@ const PrivateChat = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const jwt = localStorage.getItem("jwt");
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -17,6 +18,8 @@ const PrivateChat = () => {
 
   const stompClient = useRef(null);
   const chatBoxRef = useRef(null);
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 
   useEffect(() => {
     fetch(`/api/chat/${id}`, {
@@ -28,9 +31,12 @@ const PrivateChat = () => {
     })
       .then((res) => res.json())
       .then((data) => setMessages(data))
-      .catch((err) => console.error("Error cargando mensajes:", err));
+      .catch((err) => {
+        console.error("Error cargando mensajes:", err)
+        navigate("/chats")
+      })
 
-    fetch(`/api/users/${id}`, {
+    fetch(`/api/users/chat/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
@@ -41,7 +47,7 @@ const PrivateChat = () => {
       .then((data) => setOtherUser(data))
       .catch((err) => console.error("Error obteniendo usuario:", err));
 
-    const socket = () => new SockJS("http://localhost:8080/ws");
+    const socket = () => new SockJS(`${API_BASE_URL}/ws`);
     stompClient.current = new Client({
       webSocketFactory: socket,
       connectHeaders: {
@@ -105,6 +111,13 @@ const PrivateChat = () => {
     setMessages((prev) => [...prev, newMessage]);
     setInput("");
   };
+
+
+  if(!messages){
+    return <div className="chat-container">
+      <h1>Cargando...</h1>
+    </div>
+  }
 
   return (
     <>

@@ -24,12 +24,9 @@ public class PaymentController {
 
     @GetMapping("/{eventId}")
     public ResponseEntity<List<PaymentDTO>> getPaymentsFromEventId(@PathVariable Integer eventId) {
-        try {
-            List<Payment> payments = paymentService.getPaymentsFromEventId(eventId);
-            return ResponseEntity.ok(PaymentDTO.fromEntities(payments));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        List<Payment> payments = paymentService.getPaymentsFromEventId(eventId);
+        List<PaymentDTO> dtos = PaymentDTO.fromEntities(payments);
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping("/{eventPropertiesId}/pay-deposit/{userId}")
