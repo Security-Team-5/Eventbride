@@ -73,18 +73,6 @@ const getFAQDataByRole = (role) => {
             },
           ],
         },
-        {
-          category: "Valoraciones",
-          icon: <Star />,
-          topics: [
-            { question: "¿Cómo valorar a un proveedor?", 
-              answer: "Después del evento, recibirás un correo o notificación para valorar." 
-            },
-            { question: "¿Puedo editar una valoración?", 
-              answer: "No, una vez puesta una valoración no se podrá editar." 
-            },
-          ],
-        },
       ]
 
     case "SUPPLIER":

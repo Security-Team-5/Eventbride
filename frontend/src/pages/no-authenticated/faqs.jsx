@@ -40,12 +40,25 @@ const faqs = [
   },
   {
     question: "¿Puedo cancelar mi reserva?",
-    answer: "Sí, ofrecemos la posibilidad de cancelación gratuita si se realiza con la suficiente antelación:",
-    details: [
-      "Bodas: Cancelación gratuita hasta 5 meses antes del evento.",
-      "Bautizos: Cancelación gratuita hasta 2 meses antes del evento.",
-      "Comuniones: Cancelación gratuita hasta 3 meses antes del evento.",
-    ],
+    answer: `
+    La cancelación de cualquier servicio por parte del cliente será gratuita 
+    siempre y cuando se haga antes de completar el pago del evento completo 
+    (consultar plazos específicos según el tipo de evento).
+
+    Si aún no se había pagado la señal del servicio, no se devolverá 
+    ni cobrará nada de dinero al cliente.
+
+    Si dicha señal ya se había pagado, ésta no será reembolsada al cliente.
+
+    Si la cancelación se produce tras el pago completo del evento, 
+    y hasta dos semanas antes de la celebración del mismo, 
+    se reembolsará al cliente la mitad del dinero pagado; 
+    el proveedor deberá devolver el dinero correspondiente.
+
+    Si la cancelación se produce quedando menos de dos semanas para la celebración del evento, 
+    no se reembolsará el pago al cliente. 
+    El proveedor cobrará por la prestación del servicio como si ésta se hubiera producido.
+  `,
     conclusion:
       "Si el proveedor cancela el servicio, recibirás el reembolso completo del pago realizado. Sin embargo, los gastos de gestión de la aplicación no serán reembolsados en ningún caso.",
     icon: <Calendar className="section-icon" />,
