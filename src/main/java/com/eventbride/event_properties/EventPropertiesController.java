@@ -384,24 +384,7 @@ public class EventPropertiesController {
             @PathVariable("eventPropertiesId") Integer eventPropertiesId) {
         EventProperties eventProperties = eventPropertiesService.findById(eventPropertiesId);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-        Optional<User> user = userService.getUserByUsername(auth.getName());
-        Integer userId = user.get().getId();
-        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        if (!roles.contains("ADMIN") && !roles.contains("CLIENT")) {
-            throw new IllegalArgumentException("El evento no te pertenece");
-        }
-
-/* DEBERIAS COMPROBAR QUE SOLO LO PUEDAS HACER SI EL EVENTO ES DEL USUARIO
-        List<Event> ownedEvents = eventService.findEventsByUserId(user.get().getId());
-        Boolean owned = ownedEvents.stream()
-                .anyMatch(e -> e.getEventProperties().stream().anyMatch(ep -> ep.getId().equals(userId)));
-        if (!owned) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El evento no te pertenece");
-        }
- */
-        if (eventProperties != null) {
+        if (eventProperties != null && !getOwned(eventPropertiesId)) {
             eventProperties.setStatus(EventProperties.Status.PENDING);
             return new ResponseEntity<>(eventPropertiesService.save(eventProperties), HttpStatus.OK);
         } else {
