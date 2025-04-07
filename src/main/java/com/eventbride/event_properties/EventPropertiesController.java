@@ -128,7 +128,6 @@ public class EventPropertiesController {
         return eventPropertiesService.findByIdDTO(id);
     }
 
-    // DONE
     @GetMapping("/provider/{id}")
     public EventPropertiesDTO findByIdProvider(@PathVariable("id") Integer id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -172,7 +171,6 @@ public class EventPropertiesController {
         return eventPropertiesService.findByIdDTO(id);
     }
 
-    // DONE
     @GetMapping("/requests/{userId}")
     public List<List<Object>> getAllEventPropertiesAfterNow(@PathVariable("userId") Integer userId,
             @AuthenticationPrincipal User userPrincipal) {
@@ -183,7 +181,6 @@ public class EventPropertiesController {
         return result;
     }
 
-    // DONE
     @PutMapping("/{eventId}/add-otherservice/{otherServiceId}")
     public ResponseEntity<?> addOtherServiceToEvent(
             @PathVariable Integer eventId,
@@ -203,7 +200,6 @@ public class EventPropertiesController {
             throw new IllegalArgumentException("El evento no te pertenece");
         }
 
-        // Verificar que el evento existe y que le pertenece al usuario autenticado
         Event event = Optional.ofNullable(eventService.findById(eventId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
         if (!event.getUser().getId().equals(userId)) {
@@ -226,7 +222,6 @@ public class EventPropertiesController {
         }
     }
 
-    // DONE
     @PutMapping("/{eventId}/add-venue/{venueId}")
     public ResponseEntity<?> addVenueToEvent(
             @PathVariable Integer eventId,
@@ -285,7 +280,6 @@ public class EventPropertiesController {
         return ResponseEntity.ok().build();
     }
 
-    // DONE
     @PutMapping("/{eventPropertiesId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<EventProperties> acceptService(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
@@ -306,8 +300,6 @@ public class EventPropertiesController {
             throw new IllegalArgumentException("El servicio no te pertenece");
         }
 
-        // Verificar que el OtherService o Venue asociado pertenezca al usuario
-        // autenticado
         if (updateEventProperties.getVenue() != null) {
             if (!updateEventProperties.getVenue().getUser().getId().equals(userId)) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El venue no pertenece al usuario autenticado");
@@ -327,7 +319,6 @@ public class EventPropertiesController {
                 HttpStatus.OK);
     }
 
-    // DONE
     @DeleteMapping("/{eventPropertiesId}")
     public void rejectService(@PathVariable("eventPropertiesId") Integer eventPropertiesId) {
         EventProperties eventProperties = eventPropertiesService.findById(eventPropertiesId);
@@ -343,8 +334,6 @@ public class EventPropertiesController {
             throw new IllegalArgumentException("El servicio no te pertenece");
         }
 
-        // Verificar que el OtherService o Venue asociado pertenezca al usuario
-        // autenticado
         if (eventProperties.getVenue() != null) {
             if (!eventProperties.getVenue().getUser().getId().equals(userId)) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "El venue no pertenece al usuario autenticado");
@@ -367,7 +356,6 @@ public class EventPropertiesController {
         }
     }
 
-    // DONE
     @GetMapping("/pending/{userId}")
     public List<EventPropertiesDTO> getPendingEventPropertiesByUserId(@PathVariable("userId") Integer userId,
             @AuthenticationPrincipal User userPrincipal) {
@@ -378,7 +366,6 @@ public class EventPropertiesController {
         return eventPropertiesService.findEventPropertiesPendingByUserId(userId);
     }
 
-    //TODO comprobar que el evento es del usuario y que el rol es cliente o admin
     @PutMapping("/status/pending/{eventPropertiesId}")
     public ResponseEntity<EventProperties> updateStatusPending(
             @PathVariable("eventPropertiesId") Integer eventPropertiesId) {
