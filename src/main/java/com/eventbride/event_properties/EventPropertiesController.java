@@ -13,6 +13,7 @@ import com.eventbride.dto.EventPropertiesMapper;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.event.EventService;
+import com.eventbride.event_properties.EventProperties.Status;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
 import com.eventbride.otherService.OtherService;
@@ -20,6 +21,7 @@ import com.eventbride.otherService.OtherServiceService;
 import com.eventbride.venue.Venue;
 import com.eventbride.venue.VenueService;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -354,6 +356,34 @@ public class EventPropertiesController {
             EventProperties eventPropertiesSaved = eventPropertiesService.save(eventProperties);
             eventPropertiesService.deleteEventProperties(eventPropertiesSaved.getId(), venue, otherService);
         }
+    }
+
+    @Transactional
+    @DeleteMapping("/client/{eventPropertiesId}")
+    public ResponseEntity<Void> clientCancelEventProperty(@PathVariable Integer eventPropertiesId) {
+        EventProperties eventProperty = eventPropertiesService.findById(eventPropertiesId);
+        
+        if (eventProperty == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (getOwned(eventPropertiesId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        
+        if (!Status.PENDING.equals(eventProperty.getStatus()) && !Status.APPROVED.equals(eventProperty.getStatus()) && !Status.CANCELLED.equals(eventProperty.getStatus())) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        if (eventProperty.getVenue() != null) {
+            eventPropertiesService.clientCancelVenue(eventPropertiesId);
+        } else if (eventProperty.getOtherService() != null) {
+            eventPropertiesService.clientCancelOtherService(eventPropertiesId);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/pending/{userId}")
