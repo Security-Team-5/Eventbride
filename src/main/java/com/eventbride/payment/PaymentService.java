@@ -63,7 +63,7 @@ public class PaymentService {
 
             paymentRepository.save(p);
             Optional<Event> event = eventRepository.findByEventPropertiesId(e.getId());
-            notificationService.createNotification(NotificationType.NEW_DEPOSIT_PAYMENT, e.getVenue() != null ? e.getVenue().getUser() : e.getOtherService().getUser(), event.get(), e);
+            notificationService.createNotification(NotificationType.NEW_DEPOSIT_PAYMENT, e.getVenue() != null ? e.getVenue().getUser() : e.getOtherService().getUser(), event.get(), e, null);
         } else {
             p = null;
         }
@@ -100,7 +100,7 @@ public class PaymentService {
             p.setUser(user);
             paymentRepository.save(p);
             Optional<Event> event = eventRepository.findByEventPropertiesId(e.getId());
-            notificationService.createNotification(NotificationType.NEW_REMAINING_PAYMENT, e.getVenue() != null ? e.getVenue().getUser() : e.getOtherService().getUser(), event.get(), e);
+            notificationService.createNotification(NotificationType.NEW_REMAINING_PAYMENT, e.getVenue() != null ? e.getVenue().getUser() : e.getOtherService().getUser(), event.get(), e, null);
         } else {
             p = null;
         }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,6 +16,7 @@ import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
 import com.eventbride.event.Event.EventType;
 import com.eventbride.event_properties.EventProperties;
+import com.eventbride.invitation.Invitation;
 import com.eventbride.notification.Notification.NotificationType;
 import com.eventbride.user.User;
 import com.eventbride.user.UserRepository;
@@ -44,7 +46,7 @@ public class NotificationService {
 
     @Transactional
     public void createNotification(Notification.NotificationType type, User user, Event event,
-            EventProperties eventProperties) {
+            EventProperties eventProperties, Invitation invitation) {
         Notification notification = new Notification();
         notification.setCreatedAt(LocalDateTime.now());
         notification.setUser(user);
@@ -79,7 +81,7 @@ public class NotificationService {
             case PAYMENT_REMINDER:
                 notification.setType(NotificationType.PAYMENT_REMINDER);
                 notification.setSubject("Recordatorio de pago");
-                notification.setMessage("Le recordamos que tiene un pago pendiente para su evento "
+                notification.setMessage("Le recordamos que tienes un pago pendiente para tu evento "
                         + event.getName()
                         + ". Por favor, realice el pago lo antes posible para evitar problemas.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
@@ -98,12 +100,6 @@ public class NotificationService {
                                 : eventProperties.getVenue().getName())
                         + " para el evento " + event.getName()
                         + " ha sido confirmada. Paga la señal cuanto antes para terminar de reservarlo. ¡Que no te lo quiten!");
-                sendEmailNotification(user, notification.getSubject(), notification.getMessage());
-                break;
-            case DEPOSIT_REMINDER:
-                notification.setType(NotificationType.DEPOSIT_REMINDER);
-                notification.setSubject("Deposit Reminder");
-                notification.setMessage("This is a reminder for your deposit payment.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
             case NEW_REQUEST:
@@ -134,6 +130,38 @@ public class NotificationService {
                                 : eventProperties.getVenue().getName())
                         + " para el evento " + event.getName()
                         + ". Estamos procesando el pago. Si no lo recibes en los próximos días, por favor, contacta con el soporte de EventBride.");
+                sendEmailNotification(user, notification.getSubject(), notification.getMessage());
+                break;
+            case EVENT_DELETED:
+                notification.setType(NotificationType.EVENT_DELETED);
+                notification.setSubject("Evento eliminado");
+                notification.setMessage("Tu evento " + event.getName() + " ha sido eliminado.");
+                sendEmailNotification(user, notification.getSubject(), notification.getMessage());
+                break;
+            case INVITATION_CONFIRMED:
+                notification.setType(NotificationType.INVITATION_CONFIRMED);
+                notification.setSubject("Confirmación de invitación");
+                notification.setMessage(invitation.getFirstName() + " " + invitation.getLastName() + " ha aceptado tu invitación para el evento " + event.getName() + ".\n" +
+                        "Recuerda que puedes ver la lista de invitados en tu perfil.");
+                sendEmailNotification(user, notification.getSubject(), notification.getMessage());
+                break;
+            case INVITATION_DELETED:
+                notification.setType(NotificationType.INVITATION_DELETED);
+                notification.setSubject("Eliminación de invitación");
+                notification.setMessage(" Has eliminado la invitación de " + invitation.getFirstName() + " " + invitation.getLastName() + " para el evento " + event.getName() + ".\n" +
+                        "Recuerda que puedes ver la lista de invitados en tu perfil.");
+                sendEmailNotification(user, notification.getSubject(), notification.getMessage());
+                break;
+            case PLAN_EXPIRED:
+                notification.setType(NotificationType.PLAN_EXPIRED);
+                notification.setSubject("Plan expirado");
+                notification.setMessage("Tu plan premium ha expirado. Por favor, renueva tu suscripción.");
+                sendEmailNotification(user, notification.getSubject(), notification.getMessage());
+                break;
+            case PLAN_UPGRADED:
+                notification.setType(NotificationType.PLAN_UPGRADED);
+                notification.setSubject("Plan Mejorado");
+                notification.setMessage("Tu plan ha sido mejorado al plan premium.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
             default:
@@ -183,7 +211,7 @@ public class NotificationService {
     private void sendRemindersForEvents(List<Event> events) {
         for (Event event : events) {
             User user = event.getUser();
-            createNotification(Notification.NotificationType.PAYMENT_REMINDER, user, event, null);
+            createNotification(Notification.NotificationType.PAYMENT_REMINDER, user, event, null,null);
         }
     }
 

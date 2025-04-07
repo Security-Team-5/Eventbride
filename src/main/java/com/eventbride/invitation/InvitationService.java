@@ -3,6 +3,8 @@ package com.eventbride.invitation;
 import com.eventbride.dto.EventDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
+import com.eventbride.notification.Notification;
+import com.eventbride.notification.NotificationService;
 import com.eventbride.user.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class InvitationService {
 	@Autowired
 	private JavaMailSender mailSender;
 
+	@Autowired
+	private NotificationService notificationService;
+	
 	@Transactional()
 	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests) throws IllegalArgumentException {
 
@@ -80,6 +85,8 @@ public class InvitationService {
 
 		BeanUtils.copyProperties(invitation, existingInvitation, "id", "event", "invitationType");
 		existingInvitation.setInvitationType(Invitation.InvitationType.ACCEPTED);
+		notificationService.createNotification(Notification.NotificationType.INVITATION_CONFIRMED,
+				existingInvitation.getEvent().getUser(), existingInvitation.getEvent(), null, invitation);
 		// ENVIAR CORREO
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setFrom("eventbride6@gmail.com");
@@ -138,6 +145,8 @@ public class InvitationService {
 		}
 
 		invitationRepository.deleteById(invitationId);
+		notificationService.createNotification(Notification.NotificationType.INVITATION_DELETED,
+				invitation.getEvent().getUser(), invitation.getEvent(), null, invitation);
 	}
 
 }

@@ -45,9 +45,13 @@ public class Notification extends BaseEntity {
         PAYMENT_REMINDER,
         NEW_MESSAGE,
         REQUEST_CONFIRMED,
-        DEPOSIT_REMINDER,
         NEW_REQUEST,
         NEW_DEPOSIT_PAYMENT,
-        NEW_REMAINING_PAYMENT
+        NEW_REMAINING_PAYMENT,
+        EVENT_DELETED,
+        INVITATION_CONFIRMED,
+        INVITATION_DELETED,
+        PLAN_EXPIRED,
+        PLAN_UPGRADED,
     }
 }

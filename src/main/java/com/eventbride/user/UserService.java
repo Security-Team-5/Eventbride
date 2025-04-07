@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eventbride.dto.UserDTO;
+import com.eventbride.notification.Notification;
+import com.eventbride.notification.NotificationRepository;
+import com.eventbride.notification.NotificationService;
 import com.eventbride.user.User.Plan;
 
 import java.time.LocalDate;
@@ -18,6 +21,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -136,7 +142,9 @@ public class UserService {
         user.setPlan(Plan.BASIC);
         user.setPaymentPlanDate(null);
         user.setExpirePlanDate(null);
+        notificationService.createNotification(Notification.NotificationType.PLAN_EXPIRED, user, null, null, null);
         return userRepository.save(user);
+
     }
 
     public User setPremium(Integer id, LocalDate expirationDate) {
@@ -144,6 +152,7 @@ public class UserService {
         user.setPlan(User.Plan.PREMIUM);
         user.setPaymentPlanDate(LocalDate.now());
         user.setExpirePlanDate(expirationDate);
+        notificationService.createNotification(Notification.NotificationType.PLAN_UPGRADED, user, null, null, null);
         return userRepository.save(user);
     }
 
