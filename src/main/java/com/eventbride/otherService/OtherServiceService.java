@@ -55,26 +55,41 @@ public class OtherServiceService {
 
     @Transactional
     public Optional<OtherService> getOtherServiceByServiceName(String serviceName) {
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Service name cannot be null");
+        }
         return otherServiceRepo.findByName(serviceName);
     }
 
     @Transactional
     public List<OtherService> getOtherServiceByUserId(Integer userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
         return otherServiceRepo.findByUserId(userId);
     }
 
     @Transactional
     public List<OtherService> getOtherServiceByAvailableCity(String cityAvailable) {
+        if (cityAvailable == null) {
+            throw new IllegalArgumentException("City name cannot be null");
+        }
         return otherServiceRepo.findByCityAvailable(cityAvailable);
     }
 
     @Transactional
     public List<OtherService> getOtherServiceByOtherServiceType(OtherServiceType otherServiceType) {
+        if (otherServiceType == null) {
+            throw new IllegalArgumentException("Service type cannot be null");
+        }
         return otherServiceRepo.findByOtherServiceType(otherServiceType);
     }
 
     @Transactional
     public List<OtherService> getOtherServiceByAvailability(Boolean available) {
+        if (available == null) {
+            throw new IllegalArgumentException("Availability parameter cannot be null");
+        }
         return otherServiceRepo.findByAvailable(available);
     }
 
@@ -144,10 +159,16 @@ public class OtherServiceService {
 
     @Transactional
     public void saveAll(List<OtherService> otherServices) {
+        if (otherServices == null) {
+            throw new IllegalArgumentException("La lista de servicios no puede ser null");
+        }
         otherServiceRepo.saveAll(otherServices);
     }
 
     public void save(OtherService service) {
+        if (service == null) {
+            throw new IllegalArgumentException("El servicio no puede ser null");
+        }
         otherServiceRepo.save(service);
     }
 }
