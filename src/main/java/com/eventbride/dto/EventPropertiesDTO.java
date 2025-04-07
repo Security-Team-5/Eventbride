@@ -6,8 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventProperties.Status;
+import com.eventbride.event_properties.EventPropertiesService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,8 +31,9 @@ public class EventPropertiesDTO {
     private LocalTime finishTime;
     private EventDTO eventDTO;
 
+
     // Constructor para simplificar la creación del DTO
-    public EventPropertiesDTO(EventProperties eventProperties) {
+    public EventPropertiesDTO(EventProperties eventProperties, EventDTO eventDTO) {
         this.id = eventProperties.getId();
         this.status = eventProperties.getStatus();
         this.requestDate = eventProperties.getStartTime().toLocalDate();
@@ -37,27 +41,17 @@ public class EventPropertiesDTO {
         this.finishTime = eventProperties.getEndTime().toLocalTime();
         this.depositAmount = eventProperties.getDepositAmount();
         this.pricePerService = eventProperties.getPricePerService();
+        this.setPricePerService = eventProperties.getPricePerService();
+
         if (eventProperties.getVenue() != null) {
             this.venueDTO = new VenueDTO(eventProperties.getVenue());
         }
+
         if (eventProperties.getOtherService() != null) {
             this.otherServiceDTO = new OtherServiceDTO(eventProperties.getOtherService());
         }
-        this.setPricePerService = eventProperties.getPricePerService();
-        this.depositAmount = eventProperties.getDepositAmount();
-        
-    }
 
-    // Método estático para crear una lista de DTOs a partir de una lista de
-    // entidades
-    public static List<EventPropertiesDTO> fromEntities(List<EventProperties> eventProperties) {
-        return eventProperties.stream()
-                .map(EventPropertiesDTO::new)
-                .toList();
-    }
-
-    public static EventPropertiesDTO fromEntity(EventProperties eventProperty) {
-        return new EventPropertiesDTO(eventProperty);
+        this.eventDTO = eventDTO;
     }
 
 }

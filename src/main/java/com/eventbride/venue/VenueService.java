@@ -2,6 +2,8 @@ package com.eventbride.venue;
 
 import com.eventbride.dto.ServiceDTO;
 import com.eventbride.event_properties.EventPropertiesRepository;
+import com.eventbride.otherService.OtherService;
+import com.eventbride.otherService.OtherServiceRepository;
 import com.eventbride.service.ServiceService;
 import com.eventbride.user.User;
 import com.eventbride.user.UserService;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +24,9 @@ public class VenueService {
 
     @Autowired
     private VenueRepository venueRepository;
+
+	@Autowired
+	private OtherServiceRepository otherServiceRepository;
 
     @Autowired
     private UserService userService;
@@ -64,25 +70,37 @@ public class VenueService {
 			.collect(Collectors.toList());
     }
 
-    public Venue save(Venue venue) {
-        Optional<User> user = userService.getUserById(venue.getUser().getId());
-        if (user.isPresent()) {
-            User existingUser = user.get();
-            ServiceDTO allServices = serviceService.getAllServiceByUserId(venue.getUser().getId());
-            int slotsCount = allServices.getOtherServices().size() + allServices.getVenues().size();
+    public Venue save(Venue venue) throws IllegalArgumentException {
+		if(venue.getAvailable()){
+			Optional<User> user = userService.getUserById(venue.getUser().getId());
+			if (user.isPresent()) {
+				User existingUser = user.get();
 
-            String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
+				List<com.eventbride.service.Service> allServices = new ArrayList<>();
+				List<OtherService> otherServices = otherServiceRepository.findByUserId(user.get().getId());
+				List<Venue> venues = venueRepository.findByUserId(user.get().getId());
 
-            if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
-                throw new RuntimeException("Has alcanzado el límite de venues en el plan BASIC.");
-            } else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
-                throw new RuntimeException("Has alcanzado el límite de venues en el plan PREMIUM.");
-            }
+				allServices.addAll(otherServices);
+				allServices.addAll(venues);
 
-            venue.setUser(user.get());
-        } else {
-            throw new RuntimeException("User not found");
-        }
+				allServices = allServices.stream().filter(s -> s.getAvailable()).toList();
+
+				int slotsCount = allServices.size();
+
+				String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
+
+				if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
+					throw new IllegalArgumentException("Has alcanzado el límite de venues en el plan BASIC.");
+				} else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
+					throw new IllegalArgumentException("Has alcanzado el límite de venues en el plan PREMIUM.");
+				}
+
+				venue.setUser(user.get());
+			} else {
+				throw new IllegalArgumentException("Usuario no encontrado");
+			}
+		}
+
         return venueRepository.save(venue);
     }
 

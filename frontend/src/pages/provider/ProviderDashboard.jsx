@@ -273,7 +273,12 @@ export default function SupplierDashboard() {
                 textColor = "text-green-800"
                 statusText = "Aceptada"
                 break
-            case "rejected":
+            case "deposit_paid":
+                bgColor = "bg-green-100"
+                textColor = "text-green-800"
+                statusText = "Reserva pagada"
+                break
+            case "cancelled":
                 bgColor = "bg-red-100"
                 textColor = "text-red-800"
                 statusText = "Rechazada"

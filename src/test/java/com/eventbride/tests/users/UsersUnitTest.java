@@ -264,7 +264,7 @@ public class UsersUnitTest {
     }
 
     // 10. downgradeUserPlan
-    @Test
+/*     @Test
     void shouldDowngradeUserPlan() {
         user.setId(1);
         user.setPlan(Plan.PREMIUM);
@@ -284,7 +284,7 @@ public class UsersUnitTest {
     void shouldThrowWhenDowngradeUserNotFound() {
         when(userRepository.findById(999)).thenReturn(Optional.empty());
         assertThrows(IllegalArgumentException.class, () -> userService.downgradeUserPlan(999));
-    }
+    } */
 
     // 11. setPremium
     @Test

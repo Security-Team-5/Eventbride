@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.dto.EventDTO;
+import com.eventbride.dto.EventMapper;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.invitation.Invitation;
@@ -43,14 +44,16 @@ public class EventController {
     private final EventPropertiesService eventPropertiesService;
     private final InvitationService invitationService;
 	private final UserService userService;
+    private final EventMapper eventMapper;
 
     @Autowired
     public EventController(EventService eventService,
-            EventPropertiesService eventPropertiesService, InvitationService invitationService, UserService userService) {
+            EventPropertiesService eventPropertiesService, InvitationService invitationService, UserService userService, EventMapper eventMapper) {
         this.eventService = eventService;
         this.eventPropertiesService = eventPropertiesService;
         this.invitationService = invitationService;
 		this.userService = userService;
+        this.eventMapper = eventMapper;
     }
 
     @GetMapping
@@ -86,7 +89,7 @@ public class EventController {
 			throw new IllegalArgumentException("El evento no te pertenece");
 		}
 
-        return new EventDTO(eventService.findById(id));
+        return eventMapper.toDTO(eventService.findById(id));
     }
 
     @PostMapping("/create")
@@ -131,7 +134,7 @@ public class EventController {
                 updateEvent.setEventDate(event.getEventDate());
 
                 Event e = this.eventService.updateEvent(updateEvent, eventId);
-                return new ResponseEntity<>(new EventDTO(e), HttpStatus.OK);
+                return new ResponseEntity<>(eventMapper.toDTO(e), HttpStatus.OK);
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
@@ -183,15 +186,6 @@ public class EventController {
 		}
     }
 
-    /*
-     * public ResponseEntity<EventDTO> getNextEvent(@PathVariable Integer userId) {
-     * Event nextEvent = eventService.getRecentEventByUserId(userId)
-     * .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-     * "Evento no encontrado"));
-     * return ResponseEntity.ok(new EventDTO(nextEvent));
-     * }
-     */
-
     @GetMapping("/next/{userId}")
     public ResponseEntity<?> getEventsByUserId(@PathVariable Integer userId) {
         List<Event> events = eventService.findEventsByUserId(userId);
@@ -210,7 +204,7 @@ public class EventController {
 
         List<EventDTO> eventDTOs = new ArrayList<>();
         for (Event event : events) {
-            eventDTOs.add(new EventDTO(event));
+            eventDTOs.add(eventMapper.toDTO(event));
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
@@ -233,7 +227,7 @@ public class EventController {
 
         List<EventDTO> eventDTOs = new ArrayList<>();
         for (Event event : events) {
-            eventDTOs.add(new EventDTO(event));
+            eventDTOs.add(eventMapper.toDTO(event));
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
