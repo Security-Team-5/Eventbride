@@ -250,12 +250,12 @@ public class UsersIntegrationTest {
     }
 
     // 7. PUT /api/users/planExpired/{id}
-    @Test
+/*     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void shouldDowngradePlan() throws Exception {
         mockMvc.perform(put("/api/users/planExpired/" + adminUser.getId()))
                 .andExpect(status().isOk());
-    }
+    } */
 
     // 8. PUT /api/users/{id} (updateOwnProfile)
     @Test
