@@ -39,7 +39,6 @@ function AdminServices() {
         );
         const allServices = [...otherServices, ...venues];
         setServices(allServices);
-        console.log("Servicios obtenidos:", allServices);
       })
       .catch((err) => console.error("Error obteniendo servicios:", err));
   }
@@ -101,10 +100,18 @@ function AdminServices() {
     if (!validateServiceData(service)) return;
   
     const dataToUpdate = { ...serviceData[service.id] };
+
+    dataToUpdate.user = { id: dataToUpdate.userDTO.id };
+    delete dataToUpdate.userDTO;
+
     dataToUpdate.limitedByPricePerGuest = dataToUpdate.limitedBy === "perGuest";
     dataToUpdate.limitedByPricePerHour = dataToUpdate.limitedBy === "perHour";
     delete dataToUpdate.limitedBy;
+
+    dataToUpdate.maxGuests = parseInt(dataToUpdate.maxGuests, 10);
   
+    console.log(dataToUpdate)
+
     fetch(`/api/${service.type}/admin/${service.id}`, {
       method: "PUT",
       headers: {
@@ -250,7 +257,6 @@ function AdminServices() {
             (service, index) => {
               const isEditing = editServiceId === service.id;
               const data = serviceData[service.id] || service;
-              console.log("Datos del servicio:", data);
   
               return (
                 <div key={index} className="service-container">
