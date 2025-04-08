@@ -416,7 +416,13 @@ const VenuesScreen = () => {
                 </div>
                 <div className="card-info">
                   <span className="card-text">
-                    <img style={{height:"25%", width:"100%" }} src={selectedVenue.picture || "/placeholder.svg"}></img>
+                    <img style={{ height: "25%", width: "100%" }}
+                      src={selectedVenue.picture || "https://iili.io/3Ywlapf.png"}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://iili.io/3Ywlapf.png";
+                      }}
+                      alt="Imagen del servicio"></img>
                   </span>
                 </div>
               </div>

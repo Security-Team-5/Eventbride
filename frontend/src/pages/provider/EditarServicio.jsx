@@ -231,7 +231,7 @@ const EditarServicio = () => {
                                 onChange={handleChange}
                                 required
                                 minLength="1"
-                                maxLength="10000"
+                                maxLength="5000"
                                 className="form-textarea"
                                 rows="4"
                             />
@@ -480,7 +480,7 @@ const EditarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="10000"
+                                    maxLength="5000"
                                     className="form-textarea"
                                     rows="4"
                                 />
@@ -489,7 +489,7 @@ const EditarServicio = () => {
                     )}
 
                     <div className="form-actions">
-                        <button type="button" className="cancel-button" onClick={() => navigate('/misservicios')}>
+                        <button type="button" style={{width:"30%", height:"30%", marginTop:"2.3%"}} className="cancel-button" onClick={() => navigate('/misservicios')}>
                             Cancelar
                         </button>
                         <button type="submit" className="submit-button" disabled={isLoading}>

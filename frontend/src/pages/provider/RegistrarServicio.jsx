@@ -366,7 +366,7 @@ const RegistrarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="10000"
+                                    maxLength="5000"
                                     className="form-input"
                                     rows={4}
                                     placeholder="Describe tu servicio con detalle..."
@@ -605,7 +605,7 @@ const RegistrarServicio = () => {
                                         onChange={handleChange}
                                         required
                                         minLength="1"
-                                        maxLength="10000"
+                                        maxLength="5000"
                                         className="form-input"
                                         rows={4}
                                         placeholder="Proporciona detalles adicionales sobre tu servicio..."

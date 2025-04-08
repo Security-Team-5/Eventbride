@@ -50,6 +50,7 @@ const Servicios = () => {
             }))
 
             setServices(markedServices)
+            console.log("Servicios obtenidos:", markedServices)
         } catch (error) {
             console.error("Error fetching services:", error)
         } finally {
@@ -244,9 +245,15 @@ const Servicios = () => {
                                     <p className="description-text">{service.description}</p>
                                 </div>
 
-                                <div style={{marginTop: "5%"}} className="card-info">
+                                <div style={{ marginTop: "5%" }} className="card-info">
                                     <span className="card-text">
-                                        <img style={{ height: "25%", width: "100%" }} src={service.picture || "/placeholder.svg"}></img>
+                                        <img style={{ height: "25%", width: "100%" }}
+                                            src={service.picture || "https://iili.io/3Ywlapf.png"}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = "https://iili.io/3Ywlapf.png";
+                                            }}
+                                            alt="Imagen del servicio"></img>
                                     </span>
                                 </div>
                             </div>

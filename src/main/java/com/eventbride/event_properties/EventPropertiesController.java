@@ -90,6 +90,13 @@ public class EventPropertiesController {
 
     @GetMapping
     public List<EventProperties> findAllEvents() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+        if (!roles.contains("ADMIN")) {
+            throw new IllegalArgumentException("No tienes permisos para ver estos datos. https://blog.scrt.ch/wp-content/uploads/2015/03/jurassicpark_magicword1.png");
+        }
         return eventPropertiesService.findAll();
     }
 

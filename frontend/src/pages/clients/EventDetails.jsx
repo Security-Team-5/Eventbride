@@ -431,7 +431,7 @@ function EventDetails() {
                     <div className="service-image-container">
                       <img
                         className="service-image"
-                        src={prop.venueDTO.picture || "/placeholder.svg"}
+                        src={prop.venueDTO.picture || "https://iili.io/3Ywlapf.png"}
                         alt={prop.venueDTO.name}
                         style={{
                           objectFit: "cover",
@@ -528,9 +528,20 @@ function EventDetails() {
                     <div className="service-image-container" style={{ objectFit: "cover", maxHeight: "100%" }}>
                       <img
                         className="service-image"
-                        src={prop.otherServiceDTO.picture || "/placeholder.svg"}
-                        alt={prop.otherServiceDTO.name}
-                        style={{ objectFit: "cover", maxHeight: "100%", borderRadius: "8px" }}
+                        src={prop.otherServiceDTO.picture || "https://iili.io/3Ywlapf.png"}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "https://iili.io/3Ywlapf.png";
+                        }}
+                        alt="Imagen del servicio"
+                        style={{
+                          objectFit: "cover",
+                          maxHeight: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          overflow: "hidden",
+                        }}
                       />
                     </div>
                     <div className="venue-details">
