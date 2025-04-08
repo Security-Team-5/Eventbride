@@ -1,6 +1,7 @@
 package com.eventbride.invitation;
 
 import com.eventbride.config.jwt.services.UserManagementService;
+import com.eventbride.dto.InvitationDTO;
 import com.eventbride.event.Event;
 import com.eventbride.model.MessageResponse;
 import com.eventbride.otherService.OtherService;
@@ -32,14 +33,24 @@ public class InvitationController {
 
 	@PostMapping("/create/{id}")
 	public ResponseEntity<?> createInvitation(@PathVariable int id, @RequestBody int maxGuests) throws IllegalArgumentException{
-		Invitation res = invitationService.createVoidInvitation(id, maxGuests);
-		return new ResponseEntity<>(res, HttpStatus.CREATED);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Optional<User> user = userService.getUserByUsername(auth.getName());
+	
+		if (!user.isPresent()) {
+			throw new IllegalArgumentException("El usuario no existe");
+		}
+	
+		Invitation res = invitationService.createVoidInvitation(id, maxGuests, user.get());
+		InvitationDTO invitationDTO = new InvitationDTO(res);
+		return new ResponseEntity<>(invitationDTO, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getInvitation(@PathVariable int id) throws IllegalArgumentException {
+
 		Invitation invitation = invitationService.getInvitationById(id);
-		return new ResponseEntity<>(invitation, HttpStatus.OK);
+		InvitationDTO invitationDTO = new InvitationDTO(invitation);
+		return new ResponseEntity<>(invitationDTO, HttpStatus.OK);
 	}
 
 	@GetMapping("/eventInvitations/{eventId}")
@@ -51,7 +62,7 @@ public class InvitationController {
 			throw new IllegalArgumentException("El usuario no existe");
 		}
 
-		List<Invitation> invitations = invitationService.getInvitationByEventId(eventId, user.get());
+		List<InvitationDTO> invitations = invitationService.getInvitationByEventId(eventId, user.get());
 
 		return new ResponseEntity<>(invitations, HttpStatus.OK);
 	}
@@ -59,7 +70,8 @@ public class InvitationController {
 	@PutMapping
 	public ResponseEntity<?> fillInvitation(@RequestBody @Valid Invitation invitation) throws IllegalArgumentException {
 		Invitation res = invitationService.fillInvitation(invitation);
-		return new ResponseEntity<>(res, HttpStatus.CREATED);
+		InvitationDTO invitationDTO = new InvitationDTO(invitation);
+		return new ResponseEntity<>(invitationDTO, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")

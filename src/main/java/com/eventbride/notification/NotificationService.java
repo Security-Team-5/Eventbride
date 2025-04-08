@@ -83,7 +83,7 @@ public class NotificationService {
                 notification.setSubject("Recordatorio de pago");
                 notification.setMessage("Le recordamos que tienes un pago pendiente para tu evento "
                         + event.getName()
-                        + ". Por favor, realice el pago lo antes posible para evitar problemas.");
+                        + ". Por favor, realiza el pago lo antes posible para evitar problemas.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
             case NEW_MESSAGE:
@@ -172,7 +172,7 @@ public class NotificationService {
 
     @Transactional
     public void sendEmailNotification(User to, String subject, String body) {
-        if (to.getReceivesEmails()) {
+        if (Boolean.TRUE.equals(to.getReceivesEmails())) { // Manejar null de forma segura
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6@gmail.com");
             mailMessage.setTo(to.getEmail());
@@ -182,7 +182,6 @@ public class NotificationService {
         }
     }
 
-    
     @Scheduled(cron = "0 0 8 * * *") // Ejecuta todos los días a las 8:00 AM
     @Transactional
     public void sendPaymentReminders() {

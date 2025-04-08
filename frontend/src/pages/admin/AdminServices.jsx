@@ -571,6 +571,7 @@ function AdminServices() {
                                 borderRadius: "8px",
                                 padding: "8px",
                                 fontSize: "16px",
+                                     
                               }}
                             />
                           </div>
@@ -742,4 +743,5 @@ function AdminServices() {
   
 }
 
-export default AdminServices;
+export default AdminServices
+

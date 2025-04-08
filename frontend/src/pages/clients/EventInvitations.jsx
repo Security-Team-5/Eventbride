@@ -104,12 +104,6 @@ function EventInvitations() {
     setMaxGuests("");
   };
 
-  // Formatear fecha
-  const formatearFecha = (fecha) => {
-    const opciones = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(fecha).toLocaleDateString("es-ES", opciones);
-  };
-
   const handleRemove = (id) => {
     const isRemoving = confirm("¿Deseas eliminar la invitación?")
     if(!isRemoving) {return}
@@ -143,7 +137,7 @@ function EventInvitations() {
 
   return (
     <div className="event-invitations-container">
-      <h2>Invitaciones estimadas { eventData && (<>del día {formatearFecha(eventData.eventDate)}</>)}</h2>
+      <h2>Invitaciones estimadas { eventData && (<>del {eventData.name}</>)}</h2>
       <div className="total-invitations">
         {eventData && (
           <div>

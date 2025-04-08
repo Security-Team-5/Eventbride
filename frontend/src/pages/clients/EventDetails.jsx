@@ -6,11 +6,14 @@ import "../../static/resources/css/EventDetails.css"
 import PaypalButtonTotal from "../../components/PaypalButtomTotal";
 import "../../static/resources/css/OtherService.css"
 import { Link } from "react-router-dom"
+import { AlertCircle } from "lucide-react"; 
 
 
 function EventDetails() {
   const [evento, setEvento] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeletePropertyModalOpen, setIsDeletePropertyModalOpen] = useState(false);
+  const [propertyToDelete, setPropertyToDelete] = useState(null);
   const [isCostBreakdownModalOpen, setIsCostBreakdownModalOpen] = useState(false);
   const [isPaymentBreakdownModalOpen, setIsPaymentBreakdownModalOpen] = useState(false);
   const { id } = useParams();
@@ -23,7 +26,8 @@ function EventDetails() {
 
   // Función para obtener los datos del evento
   function getEvents() {
-    setIsLoading(true)
+    setIsLoading(true);
+
     fetch(`/api/v1/events/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -33,9 +37,10 @@ function EventDetails() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("evento obtenido:", data)
-        setEvento(data)
-        setIsLoading(false)
+        console.log("evento obtenido:", data);
+        setEvento(data);
+        setIsLoading(false);
+
         fetch(`/api/payment/${data.id}`, {
           headers: {
             "Content-Type": "application/json",
@@ -45,18 +50,20 @@ function EventDetails() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("payment obtenido:", data)
-            setPayments(data)
+            console.log("payment obtenido:", data);
+            setPayments(data);
           })
           .catch((error) => {
-            console.error("Error obteniendo evento:", error)
-          })
+            console.error("Error obteniendo pagos:", error);
+            setPayments([]);
+          });
       })
       .catch((error) => {
-        console.error("Error obteniendo evento:", error)
-        setIsLoading(false)
-      })
+        console.error("Error obteniendo evento:", error);
+        setIsLoading(false);
+      });
   }
+
 
   // Función para eliminar el evento
   function deleteEvent() {
@@ -86,6 +93,18 @@ function EventDetails() {
   const openPaymentBreakdownModal = () => setIsPaymentBreakdownModalOpen(true);
   const closePaymentBreakdownModal = () => setIsPaymentBreakdownModalOpen(false);
 
+  // Abrir modal de confirmación para eliminar propiedad
+  const openDeletePropertyModal = (propertyId) => {
+    setPropertyToDelete(propertyId)
+    setIsDeletePropertyModalOpen(true)
+  }
+
+  // Cerrar modal de confirmación para eliminar propiedad
+  const closeDeletePropertyModal = () => {
+    setIsDeletePropertyModalOpen(false)
+    setPropertyToDelete(null)
+  }
+
   // Función para solicitar servicio
   const solicitarServicio = (eventPropertiesId) => {
     fetch(`/api/event-properties/status/pending/${eventPropertiesId}`, {
@@ -105,6 +124,40 @@ function EventDetails() {
       })
       .catch((error) => console.error("Error solicitando el servicio:", error));
   };
+
+  const deleteEventProperty = (eventPropertiesId) => {
+    setIsLoading(true)
+
+    fetch(`/api/event-properties/client/${eventPropertiesId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error status: ${response.status}`)
+        }
+        console.log("Servicio eliminado correctamente")
+        getEvents()
+      })
+      .catch((error) => {
+        console.error("Error eliminando el servicio:", error)
+        alert("Error al eliminar el servicio. Por favor, inténtelo de nuevo.")
+      })
+      .finally(() => {
+        setIsLoading(false)
+        closeDeletePropertyModal()
+      })
+  }
+
+  // Confirmar eliminación de propiedad
+  const confirmDeleteProperty = () => {
+    if (propertyToDelete) {
+      deleteEventProperty(propertyToDelete)
+    }
+  }
 
   // Cargar evento al montar el componente
   useEffect(() => {
@@ -182,6 +235,30 @@ function EventDetails() {
     const diffInDays = (eventDate - currentDate) / (1000 * 60 * 60 * 24);
     const diffInMonths = diffInDays / 30;
     return diffInMonths < threshold;
+  }
+
+  // Obtener el nombre del servicio o recinto a eliminar
+  const getPropertyName = () => {
+    if (!propertyToDelete || !evento || !evento.eventPropertiesDTO) return ""
+
+    const property = evento.eventPropertiesDTO.find((prop) => prop.id === propertyToDelete)
+    if (!property) return ""
+
+    if (property.venueDTO) {
+      return decodeText(property.venueDTO.name)
+    } else if (property.otherServiceDTO) {
+      return decodeText(property.otherServiceDTO.name)
+    }
+
+    return ""
+  }
+
+  // Determinar si el servicio a eliminar es un recinto o un servicio
+  const isVenue = () => {
+    if (!propertyToDelete || !evento || !evento.eventPropertiesDTO) return false
+
+    const property = evento.eventPropertiesDTO.find((prop) => prop.id === propertyToDelete)
+    return property && property.venueDTO
   }
 
   // Renderizar carga o mensaje de evento no encontrado
@@ -267,6 +344,20 @@ function EventDetails() {
     return totales;
   };
 
+    // Determinar los meses límite de pago según el tipo de evento
+    const getMesesLimitePago = () => {
+      switch (evento?.eventType) {
+        case "WEDDING":
+          return 5;
+        case "COMMUNION":
+          return 3;
+        case "CHRISTENING":
+          return 1;
+        default:
+          return 0; // Si no coincide con ningún tipo, devolvemos 0
+      }
+    };
+
   return (
     <>
       <div className="event-contain">
@@ -274,16 +365,24 @@ function EventDetails() {
           <div className="event-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div className="event-title-container">
               <span className="event-type-badge">{tipoDeEvento(evento?.eventType)}</span>
-              <h2 style={{height:"60%"}} className="event-title">Detalles del Evento</h2>
+              <h2 style={{ height: "60%" }} className="event-title">Detalles del Evento</h2>
             </div>
 
             {sumaPagado() <= 0 && (
-              <button className="delete-button" style={{maxWidth: "10%",marginLeft: "auto"}} onClick={openModal}>
+              <button className="delete-button" style={{ maxWidth: "10%", marginLeft: "auto" }} onClick={openModal}>
                 <i className="delete-icon">✕</i>
                 <span>Eliminar</span>
               </button>
             )}
           </div>
+
+          
+          <div className="warning-message" style={{ marginTop: "1rem" }}>
+            <AlertCircle size={20} className="mr-2" />
+            La fecha límite de pago es antes de&nbsp;<b>{getMesesLimitePago()}</b> &nbsp;mes(es) del evento.
+            <br />
+          </div>
+
           <div className="event-info-card">
             <div className="event-info">
               <div className="info-item">
@@ -332,14 +431,16 @@ function EventDetails() {
                     <div className="service-image-container">
                       <img
                         className="service-image"
-                        src={prop.venueDTO.picture || "/placeholder.svg"}
+                        src={prop.venueDTO.picture || "https://iili.io/3Ywlapf.png"}
                         alt={prop.venueDTO.name}
-                        style={{ objectFit: "cover", 
-                          maxHeight: "100%",  
+                        style={{
+                          objectFit: "cover",
+                          maxHeight: "100%",
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          overflow: "hidden", }}
+                          overflow: "hidden",
+                        }}
                       />
                     </div>
                     <div className="venue-details">
@@ -352,7 +453,7 @@ function EventDetails() {
                       <p className="venue-description">
                         <span className="detail-label">Horario:</span>
                         {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} -{" "}
-                         
+
                         {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
                       </p>
                     </div>
@@ -372,9 +473,16 @@ function EventDetails() {
                       ) : (
                         <>
                           <button
-                            className={`payment-button ${(prop.status === "PENDING" || prop.status === "COMPLETED") ? "disabled" : ""}`}
-                            disabled={prop.status === "PENDING" || prop.status === "COMPLETED"}
-                            onClick={() => navigate(`/payment/${prop.id}`)}
+                            className={`payment-button ${(["PENDING", "COMPLETED"].includes(prop.status)) ? "disabled" : ""}`}
+                            disabled={["PENDING", "COMPLETED"].includes(prop.status)}
+                            onClick={() => {
+                              if (prop.status === "CANCELLED") {
+                                solicitarServicio(prop.id);
+                                return;
+                              } else {
+                                navigate(`/payment/${prop.id}`);
+                              }
+                            }}
                             style={{
                               backgroundColor: prop.status === "DEPOSIT_PAID" ? "green" : "#d9be75"
                             }}
@@ -392,6 +500,12 @@ function EventDetails() {
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
                         <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
                       </div>
+                      {(prop.status === "PENDING" || prop.status === "APPROVED" || prop.status === "CANCELLED") && (
+                        <button className="delete-property-button" onClick={() => openDeletePropertyModal(prop.id)}>
+                          <i className="delete-property-icon">✕</i>
+                          Eliminar recinto
+                        </button>
+                      )}
                     </div>
                   </div>
                 ) : null,
@@ -414,9 +528,20 @@ function EventDetails() {
                     <div className="service-image-container" style={{ objectFit: "cover", maxHeight: "100%" }}>
                       <img
                         className="service-image"
-                        src={prop.otherServiceDTO.picture || "/placeholder.svg"}
-                        alt={prop.otherServiceDTO.name}
-                        style={{ objectFit: "cover", maxHeight: "100%", borderRadius: "8px" }}
+                        src={prop.otherServiceDTO.picture || "https://iili.io/3Ywlapf.png"}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "https://iili.io/3Ywlapf.png";
+                        }}
+                        alt="Imagen del servicio"
+                        style={{
+                          objectFit: "cover",
+                          maxHeight: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          overflow: "hidden",
+                        }}
                       />
                     </div>
                     <div className="venue-details">
@@ -453,6 +578,7 @@ function EventDetails() {
                             onClick={() => {
                               if (prop.status === "CANCELLED") {
                                 solicitarServicio(prop.id);
+                                return;
                               } else {
                                 navigate(`/payment/${prop.id}`);
                               }
@@ -469,6 +595,12 @@ function EventDetails() {
                             </Link>
                           </div>
                         </>
+                      )}
+                      {(prop.status === "PENDING" || prop.status === "APPROVED" || prop.status === "CANCELLED") && (
+                        <button className="delete-property-button" onClick={() => openDeletePropertyModal(prop.id)}>
+                          <i className="delete-property-icon">✕</i>
+                          Eliminar servicio
+                        </button>
                       )}
                       <div className="status-indicator">
                         <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
@@ -652,7 +784,7 @@ function EventDetails() {
               La señal se descontará en el pago final.
             </p>
             <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <button style={{borderRadius:"10%", backgroundColor:"red", color:"white", width:"20%", height:"4%"}} className="close-button" onClick={closeCostBreakdownModal}>
+              <button style={{ borderRadius: "10%", backgroundColor: "red", color: "white", width: "20%", height: "4%" }} className="close-button" onClick={closeCostBreakdownModal}>
                 Cerrar
               </button>
             </div>
@@ -710,7 +842,7 @@ function EventDetails() {
             </p>
 
             <div className="modal-footer" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <button style={{borderRadius:"10%", backgroundColor:"red", color:"white", width:"20%", height:"4%"}} className="close-button" onClick={closePaymentBreakdownModal}>
+              <button style={{ borderRadius: "10%", backgroundColor: "red", color: "white", width: "20%", height: "4%" }} className="close-button" onClick={closePaymentBreakdownModal}>
                 Cerrar
               </button>
             </div>
@@ -733,6 +865,31 @@ function EventDetails() {
                 Cancelar
               </button>
               <button className="confirm-button" onClick={deleteEvent}>
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación de eliminación de propiedad */}
+      {isDeletePropertyModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>¿Estás seguro de que quieres eliminar este {isVenue() ? "recinto" : "servicio"}?</h3>
+            </div>
+            <div className="modal-body">
+              <p>
+                Esta acción no se puede deshacer. El {isVenue() ? "recinto" : "servicio"} {getPropertyName()} será
+                eliminado permanentemente.
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button className="cancel-button" onClick={closeDeletePropertyModal}>
+                Cancelar
+              </button>
+              <button className="confirm-button" onClick={confirmDeleteProperty}>
                 Eliminar
               </button>
             </div>

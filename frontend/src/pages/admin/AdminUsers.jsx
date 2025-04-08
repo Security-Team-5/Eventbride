@@ -109,34 +109,41 @@ function AdminUsers() {
 
     function validateUserData(userData) {
         setError("");
+
         if (!userData.firstName || !userData.lastName || !userData.username || !userData.email || !userData.dni) {
             setError("Por favor, complete todos los campos obligatorios.");
             return false;
         }
+
         if (userData.firstName.length > 40 || userData.lastName.length > 40 || userData.username.length > 50) {
             setError("Uno de los campos excede la longitud máxima permitida.");
             return false;
         }
+
         const dniPattern = /^[0-9]{8}[A-Za-z]$/;
         if (!dniPattern.test(userData.dni)) {
             setError("El DNI es incorrecto. Debe tener 8 números seguidos de una letra.");
             return false;
         }
+
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(userData.email)) {
             setError("El correo electrónico no es válido.");
             return false;
         }
+
         const telephonePattern = /^[0-9]{9}$/;
         if (!telephonePattern.test(userData.telephone)) {
             setError("El teléfono debe tener 9 números.");
             return false;
         }
+
         return true;
     }
 
     function handleInputChange(e) {
         const { name, value } = e.target;
+
         if (name === "dni") {
             const digits = value.replace(/\D/g, '');
             const letters = value.replace(/[^A-Za-z]/g, '');

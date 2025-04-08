@@ -43,13 +43,14 @@ const Servicios = () => {
             const availableServices = allServices.filter(s => s.available)
             const excessServiceIds = availableServices.slice(maxAllowed).map(s => s.id)
 
-            /* TODO revisar este valor que se genera y usa a lo largo de la función, no hace bien su trabajo*/ 
+            /* TODO revisar este valor que se genera y usa a lo largo de la función, no hace bien su trabajo*/
             const markedServices = allServices.map(service => ({
                 ...service,
                 overLimit: excessServiceIds.includes(service.id),
             }))
 
             setServices(markedServices)
+            console.log("Servicios obtenidos:", markedServices)
         } catch (error) {
             console.error("Error fetching services:", error)
         } finally {
@@ -88,7 +89,7 @@ const Servicios = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.message || "No se pudo deshabilitar el servicio");
+                throw new Error(data.message || "No se pudo habilitar el servicio");
             }
 
             setServices((prevItems) =>
@@ -116,7 +117,7 @@ const Servicios = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                throw new Error(data.message || "No se pudo deshabilitar el servicio");
+                throw new Error(data.error || "No se pudo habilitar el servicio");
             }
 
             setServices((prevItems) =>
@@ -140,7 +141,7 @@ const Servicios = () => {
             {currentUser.plan === "BASIC" && services.filter((s) => s.overLimit).length > 0 && (
                 <div className="warning-message">
                     <AlertCircle size={20} className="mr-2" />
-                    Has excedido el límite de servicios del plan {currentUser.plan}. Debe desactivar los sobrantes. El máximo permitido es {currentUser.plan == "PREMIUM"? "10": "3"}.
+                    Has excedido el límite de servicios del plan {currentUser.plan}. Debe desactivar los sobrantes. El máximo permitido es {currentUser.plan == "PREMIUM" ? "10" : "3"}.
                 </div>
             )}
 
@@ -238,10 +239,32 @@ const Servicios = () => {
                                         </div>
                                     </>
                                 )}
+                                {service.type === "otherService" && (
+                                    <>
+                                        <div className="service-description">
+                                            <div>
+                                                <span className="description-label">Información adicional:</span>
+                                                <span className="description-text">{service.extraInformation}</span>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
 
                                 <div className="service-description">
                                     <span className="description-label">Descripción:</span>
                                     <p className="description-text">{service.description}</p>
+                                </div>
+
+                                <div style={{ marginTop: "5%" }} className="card-info">
+                                    <span className="card-text">
+                                        <img style={{ height: "25%", width: "100%" }}
+                                            src={service.picture || "https://iili.io/3Ywlapf.png"}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = "https://iili.io/3Ywlapf.png";
+                                            }}
+                                            alt="Imagen del servicio"></img>
+                                    </span>
                                 </div>
                             </div>
 
@@ -279,27 +302,27 @@ const Servicios = () => {
                     ))}
                 </div>
             )}
-           {currentUser.plan === "BASIC" && (
-                services.filter((s) => s.available ).length < (currentUser.plan == "PREMIUM" ? 10: 3) ? (
+            {currentUser.plan && (
+                services.filter((s) => s.available).length < (currentUser.plan == "PREMIUM" ? 10 : 3) ? (
                     <div className="create-service-container">
-                    <button
-                        className="create-service-button"
-                        onClick={() => navigate("/misservicios/registrar")}
-                    >
-                        <Plus size={18} />
-                        Crear nuevo servicio
-                    </button>
+                        <button
+                            className="create-service-button"
+                            onClick={() => navigate("/misservicios/registrar")}
+                        >
+                            <Plus size={18} />
+                            Crear nuevo servicio
+                        </button>
                     </div>
                 ) : (
-                    
-                    <div className="warning-message">
-                    <AlertCircle size={20} className="mr-2" />
-                        Has excedido el límite de servicios activos ({currentUser.plan == "PREMIUM" ? "10": "3"}) del plan {currentUser.plan}, deshabilita alguno antes de crear más
-                    </div>
-                ) 
-            ) }
 
-            
+                    <div className="warning-message">
+                        <AlertCircle size={20} className="mr-2" />
+                        Has excedido el límite de servicios activos ({currentUser.plan == "PREMIUM" ? "10" : "3"}) del plan {currentUser.plan}, deshabilita alguno antes de crear más
+                    </div>
+                )
+            )}
+
+
         </div>
     )
 }

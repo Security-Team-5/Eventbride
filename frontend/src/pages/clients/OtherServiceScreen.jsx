@@ -386,7 +386,8 @@ const OtherServiceScreen = () => {
               ) : (
                 events.map((eventObj) => (
                   <div key={eventObj.id} className="event-card">
-                    <h3 className="event-title">{formatEventType(eventObj.eventType)}</h3>
+                    <span className="event-badge">{eventObj.eventType}</span>
+                    <h3 className="event-title" style={{ height: "10%", marginBottom: "10%" }}>{eventObj.name}</h3>
 
                     <div className="event-details">
                       <div className="event-detail">
@@ -492,21 +493,32 @@ const OtherServiceScreen = () => {
                     <p className="details-text">{serviceDetails.extraInformation}</p>
                   </div>
                 )}
+                <div className="card-info">
+                  <span className="card-text">
+                    <img style={{ height: "25%", width: "100%" }}
+                      src={serviceDetails.picture || "https://iili.io/3Ywlapf.png"}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://iili.io/3Ywlapf.png";
+                      }}
+                      alt="Imagen del servicio"></img>
+                  </span>
+                </div>
               </div>
             </div>
             <div className="modal-footer">
-            {serviceDetails.available &&
-              <button
-                className="primary-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setServiceDetailsVisible(false);
-                  handleAddServiceClick(e, serviceDetails.id);
-                }}
-              >
-                <Plus size={16} />
-                Añadir a mi evento
-              </button>}
+              {serviceDetails.available &&
+                <button
+                  className="primary-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setServiceDetailsVisible(false);
+                    handleAddServiceClick(e, serviceDetails.id);
+                  }}
+                >
+                  <Plus size={16} />
+                  Añadir a mi evento
+                </button>}
               <button className="secondary-button" onClick={() => setServiceDetailsVisible(false)}>
                 Cerrar
               </button>

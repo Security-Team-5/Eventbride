@@ -68,6 +68,7 @@ function AdminEvents() {
 
   function validateEventData(event) {
     setError("");
+
     const data = eventData[event.id];
     if (!data.eventType || !data.guests || !data.eventDate) {
       setError("Por favor, complete todos los campos obligatorios.");
@@ -91,6 +92,7 @@ function AdminEvents() {
       setError("La fecha del evento debe ser al menos dentro de 4 meses.");
       return false;
     }
+
     return true;
   }
 

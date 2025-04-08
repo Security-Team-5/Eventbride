@@ -56,13 +56,9 @@ public class VenueController {
     }
 
 	@PostMapping
-	public ResponseEntity<?> createVenue(@Valid @RequestBody Venue venue) {
-		try {
-			Venue newVenue = venueService.save(venue);
-			return ResponseEntity.ok(new VenueDTO(newVenue));
-		} catch (RuntimeException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	public ResponseEntity<?> createVenue(@Valid @RequestBody Venue venue) throws IllegalArgumentException {
+		Venue newVenue = venueService.save(venue);
+		return ResponseEntity.ok(new VenueDTO(newVenue));
 	}
 
 	@PutMapping("/{id}")
@@ -71,6 +67,7 @@ public class VenueController {
 			Venue updatedVenue = venueService.update(id, venue);
 			return ResponseEntity.ok(new VenueDTO(updatedVenue));
 		} catch (RuntimeException e) {
+			e.printStackTrace(); // 👈 añade esto para ver el mensaje en consola
 			return ResponseEntity.badRequest().build();
 		}
 	}
@@ -170,14 +167,14 @@ public class VenueController {
 		Boolean venues = eventPropertiesService.findAll().stream().filter(e -> e.getVenue() != null)
 				.anyMatch(e -> e.getVenue().getId() == service.getId());
 
-		if (!venues) {
+		//if (!venues) {
 			service.setAvailable(!service.getAvailable());
 			venueService.save(service);
 			return ResponseEntity.ok(Map.of("available", service.getAvailable()));
-		} else {
+		/*} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(Map.of("error", "No puedes deshabilitar servicios asociados a eventos"));
-		}
+		}*/
 	}
 
 }

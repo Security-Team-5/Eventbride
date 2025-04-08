@@ -21,20 +21,13 @@ public class EventDTO {
     private String name;
 
     // Constructor para simplificar la creación del DTO
-    public EventDTO(Event event) {
+    public EventDTO(Event event, List<EventPropertiesDTO> evenPropDTO) {
         this.id = event.getId();
         this.eventType = event.getEventType();
         this.guests = event.getGuests();
         this.eventDate = event.getEventDate();
-        this.eventPropertiesDTO = EventPropertiesDTO.fromEntities(event.getEventProperties());
+        this.eventPropertiesDTO = evenPropDTO;
         this.UserEmail = event.getUser().getEmail();
         this.name = event.getName();
-    }
-
-    // Método estático para crear una lista de DTOs a partir de una lista de entidades
-    public static List<EventDTO> fromEntities(List<Event> events) {
-        return events.stream()
-                .map(EventDTO::new)
-                .toList();
     }
 }

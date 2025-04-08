@@ -122,9 +122,6 @@ public class PaymentService {
     @Transactional
     public List<Payment> getPaymentsFromEventId(Integer eventId) {
         List<Payment> payments = paymentRepository.findPaymentsByEventId(eventId);
-        if (payments.isEmpty()) {
-            throw new RuntimeException("No se han encontrados pagos para este evento");
-        }
         return payments;
     }
 

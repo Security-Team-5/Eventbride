@@ -21,12 +21,12 @@ INSERT IGNORE INTO users (id, username, role, email, first_name, last_name, tele
 -- para probar notificaciones
 (19, 'Urgoneta', 'SUPPLIER', 'gonnavrem@alum.us.es', 'Urgon', 'Furgoneta', '432984729', '452516135J', 'https://carwow-es-wp-0.imgix.net/mercedes-benz_sprinter_panel_van_1.jpeg', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', "PREMIUM", '2025-03-20', '2030-04-20', true),
 -- admin
-(15, 'Admin', 'ADMIN', 'admin@example.com', 'Admin', 'Soyadmin', '666666666', '44444144A', 'https://iili.io/3R8p4yu.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null, false);
+(15, 'Admin', 'ADMIN', 'soporte@eventbride.fun', 'Admin', 'Soyadmin', '666666666', '44444144A', 'https://iili.io/3R8p4yu.png', '$2a$10$gyqEuh5bpJVhwuN44YwkjeaR6/1u2KqFTGhjYxWtH27Dmka569AmK', null, null, null, false);
 
 INSERT IGNORE INTO venues (id, postal_code, coordinates, address, max_guests, surface, name, available, city_available, service_price_guest, service_price_hour, picture, description, user_id, limited_by_price_per_guest, limited_by_price_per_hour, fixed_price, earliest_time, latest_time) VALUES 
 (1, '41000', '37.42571305296568, -5.82959169111589', 'Cam. Rocío, 404', 110, 100.00, 'Castillo de Maxi' ,TRUE, 'Sevilla', null, null, 'https://www.guiacatering.com/site/company/a7/1176/images/366309/el-castillo-de-maxi_ci3.jpg', '¿Sabías que entre nuestros servicios se encuentra la posibilidad de disfrutar de un castillo hinchable? ¡Los más pequeños se lo pasarán en grande!', 6, FALSE, FALSE, 1500.00, '09:00:00', '23:59:00'),
 (2, '41002', '37.411093725285504, -5.961539418106147', 'C/ Escarpia, 65', 200, 180.00, 'Mongo Mangos' ,TRUE, 'Sevilla', null, 400.00,'https://vientosolar.org/wp-content/uploads/2016/03/bpp8409a-401x249.jpg', 'Proporcionamos un lugar apegado a la naturaleza para que puedas disfrutar de un evento inolvidable.', 14, FALSE, TRUE, null, '09:00:00', '23:59:00'),
-(3, '41016', '37.384586822413134, -5.924800681544798', 'Polígono el Pino, C/ Pino Alepo, 26', 250, 200.00, 'Local Sur Music' ,TRUE, 'Sevilla', null, 450.00,'https://lh3.googleusercontent.com/p/AF1QipOy1mqdDE4hGxFNLpITcwDKMT9RK5k2z3T7jvzR=s680-w680-h510', 'SurMusic Sevilla es una empresa especializada en la producción de eventos integrales y cuenta con más de 10 años de experiencia en el sector. Durante este tiempo, hemos trabajado en colaboración con empresas privadas, ayuntamientos y organizaciones, para llevar a cabo una amplia variedad de eventos. ', 17, FALSE, TRUE, null, '09:00:00', '23:59:00'),
+(3, '41016', '37.384586822413134, -5.924800681544798', 'Polígono el Pino, C/ Pino Alepo, 26', 250, 200.00, 'Local Sur Music' ,TRUE, 'Sevilla', null, 450.00,'https://iili.io/3Y5Vygt.jpg', 'SurMusic Sevilla es una empresa especializada en la producción de eventos integrales y cuenta con más de 10 años de experiencia en el sector. Durante este tiempo, hemos trabajado en colaboración con empresas privadas, ayuntamientos y organizaciones, para llevar a cabo una amplia variedad de eventos. ', 17, FALSE, TRUE, null, '09:00:00', '23:59:00'),
 (4, '41110', '37.348800012123185, -6.13346199446344', 'Ctra. Prado de la Torre, S/N', 1750, 4000.00, 'Hacienda Pando' ,TRUE, 'Sevilla', null, null,'https://haciendapando.com/wp-content/uploads/2023/12/haciendas-en-sevilla-para-celebraciones-scaled.jpg', 'La Hacienda Pando lleva décadas albergando todo tipo de eventos, ya sea para empresas o de corte familiar con bodas, comuniones o bautizos. En esta cuidada hacienda de estilo andaluz, con bellos jardines y amplios salones, pueden albergarse hasta 900 comensales.', 18, FALSE, FALSE, 5000.00, '10:00:00', '20:00:00'),
 (5, '41001', '37.39132080000252, -5.997529461937325', 'C. San Eloy, 47', 189, 350.00, 'Restaurante Pando 1', TRUE, 'Sevilla', 42.00, null,'https://cateringpando.com/wp-content/uploads/2024/03/restaurante_pando_sevilla.jpg', 'Sumérgete en el encanto de la tradición andaluza en nuestro restaurante, ubicado en el corazón vibrante de Sevilla.', 18, TRUE, FALSE, null, '08:00:00', '23:30:00'),
 (6, '41001', '37.39132080000252, -5.997529461937325', 'C. San Eloy, 47', 189, 350.00, 'Restaurante Pando 2', TRUE, 'Sevilla', 46.00, null,'https://cateringpando.com/wp-content/uploads/2024/03/restaurante_pando_sevilla.jpg', 'Sumérgete en el encanto de la tradición andaluza en nuestro restaurante, ubicado en el corazón vibrante de Sevilla.', 18, TRUE, FALSE, null, '08:00:00', '23:30:00'),
@@ -42,16 +42,16 @@ INSERT IGNORE INTO other_services (id, other_service_type, extra_information, na
 (7, 'CATERING', 'Catering para eventos',  'ARCOS 3 CATERING' ,FALSE, 'Sevilla', 200.00, null, 'https://cdn0.bodas.net/vendor/16070/3_2/960/jpeg/whatsapp-image-2022-11-17-at-1-15-18-pm_1_16070-166868815185642.jpeg', 'Nos ponemos a tu servicio con nuestro equipo de profesionales preocupados por que todo salga perfecto en cualquier tipo de evento o celebración que realicen.', 13, TRUE, FALSE, null);
 
 INSERT IGNORE INTO events (id, event_type, guests, event_date, payment_date, confirmed_guests, paid, user_id, name) VALUES
-(1, 'WEDDING', 120, '2026-12-31', '2026-08-31', 115, TRUE, 1, "Boda de Daniel y Paula"),
-(2, 'CHRISTENING', 50, '2026-12-31', '2026-10-31', 40, TRUE, 2, "Bautizo de Juan Carlos"),
-(3, 'WEDDING', 200, '2026-12-31', '2026-08-31', 190, TRUE, 3, "Boda de Manolo y Lucía"),
-(4, 'COMMUNION', 100, '2026-12-31', '2026-11-30', 90, TRUE, 4, "Comunión de Jesús"),
-(6, 'WEDDING', 100, '2026-06-30', '2026-02-28', 90, TRUE, 1, "Boda de Antonio y María del Mar"),
-(5, 'WEDDING', 100, '2026-12-31', '2026-08-31', 90, TRUE, 5, "Boda de Juan y Nerea"),
-(7, 'CHRISTENING', 50, '2026-07-30', '2026-05-30', 40, TRUE, 2, "Bautizo de Pedro"),
-(8, 'COMMUNION', 30, '2026-08-30', '2026-07-30', 25, TRUE, 3, "Comunión de Pilar"),
-(9, 'WEDDING', 200, '2026-09-30', '2026-05-30', 190, TRUE, 4, "Boda de Pau y Sofía"),
-(10, 'CHRISTENING', 100, '2026-10-30', '2026-08-30', 90, TRUE, 5, "Bautizo de María");
+(1, 'WEDDING', 120, '2026-12-31', '2026-07-31', 115, TRUE, 1, "Boda de Daniel y Paula"),
+(2, 'CHRISTENING', 50, '2026-12-31', '2026-11-31', 40, TRUE, 2, "Bautizo de Juan Carlos"),
+(3, 'WEDDING', 200, '2026-12-31', '2026-07-31', 190, TRUE, 3, "Boda de Manolo y Lucía"),
+(4, 'COMMUNION', 100, '2026-12-31', '2026-09-30', 90, TRUE, 4, "Comunión de Jesús"),
+(6, 'WEDDING', 100, '2026-06-30', '2026-01-28', 90, TRUE, 1, "Boda de Antonio y María del Mar"),
+(5, 'WEDDING', 100, '2026-12-31', '2026-07-31', 90, TRUE, 5, "Boda de Juan y Nerea"),
+(7, 'CHRISTENING', 50, '2026-07-30', '2026-06-30', 40, TRUE, 2, "Bautizo de Pedro"),
+(8, 'COMMUNION', 30, '2026-08-30', '2026-05-30', 25, TRUE, 3, "Comunión de Pilar"),
+(9, 'WEDDING', 200, '2026-09-30', '2026-04-30', 190, TRUE, 4, "Boda de Pau y Sofía"),
+(10, 'CHRISTENING', 100, '2026-10-30', '2026-09-30', 90, TRUE, 5, "Bautizo de María");
 
 
 INSERT IGNORE INTO invitations (id, first_name, last_name, number_of_guests, max_guests, telephone, email, invitation_type, event_id) VALUES
@@ -65,35 +65,6 @@ INSERT IGNORE INTO invitations (id, first_name, last_name, number_of_guests, max
 (8, 'Francisco', 'Alba', 3, 3, '654000118', 'caleta@example.com', 'ACCEPTED', 4),
 (9, 'Kike', 'Remolino', 2, 2, '654000119', 'heavy@example.com', 'ACCEPTED', 5),
 (10, 'Julio', 'Pardo', 1, 1, '654000110',  'opera@example.com', 'ACCEPTED', 5);
-
-
-INSERT IGNORE INTO ratings (id, user_id, other_service_id, venue_id, stars, comment) VALUES
---user 1
-(1, 1, null, 1, 5, 'Great venue, had an amazing time!'),
-(2, 1, 1, null, 4, 'Great photography service, would recommend!'),
-(3, 1, 2, null, 4, 'Great service, would recommend!'),
---user2
-(4, 2, null, 1, 3, 'Good venue, but could be better.'),
-(5, 2, 1, null, 5, 'Great photography service, would recommend!'),
-(6, 1, 3, null, 4, 'Great service, would recommend!'),
-(7, 1, 6, null, 4, 'Great service, would recommend!'),
---user3
-(8, 3, null, 1, 5, 'Great venue, had an amazing time!'),
-(9, 3, 1, null, 4, 'Great photography service, would recommend!'),
-(10, 1, 4, null, 4, 'Great service, would recommend!'),
-(11, 1, 5, null, 4, 'Great service, would recommend!'),
-(12, 1, 6, null, 4, 'Great service, would recommend!'),
---user4
-(13, 4, null, 2, 3, 'Good venue, but could be better.'),
-(14, 4, 7, null, 5, 'Great photography service, would recommend!'),
-(15, 1, 5, null, 4, 'Great service, would recommend!'),
-(16, 1, 6, null, 4, 'Great service, would recommend!'),
---user5
-(17, 5, null, 2, 5, 'Great venue, had an amazing time!'),
-(18, 5, 2, null, 5, 'Great photography service, would recommend!'),
-(19, 1, 3, null, 4, 'Great service, would recommend!'),
-(20, 1, 5, null, 4, 'Great service, would recommend!'),
-(21, 1, 6, null, 4, 'Great service, would recommend!');
 
 INSERT IGNORE INTO event_properties (id, event_id, other_service_id, venue_id, start_time, end_time, status, deposit_amount, price_per_service, book_date) VALUES
 --user1

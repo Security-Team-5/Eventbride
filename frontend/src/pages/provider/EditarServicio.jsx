@@ -102,14 +102,28 @@ const EditarServicio = () => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
-
-        const updatedFormData = {
+    
+        // Construir el objeto actualizado con tipos numéricos correctos
+        let updatedFormData = {
             ...formData,
             limitedByPricePerGuest: limitedBy === "perGuest",
-            limitedByPricePerHour: limitedBy === "perHour"
+            limitedByPricePerHour: limitedBy === "perHour",
+            servicePricePerGuest: parseFloat(formData.servicePricePerGuest),
+            servicePricePerHour: parseFloat(formData.servicePricePerHour),
+            fixedPrice: parseFloat(formData.fixedPrice),
+            surface: parseFloat(formData.surface),
+            maxGuests: parseInt(formData.maxGuests),
+            earliestTime: formData.earliestTime,
+            latestTime: formData.latestTime
         };
-
+    
+        // Eliminar propiedades innecesarias o problemáticas
+        delete updatedFormData.id;
+        delete updatedFormData.new;
+    
         try {
+            console.log("Payload a enviar:", updatedFormData);
+
             if (serviceType === 'venue') {
                 await apiClient.put(`/api/venues/${id}`, updatedFormData);
             } else {
@@ -123,6 +137,7 @@ const EditarServicio = () => {
             setIsLoading(false);
         }
     };
+    
 
     if (isLoading && !formData.name) {
         return <div className="loading-container">Cargando información del servicio...</div>;
@@ -231,7 +246,7 @@ const EditarServicio = () => {
                                 onChange={handleChange}
                                 required
                                 minLength="1"
-                                maxLength="10000"
+                                maxLength="5000"
                                 className="form-textarea"
                                 rows="4"
                             />
@@ -480,7 +495,7 @@ const EditarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="10000"
+                                    maxLength="5000"
                                     className="form-textarea"
                                     rows="4"
                                 />
@@ -489,7 +504,7 @@ const EditarServicio = () => {
                     )}
 
                     <div className="form-actions">
-                        <button type="button" className="cancel-button" onClick={() => navigate('/misservicios')}>
+                        <button type="button" style={{width:"30%", height:"30%", marginTop:"2.3%"}} className="cancel-button" onClick={() => navigate('/misservicios')}>
                             Cancelar
                         </button>
                         <button type="submit" className="submit-button" disabled={isLoading}>

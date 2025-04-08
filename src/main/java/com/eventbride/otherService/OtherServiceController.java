@@ -66,13 +66,9 @@ public class OtherServiceController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
-		try {
-			OtherService newOtherService = otherServiceService.createOtherService(otherService);
-			return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
-		} catch (RuntimeException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) throws IllegalArgumentException{
+		OtherService newOtherService = otherServiceService.createOtherService(otherService);
+		return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
 	}
 
 	@DeleteMapping("/delete/{id}")
@@ -214,8 +210,8 @@ public ResponseEntity<?> updateServiceUser(@PathVariable Integer id, @Valid @Req
 		// servicio
 		Boolean otherServices = eventPropertiesService.findAll().stream().filter(e -> e.getOtherService() != null)
 				.anyMatch(e -> e.getOtherService().getId() == service.getId());
-
 		if (!otherServices) {
+
 			service.setAvailable(!service.getAvailable());
 			otherServiceService.save(service);
 			return ResponseEntity.ok(Map.of("available", service.getAvailable()));

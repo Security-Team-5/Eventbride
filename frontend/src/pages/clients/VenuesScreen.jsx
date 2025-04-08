@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ChevronUp,
   Info,
+  Calendar,
   ArrowRight,
 } from "lucide-react"
 import { Link } from "react-router-dom"
@@ -413,6 +414,17 @@ const VenuesScreen = () => {
                     <strong>Código Postal:</strong> {selectedVenue.postalCode}
                   </span>
                 </div>
+                <div className="card-info">
+                  <span className="card-text">
+                    <img style={{ height: "25%", width: "100%" }}
+                      src={selectedVenue.picture || "https://iili.io/3Ywlapf.png"}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://iili.io/3Ywlapf.png";
+                      }}
+                      alt="Imagen del servicio"></img>
+                  </span>
+                </div>
               </div>
             </div>
             <div className="modal-footer">
@@ -455,13 +467,16 @@ const VenuesScreen = () => {
                     <div className="event-header" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       <div>
                         <span className="event-badge">{eventObj.eventType}</span>
-                        <h3 className="event-title" style={{ height: "10%"}}>Evento del {formatDate(eventObj.eventDate)}</h3>
+                        <h3 className="event-title" style={{ height: "10%" }}>{eventObj.name}</h3>
                       </div>
                       <div className="card-info">
                         <Users size={16} className="card-icon" />
                         <span className="card-text">{eventObj.guests} invitados</span>
+                        <Calendar size={18} className="detail-icon" />
+                        <span className="detail-text">{formatDate(eventObj.eventDate)}</span>
                       </div>
                     </div>
+
 
                     <div className="time-input-group">
                       <div className="input-group">
@@ -510,7 +525,7 @@ const VenuesScreen = () => {
               )}
             </div>
             <div className="modal-footer">
-              <button style={{width:"10%"}}className="close-button" onClick={() => setAddModalVisible(false)}>
+              <button style={{ width: "10%" }} className="close-button" onClick={() => setAddModalVisible(false)}>
                 Cerrar
               </button>
             </div>

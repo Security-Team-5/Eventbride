@@ -57,7 +57,9 @@ public class UserManagementService {
             user.setDni(registrationRequest.getDni());
             if (registrationRequest.getProfilePicture()==null || registrationRequest.getProfilePicture()==""){
                 user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
-            }            
+            }
+            user.setReceivesEmails(registrationRequest.getReceivesEmails());
+            
             user.setRole(registrationRequest.getRole());
             User userResult = userRepo.save(user);
             if (userResult.getId()>0) {
@@ -126,41 +128,6 @@ public class UserManagementService {
             response.setMessage(e.getMessage());
             return response;
         }
-    }
-
-    public ReqRes getAllUsers() {
-        ReqRes reqRes = new ReqRes();
-
-        try {
-            List<User> result = userRepo.findAll();
-            if (!result.isEmpty()) {
-                reqRes.setUsersList(result);
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("Successful");
-            } else {
-                reqRes.setStatusCode(404);
-                reqRes.setMessage("No se encontraron usuarios");
-            }
-            return reqRes;
-        } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred: " + e.getMessage());
-            return reqRes;
-        }
-    }
-
-    public ReqRes getUsersById(Integer id) {
-        ReqRes reqRes = new ReqRes();
-        try {
-            User userById = userRepo.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-            reqRes.setUser(new UserDTO(userById));
-            reqRes.setStatusCode(200);
-            reqRes.setMessage("Usuario con id '" + id + "' encontrado exitosamente");
-        } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Ocurrió un error: " + e.getMessage());
-        }
-        return reqRes;
     }
 
     public ReqRes deleteUser(Integer userId) {
