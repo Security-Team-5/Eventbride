@@ -57,18 +57,34 @@ public class VenueController {
 
 	@PostMapping
 	public ResponseEntity<?> createVenue(@Valid @RequestBody Venue venue) throws IllegalArgumentException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+		if (!roles.contains("SUPPLIER")) {
+			throw new IllegalArgumentException("No tienes permisos para crear este venue.");
+		}
+
 		Venue newVenue = venueService.save(venue);
 		return ResponseEntity.ok(new VenueDTO(newVenue));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<VenueDTO> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue venue) {
+	public ResponseEntity<?> updateVenue(@PathVariable Integer id, @Valid @RequestBody Venue venue) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+		if (!roles.contains("SUPPLIER")) {
+			return new ResponseEntity<>("No tienes permisos para editar este venue.", HttpStatus.FORBIDDEN);
+		}
+
 		try {
 			Venue updatedVenue = venueService.update(id, venue);
 			return ResponseEntity.ok(new VenueDTO(updatedVenue));
 		} catch (RuntimeException e) {
-			e.printStackTrace(); // 👈 añade esto para ver el mensaje en consola
-			return ResponseEntity.badRequest().build();
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 

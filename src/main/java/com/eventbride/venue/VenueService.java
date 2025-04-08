@@ -125,30 +125,21 @@ public class VenueService {
 
 	@Transactional
 	public Venue updateVenue(Integer id, Venue updatedVenue) {
-
 		Venue existingVenue = venueRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("No se ha encontrado ningun Venue con esa Id"));
+			.orElseThrow(() -> new RuntimeException("No se ha encontrado ningún Venue con esa Id"));
 
-		existingVenue.setName(updatedVenue.getName());
-		existingVenue.setAvailable(updatedVenue.getAvailable());
-		existingVenue.setCityAvailable(updatedVenue.getCityAvailable());
-		existingVenue.setServicePricePerGuest(updatedVenue.getServicePricePerGuest());
-		existingVenue.setServicePricePerHour(updatedVenue.getServicePricePerHour());
-		existingVenue.setFixedPrice(updatedVenue.getFixedPrice());
-		existingVenue.setPicture(updatedVenue.getPicture());
-		existingVenue.setDescription(updatedVenue.getDescription());
-		existingVenue.setLimitedByPricePerGuest(updatedVenue.getLimitedByPricePerGuest());
-		existingVenue.setLimitedByPricePerHour(updatedVenue.getLimitedByPricePerHour());
+		// Evita sobrescribir el ID ni el usuario original directamente
+		BeanUtils.copyProperties(updatedVenue, existingVenue, "id", "user");
 
-		existingVenue.setAddress(updatedVenue.getAddress());
-		existingVenue.setPostalCode(updatedVenue.getPostalCode());
-		existingVenue.setCoordinates(updatedVenue.getCoordinates());
-		existingVenue.setMaxGuests(updatedVenue.getMaxGuests());
-		existingVenue.setSurface(updatedVenue.getSurface());
-        existingVenue.setEarliestTime(updatedVenue.getEarliestTime());
-        existingVenue.setLatestTime(updatedVenue.getLatestTime());
-		existingVenue.setUser(updatedVenue.getUser());
-		// Guardar el Venue actualizado
+		if (updatedVenue.getUser().getId() == null) {
+			throw new RuntimeException("Falta el usuario al actualizar el Venue.");
+		}
+
+		User user = userService.getUserById(updatedVenue.getUser().getId())
+			.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+		existingVenue.setUser(user);
+
 		return venueRepository.save(existingVenue);
 	}
 
