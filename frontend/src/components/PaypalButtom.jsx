@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../static/resources/css/Paypal.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function PaypalButton({ amount, paymentType, eventProp }) {
   const navigate = useNavigate();
+  const [jwtToken] = useState(localStorage.getItem("jwt"));
 
   useEffect(() => {
 
@@ -13,8 +14,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
       if (paymentType === 'DEPOSITO PARA RESERVA') {
         try {
           const currentUser = JSON.parse(localStorage.getItem("user"))
-          const response = await axios.post(`/api/payment/${eventProp.id}/pay-deposit/${currentUser.id}`);
-          console.log(response.data);
+          await axios.post(`/api/payment/${eventProp.id}/pay-deposit/${currentUser.id}`);
 
         } catch (error) {
           alert('Error al pagar');
@@ -24,8 +24,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
         //INTRODUCIR LÓGICA DE PAGO RESTANTE
         try {
           const currentUser = JSON.parse(localStorage.getItem("user"))
-          const response = await axios.post(`/api/payment/${eventProp.id}/pay-remaining/${currentUser.id}`);
-          console.log(response.data);
+          await axios.post(`/api/payment/${eventProp.id}/pay-remaining/${currentUser.id}`);
         } catch (error) {
           alert('Error al pagar');
           console.error(error);
@@ -35,8 +34,12 @@ function PaypalButton({ amount, paymentType, eventProp }) {
 
     async function cancelEventAfterPayment() {
       try {
-        const currentUser = JSON.parse(localStorage.getItem("user"));
-        await axios.put(`/api/event-properties/cancel/${eventProp.id}`, currentUser);
+        await fetch(`/api/event-properties/cancel/${eventProp.id}`, {
+          method: "PUT", 
+          headers: {
+            "Authorization": `Bearer ${jwtToken}`,
+          },
+        });
         console.log('Evento cancelado correctamente');
       } catch (error) {
         console.error('Error al cancelar evento:', error);

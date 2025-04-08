@@ -275,7 +275,7 @@ public class EventPropertiesController {
     // q se crea un payment y q el eventproperties de ese payment sea el que se ha
     // cancelado
     @PutMapping("/cancel/{eventPropertieID}")
-    public ResponseEntity<Void> cancelEventPropertie(@PathVariable Integer eventPropertieID, @RequestBody User user) {
+    public ResponseEntity<Void> cancelEventPropertie(@PathVariable Integer eventPropertieID) {
         EventProperties evenProp = eventPropertiesService.findById(eventPropertieID);
         LocalDate fechaEvento = evenProp.getStartTime().toLocalDate();
         if (evenProp.getVenue() != null) {
