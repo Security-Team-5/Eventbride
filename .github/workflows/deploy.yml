@@ -3,7 +3,7 @@ name: Deploy to Google App Engine
 on:
   push:
     branches:
-      - deploy/ramaSprintX
+      - develop
 
 jobs:
   deploy:
@@ -65,4 +65,4 @@ jobs:
       #Desplegar a Google App Engine
       - name: Deploy to App Engine
         run: |
-          gcloud app deploy --quiet
+          gcloud app deploy --version=sprint3 --no-promote --quiet
