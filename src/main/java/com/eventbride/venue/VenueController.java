@@ -67,6 +67,7 @@ public class VenueController {
 			Venue updatedVenue = venueService.update(id, venue);
 			return ResponseEntity.ok(new VenueDTO(updatedVenue));
 		} catch (RuntimeException e) {
+			e.printStackTrace(); // 👈 añade esto para ver el mensaje en consola
 			return ResponseEntity.badRequest().build();
 		}
 	}

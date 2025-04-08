@@ -128,15 +128,21 @@ public class OtherServiceService {
 
     @Transactional
     public OtherService updateOtherService(Integer id, OtherService otherServ) {
-        OtherService otherService = otherServiceRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("No se ha encontrado ningun servicio con esa Id"));
-
-        User usuarioExistente = otherService.getUser();
-        BeanUtils.copyProperties(otherServ, otherService);
-        otherService.setUser(usuarioExistente);
-
-        return otherServiceRepo.save(otherService);
-
+        OtherService existingService = otherServiceRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("No se ha encontrado ningún servicio con esa Id"));
+    
+        BeanUtils.copyProperties(otherServ, existingService, "id", "user");
+    
+        if (otherServ.getUser().getId() == null) {
+            throw new RuntimeException("Falta el usuario al actualizar el servicio.");
+        }
+    
+        User user = userService.getUserById(otherServ.getUser().getId())
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    
+        existingService.setUser(user);
+    
+        return otherServiceRepo.save(existingService);
     }
 
     @Transactional

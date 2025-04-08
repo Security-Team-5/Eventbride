@@ -104,17 +104,24 @@ public class VenueService {
         return venueRepository.save(venue);
     }
 
-    @Transactional
-
-    public Venue update(Integer id, Venue venue) {
-        Venue existingVenue = venueRepository.findById(id).orElse(null);
-        if (existingVenue == null) {
-            throw new RuntimeException("Venue not found");
-        }
-        BeanUtils.copyProperties(venue, existingVenue, "id");
-
-        return venueRepository.save(existingVenue);
-    }
+	@Transactional
+	public Venue update(Integer id, Venue venue) {
+		Venue existingVenue = venueRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("Venue not found"));
+	
+		BeanUtils.copyProperties(venue, existingVenue, "id", "user"); 
+	
+		if (venue.getUser().getId() == null) {
+			throw new RuntimeException("Falta el usuario al actualizar el venue.");
+		}
+	
+		User user = userService.getUserById(venue.getUser().getId())
+			.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+	
+		existingVenue.setUser(user);
+	
+		return venueRepository.save(existingVenue);
+	}
 
 	@Transactional
 	public Venue updateVenue(Integer id, Venue updatedVenue) {
@@ -140,7 +147,7 @@ public class VenueService {
 		existingVenue.setSurface(updatedVenue.getSurface());
         existingVenue.setEarliestTime(updatedVenue.getEarliestTime());
         existingVenue.setLatestTime(updatedVenue.getLatestTime());
-
+		existingVenue.setUser(updatedVenue.getUser());
 		// Guardar el Venue actualizado
 		return venueRepository.save(existingVenue);
 	}
