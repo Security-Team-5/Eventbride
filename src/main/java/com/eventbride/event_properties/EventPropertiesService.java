@@ -207,7 +207,7 @@ public class EventPropertiesService {
             User client = event.getUser();
             User provider = eventProperty.getOtherService().getUser();
             
-            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty, null);
             
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6@gmail.com");
@@ -245,7 +245,7 @@ public class EventPropertiesService {
             User client = event.getUser();
             User provider = eventProperty.getVenue().getUser();
             
-            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty, null);
             
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6@gmail.com");
@@ -392,6 +392,7 @@ public class EventPropertiesService {
             notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties, null);
             eventProperties.setOtherService(null);
         }
+        notificationService.createNotification(NotificationType.EVENTPROPERTIES_DELETED, event.get().getUser(), event.get(), eventProperties, null);
         eventPropertiesRepository.deleteById(id);
 
     }

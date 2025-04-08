@@ -53,5 +53,6 @@ public class Notification extends BaseEntity {
         INVITATION_DELETED,
         PLAN_EXPIRED,
         PLAN_UPGRADED,
+        EVENTPROPERTIES_DELETED
     }
 }

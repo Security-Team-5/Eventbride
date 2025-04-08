@@ -164,6 +164,14 @@ public class NotificationService {
                 notification.setMessage("Tu plan ha sido mejorado al plan premium.");
                 sendEmailNotification(user, notification.getSubject(), notification.getMessage());
                 break;
+            case EVENTPROPERTIES_DELETED:
+                notification.setType(NotificationType.EVENTPROPERTIES_DELETED);
+                notification.setSubject("Eliminación de servicio");
+                notification.setMessage("Has eliminado el servicio " + (eventProperties.getOtherService() != null ? eventProperties.getOtherService().getName()
+                        : eventProperties.getVenue().getName()) + " para el evento " + event.getName() + ".\n" +
+                        "Recuerda que puedes ver la lista de servicios en tu perfil.");
+                sendEmailNotification(user, notification.getSubject(), notification.getMessage());
+                break;
             default:
                 throw new RuntimeException("Unknown notification type: " + type);
         }
