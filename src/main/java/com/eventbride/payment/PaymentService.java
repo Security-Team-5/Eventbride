@@ -39,8 +39,32 @@ public class PaymentService {
         this.eventRepository = eventRepository;
     }
 
+    private boolean isAuthorizedForPayment(Integer userId, Integer eventPropertiesId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return false;
+        }
+        
+        if ("ADMIN".equals(user.getRole())) {
+            return true;
+        }
+        
+        Optional<Event> eventOpt = eventRepository.findByEventPropertiesId(eventPropertiesId);
+        if (!eventOpt.isPresent()) {
+            return false;
+        }
+        
+        Event event = eventOpt.get();
+        
+        return event.getUser() != null && event.getUser().getId().equals(userId);
+    }
+
     @Transactional
     public Payment payDeposit(Integer eventPropertiesId, Integer userId) {
+        if (!isAuthorizedForPayment(userId, eventPropertiesId)) {
+            throw new RuntimeException("El usuario no está autorizado para realizar este pago");
+        }
+
         EventProperties e = eventPropertiesRepository.findById(eventPropertiesId).orElse(null);
         Payment p;
 
@@ -70,8 +94,12 @@ public class PaymentService {
         return p;
     }
 
-    // FALTA FUNCIONES PARA PAGO RESTANTE
+    @Transactional
     public Payment payRemaining(Integer eventPropertiesId, Integer userId) {
+        if (!isAuthorizedForPayment(userId, eventPropertiesId)) {
+            throw new RuntimeException("El usuario no está autorizado para realizar este pago");
+        }
+
         EventProperties e = eventPropertiesRepository.findById(eventPropertiesId).orElse(null);
         Payment p;
 
@@ -132,5 +160,5 @@ public class PaymentService {
         }
         return payments;
     }
-
+    
 }
