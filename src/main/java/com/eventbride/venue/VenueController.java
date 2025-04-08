@@ -45,15 +45,16 @@ public class VenueController {
 				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
-    @GetMapping("/filter")
-    public ResponseEntity<List<VenueDTO>> getFilteredVenues(
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) Integer maxGuests,
-            @RequestParam(required = false) Double surface) {
-        List<Venue> filteredVenues = venueService.getFilteredVenues(city, maxGuests, surface);
+
+	@GetMapping("/filter")
+	public ResponseEntity<List<VenueDTO>> getFilteredVenues(
+			@RequestParam(required = false) String city,
+			@RequestParam(required = false) Integer maxGuests,
+			@RequestParam(required = false) Double surface) {
+		List<Venue> filteredVenues = venueService.getFilteredVenues(city, maxGuests, surface);
 		return ResponseEntity.ok(VenueDTO.fromEntities(filteredVenues));
 
-    }
+	}
 
 	@PostMapping
 	public ResponseEntity<?> createVenue(@Valid @RequestBody Venue venue) throws IllegalArgumentException {
@@ -170,6 +171,8 @@ public class VenueController {
 	@PatchMapping("/disable/{id}")
 	public ResponseEntity<?> toggleVenueAvailability(@PathVariable Integer id) {
 		Optional<Venue> optionalService = venueService.getVenueById(id);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
 
 		if (optionalService.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -178,19 +181,33 @@ public class VenueController {
 
 		Venue service = optionalService.get();
 
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).toList();
+
+		boolean isAdmin = roles.contains("ADMIN") || roles.contains("ROLE_ADMIN");
+
+		boolean isSupplierAndOwner = (roles.contains("SUPPLIER") || roles.contains("ROLE_SUPPLIER"))
+				&& service.getUser() != null
+				&& service.getUser().getUsername().equals(username);
+
+		if (!isAdmin && !isSupplierAndOwner) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN)
+					.body(Map.of("error", "No tienes permisos para modificar este servicio"));
+		}
+
 		// Asegurarse que no se puede hacer disable si existen eventos asociados al
-		// servicio
+		// recinto
 		Boolean venues = eventPropertiesService.findAll().stream().filter(e -> e.getVenue() != null)
 				.anyMatch(e -> e.getVenue().getId() == service.getId());
 
-		//if (!venues) {
-			service.setAvailable(!service.getAvailable());
-			venueService.save(service);
-			return ResponseEntity.ok(Map.of("available", service.getAvailable()));
-		/*} else {
+		if (venues) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("error", "No puedes deshabilitar servicios asociados a eventos"));
-		}*/
+					.body(Map.of("error", "No puedes deshabilitar recintos asociados a eventos"));
+		}
+
+		service.setAvailable(!service.getAvailable());
+		venueService.save(service);
+		return ResponseEntity.ok(Map.of("available", service.getAvailable()));
 	}
 
 }

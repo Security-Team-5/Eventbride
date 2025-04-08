@@ -231,6 +231,8 @@ public class OtherServiceController {
 					.body(Map.of("error", "No tienes permisos para modificar este servicio"));
 		}
 
+		// Asegurarse que no se puede hacer disable si existen eventos asociados al
+		// servicio
 		boolean isAssociatedToEvents = eventPropertiesService.findAll().stream()
 				.anyMatch(e -> e.getOtherService() != null && e.getOtherService().getId().equals(service.getId()));
 
