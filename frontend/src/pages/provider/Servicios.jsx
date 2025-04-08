@@ -239,6 +239,16 @@ const Servicios = () => {
                                         </div>
                                     </>
                                 )}
+                                {service.type === "otherService" && (
+                                    <>
+                                        <div className="service-description">
+                                            <div>
+                                                <span className="description-label">Información adicional:</span>
+                                                <span className="description-text">{service.extraInformation}</span>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
 
                                 <div className="service-description">
                                     <span className="description-label">Descripción:</span>
