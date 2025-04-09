@@ -214,6 +214,20 @@ const EditarServicio = () => {
                             />
                         </div>
 
+                        {formData.picture && (
+                            <div className="image-preview" style={{ marginTop: '1rem' }}>
+                                <img
+                                    src={formData.picture}
+                                    alt="Previsualización"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = "https://iili.io/3Ywlapf.png";
+                                    }}
+                                    style={{ maxWidth: '600px', maxHeight: '400px', marginTop: '-2rem' }}
+                                />
+                            </div>
+                        )}
+
                         <div className="form-group">
                             <label htmlFor="description">
                                 Descripción
