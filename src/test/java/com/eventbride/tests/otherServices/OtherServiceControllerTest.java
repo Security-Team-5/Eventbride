@@ -1,6 +1,8 @@
 package com.eventbride.tests.otherServices;
 
 import com.eventbride.dto.OtherServiceDTO;
+import com.eventbride.event_properties.EventProperties;
+import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.otherService.OtherService;
 import com.eventbride.otherService.OtherService.OtherServiceType;
 import com.eventbride.otherService.OtherServiceService;
@@ -25,6 +27,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,6 +43,9 @@ class OtherServiceControllerTest {
 
     @MockBean
     private OtherServiceService otherServiceService;
+    
+    @MockBean
+    private EventPropertiesService eventPropertiesService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -250,9 +256,8 @@ class OtherServiceControllerTest {
     @Test
     @WithMockUser(username = "testuser", roles = {"SUPPLIER"})
     void testDeleteOtherService_withoutPermission() throws Exception {
-        // Crear un servicio de prueba con un usuario diferente
         User user = new User();
-        user.setId(2);  // Usuario diferente al que está autenticado
+        user.setId(2);
         user.setUsername("anotheruser");
         user.setEmail("anotheruser@example.com");
         user.setRole("SUPPLIER");
@@ -260,23 +265,20 @@ class OtherServiceControllerTest {
         OtherService otherService = new OtherService();
         otherService.setId(1);
         otherService.setName("Catering Premium");
-        otherService.setUser(user);  // Usuario que no coincide con el autenticado
+        otherService.setUser(user);
 
-        // Configurar el comportamiento del mock para que devuelva un servicio con un usuario diferente
         when(otherServiceService.getOtherServiceById(1)).thenReturn(Optional.of(otherService));
 
-        // Realizar la petición DELETE y verificar que la respuesta es 401
         mockMvc.perform(delete("/api/other-services/delete/1"))
-                .andExpect(status().isUnauthorized())  // Verificamos que es un error 401
-                .andExpect(content().string("No tienes permisos para eliminar este servicio"));  // Verificamos el mensaje
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("No tienes permisos para eliminar este servicio"));
     }
 
     @Test
     @WithMockUser(username = "testuser", roles = {"SUPPLIER"})
     void testDeleteOtherService_success() throws Exception {
-        // Crear un servicio de prueba con el mismo usuario autenticado
         User user = new User();
-        user.setId(1);  // El mismo ID que el usuario autenticado
+        user.setId(1);
         user.setUsername("testuser");
         user.setEmail("testuser@example.com");
         user.setRole("SUPPLIER");
@@ -284,16 +286,14 @@ class OtherServiceControllerTest {
         OtherService otherService = new OtherService();
         otherService.setId(1);
         otherService.setName("Catering Premium");
-        otherService.setUser(user);  // Usuario coincide con el autenticado
+        otherService.setUser(user);
 
-        // Configurar el comportamiento del mock para que devuelva el servicio correctamente
         when(otherServiceService.getOtherServiceById(1)).thenReturn(Optional.of(otherService));
         doNothing().when(otherServiceService).deleteOtherService(1);
 
-        // Realizar la petición DELETE y verificar que la respuesta es 200
         mockMvc.perform(delete("/api/other-services/delete/1"))
-                .andExpect(status().isOk())  // Verificamos que es un éxito (200 OK)
-                .andExpect(content().string("Eliminado correctamente"));  // Verificamos el mensaje
+                .andExpect(status().isOk())
+                .andExpect(content().string("Eliminado correctamente"));
     }
 
 }
