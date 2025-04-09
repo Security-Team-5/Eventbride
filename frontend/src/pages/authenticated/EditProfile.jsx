@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { AlertCircle } from "lucide-react" // Importa un icono de alerta (puedes usar cualquier librería de iconos que tengas)
 import "../../static/resources/css/EditProfile.css"
+import { useAlert } from "../../context/AlertContext"
 
 function EditProfile() {
     const [userData, setUserData] = useState({
@@ -23,6 +24,8 @@ function EditProfile() {
     const [editing, setEditing] = useState(false)
     const [jwtToken, setJwtToken] = useState("")
     const [originalUsername, setOriginalUsername] = useState("")
+
+    const { showAlert } = useAlert()
 
     useEffect(() => {
         // Get JWT token from localStorage
@@ -69,35 +72,35 @@ function EditProfile() {
     const updateUser = async () => {
         // Validación similar a Register.jsx
         if (!userData.firstName || userData.firstName.length > 40) {
-          alert("El nombre no puede estar vacío ni tener más de 40 caracteres.");
+          showAlert("El nombre no puede estar vacío ni tener más de 40 caracteres.");
           return;
         }
       
         if (!userData.lastName || userData.lastName.length > 40) {
-          alert("El apellido no puede estar vacío ni tener más de 40 caracteres.");
+          showAlert("El apellido no puede estar vacío ni tener más de 40 caracteres.");
           return;
         }
       
         if (!userData.username || userData.username.length > 50) {
-          alert("El nombre de usuario no puede estar vacío ni tener más de 50 caracteres.");
+          showAlert("El nombre de usuario no puede estar vacío ni tener más de 50 caracteres.");
           return;
         }
       
         const dniPattern = /^[0-9]{8}[A-Za-z]$/;
         if (!dniPattern.test(userData.dni)) {
-          alert("El DNI es incorrecto. Debe tener 8 números seguidos de una letra.");
+          showAlert("El DNI es incorrecto. Debe tener 8 números seguidos de una letra.");
           return;
         }
       
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(userData.email)) {
-          alert("El correo electrónico no es válido.");
+          showAlert("El correo electrónico no es válido.");
           return;
         }
       
         const telephonePattern = /^[0-9]{9}$/;
         if (!telephonePattern.test(userData.telephone)) {
-          alert("El teléfono debe contener exactamente 9 dígitos.");
+          showAlert("El teléfono debe contener exactamente 9 dígitos.");
           return;
         }
       
@@ -128,16 +131,16 @@ function EditProfile() {
           setEditing(false);
       
           if (originalUsername !== userData.username) {
-            alert("Has cambiado tu nombre de usuario. Por favor, inicia sesión nuevamente.");
+            showAlert("Has cambiado tu nombre de usuario. Por favor, inicia sesión nuevamente.");
             handleLogout();
             return;
           }
       
-          alert("Perfil actualizado con éxito");
+          showAlert("Perfil actualizado con éxito");
           window.location.href = "/profile";
         } catch (error) {
           console.error("Error actualizando perfil:", error);
-          alert(error.message || "Error al actualizar el perfil.");
+          showAlert(error.message || "Error al actualizar el perfil.");
         }
       };
       

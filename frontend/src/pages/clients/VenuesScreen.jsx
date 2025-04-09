@@ -19,6 +19,7 @@ import {
 import { Link } from "react-router-dom"
 import "../../static/resources/css/VenueScreen.css"
 import LeafletMap from "../../components/LeafletMap";
+import { useAlert } from "../../context/AlertContext.jsx"
 
 const VenuesScreen = () => {
   const [venues, setVenues] = useState([])
@@ -39,6 +40,8 @@ const VenuesScreen = () => {
   // Para almacenar la hora de inicio y fin (solo horas y minutos) de cada venue dentro del evento
   const [venueTimes, setVenueTimes] = useState({})
   const [loading, setLoading] = useState(true)
+
+  const { showAlert } = useAlert()
 
   // ------------------------------------------------------------------------------
   // Obtiene venues con o sin filtros
@@ -209,7 +212,7 @@ const VenuesScreen = () => {
   const handleConfirmVenue = async (eventObj, venueId) => {
     const times = venueTimes[eventObj.id] || {}
     if (!times.startTime || !times.endTime) {
-      alert("Por favor, ingresa la hora de inicio y la hora de fin para este venue.")
+      showAlert("Por favor, ingresa la hora de inicio y la hora de fin para este venue.")
       return
     }
     // Combinar la fecha del evento con la hora que indicó el usuario
@@ -221,11 +224,11 @@ const VenuesScreen = () => {
         params: { startDate, endDate },
         headers: { Authorization: `Bearer ${jwtToken}` }
       })
-      alert("¡Operación realizada con éxito!")
+      showAlert("¡Operación realizada con éxito!")
       setAddModalVisible(false)
     } catch (error) {
       console.error("Error al añadir el venue:", error)
-      alert("Este evento ya tiene un servicio asociado.")
+      showAlert("Este evento ya tiene un servicio asociado.")
     }
   }
 
@@ -273,7 +276,7 @@ const VenuesScreen = () => {
                 onChange={(e) => {
                   const value = Number(e.target.value);
                   if (value < 0) {
-                    alert("El número no puede ser negativo");
+                    showAlert("El número no puede ser negativo");
                     return;
                   }
                   setMaxGuests(value);
@@ -290,7 +293,7 @@ const VenuesScreen = () => {
                 onChange={(e) => {
                   const value = Number(e.target.value);
                   if (value < 0) {
-                    alert("El número no puede ser negativo");
+                    showAlert("El número no puede ser negativo");
                     return;
                   }
                   setSurface(value);
