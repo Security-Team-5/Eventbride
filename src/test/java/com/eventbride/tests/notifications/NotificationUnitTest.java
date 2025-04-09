@@ -86,7 +86,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.EVENT_CREATED, user, event, null);
+        notificationService.createNotification(Notification.NotificationType.EVENT_CREATED, user, event, null, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -115,7 +115,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.EVENT_CREATED, user, event, null);
+        notificationService.createNotification(Notification.NotificationType.EVENT_CREATED, user, event, null, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -143,7 +143,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.PAYMENT_REMINDER, user, event, null);
+        notificationService.createNotification(Notification.NotificationType.PAYMENT_REMINDER, user, event, null, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -167,7 +167,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.NEW_MESSAGE, user, null, null);
+        notificationService.createNotification(Notification.NotificationType.NEW_MESSAGE, user, null, null, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -200,7 +200,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.REQUEST_CANCELLED_PROVIDER, user, event, eventProperties);
+        notificationService.createNotification(Notification.NotificationType.REQUEST_CANCELLED_PROVIDER, user, event, eventProperties, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -233,7 +233,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.REQUEST_CANCELLED_AUTO, user, event, eventProperties);
+        notificationService.createNotification(Notification.NotificationType.REQUEST_CANCELLED_AUTO, user, event, eventProperties, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -266,7 +266,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.REQUEST_CONFIRMED, user, event, eventProperties);
+        notificationService.createNotification(Notification.NotificationType.REQUEST_CONFIRMED, user, event, eventProperties, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -299,7 +299,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.NEW_REQUEST, user, event, eventProperties);
+        notificationService.createNotification(Notification.NotificationType.NEW_REQUEST, user, event, eventProperties, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -332,7 +332,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.NEW_DEPOSIT_PAYMENT, user, event, eventProperties);
+        notificationService.createNotification(Notification.NotificationType.NEW_DEPOSIT_PAYMENT, user, event, eventProperties, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
@@ -365,7 +365,7 @@ class NotificationUnitTest {
         doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         
-        notificationService.createNotification(Notification.NotificationType.NEW_REMAINING_PAYMENT, user, event, eventProperties);
+        notificationService.createNotification(Notification.NotificationType.NEW_REMAINING_PAYMENT, user, event, eventProperties, null);
 
         
         verify(notificationRepository, times(1)).save(any(Notification.class));
