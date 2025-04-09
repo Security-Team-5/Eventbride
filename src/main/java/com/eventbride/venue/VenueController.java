@@ -204,13 +204,10 @@ public class VenueController {
 
 		// Asegurarse que no se puede hacer disable si existen eventos asociados al
 		// recinto
-		Boolean venues = eventPropertiesService.findAll().stream().filter(e -> e.getVenue() != null)
-				.anyMatch(e -> e.getVenue().getId() == service.getId());
-
 		boolean eventoPorVenir = false;
 
 		for (Event e : eventService.findAll()) {
-			for (EventProperties ep : eventPropertiesService.findAll()) {
+			for (EventProperties ep : e.getEventProperties()) {
 				if (ep.getVenue() != null && ep.getVenue().getId() == service.getId()) {
 					if (e.getEventDate().isAfter(LocalDate.now())) {
 						eventoPorVenir = true;
@@ -220,14 +217,10 @@ public class VenueController {
 			}
 		}
 
-		if (venues && eventoPorVenir) {
-			if (eventoPorVenir) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("error",
-								"No puedes deshabilitar servicios asociados a eventos que todavia no se han celebrado"));
-			}
+		if (eventoPorVenir) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("error", "No puedes deshabilitar servicios asociados a eventos"));
+					.body(Map.of("error",
+							"No puedes deshabilitar servicios asociados a eventos que todavia no se han celebrado"));
 		}
 
 		service.setAvailable(!service.getAvailable());

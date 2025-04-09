@@ -8,7 +8,7 @@ import carta from "../static/resources/images/carta.png";
 import mensaje from "../static/resources/images/mensaje.png";
 import usuario from "../static/resources/images/user.png";
 import apiClient from "../apiClient"
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, BellRing } from "lucide-react";
 
 function Navbar({ user }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -154,13 +154,13 @@ function Navbar({ user }) {
               </div>
             </div>
 
-        <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
-          {renderNavItems()}
-          {currentUser && currentUser.role && (
-            <div className="navbar-actions">
-              <Link to="/notifications" >
-                <img src={carta} alt="Notificaciones" className="icon-img" />
-              </Link>
+            <div className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
+              {renderNavItems()}
+              {currentUser && currentUser.role && (
+                <div className="navbar-actions">
+                  <Link to="/notifications" className="nav-link">
+                    <BellRing className="emote" style={{ width: "30px", height: "auto" }} />
+                  </Link>
 
                   <div className="user-menu">
                     <Link to="/profile" className="action-icon user-icon" style={{
@@ -173,14 +173,14 @@ function Navbar({ user }) {
                       overflow: "hidden",
                       background: "transparent",
                     }}>
-                      <div className="profile-pic-wrapper" style={{ height: "40px", overflow: "hidden", background: "transparent" }}>
+                      <div className="profile-pic-wrapper" style={{ height: "50px", overflow: "hidden", background: "transparent" }}>
                         {currentUser.profilePicture?.trim() && (
                           <img
                             src={currentUser.profilePicture}
                             alt="Foto de perfil"
                             style={{
-                              maxWidth: "40px",
-                              height: "40px",
+                              maxWidth: "50px",
+                              height: "50px",
                               objectFit: "cover",
                               borderRadius: "50%",
                             }}

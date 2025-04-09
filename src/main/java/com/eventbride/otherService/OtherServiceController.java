@@ -242,12 +242,10 @@ public class OtherServiceController {
 
 		// Asegurarse que no se puede hacer disable si existen eventos asociados al
 		// servicio
-		boolean isAssociatedToEvents = eventPropertiesService.findAll().stream()
-				.anyMatch(e -> e.getOtherService() != null && e.getOtherService().getId().equals(service.getId()));
 
 		boolean eventoPorVenir = false;
 		for (Event e : eventService.findAll()) {
-			for (EventProperties ep : eventPropertiesService.findAll()) {
+			for (EventProperties ep : e.getEventProperties()) {
 				if (ep.getOtherService() != null && ep.getOtherService().getId() == service.getId()) {
 					if (e.getEventDate().isAfter(LocalDate.now())) {
 						eventoPorVenir = true;
@@ -257,14 +255,10 @@ public class OtherServiceController {
 			}
 		}
 
-		if (isAssociatedToEvents && eventoPorVenir) {
-			if (eventoPorVenir) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("error",
-								"No puedes deshabilitar servicios asociados a eventos que todavia no se han celebrado"));
-			}
+		if (eventoPorVenir) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("error", "No puedes deshabilitar servicios asociados a eventos"));
+					.body(Map.of("error",
+							"No puedes deshabilitar servicios asociados a eventos que todavia no se han celebrado"));
 		}
 
 		service.setAvailable(!service.getAvailable());
