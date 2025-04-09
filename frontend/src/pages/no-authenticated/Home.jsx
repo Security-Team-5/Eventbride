@@ -14,6 +14,7 @@ export default function HomePage() {
       const userData = localStorage.getItem("user")
       if (userData) {
         setCurrentUser(JSON.parse(userData))
+        console.log(userData)
       }
     } catch (error) {
       console.error("Error retrieving user data:", error)
