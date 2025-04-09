@@ -64,11 +64,11 @@ public class Event extends BaseEntity {
 
     public LocalDate getPaymentDate() {
         if (eventType == EventType.WEDDING) {
-            return eventDate.minusMonths(5);
-        } else if (eventType == EventType.CHRISTENING) {
-            return eventDate.minusMonths(1);
-        } else {
             return eventDate.minusMonths(3);
+        } else if (eventType == EventType.CHRISTENING) {
+            return eventDate.minusMonths(0);
+        } else {
+            return eventDate.minusMonths(2);
         }
     }
 
