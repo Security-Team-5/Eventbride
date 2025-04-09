@@ -250,13 +250,6 @@ INSERT IGNORE INTO event_properties (id, event_id, other_service_id, venue_id, s
 
 -- Additional NOTIFICATIONS
 INSERT IGNORE INTO notifications (id, user_id, subject, message, type, created_at) VALUES 
-(3, 20, 'Recordatorio de evento', 'Tu evento "Boda de Carmen y Alberto" está programado para dentro de 30 días.', 'EVENT_REMINDER', '2026-04-15 10:00:00'),
 (4, 21, 'Pago pendiente', 'Tienes un pago pendiente para tu evento "Bautizo de Lucía". Por favor, completa el pago antes de la fecha límite.', 'PAYMENT_REMINDER', '2026-03-01 09:30:00'),
-(5, 22, 'Confirmación de reserva', 'Tu reserva para "Comunión de Martín" ha sido confirmada. Todos los servicios están aprobados.', 'BOOKING_CONFIRMATION', '2025-02-15 14:20:00'),
-(6, 23, 'Solicitud aprobada', 'Tu solicitud para el local "Jardines del Guadalquivir" ha sido aprobada.', 'REQUEST_APPROVED', '2025-03-20 11:45:00'),
 (7, 24, 'Nuevo mensaje', 'Has recibido un nuevo mensaje del proveedor "Flores del Sur" sobre tu evento.', 'NEW_MESSAGE', '2025-05-25 16:10:00'),
-(8, 25, 'Nueva solicitud de reserva', 'Has recibido una nueva solicitud de reserva para decoración floral.', 'NEW_REQUEST', '2025-06-10 08:30:00'),
-(9, 26, 'Actualización de perfil', 'Tu perfil ha sido actualizado correctamente.', 'PROFILE_UPDATE', '2025-04-05 13:15:00'),
-(10, 27, 'Valoración recibida', 'Has recibido una nueva valoración de 5 estrellas para tu servicio.', 'NEW_REVIEW', '2026-07-20 17:40:00'),
-(11, 28, 'Promoción especial', 'Aprovecha nuestra promoción especial para eventos de verano. 15% de descuento en todos los servicios.', 'PROMOTION', '2025-05-01 10:00:00'),
-(12, 29, 'Recordatorio de renovación', 'Tu plan Premium expirará en 30 días. Renueva para seguir disfrutando de los beneficios.', 'SUBSCRIPTION_REMINDER', '2026-05-20 09:00:00');
+(8, 25, 'Nueva solicitud de reserva', 'Has recibido una nueva solicitud de reserva para decoración floral.', 'NEW_REQUEST', '2025-06-10 08:30:00');
