@@ -35,7 +35,6 @@ import FAQ from "./pages/no-authenticated/faqs.jsx"
 import ProviderDashboard from "./pages/provider/ProviderDashboard.jsx"
 import Support from "./pages/authenticated/Support.jsx"
 import VentasProveedor from "./pages/provider/HistorialVentas"
-import { Alert } from "reactstrap"
 import { AlertProvider } from "./context/AlertContext.jsx"
 
 function App() {

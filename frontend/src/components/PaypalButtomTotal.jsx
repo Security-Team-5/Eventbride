@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import "../static/resources/css/Paypal.css";
 import apiClient from "../apiClient";
-import { Alert } from "reactstrap";
 import { useAlert } from "../context/AlertContext";
 import { useNavigate } from 'react-router-dom';
 

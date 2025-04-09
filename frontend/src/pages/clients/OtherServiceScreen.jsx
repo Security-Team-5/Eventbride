@@ -20,7 +20,6 @@ import {
 import { Link } from "react-router-dom"
 import "../../static/resources/css/OtherService.css"
 import "../../static/resources/css/Alert.css"
-import { Alert } from "reactstrap"
 import { useAlert } from "../../context/AlertContext"
 
 const OtherServiceScreen = () => {
