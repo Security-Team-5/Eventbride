@@ -106,7 +106,7 @@ public class EventPropertiesService {
         BeanUtils.copyProperties(eventProperties, toUpdate);
         if(eventProperties.getStatus() == EventProperties.Status.APPROVED) {
             Optional<Event> event = eventRepository.findByEventPropertiesId(eventProperties.getId());
-            notificationService.createNotification(NotificationType.REQUEST_CONFIRMED, event.get().getUser(), event.get(), eventProperties);
+            notificationService.createNotification(NotificationType.REQUEST_CONFIRMED, event.get().getUser(), event.get(), eventProperties, null);
         }
         return save(toUpdate);
     }
@@ -183,7 +183,7 @@ public class EventPropertiesService {
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
             User user = event.getUser();
-            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, user, event, eP);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, user, event, eP, null);
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6@gmail.com");
             mailMessage.setTo(user.getEmail());
@@ -207,7 +207,7 @@ public class EventPropertiesService {
             User client = event.getUser();
             User provider = eventProperty.getOtherService().getUser();
             
-            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty, null);
             
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6@gmail.com");
@@ -245,7 +245,7 @@ public class EventPropertiesService {
             User client = event.getUser();
             User provider = eventProperty.getVenue().getUser();
             
-            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, provider, event, eventProperty, null);
             
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6@gmail.com");
@@ -280,7 +280,7 @@ public class EventPropertiesService {
             // Send emails
             Event event = eventPropertiesRepository.findEventByEventPropertiesId(eP.getId());
             User user = event.getUser();
-            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, user, event, eP);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_AUTO, user, event, eP, null);
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("eventbride6gmail.com");
             mailMessage.setTo(user.getEmail());
@@ -334,7 +334,7 @@ public class EventPropertiesService {
         eventProperties.setPricePerService(priceService);
         eventProperties.setDepositAmount(priceService.doubleValue() * 0.35);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
-        notificationService.createNotification(NotificationType.NEW_REQUEST, eventProperties.getOtherService().getUser(), event.get(), eventProperties);
+        notificationService.createNotification(NotificationType.NEW_REQUEST, eventProperties.getOtherService().getUser(), event.get(), eventProperties, null);
         event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
         return event.get();
@@ -372,7 +372,7 @@ public class EventPropertiesService {
         eventProperties.setPricePerService(priceService);
         eventProperties.setDepositAmount(priceService.doubleValue() * 0.35);
         EventProperties eventPropertiesSaved = eventPropertiesRepository.save(eventProperties);
-        notificationService.createNotification(NotificationType.NEW_REQUEST, eventProperties.getVenue().getUser(), event.get(), eventProperties);
+        notificationService.createNotification(NotificationType.NEW_REQUEST, eventProperties.getVenue().getUser(), event.get(), eventProperties, null);
         event.get().getEventProperties().add(eventPropertiesSaved);
         eventRepository.save(event.get());
         return event.get();
@@ -385,13 +385,14 @@ public class EventPropertiesService {
         Optional<Event> event = eventRepository.findByEventPropertiesId(id);
         if (otherService == null) {
             eventProperties.setVenue(venue);
-            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties, null);
             eventProperties.setVenue(null);
         } else {
             eventProperties.setOtherService(otherService);
-            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties);
+            notificationService.createNotification(NotificationType.REQUEST_CANCELLED_PROVIDER, event.get().getUser(), event.get(), eventProperties, null);
             eventProperties.setOtherService(null);
         }
+        notificationService.createNotification(NotificationType.EVENTPROPERTIES_DELETED, event.get().getUser(), event.get(), eventProperties, null);
         eventPropertiesRepository.deleteById(id);
 
     }
