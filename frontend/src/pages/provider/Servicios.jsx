@@ -50,7 +50,6 @@ const Servicios = () => {
             }))
 
             setServices(markedServices)
-            console.log("Servicios obtenidos:", markedServices)
         } catch (error) {
             console.error("Error fetching services:", error)
         } finally {

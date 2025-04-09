@@ -44,7 +44,6 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Formulario enviado:", form);
 
     try {
       const response = await fetch("/api/invitation", {
@@ -63,7 +62,6 @@ const Register = () => {
         }),
       });
       const data = await response.json();
-      console.log(data)
       if (data?.error) {
         setError("Error: " + data?.error);
         return;

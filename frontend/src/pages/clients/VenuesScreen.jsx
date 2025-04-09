@@ -101,8 +101,6 @@ const VenuesScreen = () => {
   }, [])
 
   useEffect(() => {
-    console.log("Processing venues for map:", venues);
-
     const processedVenues = venues.map(venue => {
       if (!venue.coordinates) {
         console.warn("Venue missing coordinates:", venue);
@@ -124,7 +122,6 @@ const VenuesScreen = () => {
       };
     }).filter(Boolean);
 
-    console.log("Processed venues for map:", processedVenues);
     setVenuesWithCoordinates(processedVenues);
   }, [venues]);
 

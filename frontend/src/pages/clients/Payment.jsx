@@ -39,7 +39,6 @@ export default function Payment() {
         }
 
         const data = await response.json()
-        console.log("Event propertie obtenido:", data)
         setEventProp(data)
 
         if (data.status === "APPROVED") {

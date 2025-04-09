@@ -34,8 +34,6 @@ function Login({ setUser }) {
         }
       });
       const user = await updated.json();
-
-      console.log(user);
       
 
       setUser(user);

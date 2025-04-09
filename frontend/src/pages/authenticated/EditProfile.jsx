@@ -106,9 +106,7 @@ function EditProfile() {
             ...userData,
             password: "no-password",
           };
-      
-          console.log(userDataToUpdate);
-      
+            
           const response = await fetch(`/api/users/${userData.id}`, {
             method: "PUT",
             headers: {

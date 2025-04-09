@@ -37,7 +37,6 @@ function EventDetails() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("evento obtenido:", data);
         setEvento(data);
         setIsLoading(false);
 
@@ -50,7 +49,6 @@ function EventDetails() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("payment obtenido:", data);
             setPayments(data);
           })
           .catch((error) => {
@@ -161,7 +159,6 @@ function EventDetails() {
 
   // Cargar evento al montar el componente
   useEffect(() => {
-    console.log("eventoId", id)
     getEvents()
   }, [id])
 

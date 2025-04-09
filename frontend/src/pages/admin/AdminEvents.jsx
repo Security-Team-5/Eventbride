@@ -42,7 +42,6 @@ function AdminEvents() {
       })
       .then((data) => {
         setEvents(data);
-        console.log("Eventos cargados:", data);
       })
       .catch((err) => {
         console.error("Error obteniendo eventos:", err.message);

@@ -110,8 +110,6 @@ function AdminServices() {
 
     dataToUpdate.maxGuests = parseInt(dataToUpdate.maxGuests, 10);
   
-    console.log(dataToUpdate)
-
     fetch(`/api/${service.type}/admin/${service.id}`, {
       method: "PUT",
       headers: {

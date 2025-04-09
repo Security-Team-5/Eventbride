@@ -36,7 +36,6 @@ function MyEvents() {
         return response.json();
       })
       .then(data => {
-        console.log("Eventos obtenidos:", data);
         setEventos(data);
         setIsLoading(false);
       })

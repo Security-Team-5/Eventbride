@@ -23,7 +23,6 @@ function EventInvitations() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Invitaciones recibidas:", data);
         setInvitaciones(data);
       })
       .catch((error) =>
@@ -41,7 +40,6 @@ function EventInvitations() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Datos del evento:", data);
         setEventData(data);
       })
       .catch((error) =>
