@@ -58,13 +58,13 @@ function CreateEvents() {
     console.log("Diferencia en días:", minDaysDifference);
 
     if (eventType === "CHRISTENING" && minDaysDifference < 30) {
-      setError("Para un bautizo, la fecha debe ser al menos 1 mes después de hoy");
+      setError("Para un bautizo, la fecha de creación debe ser al menos 1 mes desde de hoy");
       return;
     } else if (eventType === "COMMUNION" && minDaysDifference < 90) {
-      setError("Para una comunión, la fecha debe ser al menos 3 meses después de hoy");
+      setError("Para una comunión, la fecha de creación debe ser al menos 3 meses desde de hoy");
       return;
     } else if (eventType === "WEDDING" && minDaysDifference < 120) {
-      setError("Para una boda, la fecha debe ser al menos 4 meses después de hoy");
+      setError("Para una boda, la fecha de creación debe ser al menos 4 meses desde de hoy");
       return;
     }
     // }

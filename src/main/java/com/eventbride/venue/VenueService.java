@@ -22,111 +22,105 @@ import java.util.stream.Collectors;
 @Service
 public class VenueService {
 
-    @Autowired
-    private VenueRepository venueRepository;
+	@Autowired
+	private VenueRepository venueRepository;
 
 	@Autowired
 	private OtherServiceRepository otherServiceRepository;
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @Autowired
-    private ServiceService serviceService;
+	@Autowired
+	private ServiceService serviceService;
 
-    @Autowired
-    private EventPropertiesRepository eventPropertiesRepository;
+	@Autowired
+	private EventPropertiesRepository eventPropertiesRepository;
 
-    @Transactional
-    public List<Venue> getAllVenues() {
+	@Transactional
+	public List<Venue> getAllVenues() {
 		return venueRepository.findAll().stream()
-			.sorted(Comparator.comparing(
-				os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1
-			))
-			.collect(Collectors.toList());
-    }
+				.sorted(Comparator.comparing(
+						os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1))
+				.collect(Collectors.toList());
+	}
 
-    @Transactional
-    public Optional<Venue> getVenueById(Integer id) {
-        return venueRepository.findById(id);
-    }
-
+	@Transactional
+	public Optional<Venue> getVenueById(Integer id) {
+		return venueRepository.findById(id);
+	}
 
 	@Transactional
 	public List<Venue> getVenuesByUserId(Integer userId) {
 		return venueRepository.findByUserId(userId);
 	}
 
-    @Transactional
-    public List<Venue> getFilteredVenues(String city, Integer maxGuests, Double surface) {
-        return venueRepository.findByFilters(
-            city,
-            maxGuests != null ? maxGuests : 0,
-            surface != null ? surface : 0.0
-        ).stream()
-			.sorted(Comparator.comparing(
-				os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1
-			))
-			.collect(Collectors.toList());
-    }
+	@Transactional
+	public List<Venue> getFilteredVenues(String city, Integer maxGuests, Double surface) {
+		return venueRepository.findByFilters(
+				city,
+				maxGuests != null ? maxGuests : 0,
+				surface != null ? surface : 0.0).stream()
+				.sorted(Comparator.comparing(
+						os -> os.getUser().getPlan() == User.Plan.PREMIUM ? 0 : 1))
+				.collect(Collectors.toList());
+	}
 
-    public Venue save(Venue venue) throws IllegalArgumentException {
-		if(venue.getAvailable()){
-			Optional<User> user = userService.getUserById(venue.getUser().getId());
-			if (user.isPresent()) {
-				User existingUser = user.get();
+	public Venue save(Venue venue) throws IllegalArgumentException {
+		Optional<User> user = userService.getUserById(venue.getUser().getId());
+		if (user.isPresent()) {
+			User existingUser = user.get();
 
-				List<com.eventbride.service.Service> allServices = new ArrayList<>();
-				List<OtherService> otherServices = otherServiceRepository.findByUserId(user.get().getId());
-				List<Venue> venues = venueRepository.findByUserId(user.get().getId());
+			List<com.eventbride.service.Service> allServices = new ArrayList<>();
+			List<OtherService> otherServices = otherServiceRepository.findByUserId(user.get().getId());
+			List<Venue> venues = venueRepository.findByUserId(user.get().getId());
 
-				allServices.addAll(otherServices);
-				allServices.addAll(venues);
+			allServices.addAll(otherServices);
+			allServices.addAll(venues);
 
-				allServices = allServices.stream().filter(s -> s.getAvailable()).toList();
+			allServices = allServices.stream().filter(s -> s.getAvailable()).toList();
 
-				int slotsCount = allServices.size();
+			int slotsCount = allServices.size();
 
-				String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
+			String plan = existingUser.getPlan() == null ? "BASIC" : existingUser.getPlan().toString();
 
-				if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
-					throw new IllegalArgumentException("Has alcanzado el límite de venues en el plan BASIC.");
-				} else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
-					throw new IllegalArgumentException("Has alcanzado el límite de venues en el plan PREMIUM.");
-				}
-
-				venue.setUser(user.get());
-			} else {
-				throw new IllegalArgumentException("Usuario no encontrado");
+			if ("BASIC".equalsIgnoreCase(plan) && slotsCount >= 3) {
+				throw new IllegalArgumentException("Has alcanzado el límite de venues en el plan BASIC.");
+			} else if ("PREMIUM".equalsIgnoreCase(plan) && slotsCount >= 10) {
+				throw new IllegalArgumentException("Has alcanzado el límite de venues en el plan PREMIUM.");
 			}
+
+			venue.setUser(user.get());
+		} else {
+			throw new IllegalArgumentException("Usuario no encontrado");
 		}
 
-        return venueRepository.save(venue);
-    }
+		return venueRepository.save(venue);
+	}
 
 	@Transactional
 	public Venue update(Integer id, Venue venue) {
 		Venue existingVenue = venueRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("Venue not found"));
-	
-		BeanUtils.copyProperties(venue, existingVenue, "id", "user"); 
-	
+				.orElseThrow(() -> new RuntimeException("Venue not found"));
+
+		BeanUtils.copyProperties(venue, existingVenue, "id", "user");
+
 		if (venue.getUser().getId() == null) {
 			throw new RuntimeException("Falta el usuario al actualizar el venue.");
 		}
-	
+
 		User user = userService.getUserById(venue.getUser().getId())
-			.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-	
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
 		existingVenue.setUser(user);
-	
+
 		return venueRepository.save(existingVenue);
 	}
 
 	@Transactional
 	public Venue updateVenue(Integer id, Venue updatedVenue) {
 		Venue existingVenue = venueRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("No se ha encontrado ningún Venue con esa Id"));
+				.orElseThrow(() -> new RuntimeException("No se ha encontrado ningún Venue con esa Id"));
 
 		// Evita sobrescribir el ID ni el usuario original directamente
 		BeanUtils.copyProperties(updatedVenue, existingVenue, "id", "user");
@@ -136,7 +130,7 @@ public class VenueService {
 		}
 
 		User user = userService.getUserById(updatedVenue.getUser().getId())
-			.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
 		existingVenue.setUser(user);
 
@@ -146,11 +140,10 @@ public class VenueService {
 	@Transactional
 	public void deleteVenue(Integer id) {
 		Venue venue = venueRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("Venue not found"));
+				.orElseThrow(() -> new RuntimeException("Venue not found"));
 
 		// Eliminar EventProperties asociadas al Venue
 		eventPropertiesRepository.deleteByVenue(venue);
-
 
 		// Eliminar Venue
 		venueRepository.deleteById(id);

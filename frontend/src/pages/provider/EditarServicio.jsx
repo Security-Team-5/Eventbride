@@ -33,7 +33,6 @@ const EditarServicio = () => {
 
     const [formData, setFormData] = useState({
         name: '',
-        available: false,
         cityAvailable: '',
         servicePricePerGuest: 0,
         servicePricePerHour: 0,
@@ -102,7 +101,7 @@ const EditarServicio = () => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
-    
+
         // Construir el objeto actualizado con tipos numéricos correctos
         let updatedFormData = {
             ...formData,
@@ -116,11 +115,11 @@ const EditarServicio = () => {
             earliestTime: formData.earliestTime,
             latestTime: formData.latestTime
         };
-    
+
         // Eliminar propiedades innecesarias o problemáticas
         delete updatedFormData.id;
         delete updatedFormData.new;
-    
+
         try {
             if (serviceType === 'venue') {
                 await apiClient.put(`/api/venues/${id}`, updatedFormData);
@@ -135,7 +134,7 @@ const EditarServicio = () => {
             setIsLoading(false);
         }
     };
-    
+
 
     if (isLoading && !formData.name) {
         return <div className="loading-container">Cargando información del servicio...</div>;
@@ -179,23 +178,6 @@ const EditarServicio = () => {
                             />
                         </div>
 
-                        <div className="form-group checkbox-group">
-                            <label htmlFor="available" className="checkbox-label">
-                                <input
-                                    type="checkbox"
-                                    id="available"
-                                    name="available"
-                                    checked={formData.available}
-                                    onChange={handleChange}
-                                    className="checkbox-input"
-                                />
-                                <span className="checkbox-text">
-                                    <Check size={16} className="checkbox-icon" />
-                                    Disponible
-                                </span>
-                            </label>
-                        </div>
-
                         <div className="form-group">
                             <label htmlFor="cityAvailable">
                                 Ciudad Disponible
@@ -231,6 +213,20 @@ const EditarServicio = () => {
                                 className="form-input"
                             />
                         </div>
+
+                        {formData.picture && (
+                            <div className="image-preview" style={{ marginTop: '1rem' }}>
+                                <img
+                                    src={formData.picture}
+                                    alt="Previsualización"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = "https://iili.io/3Ywlapf.png";
+                                    }}
+                                    style={{ maxWidth: '600px', maxHeight: '400px', marginTop: '-2rem' }}
+                                />
+                            </div>
+                        )}
 
                         <div className="form-group">
                             <label htmlFor="description">
@@ -502,7 +498,7 @@ const EditarServicio = () => {
                     )}
 
                     <div className="form-actions">
-                        <button type="button" style={{width:"30%", height:"30%", marginTop:"2.3%"}} className="cancel-button" onClick={() => navigate('/misservicios')}>
+                        <button type="button" style={{ width: "30%", height: "30%", marginTop: "2.3%" }} className="cancel-button" onClick={() => navigate('/misservicios')}>
                             Cancelar
                         </button>
                         <button type="submit" className="submit-button" disabled={isLoading}>
