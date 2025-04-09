@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from "react"
 import apiClient from "../../apiClient"
 import { useNavigate } from "react-router-dom"
 
-import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff, Eye } from "lucide-react"
+import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Info, AlertCircle, EyeOff, Eye, Loader2 } from "lucide-react"
 
 import "../../static/resources/css/Servicios.css"
 
@@ -16,6 +16,8 @@ const Servicios = () => {
 
     const currentUser = JSON.parse(localStorage.getItem("user"))
     const [jwtToken] = useState(localStorage.getItem("jwt"));
+
+    const [spinner, setSpinner] = useState(null)
 
     const fetchServices = useCallback(async () => {
         try {
@@ -77,6 +79,7 @@ const Servicios = () => {
     }
 
     const handleOtherServiceDisable = async (id) => {
+        setSpinner(id)
         try {
             const response = await fetch(`/api/other-services/disable/${id}`, {
                 headers: {
@@ -101,10 +104,13 @@ const Servicios = () => {
         } catch (error) {
             console.error("Error al cambiar disponibilidad del servicio:", error);
             alert(error.message);
+        } finally {
+            setSpinner(null)
         }
     };
 
     const handleVenuesDisable = async (id) => {
+        setSpinner(id)
         try {
             const response = await fetch(`/api/venues/disable/${id}`, {
                 headers: {
@@ -129,6 +135,8 @@ const Servicios = () => {
         } catch (error) {
             console.error("Error al cambiar disponibilidad del servicio:", error);
             alert(error.message);
+        } finally {
+            setSpinner(null)
         }
     };
 
@@ -279,9 +287,19 @@ const Servicios = () => {
                                         }
 
                                     }}
+                                    disabled={spinner === service.id}
                                 >
-                                    {service.available ? <EyeOff size={16} /> : <Eye size={16} />}
-                                    {service.available ? "Deshabilitar" : "Habilitar"}
+
+                                    {spinner === service.id ? (
+                                        <>
+                                            <span className="spinner"></span>
+                                            Procesando...
+                                        </>
+                                    ) : (<>
+                                        {service.available ? <EyeOff size={16} /> : <Eye size={16} />}
+                                        {service.available ? "Deshabilitar" : "Habilitar"}
+                                    </>)}
+                                    { }
                                 </button>
 
                                 <button

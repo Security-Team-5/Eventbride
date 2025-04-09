@@ -1,5 +1,7 @@
 package com.eventbride.otherService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.eventbride.dto.OtherServiceDTO;
+import com.eventbride.event.Event;
+import com.eventbride.event.EventService;
+import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -42,6 +47,9 @@ public class OtherServiceController {
 
 	@Autowired
 	private EventPropertiesService eventPropertiesService;
+
+	@Autowired
+	private EventService eventService;
 
 	@GetMapping
 	public List<OtherServiceDTO> getAllOtherServices() {
@@ -132,7 +140,8 @@ public class OtherServiceController {
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateServiceUser(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
+	public ResponseEntity<?> updateServiceUser(@PathVariable Integer id,
+			@Valid @RequestBody OtherService updatedService) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
@@ -236,7 +245,24 @@ public class OtherServiceController {
 		boolean isAssociatedToEvents = eventPropertiesService.findAll().stream()
 				.anyMatch(e -> e.getOtherService() != null && e.getOtherService().getId().equals(service.getId()));
 
-		if (isAssociatedToEvents) {
+		boolean eventoPorVenir = false;
+		for (Event e : eventService.findAll()) {
+			for (EventProperties ep : eventPropertiesService.findAll()) {
+				if (ep.getOtherService() != null && ep.getOtherService().getId() == service.getId()) {
+					if (e.getEventDate().isAfter(LocalDate.now())) {
+						eventoPorVenir = true;
+						break;
+					}
+				}
+			}
+		}
+
+		if (isAssociatedToEvents && eventoPorVenir) {
+			if (eventoPorVenir) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("error",
+								"No puedes deshabilitar servicios asociados a eventos que todavia no se han celebrado"));
+			}
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(Map.of("error", "No puedes deshabilitar servicios asociados a eventos"));
 		}
