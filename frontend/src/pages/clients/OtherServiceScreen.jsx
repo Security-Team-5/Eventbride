@@ -19,6 +19,8 @@ import {
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import "../../static/resources/css/OtherService.css"
+import "../../static/resources/css/Alert.css"
+import { Alert } from "reactstrap"
 
 const OtherServiceScreen = () => {
   const [otherServices, setOtherServices] = useState([])
@@ -190,13 +192,13 @@ const OtherServiceScreen = () => {
   const handleConfirmService = async (eventObj, selectedOtherServiceId) => {
     const times = venueTimes[eventObj.id] || {}
     if (!times.startTime || !times.endTime) {
-      alert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.")
+      ShowAlert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.")
       return
     }
-  
+
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
-  
+
     setIsConfirming(true) // Bloquea clics múltiples
     try {
       await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
@@ -224,314 +226,335 @@ const OtherServiceScreen = () => {
     }
   }, [type])
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [open, setOpen] = useState(true);
+  function ShowAlert(message) {
+    setAlertMessage(message);
+    setVisible(true);
+    setOpen(true);
+    setTimeout(() => {
+      setVisible(false);
+    }, 3000); // 3 segundos
+    setTimeout(() => {
+      setOpen(false);
+    }, 3500); // 4 segundos
+
+  }
+
   return (
-    <div className="services-container">
-      <div className="services-header">
-        <h1 className="services-title">Servicios para Eventos</h1>
-      </div>
-
-      {/* Categorías */}
-      <div className="category-container">
-        <button className={`category-button ${!category ? "active" : ""}`} onClick={() => handleCategoryClick(null)}>
-          Todos los servicios
-        </button>
-        <button
-          className={`category-button ${category === "CATERING" ? "active" : ""}`}
-          onClick={() => handleCategoryClick("CATERING")}
-        >
-          Catering
-        </button>
-        <button
-          className={`category-button ${category === "ENTERTAINMENT" ? "active" : ""}`}
-          onClick={() => handleCategoryClick("ENTERTAINMENT")}
-        >
-          Entretenimiento
-        </button>
-        <button
-          className={`category-button ${category === "DECORATION" ? "active" : ""}`}
-          onClick={() => handleCategoryClick("DECORATION")}
-        >
-          Decoración
-        </button>
-      </div>
-
-      {/* Filtros */}
-      <button className="filter-toggle" onClick={toggleFilters}>
-        <Filter size={18} />
-        {filtersVisible ? "Ocultar filtros" : "Mostrar filtros"}
-        {filtersVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-      </button>
-
-      {filtersVisible && (
-        <div className="filter-container">
-          <h2 className="filter-title">Filtros disponibles</h2>
-          <div className="filter-form">
-            <div className="input-group">
-              <label className="input-label">Nombre del servicio</label>
-              <input
-                type="text"
-                className="input-field"
-                placeholder="Ej: Catering Deluxe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className="input-group">
-              <label className="input-label">Ciudad</label>
-              <input
-                type="text"
-                className="input-field"
-                placeholder="Ej: Madrid"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="button-group">
-            <button className="primary-button" onClick={getFilteredOtherServices}>
-              <Filter size={16} />
-              Aplicar filtros
-            </button>
-            <button
-              className="secondary-button"
-              onClick={() => {
-                setName("")
-                setCity("")
-                getAllOtherServices()
-              }}
-            >
-              <X size={16} />
-              Borrar filtros
-            </button>
-          </div>
+    <div>
+      <Alert isOpen={open} className={`alert-container ${!visible ? "alert-hidden" : ""}`}>
+        {alertMessage}
+      </Alert>
+      <div className="services-container">
+        <div className="services-header">
+          <h1 className="services-title">Servicios para Eventos</h1>
         </div>
-      )}
 
-      <h2 className="services-subtitle">
-        {category ? `Servicios de ${formatServiceType(category)}` : "Todos los servicios disponibles"}
-      </h2>
-
-      {/* Grid de servicios */}
-      {loading ? (
-        <div className="empty-state">
-          <div className="loading-spinner"></div>
-          <p>Cargando servicios...</p>
+        {/* Categorías */}
+        <div className="category-container">
+          <button className={`category-button ${!category ? "active" : ""}`} onClick={() => handleCategoryClick(null)}>
+            Todos los servicios
+          </button>
+          <button
+            className={`category-button ${category === "CATERING" ? "active" : ""}`}
+            onClick={() => handleCategoryClick("CATERING")}
+          >
+            Catering
+          </button>
+          <button
+            className={`category-button ${category === "ENTERTAINMENT" ? "active" : ""}`}
+            onClick={() => handleCategoryClick("ENTERTAINMENT")}
+          >
+            Entretenimiento
+          </button>
+          <button
+            className={`category-button ${category === "DECORATION" ? "active" : ""}`}
+            onClick={() => handleCategoryClick("DECORATION")}
+          >
+            Decoración
+          </button>
         </div>
-      ) : otherServices.length === 0 ? (
-        <div className="empty-state">
-          <Info size={48} className="empty-icon" />
-          <h2 className="empty-title">No se encontraron servicios</h2>
-          <p className="empty-text">Intenta con otros filtros o categorías.</p>
-        </div>
-      ) : (
-        <div className="services-grid">
-          {otherServices.map((service) => {
 
-            return (
-              <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
-                <div className="card-header">
-                  <h3 className="service-title">{service.name}</h3>
-                </div>
-                <div className="card-body">
-                  {
-                    service.userDTO?.plan === "PREMIUM" && <span className="service-badge premium-badge">Promocionado</span>
-                  }
-                  <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
+        {/* Filtros */}
+        <button className="filter-toggle" onClick={toggleFilters}>
+          <Filter size={18} />
+          {filtersVisible ? "Ocultar filtros" : "Mostrar filtros"}
+          {filtersVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </button>
 
-                  <div className="service-info">
-                    <MapPin size={18} className="info-icon" />
-                    <span className="info-text">{service.cityAvailable}</span>
-                  </div>
-
-                  <div className="service-info">
-                    <DollarSign size={18} className="info-icon" />
-                    <span className="info-text">
-                      {service.limitedByPricePerGuest
-                        ? `${service.servicePricePerGuest}€ por invitado`
-                        : service.limitedByPricePerHour
-                          ? `${service.servicePricePerHour}€ por hora`
-                          : `${service.fixedPrice}€ precio fijo`}
-                    </span>
-                  </div>
-                </div>
-                <div className="card-footer">
-                  {service.available ? (
-                    <>
-                      <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
-                        <Plus size={16} />
-                        Añadir a mi evento
-                      </button>
-                      <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
-                        💬 Chatear
-                      </Link>
-                    </>
-                  ) : (
-                    <div className="not-available-banner">No disponible</div>
-                  )}
-                </div>
+        {filtersVisible && (
+          <div className="filter-container">
+            <h2 className="filter-title">Filtros disponibles</h2>
+            <div className="filter-form">
+              <div className="input-group">
+                <label className="input-label">Nombre del servicio</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="Ej: Catering Deluxe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Modal para seleccionar evento */}
-      {modalVisible && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2 className="modal-title">Selecciona un evento</h2>
+              <div className="input-group">
+                <label className="input-label">Ciudad</label>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="Ej: Madrid"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="modal-body">
-              {events.length === 0 ? (
-                <div className="empty-state" style={{ boxShadow: "none" }}>
-                  <Info size={36} className="empty-icon" />
-                  <p className="empty-text">Tus eventos ya tienen este servicio.</p>
-                </div>
-              ) : (
-                events.map((eventObj) => (
-                  <div key={eventObj.id} className="event-card">
-                    <span className="event-badge">{eventObj.eventType}</span>
-                    <h3 className="event-title" style={{ height: "10%", marginBottom: "10%" }}>{eventObj.name}</h3>
-
-                    <div className="event-details">
-                      <div className="event-detail">
-                        <Calendar size={18} className="detail-icon" />
-                        <span className="detail-text">{formatDate(eventObj.eventDate)}</span>
-                      </div>
-
-                      <div className="event-detail">
-                        <Users size={18} className="detail-icon" />
-                        <span className="detail-text">{eventObj.guests} invitados</span>
-                      </div>
-                    </div>
-
-                    <div className="time-inputs">
-                      <div className="time-group">
-                        <label className="time-label">
-                          <Clock size={16} className="detail-icon" />
-                          Hora de inicio
-                        </label>
-                        <input
-                          type="time"
-                          className="time-input"
-                          value={venueTimes[eventObj.id]?.startTime || ""}
-                          onChange={(e) => handleTimeChange(eventObj.id, "startTime", e.target.value)}
-                        />
-                      </div>
-
-                      <div className="time-group">
-                        <label className="time-label">
-                          <Clock size={16} className="detail-icon" />
-                          Hora de fin
-                        </label>
-                        <input
-                          type="time"
-                          className="time-input"
-                          value={venueTimes[eventObj.id]?.endTime || ""}
-                          onChange={(e) => handleTimeChange(eventObj.id, "endTime", e.target.value)}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="event-actions">
-                      <button
-                        className="primary-button"
-                        style={{ flex: "1" }}
-                        onClick={() => handleConfirmService(eventObj, selectedOtherServiceId)}
-                        disabled={isConfirming} 
-                      >
-                        <CheckCircle size={16} />
-                        Confirmar
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-            <div className="modal-footer">
-              <button className="secondary-button" onClick={() => setModalVisible(false)}>
-                Cerrar
+            <div className="button-group">
+              <button className="primary-button" onClick={getFilteredOtherServices}>
+                <Filter size={16} />
+                Aplicar filtros
+              </button>
+              <button
+                className="secondary-button"
+                onClick={() => {
+                  setName("")
+                  setCity("")
+                  getAllOtherServices()
+                }}
+              >
+                <X size={16} />
+                Borrar filtros
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Modal para detalles del servicio */}
-      {serviceDetailsVisible && serviceDetails && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2 className="modal-title">{serviceDetails.name}</h2>
-            </div>
-            <div className="modal-body">
-              <div className="service-details">
-                <div className="details-section">
-                  <span className="service-badge">{formatServiceType(serviceDetails.otherServiceType)}</span>
+        <h2 className="services-subtitle">
+          {category ? `Servicios de ${formatServiceType(category)}` : "Todos los servicios disponibles"}
+        </h2>
 
-                  <div className="event-detail" style={{ marginTop: "1rem" }}>
-                    <MapPin size={18} className="detail-icon" />
-                    <span className="detail-text">Ciudad: {serviceDetails.cityAvailable}</span>
+        {/* Grid de servicios */}
+        {loading ? (
+          <div className="empty-state">
+            <div className="loading-spinner"></div>
+            <p>Cargando servicios...</p>
+          </div>
+        ) : otherServices.length === 0 ? (
+          <div className="empty-state">
+            <Info size={48} className="empty-icon" />
+            <h2 className="empty-title">No se encontraron servicios</h2>
+            <p className="empty-text">Intenta con otros filtros o categorías.</p>
+          </div>
+        ) : (
+          <div className="services-grid">
+            {otherServices.map((service) => {
+
+              return (
+                <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
+                  <div className="card-header">
+                    <h3 className="service-title">{service.name}</h3>
                   </div>
+                  <div className="card-body">
+                    {
+                      service.userDTO?.plan === "PREMIUM" && <span className="service-badge premium-badge">Promocionado</span>
+                    }
+                    <span className="service-badge">{formatServiceType(service.otherServiceType)}</span>
 
-                  <div className="event-detail">
-                    <DollarSign size={18} className="detail-icon" />
-                    <span className="detail-text">
-                      Precio:{" "}
-                      {serviceDetails.limitedByPricePerGuest
-                        ? `${serviceDetails.servicePricePerGuest}€ por invitado`
-                        : serviceDetails.limitedByPricePerHour
-                          ? `${serviceDetails.servicePricePerHour}€ por hora`
-                          : `${serviceDetails.fixedPrice}€ precio fijo`}
-                    </span>
+                    <div className="service-info">
+                      <MapPin size={18} className="info-icon" />
+                      <span className="info-text">{service.cityAvailable}</span>
+                    </div>
+
+                    <div className="service-info">
+                      <DollarSign size={18} className="info-icon" />
+                      <span className="info-text">
+                        {service.limitedByPricePerGuest
+                          ? `${service.servicePricePerGuest}€ por invitado`
+                          : service.limitedByPricePerHour
+                            ? `${service.servicePricePerHour}€ por hora`
+                            : `${service.fixedPrice}€ precio fijo`}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="card-footer">
+                    {service.available ? (
+                      <>
+                        <button className="add-button" onClick={(e) => handleAddServiceClick(e, service.id)}>
+                          <Plus size={16} />
+                          Añadir a mi evento
+                        </button>
+                        <Link to={`/chat/${service.userDTO.id}`} className="chat-button">
+                          💬 Chatear
+                        </Link>
+                      </>
+                    ) : (
+                      <div className="not-available-banner">No disponible</div>
+                    )}
                   </div>
                 </div>
+              )
+            })}
+          </div>
+        )}
 
-                <div className="details-section">
-                  <span className="details-label">Descripción:</span>
-                  <p className="details-text">{serviceDetails.description}</p>
-                </div>
-
-                {serviceDetails.extraInformation && (
-                  <div className="details-section">
-                    <span className="details-label">Información adicional:</span>
-                    <p className="details-text">{serviceDetails.extraInformation}</p>
+        {/* Modal para seleccionar evento */}
+        {modalVisible && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h2 className="modal-title">Selecciona un evento</h2>
+              </div>
+              <div className="modal-body">
+                {events.length === 0 ? (
+                  <div className="empty-state" style={{ boxShadow: "none" }}>
+                    <Info size={36} className="empty-icon" />
+                    <p className="empty-text">Tus eventos ya tienen este servicio.</p>
                   </div>
+                ) : (
+                  events.map((eventObj) => (
+                    <div key={eventObj.id} className="event-card">
+                      <span className="event-badge">{eventObj.eventType}</span>
+                      <h3 className="event-title" style={{ height: "10%", marginBottom: "10%" }}>{eventObj.name}</h3>
+
+                      <div className="event-details">
+                        <div className="event-detail">
+                          <Calendar size={18} className="detail-icon" />
+                          <span className="detail-text">{formatDate(eventObj.eventDate)}</span>
+                        </div>
+
+                        <div className="event-detail">
+                          <Users size={18} className="detail-icon" />
+                          <span className="detail-text">{eventObj.guests} invitados</span>
+                        </div>
+                      </div>
+
+                      <div className="time-inputs">
+                        <div className="time-group">
+                          <label className="time-label">
+                            <Clock size={16} className="detail-icon" />
+                            Hora de inicio
+                          </label>
+                          <input
+                            type="time"
+                            className="time-input"
+                            value={venueTimes[eventObj.id]?.startTime || ""}
+                            onChange={(e) => handleTimeChange(eventObj.id, "startTime", e.target.value)}
+                          />
+                        </div>
+
+                        <div className="time-group">
+                          <label className="time-label">
+                            <Clock size={16} className="detail-icon" />
+                            Hora de fin
+                          </label>
+                          <input
+                            type="time"
+                            className="time-input"
+                            value={venueTimes[eventObj.id]?.endTime || ""}
+                            onChange={(e) => handleTimeChange(eventObj.id, "endTime", e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="event-actions">
+                        <button
+                          className="primary-button"
+                          style={{ flex: "1" }}
+                          onClick={() => handleConfirmService(eventObj, selectedOtherServiceId)}
+                          disabled={isConfirming}
+                        >
+                          <CheckCircle size={16} />
+                          Confirmar
+                        </button>
+                      </div>
+                    </div>
+                  ))
                 )}
-                <div className="card-info">
-                  <span className="card-text">
-                    <img style={{ height: "25%", width: "100%" }}
-                      src={serviceDetails.picture || "https://iili.io/3Ywlapf.png"}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = "https://iili.io/3Ywlapf.png";
-                      }}
-                      alt="Imagen del servicio"></img>
-                  </span>
-                </div>
+              </div>
+              <div className="modal-footer">
+                <button className="secondary-button" onClick={() => setModalVisible(false)}>
+                  Cerrar
+                </button>
               </div>
             </div>
-            <div className="modal-footer">
-              {serviceDetails.available &&
-                <button
-                  className="primary-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setServiceDetailsVisible(false);
-                    handleAddServiceClick(e, serviceDetails.id);
-                  }}
-                >
-                  <Plus size={16} />
-                  Añadir a mi evento
-                </button>}
-              <button className="secondary-button" onClick={() => setServiceDetailsVisible(false)}>
-                Cerrar
-              </button>
+          </div>
+        )}
+
+        {/* Modal para detalles del servicio */}
+        {serviceDetailsVisible && serviceDetails && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h2 className="modal-title">{serviceDetails.name}</h2>
+              </div>
+              <div className="modal-body">
+                <div className="service-details">
+                  <div className="details-section">
+                    <span className="service-badge">{formatServiceType(serviceDetails.otherServiceType)}</span>
+
+                    <div className="event-detail" style={{ marginTop: "1rem" }}>
+                      <MapPin size={18} className="detail-icon" />
+                      <span className="detail-text">Ciudad: {serviceDetails.cityAvailable}</span>
+                    </div>
+
+                    <div className="event-detail">
+                      <DollarSign size={18} className="detail-icon" />
+                      <span className="detail-text">
+                        Precio:{" "}
+                        {serviceDetails.limitedByPricePerGuest
+                          ? `${serviceDetails.servicePricePerGuest}€ por invitado`
+                          : serviceDetails.limitedByPricePerHour
+                            ? `${serviceDetails.servicePricePerHour}€ por hora`
+                            : `${serviceDetails.fixedPrice}€ precio fijo`}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="details-section">
+                    <span className="details-label">Descripción:</span>
+                    <p className="details-text">{serviceDetails.description}</p>
+                  </div>
+
+                  {serviceDetails.extraInformation && (
+                    <div className="details-section">
+                      <span className="details-label">Información adicional:</span>
+                      <p className="details-text">{serviceDetails.extraInformation}</p>
+                    </div>
+                  )}
+                  <div className="card-info">
+                    <span className="card-text">
+                      <img style={{ height: "25%", width: "100%" }}
+                        src={serviceDetails.picture || "https://iili.io/3Ywlapf.png"}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "https://iili.io/3Ywlapf.png";
+                        }}
+                        alt="Imagen del servicio"></img>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="modal-footer">
+                {serviceDetails.available &&
+                  <button
+                    className="primary-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setServiceDetailsVisible(false);
+                      handleAddServiceClick(e, serviceDetails.id);
+                    }}
+                  >
+                    <Plus size={16} />
+                    Añadir a mi evento
+                  </button>}
+                <button className="secondary-button" onClick={() => setServiceDetailsVisible(false)}>
+                  Cerrar
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
