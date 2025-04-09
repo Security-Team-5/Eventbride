@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
+import logo2 from "../static/resources/images/logo2.png";
+import logo3 from "../static/resources/images/logo3.png";
+import logo4 from "../static/resources/images/logo4.png";
 import carta from "../static/resources/images/carta.png";
 import mensaje from "../static/resources/images/mensaje.png";
 import usuario from "../static/resources/images/user.png";
@@ -81,7 +84,7 @@ function Navbar({ user }) {
 
     if (currentUser.role === "CLIENT") {
       return (
-        <ul className="nav-links">
+        <ul className="nav-links" style={{ marginLeft: "-0%" }}>
           <li><Link to="/events" className="nav-link">Mis eventos</Link></li>
           <li><Link to="/create-events" className="nav-link">Crear evento</Link></li>
           <li><Link to="/venues" className="nav-link">Recintos</Link></li>
@@ -134,14 +137,13 @@ function Navbar({ user }) {
           <div className="navbar-container">
             <div className="navbar-brand">
               {currentUser === "{}" ? (
-                <span className="brand-link disabled-link">
-                  <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
+                <span>
+                  <img src={logo3} alt="Eventbride Logo" className="navbar-logo" />
                   <span className="navbar-title">Inicio</span>
                 </span>
               ) : (
-                <Link to="/" className="brand-link">
-                  <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
-                  <span className="navbar-title">Inicio</span>
+                <Link to="/">
+                  <img src={logo3} alt="Eventbride Logo" className="navbar-logo" />
                 </Link>
               )}
             </div>
