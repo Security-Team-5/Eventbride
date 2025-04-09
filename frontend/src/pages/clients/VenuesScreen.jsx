@@ -242,7 +242,7 @@ const VenuesScreen = () => {
     <div className="venues-container">
       {/* Header */}
       <div className="venues-header">
-        <h1 className="venues-title">Venues Disponibles</h1>
+        <h1 className="venues-title">Recintos Disponibles</h1>
 
         <button className="filter-toggle" onClick={toggleFilters}>
           <Filter size={18} />
