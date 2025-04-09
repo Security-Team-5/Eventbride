@@ -217,13 +217,13 @@ function EventDetails() {
     let threshold; // en meses
     switch (evento.eventType) {
       case "WEDDING":
-        threshold = 4;
-        break;
-      case "COMMUNION":
         threshold = 3;
         break;
+      case "COMMUNION":
+        threshold = 2;
+        break;
       case "CHRISTENING":
-        threshold = 1;
+        threshold = 0;
         break;
       default:
         threshold = 0;
@@ -345,13 +345,13 @@ function EventDetails() {
   const getMesesLimitePago = () => {
     switch (evento?.eventType) {
       case "WEDDING":
-        return 5;
-      case "COMMUNION":
         return 3;
+      case "COMMUNION":
+        return 2;
       case "CHRISTENING":
-        return 1;
+        return 0;
       default:
-        return 0; // Si no coincide con ningún tipo, devolvemos 0
+        return 0;
     }
   };
 
@@ -375,11 +375,15 @@ function EventDetails() {
           </div>
 
 
-          <div className="warning-message" style={{ marginTop: "1rem" }}>
-            <AlertCircle size={20} className="mr-2" />
-            La fecha límite de pago es antes de&nbsp;<b>{getMesesLimitePago()}</b> &nbsp;mes(es) del evento.
-            <br />
-          </div>
+          {(evento.eventType === "WEDDING" || evento.eventType === "COMMUNION") && (
+            <div className="warning-message" style={{ marginTop: "1rem" }}>
+              <AlertCircle size={20} className="mr-2" />
+              La fecha límite de pago de la reserva es antes de&nbsp;
+              <b>{getMesesLimitePago()}</b> &nbsp;mes(es) del evento.
+              <br />
+            </div>
+          )}
+
 
           <div className="event-info-card">
             <div className="event-info">
