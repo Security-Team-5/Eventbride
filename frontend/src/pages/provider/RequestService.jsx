@@ -4,10 +4,13 @@ import { useState, useEffect } from "react"
 import apiClient from "../../apiClient"
 import { MapPin, DollarSign, Users, Clock, Check, X, Info, Package, CheckCircle, Calendar } from "lucide-react"
 import "../../static/resources/css/RequestService.css"
+import "../../static/resources/css/Servicios.css"
 
 const Servicios = () => {
     const [eventProps, setEventProps] = useState([])
     const [loading, setLoading] = useState(true)
+
+    const [spinner, setSpinner] = useState(null)
 
     const currentUser = JSON.parse(localStorage.getItem("user"))
 
@@ -27,21 +30,28 @@ const Servicios = () => {
     }, [])
 
     const handleAccept = async (id) => {
+        setSpinner(id)
         try {
-            // SE LE ESTÁ METIENDO EL ID DE UN SERVICIO NO DE UN EVENTPROPERTIES
             await apiClient.put(`/api/event-properties/${id}`)
             setEventProps(eventProps.filter((service) => service.id !== id)) // Eliminar del estado local
         } catch (error) {
             console.error("Error al aceptar el servicio:", error)
+        } finally {
+            setSpinner(null)
+            window.location.href = "/dashboard"
         }
     }
 
     const handleReject = async (id) => {
+        setSpinner(id)
         try {
             await apiClient.delete(`/api/event-properties/${id}`)
             setEventProps(eventProps.filter((service) => service.id !== id)) // Eliminar del estado local
         } catch (error) {
             console.error("Error al rechazar el servicio:", error)
+        } finally {
+            setSpinner(null)
+            window.location.href = "/dashboard"
         }
     }
 
@@ -181,12 +191,34 @@ const Servicios = () => {
 
                                 <div className="solicitud-actions">
                                     <button className="accept-button" onClick={() => handleAccept(eventProp.id)}>
-                                        <Check size={18} />
-                                        Confirmar
+                                        {
+                                            spinner === eventProp.id ? (
+                                                <>
+                                                    <span className="spinner"></span>
+                                                    Procesando...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Check size={18} />
+                                                    Confirmar
+                                                </>
+                                            )
+                                        }
                                     </button>
                                     <button className="reject-button" onClick={() => handleReject(eventProp.id)}>
-                                        <X size={18} />
-                                        Rechazar
+                                        {
+                                            spinner === eventProp.id ? (
+                                                <>
+                                                    <span className="spinner"></span>
+                                                    Procesando...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <X size={18} />
+                                                    Rechazar
+                                                </>
+                                            )
+                                        }
                                     </button>
                                 </div>
                             </div> : ''

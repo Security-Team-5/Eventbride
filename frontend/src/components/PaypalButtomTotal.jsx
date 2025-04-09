@@ -1,11 +1,16 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../static/resources/css/Paypal.css";
 import apiClient from "../apiClient";
+import { useAlert } from "../context/AlertContext";
+import { useNavigate } from 'react-router-dom';
 
 function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
+  const navigate = useNavigate();
   const paypalRef = useRef(null);
   const commissionRate = 1.05;
+
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     if (!paypalRef.current) return;
@@ -48,10 +53,10 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
               );
 
               await Promise.all(cancelRequests);
-              alert(`Pago completado por ${details.payer.name.given_name}`);
-              window.location.href = "/events";
+              showAlert(`Pago completado por ${details.payer.name.given_name}`);
+              navigate("/events");
             } catch (err) {
-              alert("Error al procesar el pago");
+              showAlert("Error al procesar el pago");
               console.error(err);
             }
           },
@@ -72,9 +77,9 @@ function PaypalButtonTotal({ amount, paymentType, eventPropsIds }) {
   }, [amount, paymentType, JSON.stringify(eventPropsIds)]);
 
   return (
-    <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center" }}>
-      <div ref={paypalRef} />
-    </div>
+      <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center" }}>
+        <div ref={paypalRef} />
+      </div>
   );
 }
 

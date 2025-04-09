@@ -11,7 +11,6 @@ function Login({ setUser }) {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,12 +33,12 @@ function Login({ setUser }) {
         }
       });
       const user = await updated.json();
-      
+
 
       setUser(user);
       window.localStorage.setItem("user", JSON.stringify(data.user));
       window.localStorage.setItem("jwt", response.data.token);
-      navigate("/");
+      window.location.href = "/";
     } catch (err) {
       setError("Credenciales incorrectas");
     } finally {

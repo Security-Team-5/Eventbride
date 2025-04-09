@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import apiClient from "../../apiClient"
 import "../../static/resources/css/Register.css"
 
@@ -22,7 +22,6 @@ const Register = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -97,7 +96,7 @@ const Register = () => {
         return
       }
 
-      navigate("/login")
+      window.location.href = "/login"
     } catch (error) {
       console.error("Error en el registro:", error.response?.data || error.message)
       setError("Error al registrarse. Inténtalo de nuevo.")
