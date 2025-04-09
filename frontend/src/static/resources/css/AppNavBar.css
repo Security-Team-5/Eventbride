@@ -58,7 +58,7 @@
 }
 
 .navbar-logo {
-    width: 50px;
+    width: 15vh;
     height: auto;
     margin-right: 12px;
     transition: transform var(--transition-fast);

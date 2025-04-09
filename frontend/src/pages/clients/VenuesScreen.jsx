@@ -437,7 +437,7 @@ const VenuesScreen = () => {
                   <Plus size={16} />
                   Añadir a mi evento
                 </button>}
-              <button className="close-button" onClick={() => setSelectedVenue(null)}>
+              <button  className="secondary-button" onClick={() => setSelectedVenue(null)}>
                 Cerrar
               </button>
             </div>
