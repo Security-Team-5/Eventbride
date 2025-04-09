@@ -1,5 +1,6 @@
 package com.eventbride.venue;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import com.eventbride.dto.VenueDTO;
+import com.eventbride.event.Event;
+import com.eventbride.event.EventService;
+import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 
 import jakarta.validation.Valid;
@@ -26,6 +30,9 @@ public class VenueController {
 
 	@Autowired
 	private VenueService venueService;
+
+	@Autowired
+	private EventService eventService;
 
 	@Autowired
 	private EventPropertiesService eventPropertiesService;
@@ -197,12 +204,23 @@ public class VenueController {
 
 		// Asegurarse que no se puede hacer disable si existen eventos asociados al
 		// recinto
-		Boolean venues = eventPropertiesService.findAll().stream().filter(e -> e.getVenue() != null)
-				.anyMatch(e -> e.getVenue().getId() == service.getId());
+		boolean eventoPorVenir = false;
 
-		if (venues) {
+		for (Event e : eventService.findAll()) {
+			for (EventProperties ep : e.getEventProperties()) {
+				if (ep.getVenue() != null && ep.getVenue().getId() == service.getId()) {
+					if (e.getEventDate().isAfter(LocalDate.now())) {
+						eventoPorVenir = true;
+						break;
+					}
+				}
+			}
+		}
+
+		if (eventoPorVenir) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("error", "No puedes deshabilitar recintos asociados a eventos"));
+					.body(Map.of("error",
+							"No puedes deshabilitar servicios asociados a eventos que todavia no se han celebrado"));
 		}
 
 		service.setAvailable(!service.getAvailable());
