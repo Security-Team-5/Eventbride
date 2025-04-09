@@ -73,18 +73,6 @@ const getFAQDataByRole = (role) => {
             },
           ],
         },
-        {
-          category: "Valoraciones",
-          icon: <Star />,
-          topics: [
-            { question: "¿Cómo valorar a un proveedor?", 
-              answer: "Después del evento, recibirás un correo o notificación para valorar." 
-            },
-            { question: "¿Puedo editar una valoración?", 
-              answer: "No, una vez puesta una valoración no se podrá editar." 
-            },
-          ],
-        },
       ]
 
     case "SUPPLIER":
@@ -152,11 +140,8 @@ const getFAQDataByRole = (role) => {
             { question: "¿Cómo editar mis datos de proveedor?", 
               answer: "Desde tu perfil → Editar datos." 
             },
-            { question: "¿Cómo funcionan las valoraciones?", 
-              answer: "Los clientes valoran tu servicio al terminar. Una buena atención mejora tu visibilidad." 
-            },
             { question: "¿Me pueden suspender la cuenta?", 
-              answer: "Sí, si incumples repetidamente los términos o acumulas valoraciones negativas." 
+              answer: "Sí, si incumples repetidamente los términos." 
             },
           ],
         },

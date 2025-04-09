@@ -146,7 +146,7 @@ INSERT IGNORE INTO venues (id, postal_code, coordinates, address, max_guests, su
 INSERT IGNORE INTO other_services (id, other_service_type, extra_information, name, available, city_available, service_price_guest, service_price_hour, picture, description, user_id, limited_by_price_per_guest, limited_by_price_per_hour, fixed_price) VALUES
 (8, 'DECORATION', 'Decoración floral completa', 'Flores del Sur', TRUE, 'Sevilla', null, null, 'https://images.unsplash.com/photo-1561181286-d5c92b900f59', 'Creamos ambientes únicos con nuestras decoraciones florales personalizadas. Desde centros de mesa hasta arcos nupciales, transformamos cualquier espacio en un jardín de ensueño.', 25, FALSE, FALSE, 800.00),
 (9, 'CATERING', 'Tartas y dulces personalizados', 'Dulces Delicias', TRUE, 'Sevilla', 12.00, null, 'https://images.unsplash.com/photo-1578985545062-69928b1d9587', 'Elaboramos tartas, cupcakes y mesas dulces personalizadas para todo tipo de eventos. Utilizamos ingredientes de primera calidad y diseños exclusivos adaptados a cada celebración.', 26, TRUE, FALSE, null),
-(10, 'TRANSPORTATION', 'Coches de lujo con chófer', 'Transporte VIP', TRUE, 'Sevilla', null, 120.00, 'https://images.unsplash.com/photo-1550355291-bbee04a92027', 'Servicio de transporte exclusivo con vehículos de lujo y chóferes profesionales. Disponemos de limusinas, coches clásicos y modernos para que tu llegada sea inolvidable.', 27, FALSE, TRUE, null),
+(10, 'DECORATION', 'Decoraciones de coches, para tus fiestas varoniles', 'Coches ferrari', TRUE, 'Sevilla', null, 120.00, 'https://images.unsplash.com/photo-1550355291-bbee04a92027', 'Decora tu fiesta con coches, imagenes y relacionados, perfecto para los aficionados a los coches.', 27, FALSE, TRUE, null),
 (11, 'ENTERTAINMENT', 'Animación infantil y para adultos', 'Animación Fiestas', TRUE, 'Sevilla', 8.00, null, 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7', 'Hacemos que tu evento sea divertido para todos los asistentes. Ofrecemos servicios de animación infantil, magos, músicos, bailarines y actividades para adultos adaptadas a cada celebración.', 28, TRUE, FALSE, null),
 (12, 'DECORATION', 'Invitaciones y papelería personalizada', 'Invitaciones Elegantes', TRUE, 'Sevilla', null, null, 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8', 'Diseñamos y elaboramos invitaciones, minutas, seating plans y toda la papelería necesaria para tu evento. Cada diseño es único y personalizado según tus gustos y la temática de la celebración.', 29, FALSE, FALSE, 350.00);
 
@@ -250,13 +250,6 @@ INSERT IGNORE INTO event_properties (id, event_id, other_service_id, venue_id, s
 
 -- Additional NOTIFICATIONS
 INSERT IGNORE INTO notifications (id, user_id, subject, message, type, created_at) VALUES 
-(3, 20, 'Recordatorio de evento', 'Tu evento "Boda de Carmen y Alberto" está programado para dentro de 30 días.', 'EVENT_REMINDER', '2026-04-15 10:00:00'),
 (4, 21, 'Pago pendiente', 'Tienes un pago pendiente para tu evento "Bautizo de Lucía". Por favor, completa el pago antes de la fecha límite.', 'PAYMENT_REMINDER', '2026-03-01 09:30:00'),
-(5, 22, 'Confirmación de reserva', 'Tu reserva para "Comunión de Martín" ha sido confirmada. Todos los servicios están aprobados.', 'BOOKING_CONFIRMATION', '2025-02-15 14:20:00'),
-(6, 23, 'Solicitud aprobada', 'Tu solicitud para el local "Jardines del Guadalquivir" ha sido aprobada.', 'REQUEST_APPROVED', '2025-03-20 11:45:00'),
 (7, 24, 'Nuevo mensaje', 'Has recibido un nuevo mensaje del proveedor "Flores del Sur" sobre tu evento.', 'NEW_MESSAGE', '2025-05-25 16:10:00'),
-(8, 25, 'Nueva solicitud de reserva', 'Has recibido una nueva solicitud de reserva para decoración floral.', 'NEW_REQUEST', '2025-06-10 08:30:00'),
-(9, 26, 'Actualización de perfil', 'Tu perfil ha sido actualizado correctamente.', 'PROFILE_UPDATE', '2025-04-05 13:15:00'),
-(10, 27, 'Valoración recibida', 'Has recibido una nueva valoración de 5 estrellas para tu servicio.', 'NEW_REVIEW', '2026-07-20 17:40:00'),
-(11, 28, 'Promoción especial', 'Aprovecha nuestra promoción especial para eventos de verano. 15% de descuento en todos los servicios.', 'PROMOTION', '2025-05-01 10:00:00'),
-(12, 29, 'Recordatorio de renovación', 'Tu plan Premium expirará en 30 días. Renueva para seguir disfrutando de los beneficios.', 'SUBSCRIPTION_REMINDER', '2026-05-20 09:00:00');
+(8, 25, 'Nueva solicitud de reserva', 'Has recibido una nueva solicitud de reserva para decoración floral.', 'NEW_REQUEST', '2025-06-10 08:30:00');

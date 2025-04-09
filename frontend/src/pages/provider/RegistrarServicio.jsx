@@ -91,7 +91,6 @@ const RegistrarServicio = () => {
         formData.limitedByPricePerGuest = limitedBy === "perGuest"
         formData.limitedByPricePerHour = limitedBy === "perHour"
 
-        console.log("Datos del formulario:", formData)
         console.log("General error:", generalError)
 
         fetch("/api/" + serviceType, {

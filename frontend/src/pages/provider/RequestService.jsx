@@ -17,7 +17,6 @@ const Servicios = () => {
                 setLoading(true)
                 const response = await apiClient.get(`/api/event-properties/pending/${currentUser.id}`)
                 setEventProps(response.data)
-                console.log(response.data)
             } catch (error) {
                 console.error("Error fetching services:", error)
             } finally {

@@ -36,7 +36,6 @@ const HistorialVentas = ({ userId }) => {
             .then(async data => {
                 const pagosConDetalles = await Promise.all(
                     data.map(async (pago) => {
-                        console.log("pago", pago);
                         let serviceName = "Sin nombre";
                         let eventProp = null;
 
@@ -50,7 +49,6 @@ const HistorialVentas = ({ userId }) => {
                             });
 
                             eventProp = await epRes.json();
-                            console.log("eventProp", eventProp);
 
                             // 2. Obtener nombre del servicio
                             if (eventProp.venueDTO) {

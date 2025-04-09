@@ -35,6 +35,8 @@ const OtherServiceScreen = () => {
   const [serviceDetails, setServiceDetails] = useState(null)
   const [venueTimes, setVenueTimes] = useState({})
   const [loading, setLoading] = useState(true)
+  const [isConfirming, setIsConfirming] = useState(false)
+
 
   const currentUser = JSON.parse(localStorage.getItem("user"))
   const [jwtToken] = useState(localStorage.getItem("jwt"));
@@ -191,9 +193,11 @@ const OtherServiceScreen = () => {
       alert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.")
       return
     }
-    // Combinar la fecha del evento con la hora que indicó el usuario
+  
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
+  
+    setIsConfirming(true) // Bloquea clics múltiples
     try {
       await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
         params: { startDate, endDate },
@@ -203,6 +207,8 @@ const OtherServiceScreen = () => {
       setModalVisible(false)
     } catch (error) {
       console.error("Error al añadir el servicio:", error)
+    } finally {
+      setIsConfirming(false)
     }
   }
 
@@ -321,7 +327,6 @@ const OtherServiceScreen = () => {
         <div className="services-grid">
           {otherServices.map((service) => {
 
-            console.log(service)
             return (
               <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
                 <div className="card-header">
@@ -434,6 +439,7 @@ const OtherServiceScreen = () => {
                         className="primary-button"
                         style={{ flex: "1" }}
                         onClick={() => handleConfirmService(eventObj, selectedOtherServiceId)}
+                        disabled={isConfirming} 
                       >
                         <CheckCircle size={16} />
                         Confirmar

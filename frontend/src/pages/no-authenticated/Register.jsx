@@ -97,7 +97,6 @@ const Register = () => {
         return
       }
 
-      console.log("Usuario registrado:", response.data)
       navigate("/login")
     } catch (error) {
       console.error("Error en el registro:", error.response?.data || error.message)

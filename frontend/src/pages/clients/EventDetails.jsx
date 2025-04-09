@@ -6,7 +6,7 @@ import "../../static/resources/css/EventDetails.css"
 import PaypalButtonTotal from "../../components/PaypalButtomTotal";
 import "../../static/resources/css/OtherService.css"
 import { Link } from "react-router-dom"
-import { AlertCircle } from "lucide-react"; 
+import { AlertCircle } from "lucide-react";
 
 
 function EventDetails() {
@@ -37,7 +37,6 @@ function EventDetails() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("evento obtenido:", data);
         setEvento(data);
         setIsLoading(false);
 
@@ -50,7 +49,6 @@ function EventDetails() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("payment obtenido:", data);
             setPayments(data);
           })
           .catch((error) => {
@@ -161,7 +159,6 @@ function EventDetails() {
 
   // Cargar evento al montar el componente
   useEffect(() => {
-    console.log("eventoId", id)
     getEvents()
   }, [id])
 
@@ -344,19 +341,19 @@ function EventDetails() {
     return totales;
   };
 
-    // Determinar los meses límite de pago según el tipo de evento
-    const getMesesLimitePago = () => {
-      switch (evento?.eventType) {
-        case "WEDDING":
-          return 5;
-        case "COMMUNION":
-          return 3;
-        case "CHRISTENING":
-          return 1;
-        default:
-          return 0; // Si no coincide con ningún tipo, devolvemos 0
-      }
-    };
+  // Determinar los meses límite de pago según el tipo de evento
+  const getMesesLimitePago = () => {
+    switch (evento?.eventType) {
+      case "WEDDING":
+        return 5;
+      case "COMMUNION":
+        return 3;
+      case "CHRISTENING":
+        return 1;
+      default:
+        return 0; // Si no coincide con ningún tipo, devolvemos 0
+    }
+  };
 
   return (
     <>
@@ -366,6 +363,7 @@ function EventDetails() {
             <div className="event-title-container">
               <span className="event-type-badge">{tipoDeEvento(evento?.eventType)}</span>
               <h2 style={{ height: "60%" }} className="event-title">Detalles del Evento</h2>
+              <h3 style={{ fontSize: "150%" }}>{evento?.name}</h3>
             </div>
 
             {sumaPagado() <= 0 && (
@@ -376,7 +374,7 @@ function EventDetails() {
             )}
           </div>
 
-          
+
           <div className="warning-message" style={{ marginTop: "1rem" }}>
             <AlertCircle size={20} className="mr-2" />
             La fecha límite de pago es antes de&nbsp;<b>{getMesesLimitePago()}</b> &nbsp;mes(es) del evento.
@@ -496,16 +494,16 @@ function EventDetails() {
                           </div>
                         </>
                       )}
-                      <div className="status-indicator">
-                        <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
-                        <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
-                      </div>
                       {(prop.status === "PENDING" || prop.status === "APPROVED" || prop.status === "CANCELLED") && (
                         <button className="delete-property-button" onClick={() => openDeletePropertyModal(prop.id)}>
                           <i className="delete-property-icon">✕</i>
                           Eliminar recinto
                         </button>
                       )}
+                      <div className="status-indicator">
+                        <span className={`status-dot status-${prop.status.toLowerCase()}`}></span>
+                        <span className="status-text">{prop.status === "COMPLETED" ? "Pagado" : "En proceso"}</span>
+                      </div>
                     </div>
                   </div>
                 ) : null,

@@ -101,8 +101,6 @@ const VenuesScreen = () => {
   }, [])
 
   useEffect(() => {
-    console.log("Processing venues for map:", venues);
-
     const processedVenues = venues.map(venue => {
       if (!venue.coordinates) {
         console.warn("Venue missing coordinates:", venue);
@@ -124,7 +122,6 @@ const VenuesScreen = () => {
       };
     }).filter(Boolean);
 
-    console.log("Processed venues for map:", processedVenues);
     setVenuesWithCoordinates(processedVenues);
   }, [venues]);
 
@@ -242,7 +239,7 @@ const VenuesScreen = () => {
     <div className="venues-container">
       {/* Header */}
       <div className="venues-header">
-        <h1 className="venues-title">Venues Disponibles</h1>
+        <h1 className="venues-title">Recintos Disponibles</h1>
 
         <button className="filter-toggle" onClick={toggleFilters}>
           <Filter size={18} />

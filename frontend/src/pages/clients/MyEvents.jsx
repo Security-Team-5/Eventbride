@@ -36,7 +36,6 @@ function MyEvents() {
         return response.json();
       })
       .then(data => {
-        console.log("Eventos obtenidos:", data);
         setEventos(data);
         setIsLoading(false);
       })
@@ -152,10 +151,11 @@ function MyEvents() {
                 <div className="event-image-container">
                   <img
                     src={getEventImage(evento.eventType) || "/placeholder.svg"}
+                    onClick={() => navigate(`/event/${evento.id}`)}
                     alt={tipoDeEvento(evento.eventType)}
                     className="event-image"
                   />
-                  <div className="event-type-badge">
+                  <div className="event-type-badge" style= {{color: "#dab247", backgroundColor:"#12110e65", fontSize:"1.2rem"}}>
                     {tipoDeEvento(evento.eventType)}
                   </div>
                   {diasRestantes > 0 && (

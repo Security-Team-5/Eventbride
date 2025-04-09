@@ -122,8 +122,6 @@ const EditarServicio = () => {
         delete updatedFormData.new;
     
         try {
-            console.log("Payload a enviar:", updatedFormData);
-
             if (serviceType === 'venue') {
                 await apiClient.put(`/api/venues/${id}`, updatedFormData);
             } else {
