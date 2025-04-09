@@ -427,7 +427,7 @@ function EventDetails() {
               evento.eventPropertiesDTO.map((prop, i) =>
                 prop.venueDTO ? (
                   <div key={i} className="venue-card">
-                    <div className="card-header">
+                    <div className="card-header" style={{backgroundColor: "#d9be75"}}>
                       <h4 className="venue-name">{decodeText(prop.venueDTO.name)}</h4>
                     </div>
                     <div className="service-image-container">
@@ -453,7 +453,7 @@ function EventDetails() {
                     </div>
                     <div className="venue-details">
                       <p className="venue-description">
-                        <span className="detail-label">Horario:</span>
+                        <span className="detail-label">Horario contratado:</span>
                         {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} -{" "}
 
                         {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
@@ -523,8 +523,8 @@ function EventDetails() {
             {evento?.eventPropertiesDTO?.some((prop) => prop.otherServiceDTO) ? (
               evento.eventPropertiesDTO.map((prop, i) =>
                 prop.otherServiceDTO ? (
-                  <div key={i} className="service-card">
-                    <div className="card-header">
+                  <div key={i} className="venue-card">
+                    <div className="card-header" style={{backgroundColor: "#d9be75"}}>
                       <h4 className="service-name">{decodeText(prop.otherServiceDTO.name)}</h4>
                     </div>
                     <div className="service-image-container" style={{ objectFit: "cover", maxHeight: "100%" }}>
@@ -554,7 +554,7 @@ function EventDetails() {
                     </div>
                     <div className="venue-details">
                       <p className="venue-description">
-                        <span className="detail-label">Horario:</span>
+                        <span className="detail-label">Horario contratado:</span>
                         {decodeText(prop.startTime).split(":").slice(0, 2).join(":")} -
                         {decodeText(prop.finishTime).split(":").slice(0, 2).join(":")}
                       </p>
