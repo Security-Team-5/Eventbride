@@ -2,10 +2,12 @@
 import { useEffect, useRef } from "react";
 import "../static/resources/css/Paypal.css";
 import apiClient from "../apiClient";
-import { Alert } from "reactstrap";
+import { useAlert } from "../context/AlertContext";
 
 function PaypalButtonPlan({ amount, fechaFin }) {
   const paypalRef = useRef(null);
+
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     if (!paypalRef.current || !window.paypal) return;
@@ -84,31 +86,10 @@ function PaypalButtonPlan({ amount, fechaFin }) {
     };
   }, [amount, fechaFin]);
 
-  const [alertMessage, setAlertMessage] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [open, setOpen] = useState(true);
-  function showAlert(message) {
-    setAlertMessage(message);
-    setVisible(true);
-    setOpen(true);
-    setTimeout(() => {
-      setVisible(false);
-    }, 3000); // 3 segundos
-    setTimeout(() => {
-      setOpen(false);
-    }, 3500); // 4 segundos
-
-  }
-
   return (
-    <div>
-      <Alert isOpen={open} className={`alert-container ${!visible ? "alert-hidden" : ""}`}>
-        {alertMessage}
-      </Alert>
       <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center" }}>
         <div ref={paypalRef} />
       </div>
-    </div>
   );
 }
 
