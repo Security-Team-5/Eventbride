@@ -106,7 +106,7 @@ public class PaymentUnitTest {
         assertEquals(Payment.PaymentType.DEPOSIT, result.getPaymentType());
         assertEquals(user, result.getUser());
         assertEquals(eventProperties, result.getEventProperties());
-        verify(notificationService).createNotification(any(), any(), any(), any());
+        verify(notificationService).createNotification(any(), any(), any(), any(), any());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class PaymentUnitTest {
         assertEquals(Payment.PaymentType.REMAINING, result.getPaymentType());
         assertEquals(user, result.getUser());
         assertEquals(eventProperties, result.getEventProperties());
-        verify(notificationService).createNotification(any(), any(), any(), any());
+        verify(notificationService).createNotification(any(), any(), any(), any(), any());
     }
 
     @Test
