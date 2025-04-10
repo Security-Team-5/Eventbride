@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.eventbride.event.Event;
+import com.eventbride.event.EventService;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.user.User;
@@ -42,6 +45,9 @@ class VenueControllerTest {
 
     @MockBean
     private VenueService venueService;
+
+    @MockBean
+    private EventService eventService;
 
     @MockBean
     private EventPropertiesService eventPropertiesService;
@@ -305,16 +311,21 @@ class VenueControllerTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void shouldReturnBadRequestWhenVenueHasAssociatedEvents() throws Exception {
         Venue venue = createVenue();
+        venue.setId(1);
 
-        EventProperties fakeEvent = new EventProperties();
-        fakeEvent.setVenue(venue);
+        EventProperties event = new EventProperties();
+        event.setVenue(venue);
+
+        Event futureEvent = new Event();
+        futureEvent.setEventDate(LocalDate.now().plusDays(1));
+        futureEvent.setEventProperties(List.of(event));
 
         when(venueService.getVenueById(1)).thenReturn(Optional.of(venue));
-        when(eventPropertiesService.findAll()).thenReturn(List.of(fakeEvent));
+        when(eventService.findAll()).thenReturn(List.of(futureEvent));
 
         mockMvc.perform(patch("/api/venues/disable/1"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("No puedes deshabilitar recintos asociados a eventos"));
+                .andExpect(jsonPath("$.error").value("No puedes deshabilitar servicios asociados a eventos que todavia no se han celebrado"));
     }
 
 }
