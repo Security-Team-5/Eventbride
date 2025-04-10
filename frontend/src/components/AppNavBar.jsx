@@ -165,30 +165,33 @@ function Navbar({ user }) {
                   </Link>
 
                   <div className="user-menu">
-                    <Link to="/profile" className="action-icon user-icon" style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      overflow: "hidden",
-                      background: "transparent",
-                    }}>
-                      <div className="profile-pic-wrapper" style={{ height: "50px", overflow: "hidden", background: "transparent" }}>
-                        {currentUser.profilePicture?.trim() && (
-                          <img
-                            src={currentUser.profilePicture}
-                            alt="Foto de perfil"
-                            style={{
-                              maxWidth: "50px",
-                              height: "50px",
-                              objectFit: "cover",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        )}
-                      </div>
+                    <Link
+                      to="/profile"
+                      className="action-icon user-icon"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "hidden",
+                        background: "transparent",
+                      }}
+                    >
+                      {currentUser.profilePicture?.trim() && (
+                        <img
+                          src={currentUser.profilePicture}
+                          alt="Foto de perfil"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            objectPosition: "center",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      )}
                     </Link>
                     <div className="user-name">{currentUser.username || "Usuario"}</div>
                   </div>
