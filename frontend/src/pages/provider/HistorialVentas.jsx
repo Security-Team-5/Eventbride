@@ -36,7 +36,6 @@ const HistorialVentas = ({ userId }) => {
             .then(async data => {
                 const pagosConDetalles = await Promise.all(
                     data.map(async (pago) => {
-                        console.log("pago", pago);
                         let serviceName = "Sin nombre";
                         let eventProp = null;
 
@@ -50,7 +49,6 @@ const HistorialVentas = ({ userId }) => {
                             });
 
                             eventProp = await epRes.json();
-                            console.log("eventProp", eventProp);
 
                             // 2. Obtener nombre del servicio
                             if (eventProp.venueDTO) {
@@ -86,6 +84,18 @@ const HistorialVentas = ({ userId }) => {
         getPaymentsForProvider();
     }, [userId]);
 
+    const statusMap = {
+        COMMISSION: 'Comisión',
+        DEPOSIT: 'Pago reserva',
+        PLAN: 'Plan',
+        REMAINING: 'Pago restante'
+      };
+      
+      function parseStatus(status) {
+        return statusMap[status] || 'desconocido';
+      }
+      
+
     if (isLoading) {
         return (
             <div className="loading-container">
@@ -115,7 +125,7 @@ const HistorialVentas = ({ userId }) => {
                         <tr>
                             <th>Servicio</th>
                             <th>Cantidad</th>
-                            <th>Cantidad final</th>
+                            <th>Sin comisones</th>
                             <th>Fecha del pago</th>
                             <th>Tipo de pago</th>
                         </tr>
@@ -133,7 +143,7 @@ const HistorialVentas = ({ userId }) => {
                                 <td>{(venta.amount / 1.05).toFixed(2)}€</td>
                                 <td>{((venta.amount / 1.05) * 0.975).toFixed(2)}€</td>
                                 <td>{new Date(venta.dateTime).toLocaleDateString()}</td>
-                                <td>{venta.paymentType}</td>
+                                <td>{parseStatus(venta.paymentType)}</td>
                             </tr>
                         ))}
                     </tbody>

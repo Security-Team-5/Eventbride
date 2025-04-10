@@ -42,7 +42,6 @@ function AdminEvents() {
       })
       .then((data) => {
         setEvents(data);
-        console.log("Eventos cargados:", data);
       })
       .catch((err) => {
         console.error("Error obteniendo eventos:", err.message);
@@ -234,8 +233,7 @@ function AdminEvents() {
                     <select
                       name="eventType"
                       value={eventData[event.id]?.eventType || event.eventType}
-                      onChange={
-                        InputChange}
+                      onChange={handleInputChange}
                       disabled={editEventId !== event.id}
                     >
                       {Object.keys(eventTypeMap).map((type) => (

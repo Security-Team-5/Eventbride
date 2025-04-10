@@ -12,7 +12,7 @@ const Register = () => {
     id: invitationId,
     firstName: "",
     lastName: "",
-    numberOfGuests: 1,
+    numberOfGuests: "",
     email: "",
     telephone: "",
   });
@@ -25,8 +25,7 @@ const Register = () => {
   useEffect(() => {
     fetch(`/api/invitation/${invitationId}`, {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken}`,
+        "Content-Type": "application/json"
       },
       method: "GET",
     })
@@ -45,7 +44,6 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Formulario enviado:", form);
 
     try {
       const response = await fetch("/api/invitation", {
@@ -64,7 +62,6 @@ const Register = () => {
         }),
       });
       const data = await response.json();
-      console.log(data)
       if (data?.error) {
         setError("Error: " + data?.error);
         return;
@@ -107,7 +104,7 @@ const Register = () => {
             max={invitation?.maxGuests}
             step="1"
             name="numberOfGuests"
-            placeholder="Nº Acompañantes"
+            placeholder={`Nº Acompañantes (Máximo ${invitation?.maxGuests})`}
             value={form.numberOfGuests}
             onChange={handleChange}
             required

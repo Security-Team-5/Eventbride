@@ -19,6 +19,8 @@ import {
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import "../../static/resources/css/OtherService.css"
+import "../../static/resources/css/Alert.css"
+import { useAlert } from "../../context/AlertContext"
 
 const OtherServiceScreen = () => {
   const [otherServices, setOtherServices] = useState([])
@@ -35,9 +37,13 @@ const OtherServiceScreen = () => {
   const [serviceDetails, setServiceDetails] = useState(null)
   const [venueTimes, setVenueTimes] = useState({})
   const [loading, setLoading] = useState(true)
+  const [isConfirming, setIsConfirming] = useState(false)
+
 
   const currentUser = JSON.parse(localStorage.getItem("user"))
   const [jwtToken] = useState(localStorage.getItem("jwt"));
+
+  const { showAlert } = useAlert()
 
   const getFilteredOtherServices = async () => {
     try {
@@ -188,21 +194,25 @@ const OtherServiceScreen = () => {
   const handleConfirmService = async (eventObj, selectedOtherServiceId) => {
     const times = venueTimes[eventObj.id] || {}
     if (!times.startTime || !times.endTime) {
-      alert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.")
+      showAlert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.")
       return
     }
-    // Combinar la fecha del evento con la hora que indicó el usuario
+
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
+
+    setIsConfirming(true) // Bloquea clics múltiples
     try {
       await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
         params: { startDate, endDate },
         headers: { Authorization: `Bearer ${jwtToken}` }
       })
-      alert("¡Operación realizada con éxito!")
+      showAlert("¡Operación realizada con éxito!")
       setModalVisible(false)
     } catch (error) {
       console.error("Error al añadir el servicio:", error)
+    } finally {
+      setIsConfirming(false)
     }
   }
 
@@ -321,7 +331,6 @@ const OtherServiceScreen = () => {
         <div className="services-grid">
           {otherServices.map((service) => {
 
-            console.log(service)
             return (
               <div key={service.id} className="service-card" onClick={() => handleServiceClick(service.id)}>
                 <div className="card-header">
@@ -386,7 +395,8 @@ const OtherServiceScreen = () => {
               ) : (
                 events.map((eventObj) => (
                   <div key={eventObj.id} className="event-card">
-                    <h3 className="event-title">{formatEventType(eventObj.eventType)}</h3>
+                    <span className="event-badge">{eventObj.eventType}</span>
+                    <h3 className="event-title" style={{ height: "10%", marginBottom: "10%" }}>{eventObj.name}</h3>
 
                     <div className="event-details">
                       <div className="event-detail">
@@ -433,6 +443,7 @@ const OtherServiceScreen = () => {
                         className="primary-button"
                         style={{ flex: "1" }}
                         onClick={() => handleConfirmService(eventObj, selectedOtherServiceId)}
+                        disabled={isConfirming}
                       >
                         <CheckCircle size={16} />
                         Confirmar
@@ -492,21 +503,32 @@ const OtherServiceScreen = () => {
                     <p className="details-text">{serviceDetails.extraInformation}</p>
                   </div>
                 )}
+                <div className="card-info">
+                  <span className="card-text">
+                    <img style={{ height: "25%", width: "100%" }}
+                      src={serviceDetails.picture || "https://iili.io/3Ywlapf.png"}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://iili.io/3Ywlapf.png";
+                      }}
+                      alt="Imagen del servicio"></img>
+                  </span>
+                </div>
               </div>
             </div>
             <div className="modal-footer">
-            {serviceDetails.available &&
-              <button
-                className="primary-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setServiceDetailsVisible(false);
-                  handleAddServiceClick(e, serviceDetails.id);
-                }}
-              >
-                <Plus size={16} />
-                Añadir a mi evento
-              </button>}
+              {serviceDetails.available &&
+                <button
+                  className="primary-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setServiceDetailsVisible(false);
+                    handleAddServiceClick(e, serviceDetails.id);
+                  }}
+                >
+                  <Plus size={16} />
+                  Añadir a mi evento
+                </button>}
               <button className="secondary-button" onClick={() => setServiceDetailsVisible(false)}>
                 Cerrar
               </button>

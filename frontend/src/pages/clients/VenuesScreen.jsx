@@ -13,11 +13,13 @@ import {
   ChevronDown,
   ChevronUp,
   Info,
+  Calendar,
   ArrowRight,
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import "../../static/resources/css/VenueScreen.css"
 import LeafletMap from "../../components/LeafletMap";
+import { useAlert } from "../../context/AlertContext.jsx"
 
 const VenuesScreen = () => {
   const [venues, setVenues] = useState([])
@@ -38,6 +40,8 @@ const VenuesScreen = () => {
   // Para almacenar la hora de inicio y fin (solo horas y minutos) de cada venue dentro del evento
   const [venueTimes, setVenueTimes] = useState({})
   const [loading, setLoading] = useState(true)
+
+  const { showAlert } = useAlert()
 
   // ------------------------------------------------------------------------------
   // Obtiene venues con o sin filtros
@@ -100,8 +104,6 @@ const VenuesScreen = () => {
   }, [])
 
   useEffect(() => {
-    console.log("Processing venues for map:", venues);
-
     const processedVenues = venues.map(venue => {
       if (!venue.coordinates) {
         console.warn("Venue missing coordinates:", venue);
@@ -123,7 +125,6 @@ const VenuesScreen = () => {
       };
     }).filter(Boolean);
 
-    console.log("Processed venues for map:", processedVenues);
     setVenuesWithCoordinates(processedVenues);
   }, [venues]);
 
@@ -211,7 +212,7 @@ const VenuesScreen = () => {
   const handleConfirmVenue = async (eventObj, venueId) => {
     const times = venueTimes[eventObj.id] || {}
     if (!times.startTime || !times.endTime) {
-      alert("Por favor, ingresa la hora de inicio y la hora de fin para este venue.")
+      showAlert("Por favor, ingresa la hora de inicio y la hora de fin para este venue.")
       return
     }
     // Combinar la fecha del evento con la hora que indicó el usuario
@@ -223,11 +224,11 @@ const VenuesScreen = () => {
         params: { startDate, endDate },
         headers: { Authorization: `Bearer ${jwtToken}` }
       })
-      alert("¡Operación realizada con éxito!")
+      showAlert("¡Operación realizada con éxito!")
       setAddModalVisible(false)
     } catch (error) {
       console.error("Error al añadir el venue:", error)
-      alert("Este evento ya tiene un servicio asociado.")
+      showAlert("Este evento ya tiene un servicio asociado.")
     }
   }
 
@@ -241,7 +242,7 @@ const VenuesScreen = () => {
     <div className="venues-container">
       {/* Header */}
       <div className="venues-header">
-        <h1 className="venues-title">Venues Disponibles</h1>
+        <h1 className="venues-title">Recintos Disponibles</h1>
 
         <button className="filter-toggle" onClick={toggleFilters}>
           <Filter size={18} />
@@ -275,7 +276,7 @@ const VenuesScreen = () => {
                 onChange={(e) => {
                   const value = Number(e.target.value);
                   if (value < 0) {
-                    alert("El número no puede ser negativo");
+                    showAlert("El número no puede ser negativo");
                     return;
                   }
                   setMaxGuests(value);
@@ -292,7 +293,7 @@ const VenuesScreen = () => {
                 onChange={(e) => {
                   const value = Number(e.target.value);
                   if (value < 0) {
-                    alert("El número no puede ser negativo");
+                    showAlert("El número no puede ser negativo");
                     return;
                   }
                   setSurface(value);
@@ -413,6 +414,17 @@ const VenuesScreen = () => {
                     <strong>Código Postal:</strong> {selectedVenue.postalCode}
                   </span>
                 </div>
+                <div className="card-info">
+                  <span className="card-text">
+                    <img style={{ height: "25%", width: "100%" }}
+                      src={selectedVenue.picture || "https://iili.io/3Ywlapf.png"}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://iili.io/3Ywlapf.png";
+                      }}
+                      alt="Imagen del servicio"></img>
+                  </span>
+                </div>
               </div>
             </div>
             <div className="modal-footer">
@@ -428,7 +440,7 @@ const VenuesScreen = () => {
                   <Plus size={16} />
                   Añadir a mi evento
                 </button>}
-              <button className="close-button" onClick={() => setSelectedVenue(null)}>
+              <button  className="secondary-button" onClick={() => setSelectedVenue(null)}>
                 Cerrar
               </button>
             </div>
@@ -455,13 +467,16 @@ const VenuesScreen = () => {
                     <div className="event-header" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       <div>
                         <span className="event-badge">{eventObj.eventType}</span>
-                        <h3 className="event-title" style={{ height: "10%"}}>Evento del {formatDate(eventObj.eventDate)}</h3>
+                        <h3 className="event-title" style={{ height: "10%" }}>{eventObj.name}</h3>
                       </div>
                       <div className="card-info">
                         <Users size={16} className="card-icon" />
                         <span className="card-text">{eventObj.guests} invitados</span>
+                        <Calendar size={18} className="detail-icon" />
+                        <span className="detail-text">{formatDate(eventObj.eventDate)}</span>
                       </div>
                     </div>
+
 
                     <div className="time-input-group">
                       <div className="input-group">
@@ -510,7 +525,7 @@ const VenuesScreen = () => {
               )}
             </div>
             <div className="modal-footer">
-              <button style={{width:"10%"}}className="close-button" onClick={() => setAddModalVisible(false)}>
+              <button style={{ width: "10%" }} className="close-button" onClick={() => setAddModalVisible(false)}>
                 Cerrar
               </button>
             </div>

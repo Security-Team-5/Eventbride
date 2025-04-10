@@ -1,13 +1,18 @@
 package com.eventbride.payment;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eventbride.event.Event;
+import com.eventbride.event.EventRepository;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesRepository;
+import com.eventbride.notification.NotificationService;
+import com.eventbride.notification.Notification.NotificationType;
 import com.eventbride.event_properties.EventProperties.Status;
 import com.eventbride.payment.Payment.PaymentType;
 import com.eventbride.user.User;
@@ -20,18 +25,46 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
     private EventPropertiesRepository eventPropertiesRepository;
     private UserRepository userRepository;
+    private NotificationService notificationService;
+    private EventRepository eventRepository;
     private Double commissionRate = 0.05;
 
     @Autowired
     public PaymentService(PaymentRepository paymentRepository, EventPropertiesRepository eventPropertiesRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository, NotificationService notificationService, EventRepository eventRepository) {
         this.paymentRepository = paymentRepository;
         this.eventPropertiesRepository = eventPropertiesRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;	
+        this.eventRepository = eventRepository;
+    }
+
+    private boolean isAuthorizedForPayment(Integer userId, Integer eventPropertiesId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return false;
+        }
+        
+        if ("ADMIN".equals(user.getRole())) {
+            return true;
+        }
+        
+        Optional<Event> eventOpt = eventRepository.findByEventPropertiesId(eventPropertiesId);
+        if (!eventOpt.isPresent()) {
+            return false;
+        }
+        
+        Event event = eventOpt.get();
+        
+        return event.getUser() != null && event.getUser().getId().equals(userId);
     }
 
     @Transactional
     public Payment payDeposit(Integer eventPropertiesId, Integer userId) {
+        if (!isAuthorizedForPayment(userId, eventPropertiesId)) {
+            throw new RuntimeException("El usuario no está autorizado para realizar este pago");
+        }
+
         EventProperties e = eventPropertiesRepository.findById(eventPropertiesId).orElse(null);
         Payment p;
 
@@ -53,14 +86,20 @@ public class PaymentService {
             p.setUser(user);
 
             paymentRepository.save(p);
+            Optional<Event> event = eventRepository.findByEventPropertiesId(e.getId());
+            notificationService.createNotification(NotificationType.NEW_DEPOSIT_PAYMENT, e.getVenue() != null ? e.getVenue().getUser() : e.getOtherService().getUser(), event.get(), e, null);
         } else {
             p = null;
         }
         return p;
     }
 
-    // FALTA FUNCIONES PARA PAGO RESTANTE
+    @Transactional
     public Payment payRemaining(Integer eventPropertiesId, Integer userId) {
+        if (!isAuthorizedForPayment(userId, eventPropertiesId)) {
+            throw new RuntimeException("El usuario no está autorizado para realizar este pago");
+        }
+
         EventProperties e = eventPropertiesRepository.findById(eventPropertiesId).orElse(null);
         Payment p;
 
@@ -88,7 +127,8 @@ public class PaymentService {
 
             p.setUser(user);
             paymentRepository.save(p);
-
+            Optional<Event> event = eventRepository.findByEventPropertiesId(e.getId());
+            notificationService.createNotification(NotificationType.NEW_REMAINING_PAYMENT, e.getVenue() != null ? e.getVenue().getUser() : e.getOtherService().getUser(), event.get(), e, null);
         } else {
             p = null;
         }
@@ -110,9 +150,6 @@ public class PaymentService {
     @Transactional
     public List<Payment> getPaymentsFromEventId(Integer eventId) {
         List<Payment> payments = paymentRepository.findPaymentsByEventId(eventId);
-        if (payments.isEmpty()) {
-            throw new RuntimeException("No se han encontrados pagos para este evento");
-        }
         return payments;
     }
 
@@ -123,5 +160,5 @@ public class PaymentService {
         }
         return payments;
     }
-
+    
 }

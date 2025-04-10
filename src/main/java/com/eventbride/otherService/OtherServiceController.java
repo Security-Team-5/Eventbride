@@ -1,5 +1,7 @@
 package com.eventbride.otherService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.eventbride.dto.OtherServiceDTO;
+import com.eventbride.event.Event;
+import com.eventbride.event.EventService;
+import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -43,6 +48,9 @@ public class OtherServiceController {
 	@Autowired
 	private EventPropertiesService eventPropertiesService;
 
+	@Autowired
+	private EventService eventService;
+
 	@GetMapping
 	public List<OtherServiceDTO> getAllOtherServices() {
 		List<OtherService> otherServices = otherServiceService.getAllOtherServices().stream()
@@ -67,31 +75,36 @@ public class OtherServiceController {
 
 	@PostMapping
 	public ResponseEntity<?> createOtherService(@Valid @RequestBody OtherService otherService) {
-		try {
-			OtherService newOtherService = otherServiceService.createOtherService(otherService);
-			return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
-		} catch (RuntimeException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+		if (!roles.contains("SUPPLIER")) {
+			throw new IllegalArgumentException("No tienes permisos para crear este servicio.");
 		}
+
+		OtherService newOtherService = otherServiceService.createOtherService(otherService);
+		return ResponseEntity.ok(new OtherServiceDTO(newOtherService));
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteOtherService(@PathVariable Integer id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		String username = auth.getName();
 
-		System.out.println("Authorities: " + authorities);
-
-		boolean hasSupplierRole = authorities.stream()
-				.map(GrantedAuthority::getAuthority)
-				.anyMatch(role -> role.equals("SUPPLIER") || role.equals("ROLE_SUPPLIER"));
-
-		if (hasSupplierRole) {
-			otherServiceService.deleteOtherService(id);
-			return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+		Optional<OtherService> optionalService = otherServiceService.getOtherServiceById(id);
+		if (optionalService.isEmpty()) {
+			return new ResponseEntity<>("Servicio no encontrado", HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		OtherService service = optionalService.get();
+
+		if (!service.getUser().getUsername().equals(username)) {
+			return new ResponseEntity<>("No tienes permisos para eliminar este servicio", HttpStatus.UNAUTHORIZED);
+		}
+
+		otherServiceService.deleteOtherService(id);
+		return new ResponseEntity<>("Eliminado correctamente", HttpStatus.OK);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -127,44 +140,45 @@ public class OtherServiceController {
 	}
 
 	@PutMapping("/update/{id}")
-public ResponseEntity<?> updateServiceUser(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-    List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+	public ResponseEntity<?> updateServiceUser(@PathVariable Integer id,
+			@Valid @RequestBody OtherService updatedService) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-    if (roles.contains("SUPPLIER")) {
-        try {
-            Optional<OtherService> existingServiceOptional = otherServiceService.getOtherServiceById(id);
-            if (existingServiceOptional.isEmpty()) {
-                return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
-            }
+		if (roles.contains("SUPPLIER")) {
+			try {
+				Optional<OtherService> existingServiceOptional = otherServiceService.getOtherServiceById(id);
+				if (existingServiceOptional.isEmpty()) {
+					return new ResponseEntity<>("Service not found", HttpStatus.NOT_FOUND);
+				}
 
-            OtherService existingService = existingServiceOptional.get();
+				OtherService existingService = existingServiceOptional.get();
 
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            String username = userDetails.getUsername();
+				UserDetails userDetails = (UserDetails) auth.getPrincipal();
+				String username = userDetails.getUsername();
 
-            Optional<User> loggedUserOptional = userRepository.findByUsername(username);
-            if (loggedUserOptional.isEmpty()) {
-                return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
-            }
+				Optional<User> loggedUserOptional = userRepository.findByUsername(username);
+				if (loggedUserOptional.isEmpty()) {
+					return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
+				}
 
-            User loggedUser = loggedUserOptional.get();
+				User loggedUser = loggedUserOptional.get();
 
-            if (!existingService.getUser().getId().equals(loggedUser.getId())) {
-                return new ResponseEntity<>("You are not allowed to update this service", HttpStatus.FORBIDDEN);
-            }
+				if (!existingService.getUser().getId().equals(loggedUser.getId())) {
+					return new ResponseEntity<>("You are not allowed to update this service", HttpStatus.FORBIDDEN);
+				}
 
-            updatedService.setId(id);
-            OtherService savedService = otherServiceService.updateOtherService(id, updatedService);
-            return new ResponseEntity<>(new OtherServiceDTO(savedService), HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
+				updatedService.setId(id);
+				OtherService savedService = otherServiceService.updateOtherService(id, updatedService);
+				return new ResponseEntity<>(new OtherServiceDTO(savedService), HttpStatus.OK);
+			} catch (RuntimeException e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+		}
 
-    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	}
 
 	@PutMapping("/admin/{id}")
 	public ResponseEntity<?> updateService(@PathVariable Integer id, @Valid @RequestBody OtherService updatedService) {
@@ -201,8 +215,10 @@ public ResponseEntity<?> updateServiceUser(@PathVariable Integer id, @Valid @Req
 
 	@PatchMapping("/disable/{id}")
 	public ResponseEntity<?> toggleOtherServiceAvailability(@PathVariable Integer id) {
-		Optional<OtherService> optionalService = otherServiceService.getOtherServiceById(id);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
 
+		Optional<OtherService> optionalService = otherServiceService.getOtherServiceById(id);
 		if (optionalService.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(Map.of("error", "Servicio no encontrado"));
@@ -210,20 +226,44 @@ public ResponseEntity<?> updateServiceUser(@PathVariable Integer id, @Valid @Req
 
 		OtherService service = optionalService.get();
 
-		// Asegurarse que no se puede hacer disable si existen eventos asociados al
-		// servicio
-		Boolean otherServices = eventPropertiesService.findAll().stream().filter(e -> e.getOtherService() != null)
-				.anyMatch(e -> e.getOtherService().getId() == service.getId());
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).toList();
 
-		if (!otherServices) {
-			service.setAvailable(!service.getAvailable());
-			otherServiceService.save(service);
-			return ResponseEntity.ok(Map.of("available", service.getAvailable()));
-		} else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("error", "No puedes deshabilitar servicios asociados a eventos"));
+		boolean isAdmin = roles.contains("ADMIN") || roles.contains("ROLE_ADMIN");
+
+		boolean isSupplierAndOwner = (roles.contains("SUPPLIER") || roles.contains("ROLE_SUPPLIER"))
+				&& service.getUser() != null
+				&& service.getUser().getUsername().equals(username);
+
+		if (!isAdmin && !isSupplierAndOwner) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN)
+					.body(Map.of("error", "No tienes permisos para modificar este servicio"));
 		}
 
+		// Asegurarse que no se puede hacer disable si existen eventos asociados al
+		// servicio
+
+		boolean eventoPorVenir = false;
+		for (Event e : eventService.findAll()) {
+			for (EventProperties ep : e.getEventProperties()) {
+				if (ep.getOtherService() != null && ep.getOtherService().getId() == service.getId()) {
+					if (e.getEventDate().isAfter(LocalDate.now())) {
+						eventoPorVenir = true;
+						break;
+					}
+				}
+			}
+		}
+
+		if (eventoPorVenir) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("error",
+							"No puedes deshabilitar servicios asociados a eventos que todavia no se han celebrado"));
+		}
+
+		service.setAvailable(!service.getAvailable());
+		otherServiceService.save(service);
+		return ResponseEntity.ok(Map.of("available", service.getAvailable()));
 	}
 
 }

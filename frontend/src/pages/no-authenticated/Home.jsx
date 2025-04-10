@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import logo from "../../static/resources/images/logo-eventbride.png"
-import { Calendar, Handshake, Users, TrendingUp, PartyPopper, ChevronRight, Sparkles, Clock, Settings, Palette, Gift, CheckCircle } from 'lucide-react'
+import { Calendar, Handshake, Users, TrendingUp, PartyPopper, ChevronRight, Clock, Settings, Palette, CheckCircle } from 'lucide-react'
 import "../../static/resources/css/Home.css"
 
 export default function HomePage() {
@@ -14,6 +14,7 @@ export default function HomePage() {
       const userData = localStorage.getItem("user")
       if (userData) {
         setCurrentUser(JSON.parse(userData))
+        console.log(userData)
       }
     } catch (error) {
       console.error("Error retrieving user data:", error)
@@ -370,7 +371,7 @@ export default function HomePage() {
                 <p className="option-text">
                   Visualiza, añade y edita tus servicios para que lleguen a todos nuestros usuarios.
                 </p>
-                <a href="/misservicios" className="option-button">
+                <a href="/admin-services" className="option-button">
                   Gestionar servicios <ChevronRight size={16} className="ml-2" />
                 </a>
               </div>
@@ -439,7 +440,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="admin-title">Usuarios</h3>
                 <p className="admin-text">Gestiona los usuarios de la plataforma, tanto clientes como proveedores.</p>
-                <a href="/admin/usuarios" className="admin-button">
+                <a href="/admin-users" className="admin-button">
                   Gestionar usuarios <ChevronRight size={16} className="ml-2" />
                 </a>
               </div>
@@ -450,7 +451,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="admin-title">Servicios</h3>
                 <p className="admin-text">Supervisa y modera todos los servicios ofrecidos en la plataforma.</p>
-                <a href="/admin/servicios" className="admin-button">
+                <a href="/admin-services" className="admin-button">
                   Gestionar servicios <ChevronRight size={16} className="ml-2" />
                 </a>
               </div>
@@ -461,7 +462,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="admin-title">Eventos</h3>
                 <p className="admin-text">Visualiza y gestiona todos los eventos creados en la plataforma.</p>
-                <a href="/admin/eventos" className="admin-button">
+                <a href="/admin-events" className="admin-button">
                   Gestionar eventos <ChevronRight size={16} className="ml-2" />
                 </a>
               </div>

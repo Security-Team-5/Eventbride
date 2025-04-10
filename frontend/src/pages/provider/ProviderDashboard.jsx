@@ -14,6 +14,8 @@ import {
     ArrowUpDown,
     CalendarDays,
     List,
+    Handshake,
+    DollarSign
 } from "lucide-react"
 import logo from "../../static/resources/images/logo-eventbride.png"
 import "../../static/resources/css/ProviderDashboard.css"
@@ -273,7 +275,17 @@ export default function SupplierDashboard() {
                 textColor = "text-green-800"
                 statusText = "Aceptada"
                 break
-            case "rejected":
+            case "deposit_paid":
+                bgColor = "bg-green-100"
+                textColor = "text-green-800"
+                statusText = "Reserva pagada"
+                break
+            case "completed":
+                bgColor = "bg-green-100"
+                textColor = "text-green-800"
+                statusText = "Pago completado"
+                break
+            case "cancelled":
                 bgColor = "bg-red-100"
                 textColor = "text-red-800"
                 statusText = "Rechazada"
@@ -303,23 +315,6 @@ export default function SupplierDashboard() {
 
     return (
         <div className="supplier-dashboard">
-            {/* Header */}
-            <header className="dashboard-header">
-                <div className="container">
-                    <div className="header-content">
-                        <div className="logo-container">
-                            <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="dashboard-logo" />
-                        </div>
-                        <h1 className="header-title">Panel de Proveedor</h1>
-                        <div className="user-menu">
-                            <span className="user-name">Mi Empresa</span>
-                            <div className="user-avatar">
-                                <User size={20} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
 
             {/* Main Content */}
             <main className="dashboard-main">
@@ -372,21 +367,21 @@ export default function SupplierDashboard() {
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon rejected">
-                                    <X size={24} />
+                                <div className="stat-icon accepted">
+                                    <Handshake size={24} />
                                 </div>
                                 <div className="stat-content">
-                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "rejected").length}</h3>
-                                    <p className="stat-label">Rechazadas</p>
+                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "deposit_paid").length}</h3>
+                                    <p className="stat-label">Reserva pagada</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon total">
-                                    <FileText size={24} />
+                                <div className="stat-icon accepted">
+                                    <DollarSign size={24} />
                                 </div>
                                 <div className="stat-content">
-                                    <h3 className="stat-value">{serviceRequests.length}</h3>
-                                    <p className="stat-label">Total</p>
+                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "completed").length}</h3>
+                                    <p className="stat-label">Pago completado</p>
                                 </div>
                             </div>
                         </div>
@@ -422,8 +417,20 @@ export default function SupplierDashboard() {
                                     Aceptadas
                                 </button>
                                 <button
-                                    className={`filter-button ${filterStatus === "rejected" ? "active" : ""}`}
-                                    onClick={() => setFilterStatus("rejected")}
+                                    className={`filter-button ${filterStatus === "deposit_paid" ? "active" : ""}`}
+                                    onClick={() => setFilterStatus("deposit_paid")}
+                                >
+                                    Reservado
+                                </button>
+                                <button
+                                    className={`filter-button ${filterStatus === "completed" ? "active" : ""}`}
+                                    onClick={() => setFilterStatus("completed")}
+                                >
+                                    Pagado
+                                </button>
+                                <button
+                                    className={`filter-button ${filterStatus === "cancelled" ? "active" : ""}`}
+                                    onClick={() => setFilterStatus("cancelled")}
                                 >
                                     Rechazadas
                                 </button>

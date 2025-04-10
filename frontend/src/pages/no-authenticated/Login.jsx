@@ -11,7 +11,6 @@ function Login({ setUser }) {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,25 +25,20 @@ function Login({ setUser }) {
       const response = await apiClient.post("/api/users/auth/login", form);
       const token = response.data.token;
       const data = await getCurrentUser({ token });
-      let user = data.user;
-
-      if (data.user.role === "SUPPLIER") {
-        if (data.user.plan === "PREMIUM") {
-          const expireDate = new Date(data.user.expirePlanDate);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-
-          if (expireDate <= today) {
-            const updated = await apiClient.put(`/api/users/planExpired/${data.user.id}`);
-            user = updated.data;
-          }
+      const updated = await fetch(`/api/users/planExpired`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
-      }
+      });
+      const user = await updated.json();
+
 
       setUser(user);
       window.localStorage.setItem("user", JSON.stringify(data.user));
       window.localStorage.setItem("jwt", response.data.token);
-      navigate("/");
+      window.location.href = "/";
     } catch (err) {
       setError("Credenciales incorrectas");
     } finally {
@@ -52,16 +46,6 @@ function Login({ setUser }) {
     }
   };
 
-  /*
-    fetch(`/api/users/${userData.id}`, {
-      headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-      },
-      method: "PUT",
-      body: JSON.stringify(userData),
-  })
-  */
   return (
     <div className="split-layout">
       <div className="login-side">

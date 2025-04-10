@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Mail, Phone, MapPin, Instagram, Linkedin } from "lucide-react"
+import { Mail, Phone, MapPin, Instagram, Linkedin, Music2 } from "lucide-react"
 import "../static/resources/css/Footer.css"
 
 // eslint-disable-next-line react/prop-types
@@ -15,8 +15,11 @@ function Footer({ user }) {
                             <Link to="https://www.instagram.com/eventbride_svq/">
                                 <Instagram size={18} />
                             </Link>
-                            <Link to="#">
+                            <Link to="https://www.linkedin.com/company/eventbride/">
                                 <Linkedin size={18} />
+                            </Link>
+                            <Link to="https://www.tiktok.com/@eventbride">
+                                <Music2 size={18} />
                             </Link>
                         </div>
                     </div>
@@ -49,9 +52,6 @@ function Footer({ user }) {
                         <ul className="contact-info">
                             <li>
                                 <MapPin size={16} /> Escuela Superior de Ingeniería Informática, Sevilla
-                            </li>
-                            <li>
-                                <Phone size={16} /> +34 123 456 789
                             </li>
                             <li>
                                 <Mail size={16} /> eventbride6@gmail.com

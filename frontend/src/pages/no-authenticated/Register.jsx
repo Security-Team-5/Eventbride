@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import apiClient from "../../apiClient"
 import "../../static/resources/css/Register.css"
 
@@ -16,14 +16,19 @@ const Register = () => {
     dni: "",
     role: "CLIENT",
     profilePicture: "",
+    receivesEmails: false,
   })
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value, type, checked } = e.target
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: type === "checkbox" ? checked : value,
+    }))
   }
 
   const handleSubmit = async (e) => {
@@ -69,9 +74,8 @@ const Register = () => {
     }
 
     setIsLoading(true)
-    
 
-    const role = "proveedor" === form.role ? "SUPPLIER" : "CLIENT"
+    const role = form.role === "proveedor" ? "SUPPLIER" : "CLIENT"
 
     try {
       const response = await apiClient.post("/api/users/auth/register", {
@@ -83,6 +87,7 @@ const Register = () => {
         dni: form.dni,
         password: form.password,
         role: role,
+        receivesEmails: Boolean(form.receivesEmails),
         profilePicture: form.profilePicture?.trim() === "" ? null : form.profilePicture,
       })
 
@@ -91,8 +96,7 @@ const Register = () => {
         return
       }
 
-      console.log("Usuario registrado:", response.data)
-      navigate("/login")
+      window.location.href = "/login"
     } catch (error) {
       console.error("Error en el registro:", error.response?.data || error.message)
       setError("Error al registrarse. Inténtalo de nuevo.")
@@ -165,7 +169,7 @@ const Register = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="profilePicture">URL de foto de perfil</label>
+              <label htmlFor="profilePicture">URL de foto de perfil (Opcional)</label>
               <div className="input-wrapper">
                 <input
                   type="url"
@@ -255,13 +259,28 @@ const Register = () => {
               <div className="checkbox-wrapper">
                 <input
                   type="checkbox"
+                  id="receivesEmails"
+                  name="receivesEmails"
+                  checked={form.receivesEmails}
+                  onChange={handleChange}
+                />
+                <label htmlFor="receivesEmails" className="terms-label">
+                  Deseo recibir notificaciones y novedades
+                </label>
+              </div>
+            </div>
+
+            <div className="form-group terms-checkbox-container">
+              <div className="checkbox-wrapper">
+                <input
+                  type="checkbox"
                   id="termsAccept"
                   checked={acceptedTerms}
                   onChange={(e) => setAcceptedTerms(e.target.checked)}
                   required
                 />
                 <label htmlFor="termsAccept" className="terms-label">
-                  <a href="/terminos-y-condiciones">Acepto los Terminos y Condiciones de Eventbride</a>
+                  <a href="/terminos-y-condiciones">Acepto los Términos y Condiciones de Eventbride</a>
                 </label>
               </div>
             </div>
@@ -270,9 +289,7 @@ const Register = () => {
               {isLoading ? (
                 <span className="loading-spinner"></span>
               ) : (
-                <>
-                  <span>Crear cuenta</span>
-                </>
+                <span>Crear cuenta</span>
               )}
             </button>
           </form>

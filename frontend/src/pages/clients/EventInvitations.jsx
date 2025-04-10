@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "../../static/resources/css/Invitations.css";
 import { useParams } from "react-router-dom";
-import {Copy, Trash2} from "lucide-react";
+import { Copy, Trash2 } from "lucide-react";
+import { useAlert } from "../../context/AlertContext.jsx";
 
 function EventInvitations() {
   const [invitaciones, setInvitaciones] = useState([]);
@@ -11,6 +12,7 @@ function EventInvitations() {
   const [eventData, setEventData] = useState(null); // Para guardar info del evento
   const [jwtToken] = useState(localStorage.getItem("jwt"));
 
+  const { showAlert } = useAlert();
 
   // Obtener la lista de invitaciones
   function getInvitations() {
@@ -23,7 +25,6 @@ function EventInvitations() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Invitaciones recibidas:", data);
         setInvitaciones(data);
       })
       .catch((error) =>
@@ -41,7 +42,6 @@ function EventInvitations() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Datos del evento:", data);
         setEventData(data);
       })
       .catch((error) =>
@@ -52,6 +52,7 @@ function EventInvitations() {
   // Cargar invitaciones al montar el componente
   useEffect(() => {
     getEventData();
+    console.log(window.location.origin)
     getInvitations();
   }, []);
 
@@ -59,7 +60,7 @@ function EventInvitations() {
     navigator.clipboard
       .writeText(link)
       .then(() => {
-        alert("Link copiado: " + link);
+        showAlert("Link copiado: " + link);
       })
       .catch((err) => {
         console.error("Error al copiar: ", err);
@@ -75,7 +76,7 @@ function EventInvitations() {
   const handleModalSubmit = () => {
     const max = parseInt(maxGuests, 10);
     if (isNaN(max) || max <= 0) {
-      alert("Por favor, ingresa un número válido mayor a 0.");
+      showAlert("Por favor, ingresa un número válido mayor a 0.");
       return;
     }
 
@@ -91,8 +92,8 @@ function EventInvitations() {
       .then((data) => {
         if (!data.error) {
           const id = data.id;
-          copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${id}`);
-          alert("Link a la invitación copiado al portapapeles");
+          copyLink(`${window.location.origin}/invitaciones/registro/${id}`);
+          showAlert("Link a la invitación copiado al portapapeles");
           setInvitaciones(prev => [...prev, data])
         }
       })
@@ -104,15 +105,9 @@ function EventInvitations() {
     setMaxGuests("");
   };
 
-  // Formatear fecha
-  const formatearFecha = (fecha) => {
-    const opciones = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(fecha).toLocaleDateString("es-ES", opciones);
-  };
-
   const handleRemove = (id) => {
     const isRemoving = confirm("¿Deseas eliminar la invitación?")
-    if(!isRemoving) {return}
+    if (!isRemoving) { return }
 
     fetch(`/api/invitation/${id}`, {
       headers: {
@@ -124,10 +119,10 @@ function EventInvitations() {
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-          const newInvitations = invitaciones.filter(i => i.id!==id)
+          const newInvitations = invitaciones.filter(i => i.id !== id)
           setInvitaciones(newInvitations)
         } else {
-          alert(data.error)
+          showAlert(data.error)
         }
       })
       .catch((error) =>
@@ -143,11 +138,11 @@ function EventInvitations() {
 
   return (
     <div className="event-invitations-container">
-      <h2>Invitaciones estimadas { eventData && (<>del día {formatearFecha(eventData.eventDate)}</>)}</h2>
+      <h2>Invitaciones estimadas {eventData && (<>del evento: {eventData.name}</>)}</h2>
       <div className="total-invitations">
         {eventData && (
           <div>
-            <p style={{ fontSize: "130%" }}>Invitados estimados: {eventData.guests}</p>
+            <p style={{ fontSize: "130%", marginBottom: '-10vh' }}>Invitados estimados: {eventData.guests}</p>
           </div>
         )}
         <h2>Total de invitados: {totalInvitados}</h2>
@@ -175,26 +170,26 @@ function EventInvitations() {
             <div key={index} className="event-container-i">
               <div>
                 {
-                  invitacion.invitationType==="ACCEPTED" ? (
-                  <div className="event-info-i">
-                    <div className="left-event">
-                      <p className="invitation-name">
-                        Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
-                      </p>
-                      <p className="invitation-name">
-                        Invitados de su parte: {invitacion.numberOfGuests}
-                      </p>
+                  invitacion.invitationType === "ACCEPTED" ? (
+                    <div className="event-info-i">
+                      <div className="left-event">
+                        <p className="invitation-name">
+                          Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
+                        </p>
+                        <p className="invitation-name">
+                          Invitados de su parte: {invitacion.numberOfGuests}
+                        </p>
+                      </div>
+                      <div className="right-event">
+                        <button
+                          onClick={() => { handleRemove(invitacion.id) }}
+                          title="Copiar enlace"
+                          className="trash"
+                        >
+                          <Trash2 size={20} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="right-event">
-                      <button
-                        onClick={() => {handleRemove(invitacion.id)}}
-                        title="Copiar enlace"
-                        className="trash"
-                      >
-                        <Trash2 size={20} />
-                      </button>
-                    </div>
-                  </div>
                   ) : (
                     <div className="event-info-i">
                       <div className="left-event">
@@ -207,13 +202,13 @@ function EventInvitations() {
                       </div>
                       <div className="right-event">
                         <button
-                          onClick={() => {copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${invitacion.id}`)}}
+                          onClick={() => { copyLink(`${window.location.origin}/invitaciones/registro/${invitacion.id}`) }}
                           title="Copiar enlace"
                         >
                           <Copy size={20} />
                         </button>
                         <button
-                          onClick={() => {handleRemove(invitacion.id)}}
+                          onClick={() => { handleRemove(invitacion.id) }}
                           title="Copiar enlace"
                           className="trash"
                         >
@@ -221,7 +216,7 @@ function EventInvitations() {
                         </button>
                       </div>
                     </div>
-                )}
+                  )}
               </div>
             </div>
           ))}

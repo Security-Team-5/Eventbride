@@ -2,7 +2,6 @@ package com.eventbride.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +26,7 @@ public class UserDTO {
     private User.Plan plan;
     private LocalDate paymentPlanDate;
     private LocalDate expirePlanDate;
+    private boolean receivesEmails;
 
     // Constructor que toma la entidad User y la convierte a DTO
     public UserDTO(User user) {
@@ -42,6 +42,7 @@ public class UserDTO {
         this.plan = user.getPlan();
         this.paymentPlanDate = user.getPaymentPlanDate();
         this.expirePlanDate = user.getExpirePlanDate();
+        this.receivesEmails = user.getReceivesEmails();
     }
 
     // Método estático para convertir una lista de usuarios en una lista de DTOs

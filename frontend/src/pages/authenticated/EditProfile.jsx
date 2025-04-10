@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { AlertCircle } from "lucide-react" // Importa un icono de alerta (puedes usar cualquier librería de iconos que tengas)
 import "../../static/resources/css/EditProfile.css"
+import { useAlert } from "../../context/AlertContext"
 
 function EditProfile() {
     const [userData, setUserData] = useState({
@@ -18,10 +19,13 @@ function EditProfile() {
         plan: "",
         paymentPlanDate: "",
         expirePlanDate: "",
+        receivesEmails: false,
     })
     const [editing, setEditing] = useState(false)
     const [jwtToken, setJwtToken] = useState("")
     const [originalUsername, setOriginalUsername] = useState("")
+
+    const { showAlert } = useAlert()
 
     useEffect(() => {
         // Get JWT token from localStorage
@@ -39,12 +43,12 @@ function EditProfile() {
     }, [])
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target
+        const { name, type, value, checked } = e.target;
         setUserData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }))
-    }
+          ...prevData,
+          [name]: type === "checkbox" ? checked : value,
+        }));
+    };
 
     const getRoleText = (role) => {
         switch (role) {
@@ -66,62 +70,81 @@ function EditProfile() {
     }
 
     const updateUser = async () => {
-        // Validate required fields
-        if (
-            !userData.firstName ||
-            !userData.lastName ||
-            !userData.username ||
-            !userData.email ||
-            !userData.telephone ||
-            !userData.dni
-        ) {
-            alert("Por favor, completa todos los campos obligatorios.")
-            return
+        // Validación similar a Register.jsx
+        if (!userData.firstName || userData.firstName.length > 40) {
+          showAlert("El nombre no puede estar vacío ni tener más de 40 caracteres.");
+          return;
         }
-
+      
+        if (!userData.lastName || userData.lastName.length > 40) {
+          showAlert("El apellido no puede estar vacío ni tener más de 40 caracteres.");
+          return;
+        }
+      
+        if (!userData.username || userData.username.length > 50) {
+          showAlert("El nombre de usuario no puede estar vacío ni tener más de 50 caracteres.");
+          return;
+        }
+      
+        const dniPattern = /^[0-9]{8}[A-Za-z]$/;
+        if (!dniPattern.test(userData.dni)) {
+          showAlert("El DNI es incorrecto. Debe tener 8 números seguidos de una letra.");
+          return;
+        }
+      
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(userData.email)) {
+          showAlert("El correo electrónico no es válido.");
+          return;
+        }
+      
+        const telephonePattern = /^[0-9]{9}$/;
+        if (!telephonePattern.test(userData.telephone)) {
+          showAlert("El teléfono debe contener exactamente 9 dígitos.");
+          return;
+        }
+      
         try {
-            // Create a copy of userData to avoid modifying state directly
-            const userDataToUpdate = { ...userData, password: "no-password" }
-
-            // Update user profile
-            const response = await fetch(`/api/users/${userData.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwtToken}`,
-                },
-                body: JSON.stringify(userDataToUpdate),
-            })
-
-            if (!response.ok) {
-                throw new Error("Error al actualizar el perfil")
-            }
-
-            const updatedUser = await response.json()
-
-            // Update localStorage with new user data
-            localStorage.setItem("user", JSON.stringify(updatedUser))
-
-            // Update state with new user data
-            setUserData(updatedUser)
-            setEditing(false)
-
-            // Check if username was changed - if so, force logout immediately
-            if (originalUsername !== userData.username) {
-                alert("Has cambiado tu nombre de usuario. Por favor, inicia sesión nuevamente con tu nuevo nombre de usuario.")
-                // Ejecutar logout inmediatamente sin continuar con el resto del código
-                handleLogout()
-                return // Importante: detener la ejecución aquí
-            }
-
-            // Solo llegamos aquí si el username NO cambió
-            alert("Perfil actualizado con éxito")
-            window.location.href = "/profile"
+          const userDataToUpdate = {
+            ...userData,
+            password: "no-password",
+          };
+            
+          const response = await fetch(`/api/users/${userData.id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwtToken}`,
+            },
+            body: JSON.stringify(userDataToUpdate),
+          });
+      
+          const data = await response.json();
+      
+          if (!response.ok) {
+            const errorMessage = data.message || data.error || "Error al actualizar el perfil.";
+            throw new Error(errorMessage);
+          }
+      
+          localStorage.setItem("user", JSON.stringify(data));
+          setUserData(data);
+          setEditing(false);
+      
+          if (originalUsername !== userData.username) {
+            showAlert("Has cambiado tu nombre de usuario. Por favor, inicia sesión nuevamente.");
+            handleLogout();
+            return;
+          }
+      
+          showAlert("Perfil actualizado con éxito");
+          window.location.href = "/profile";
         } catch (error) {
-            console.error("Error actualizando perfil:", error)
-            alert("Error al actualizar el perfil")
+          console.error("Error actualizando perfil:", error);
+          showAlert(error.message || "Error al actualizar el perfil.");
         }
-    }
+      };
+      
+      
 
     const formatDateTime = (dateString) => {
         if (!dateString) return "-"
@@ -174,7 +197,6 @@ function EditProfile() {
                         </button>
                     </div>
                 </div>
-
                 <div className="profile-info">
                     {editing && (
                         <div className="warning-banner">
@@ -223,6 +245,10 @@ function EditProfile() {
                                     <div className="info-item">
                                         <span className="info-label">DNI</span>
                                         <span className="info-value">{userData.dni}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="info-label">Recibe Emails</span>
+                                        <span className="info-value">{userData.receivesEmails ? "Sí" : "No"}</span>
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +330,35 @@ function EditProfile() {
                                         placeholder="https://ejemplo.com/mi-foto.jpg"
                                     />
                                 </div>
-
+                                <div
+                                    className="form-group full-width"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        gap: "0.5rem",
+                                    }}
+                                    >
+                                    <input
+                                        type="checkbox"
+                                        id="receivesEmails"
+                                        name="receivesEmails"
+                                        style={{ transform: "scale(1.2)" }}
+                                        checked={userData.receivesEmails}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label
+                                        htmlFor="receivesEmails"
+                                        style={{
+                                        margin: 0,
+                                        fontSize: "1rem",
+                                        cursor: "pointer",
+                                        userSelect: "none",
+                                        }}
+                                    >
+                                        Quiero recibir notificaciones por email
+                                    </label>
+                                </div>
                                 <div className="form-actions">
                                     <button type="button" className="cancel-button" onClick={() => setEditing(false)}>
                                         Cancelar

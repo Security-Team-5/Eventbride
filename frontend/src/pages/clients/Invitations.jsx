@@ -23,7 +23,6 @@ function Invitations() {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("Eventos obtenidos:", data);
         setEventos(data); // Guardamos la lista de eventos en el estado
       })
       .catch(error => console.error("Error obteniendo eventos:", error));

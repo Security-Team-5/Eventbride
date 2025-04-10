@@ -1,8 +1,11 @@
 package com.eventbride.invitation;
 
 import com.eventbride.dto.EventDTO;
+import com.eventbride.dto.InvitationDTO;
 import com.eventbride.event.Event;
 import com.eventbride.event.EventRepository;
+import com.eventbride.notification.Notification;
+import com.eventbride.notification.NotificationService;
 import com.eventbride.user.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,38 +30,51 @@ public class InvitationService {
 	@Autowired
 	private JavaMailSender mailSender;
 
+	@Autowired
+	private NotificationService notificationService;
+	
 	@Transactional()
-	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests) throws IllegalArgumentException {
+	public Invitation createVoidInvitation(Integer eventId, Integer maxGuests, User user) throws IllegalArgumentException {
 
 		// Comprobamos que en las eventpropeties del evento exista una venue
-		Optional<Event> event = eventRepository.findById(eventId);
-		if (event.isPresent()) {
-			boolean hasVenue = event.get().getEventProperties().stream()
-					.anyMatch(eventProperties -> eventProperties.getVenue() != null);
-			if (!hasVenue) {
-				throw new IllegalArgumentException("No se puede crear una invitación para un evento sin venue");
-			}
-		} else {
-			throw new IllegalArgumentException("Event not found");
+		Event event = eventRepository.findById(eventId).orElse(null);
+
+		if (event == null) {
+			throw new IllegalArgumentException("El evento no existe");
 		}
+
+		if(!event.getUser().getId().equals(user.getId())) {
+			throw new IllegalArgumentException("El evento no te pertenece");
+		}
+
+		boolean hasVenue = event.getEventProperties().stream()
+				.anyMatch(eventProperties -> eventProperties.getVenue() != null);
+
+		if (!hasVenue) {
+			throw new IllegalArgumentException("No se puede crear una invitación para un evento sin venue");
+		}
+
 		Invitation invitation = new Invitation();
 		invitation.setMaxGuests(maxGuests);
 		String randomEmail = "randomEmail" + Math.random() + "@gmail.com";
 		invitation.setEmail(randomEmail);
-		invitation.setEvent(event.get());
+		invitation.setEvent(event);
 		invitation.setInvitationType(Invitation.InvitationType.SENT);
 
 		return invitationRepository.save(invitation);
 	}
 
-	@Transactional(readOnly = true)
 	public Invitation getInvitationById(Integer invitationId) throws IllegalArgumentException {
-		Optional<Invitation> invitation = invitationRepository.findById(invitationId);
-		if (invitation.isPresent()) {
-			return invitation.get();
-		} else {
-			throw new IllegalArgumentException("Invitation not found");
+		Optional<Invitation> invitationOpt = invitationRepository.findById(invitationId);
+	
+		if (!invitationOpt.isPresent()) {
+			throw new IllegalArgumentException("La invitación no existe");
 		}
+	
+		Invitation invitation = invitationOpt.get();
+		Event event = invitation.getEvent();
+
+		return invitation;
 	}
 
 	@Transactional
@@ -75,18 +91,20 @@ public class InvitationService {
 		}
 
 		if(invitation.getLastName().trim().equals("") || invitation.getFirstName().trim().equals("")) {
-			throw new IllegalArgumentException("Flatan datos en la invitación");
+			throw new IllegalArgumentException("Faltan datos en la invitación");
 		}
 
 		BeanUtils.copyProperties(invitation, existingInvitation, "id", "event", "invitationType");
 		existingInvitation.setInvitationType(Invitation.InvitationType.ACCEPTED);
+		notificationService.createNotification(Notification.NotificationType.INVITATION_CONFIRMED,
+				existingInvitation.getEvent().getUser(), existingInvitation.getEvent(), null, invitation);
 		// ENVIAR CORREO
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setFrom("eventbride6@gmail.com");
 		mailMessage.setTo(existingInvitation.getEmail());
 		mailMessage.setSubject("Invitación a evento");
 		mailMessage.setText("Hola " + existingInvitation.getFirstName() + " " + existingInvitation.getLastName() +
-				". \nHas confirmado tu asistencia al evento: " + "existingInvitation.getEvent().getName()" +
+				". \nHas confirmado tu asistencia al evento: " + existingInvitation.getEvent().getName() +
 				". \nEl evento se llevará a cabo en la fecha: " + existingInvitation.getEvent().getEventDate() +
 				", en "
 				+ existingInvitation.getEvent().getEventProperties().stream()
@@ -107,7 +125,7 @@ public class InvitationService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Invitation> getInvitationByEventId(Integer eventId, User user) throws IllegalArgumentException {
+	public List<InvitationDTO> getInvitationByEventId(Integer eventId, User user) throws IllegalArgumentException {
 
 		Event event = eventRepository.findById(eventId).orElse(null);
 
@@ -118,8 +136,24 @@ public class InvitationService {
 		if(!event.getUser().getId().equals(user.getId())) {
 			throw new IllegalArgumentException("El evento no te pertenece");
 		}
+		List<Invitation> invitations = invitationRepository.findByEventId(eventId);
+		return InvitationDTO.fromEntities(invitations);
+	}
 
-		return invitationRepository.findByEventId(eventId);
+	@Transactional(readOnly = true)
+	public List<Invitation> getInvitationByEventIdNotDTO(Integer eventId, User user) throws IllegalArgumentException {
+
+		Event event = eventRepository.findById(eventId).orElse(null);
+
+		if(event == null) {
+			throw new IllegalArgumentException("El evento no existe");
+		}
+
+		if(!event.getUser().getId().equals(user.getId())) {
+			throw new IllegalArgumentException("El evento no te pertenece");
+		}
+		List<Invitation> invitations = invitationRepository.findByEventId(eventId);
+		return invitations;
 	}
 
 	public void deleteInvitations(List<Invitation> i) {
@@ -138,6 +172,8 @@ public class InvitationService {
 		}
 
 		invitationRepository.deleteById(invitationId);
+		notificationService.createNotification(Notification.NotificationType.INVITATION_DELETED,
+				invitation.getEvent().getUser(), invitation.getEvent(), null, invitation);
 	}
 
 }

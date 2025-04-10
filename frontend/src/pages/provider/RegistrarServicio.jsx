@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import {useRef, useState} from "react"
 import { useNavigate } from "react-router-dom"
 import {
     AlertCircle,
@@ -48,6 +48,10 @@ const RegistrarServicio = () => {
     })
 
     const navigate = useNavigate()
+    const errorRef = useRef(null);
+  const scrollToError = () => {
+    errorRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
     const [formData, setFormData] = useState({
         name: "",
@@ -87,7 +91,6 @@ const RegistrarServicio = () => {
         formData.limitedByPricePerGuest = limitedBy === "perGuest"
         formData.limitedByPricePerHour = limitedBy === "perHour"
 
-        console.log("Datos del formulario:", formData)
         console.log("General error:", generalError)
 
         fetch("/api/" + serviceType, {
@@ -106,6 +109,7 @@ const RegistrarServicio = () => {
                     } else {
                         setGeneralError("Ocurrió un error inesperado")
                     }
+                    scrollToError()
                     throw new Error("Solicitud fallida")
                 } else {
                     setGeneralError("") // Limpia el mensaje anterior
@@ -119,7 +123,7 @@ const RegistrarServicio = () => {
     }
 
     return (
-        <div className="service-registration-container">
+        <div className="service-registration-container" ref={errorRef}>
             <div className="service-registration-header">
                 <h1 className="service-registration-title">Registrar Servicio</h1>
                 <h2 className="service-registration-subtitle">¿Qué tipo de servicio deseas registrar?</h2>
@@ -361,7 +365,7 @@ const RegistrarServicio = () => {
                                     onChange={handleChange}
                                     required
                                     minLength="1"
-                                    maxLength="10000"
+                                    maxLength="5000"
                                     className="form-input"
                                     rows={4}
                                     placeholder="Describe tu servicio con detalle..."
@@ -600,7 +604,7 @@ const RegistrarServicio = () => {
                                         onChange={handleChange}
                                         required
                                         minLength="1"
-                                        maxLength="10000"
+                                        maxLength="5000"
                                         className="form-input"
                                         rows={4}
                                         placeholder="Proporciona detalles adicionales sobre tu servicio..."

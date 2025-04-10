@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eventbride.dto.EventDTO;
+import com.eventbride.dto.EventMapper;
+import com.eventbride.dto.InvitationDTO;
 import com.eventbride.event_properties.EventProperties;
 import com.eventbride.event_properties.EventPropertiesService;
 import com.eventbride.invitation.Invitation;
@@ -35,6 +37,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.eventbride.event_properties.EventProperties.Status;
+
 @RestController
 @RequestMapping("/api/v1/events")
 public class EventController {
@@ -42,15 +46,18 @@ public class EventController {
     private final EventService eventService;
     private final EventPropertiesService eventPropertiesService;
     private final InvitationService invitationService;
-	private final UserService userService;
+    private final UserService userService;
+    private final EventMapper eventMapper;
 
     @Autowired
     public EventController(EventService eventService,
-            EventPropertiesService eventPropertiesService, InvitationService invitationService, UserService userService) {
+            EventPropertiesService eventPropertiesService, InvitationService invitationService, UserService userService,
+            EventMapper eventMapper) {
         this.eventService = eventService;
         this.eventPropertiesService = eventPropertiesService;
         this.invitationService = invitationService;
-		this.userService = userService;
+        this.userService = userService;
+        this.eventMapper = eventMapper;
     }
 
     @GetMapping
@@ -70,23 +77,23 @@ public class EventController {
 
     @GetMapping("/{id}")
     public EventDTO findById(@PathVariable("id") Integer id) throws IllegalArgumentException, DataAccessException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> user = userService.getUserByUsername(auth.getName());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userService.getUserByUsername(auth.getName());
 
-		Event event = eventService.findById(id);
+        Event event = eventService.findById(id);
 
-		if (!user.isPresent()) {
-			throw new IllegalArgumentException("El usuario no existe");
-		}
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("El usuario no existe");
+        }
 
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-		if (!roles.contains("ADMIN") && !event.getUser().getId().equals(user.get().getId())) {
-			throw new IllegalArgumentException("El evento no te pertenece");
-		}
+        if (!roles.contains("ADMIN") && !event.getUser().getId().equals(user.get().getId())) {
+            throw new IllegalArgumentException("El evento no te pertenece");
+        }
 
-        return new EventDTO(eventService.findById(id));
+        return eventMapper.toDTO(eventService.findById(id));
     }
 
     @PostMapping("/create")
@@ -94,7 +101,6 @@ public class EventController {
     public ResponseEntity<Event> create(@RequestBody @Valid Event event) {
         Event newEvent = new Event();
         BeanUtils.copyProperties(event, newEvent, "id");
-        List<Invitation> invitations = new ArrayList<>();
         List<EventProperties> eventProperties = new ArrayList<>();
         newEvent.setEventType(event.getEventType());
         newEvent.setGuests(event.getGuests());
@@ -111,16 +117,28 @@ public class EventController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> update(@PathVariable("eventId") Integer eventId, @RequestBody @Valid Event event) {
         try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Optional<User> user = userService.getUserByUsername(auth.getName());
+            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+            List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
             Event updateEvent = eventService.findById(eventId);
             if (updateEvent == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            // Seguridad
+            else if (!roles.contains("ADMIN")
+                    && !eventService.findById(eventId).getUser().getId().equals(user.get().getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El evento no te pertenece");
+
             } else {
                 updateEvent.setEventType(event.getEventType());
                 updateEvent.setGuests(event.getGuests());
                 updateEvent.setEventDate(event.getEventDate());
 
                 Event e = this.eventService.updateEvent(updateEvent, eventId);
-                return new ResponseEntity<>(new EventDTO(e), HttpStatus.OK);
+                return new ResponseEntity<>(eventMapper.toDTO(e), HttpStatus.OK);
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
@@ -130,72 +148,105 @@ public class EventController {
 
     @DeleteMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> delete(@PathVariable("eventId") int eventId) throws  IllegalArgumentException {
+    public ResponseEntity<?> delete(@PathVariable("eventId") int eventId) throws IllegalArgumentException {
 
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Optional<User> user = userService.getUserByUsername(auth.getName());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userService.getUserByUsername(auth.getName());
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-		if (!user.isPresent()) {
-			throw new IllegalArgumentException("El usuario no existe");
-		}
-
-        if (eventService.findById(eventId) != null) {
-            Event event = eventService.findById(eventId);
-
-            event.getEventProperties().clear();
-
-            // Poner a null todas las propiedades del eventProperties asociado a Event
-            List<EventProperties> eventProperties = event.getEventProperties();
-            for (EventProperties e : eventProperties) {
-                e.setOtherService(null);
-                e.setVenue(null);
-                eventPropertiesService.save(e);
-            }
-
-            List<Invitation> i = invitationService.getInvitationByEventId(eventId, user.get());
-            if (i.size() > 0) {
-                invitationService.deleteInvitations(i);
-            }
-            eventService.save(event);
-            eventService.deleteEvent(eventId);
-			return new ResponseEntity<>(new MessageResponse("El evento se ha eliminado correctamente"), HttpStatus.OK);
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("El usuario no existe");
         }
-		else{
-			throw new IllegalArgumentException("El evento no existe");
-		}
+
+        // Comprobar que el usuario es ADMIN o el propietario del evento
+        Event event = eventService.findById(eventId);
+        if (event == null) {
+            throw new IllegalArgumentException("El evento no existe");
+        }
+
+        if (!roles.contains("ADMIN") && !event.getUser().getId().equals(user.get().getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("El evento no te pertenece");
+        }
+
+        // Nueva restricción: No se puede eliminar si alguna propiedad del evento tiene
+        // el status DEPOSIT_PAID o COMPLETED
+        boolean hasRestrictedStatus = event.getEventProperties().stream()
+                .anyMatch(ep -> ep.getStatus().equals(Status.DEPOSIT_PAID)
+                        || ep.getStatus().equals(Status.COMPLETED));
+
+        if (hasRestrictedStatus) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("No se puede eliminar el evento porque tiene servicios ya pagados.");
+        }
+
+        // Proceder con la eliminación del evento
+        event.getEventProperties().clear();
+
+        // Poner a null las asociaciones en cada EventProperties y guardarlo
+        List<EventProperties> eventProperties = event.getEventProperties();
+        for (EventProperties ep : eventProperties) {
+            ep.setOtherService(null);
+            ep.setVenue(null);
+            eventPropertiesService.save(ep);
+        }
+
+        // Eliminar invitaciones relacionadas si las hubiera
+        List<Invitation> invitations = invitationService.getInvitationByEventIdNotDTO(eventId, user.get());
+        if (!invitations.isEmpty()) {
+            invitationService.deleteInvitations(invitations);
+        }
+
+        eventService.save(event);
+        eventService.deleteEvent(eventId);
+
+        return new ResponseEntity<>(new MessageResponse("El evento se ha eliminado correctamente"), HttpStatus.OK);
     }
 
-    /*
-     * public ResponseEntity<EventDTO> getNextEvent(@PathVariable Integer userId) {
-     * Event nextEvent = eventService.getRecentEventByUserId(userId)
-     * .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-     * "Evento no encontrado"));
-     * return ResponseEntity.ok(new EventDTO(nextEvent));
-     * }
-     */
-
     @GetMapping("/next/{userId}")
-    public ResponseEntity<List<EventDTO>> getEventsByUserId(@PathVariable Integer userId) {
+    public ResponseEntity<?> getEventsByUserId(@PathVariable Integer userId) {
         List<Event> events = eventService.findEventsByUserId(userId);
         if (events.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userService.getUserByUsername(auth.getName());
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        // Seguridad
+        if (!roles.contains("ADMIN") && !events.get(0).getUser().getId().equals(user.get().getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El evento no te pertenece");
+        }
+
         List<EventDTO> eventDTOs = new ArrayList<>();
         for (Event event : events) {
-            eventDTOs.add(new EventDTO(event));
+            eventDTOs.add(eventMapper.toDTO(event));
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/next/{userId}/without/{serviceId}")
-    public ResponseEntity<List<EventDTO>> getEventsByUserIdWithoutAService(@PathVariable Integer userId, @PathVariable Integer serviceId) {
+    public ResponseEntity<?> getEventsByUserIdWithoutAService(@PathVariable Integer userId,
+            @PathVariable Integer serviceId) {
         List<Event> events = eventService.findEventsByUserIdWithoutAService(userId, serviceId);
         if (events.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userService.getUserByUsername(auth.getName());
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        // Seguridad
+        if (!roles.contains("ADMIN") && !events.get(0).getUser().getId().equals(user.get().getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El evento no te pertenece");
+        }
+
         List<EventDTO> eventDTOs = new ArrayList<>();
         for (Event event : events) {
-            eventDTOs.add(new EventDTO(event));
+            eventDTOs.add(eventMapper.toDTO(event));
         }
         return new ResponseEntity<>(eventDTOs, HttpStatus.OK);
     }

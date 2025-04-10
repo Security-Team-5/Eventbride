@@ -21,7 +21,6 @@ import jakarta.validation.ConstraintViolationException;
 
 @Service
 public class UserManagementService {
-    
 
     @Autowired
     private UserRepository userRepo;
@@ -39,37 +38,41 @@ public class UserManagementService {
         ReqRes resp = new ReqRes();
         try {
             User user = new User();
-            
+
             user.setFirstName(registrationRequest.getFirstName());
             user.setLastName(registrationRequest.getLastName());
             user.setUsername(registrationRequest.getUsername());
             user.setEmail(registrationRequest.getEmail());
             user.setTelephone(registrationRequest.getTelephone());
-            if (registrationRequest.getRole() == "SUPPLIER") {
+            user.setPaymentPlanDate(null);
+            user.setExpirePlanDate(null);
+
+            user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            user.setDni(registrationRequest.getDni());
+            if (registrationRequest.getProfilePicture() == null || registrationRequest.getProfilePicture() == "") {
+                user.setProfilePicture(
+                        "https://static.vecteezy.com/system/resources/previews/005/005/788/non_2x/user-icon-in-trendy-flat-style-isolated-on-grey-background-user-symbol-for-your-web-site-design-logo-app-ui-illustration-eps10-free-vector.jpg");
+            }
+
+            if (registrationRequest.getRole().equals("SUPPLIER")) {
                 user.setPlan(User.Plan.BASIC);
             } else {
                 user.setPlan(null);
             }
-            user.setPaymentPlanDate(null);
-            user.setExpirePlanDate(null);
-            
-            user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            user.setDni(registrationRequest.getDni());
-            if (registrationRequest.getProfilePicture()==null || registrationRequest.getProfilePicture()==""){
-                user.setProfilePicture("https://cdn-icons-png.flaticon.com/512/17/17004.png");
-            }            
+            user.setReceivesEmails(registrationRequest.getReceivesEmails());
+
             user.setRole(registrationRequest.getRole());
             User userResult = userRepo.save(user);
-            if (userResult.getId()>0) {
+            if (userResult.getId() > 0) {
                 resp.setUser(new UserDTO(userResult));
                 resp.setMessage("Usuario guardado exitosamente");
                 resp.setStatusCode(200);
             }
 
         } catch (DataIntegrityViolationException e) {
-        // Manejo de excepciones por violaciones de integridad (ej. usuario ya existe)
-        resp.setStatusCode(400);
-        resp.setError("El usuario con este nombre de usuario, correo electrónico y DNI ya existe.");
+            // Manejo de excepciones por violaciones de integridad (ej. usuario ya existe)
+            resp.setStatusCode(400);
+            resp.setError("El usuario con este nombre de usuario, correo electrónico y DNI ya existe.");
         } catch (ConstraintViolationException e) {
             // Manejo de errores relacionados con restricciones (ej. campos vacíos)
             resp.setStatusCode(400);
@@ -82,7 +85,7 @@ public class UserManagementService {
         return resp;
     }
 
-    public ReqRes login(ReqRes loginRequest){
+    public ReqRes login(ReqRes loginRequest) {
         ReqRes response = new ReqRes();
         try {
             authenticationManager
@@ -98,16 +101,16 @@ public class UserManagementService {
             response.setExpirationTime("24Hrs");
             response.setMessage("Inicio de sesión exitoso");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setStatusCode(500);
             response.setMessage(e.getMessage());
         }
         return response;
     }
 
-    public ReqRes refreshToken(ReqRes refreshTokenReqiest){
+    public ReqRes refreshToken(ReqRes refreshTokenReqiest) {
         ReqRes response = new ReqRes();
-        try{
+        try {
             String ourUsername = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
             User user = userRepo.findByUsername(ourUsername).orElseThrow();
             if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), user)) {
@@ -121,46 +124,11 @@ public class UserManagementService {
             response.setStatusCode(200);
             return response;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setStatusCode(500);
             response.setMessage(e.getMessage());
             return response;
         }
-    }
-
-    public ReqRes getAllUsers() {
-        ReqRes reqRes = new ReqRes();
-
-        try {
-            List<User> result = userRepo.findAll();
-            if (!result.isEmpty()) {
-                reqRes.setUsersList(result);
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("Successful");
-            } else {
-                reqRes.setStatusCode(404);
-                reqRes.setMessage("No se encontraron usuarios");
-            }
-            return reqRes;
-        } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred: " + e.getMessage());
-            return reqRes;
-        }
-    }
-
-    public ReqRes getUsersById(Integer id) {
-        ReqRes reqRes = new ReqRes();
-        try {
-            User userById = userRepo.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-            reqRes.setUser(new UserDTO(userById));
-            reqRes.setStatusCode(200);
-            reqRes.setMessage("Usuario con id '" + id + "' encontrado exitosamente");
-        } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Ocurrió un error: " + e.getMessage());
-        }
-        return reqRes;
     }
 
     public ReqRes deleteUser(Integer userId) {
@@ -193,7 +161,7 @@ public class UserManagementService {
                 existingUser.setUsername(updatedUser.getUsername());
                 existingUser.setEmail(updatedUser.getEmail());
                 existingUser.setTelephone(updatedUser.getTelephone());
-            
+
                 existingUser.setDni(updatedUser.getDni());
                 existingUser.setProfilePicture(updatedUser.getProfilePicture());
                 existingUser.setRole(updatedUser.getRole());
@@ -219,7 +187,7 @@ public class UserManagementService {
         return reqRes;
     }
 
-    public ReqRes getMyInfo(String username){
+    public ReqRes getMyInfo(String username) {
         ReqRes reqRes = new ReqRes();
         try {
             Optional<User> userOptional = userRepo.findByUsername(username);
@@ -232,7 +200,7 @@ public class UserManagementService {
                 reqRes.setMessage("Usuario no encontrado para actualización");
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             reqRes.setStatusCode(500);
             reqRes.setMessage("Ocurrió un error al obtener la información del usuario: " + e.getMessage());
         }
@@ -240,7 +208,7 @@ public class UserManagementService {
 
     }
 
-    public String generateToken(User user){
+    public String generateToken(User user) {
         return jwtUtils.generateToken(user);
     }
 }

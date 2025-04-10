@@ -4,10 +4,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../static/resources/css/AppNavBar.css";
 import logo from "../static/resources/images/logo-eventbride.png";
+import logo2 from "../static/resources/images/logo2.png";
+import logo3 from "../static/resources/images/logo3.png";
+import logo4 from "../static/resources/images/logo4.png";
 import carta from "../static/resources/images/carta.png";
+import mensaje from "../static/resources/images/mensaje.png";
 import usuario from "../static/resources/images/user.png";
 import apiClient from "../apiClient"
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, BellRing } from "lucide-react";
 
 function Navbar({ user }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,7 +84,7 @@ function Navbar({ user }) {
 
     if (currentUser.role === "CLIENT") {
       return (
-        <ul className="nav-links">
+        <ul className="nav-links" style={{ marginLeft: "-0%" }}>
           <li><Link to="/events" className="nav-link">Mis eventos</Link></li>
           <li><Link to="/create-events" className="nav-link">Crear evento</Link></li>
           <li><Link to="/venues" className="nav-link">Recintos</Link></li>
@@ -133,14 +137,13 @@ function Navbar({ user }) {
           <div className="navbar-container">
             <div className="navbar-brand">
               {currentUser === "{}" ? (
-                <span className="brand-link disabled-link">
-                  <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
+                <span>
+                  <img src={logo3} alt="Eventbride Logo" className="navbar-logo" />
                   <span className="navbar-title">Inicio</span>
                 </span>
               ) : (
-                <Link to="/" className="brand-link">
-                  <img src={logo} alt="Eventbride Logo" className="navbar-logo" />
-                  <span className="navbar-title">Inicio</span>
+                <Link to="/">
+                  <img src={logo3} alt="Eventbride Logo" className="navbar-logo" />
                 </Link>
               )}
             </div>
@@ -157,36 +160,38 @@ function Navbar({ user }) {
               {renderNavItems()}
               {currentUser && currentUser.role && (
                 <div className="navbar-actions">
-                  <Link to="/chats" className="action-icon messages-icon">
-                    <img src={carta} alt="Mensajes" className="icon-img" />
-                    <span className="notification-badge">2</span>
+                  <Link to="/notifications" className="nav-link">
+                    <BellRing className="emote" style={{ width: "30px", height: "auto" }} />
                   </Link>
 
                   <div className="user-menu">
-                    <Link to="/profile" className="action-icon user-icon" style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      overflow: "hidden",
-                      background: "transparent",
-                    }}>
-                      <div className="profile-pic-wrapper" style={{ height: "40px", overflow: "hidden", background: "transparent" }}>
-                        {currentUser.profilePicture?.trim() && (
-                          <img
-                            src={currentUser.profilePicture}
-                            alt="Foto de perfil"
-                            style={{
-                              maxWidth: "40px",
-                              height: "40px",
-                              objectFit: "cover",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        )}
-                      </div>
+                    <Link
+                      to="/profile"
+                      className="action-icon user-icon"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "hidden",
+                        background: "transparent",
+                      }}
+                    >
+                      {currentUser.profilePicture?.trim() && (
+                        <img
+                          src={currentUser.profilePicture}
+                          alt="Foto de perfil"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            objectPosition: "center",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      )}
                     </Link>
                     <div className="user-name">{currentUser.username || "Usuario"}</div>
                   </div>
@@ -213,10 +218,11 @@ function Navbar({ user }) {
                       {currentUser.plan}
                     </li>
                   )}
-
-                  <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
-                    Cerrar sesión
-                  </button>
+                  <li className="navbar-brand">
+                    <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
+                      Cerrar sesión
+                    </button>
+                  </li>
                 </div>
               )}
             </div>

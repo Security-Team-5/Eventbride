@@ -62,7 +62,6 @@
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
-  cursor: pointer;
   position: relative;
 }
 
@@ -133,12 +132,11 @@
 }
 
 .event-title {
-  font-size: 1.5rem;
+  font-size: 0.5rem;
   color: #333;
   margin: 0 0 1rem 0;
-  font-family: "Playfair Display", serif;
   text-align: center;
-  height: 11rem;
+  height: 7rem;
 }
 
 .event-details {
