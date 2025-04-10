@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.eventbride.dto.UserDTO;
+import com.eventbride.notification.NotificationService;
 import com.eventbride.user.User;
 import com.eventbride.user.User.Plan;
 import com.eventbride.user.UserRepository;
@@ -38,6 +39,9 @@ public class UsersUnitTest {
 
     @Mock
     private UserRepository userRepository;
+    
+    @Mock
+    private NotificationService notificationService;
 
     @InjectMocks
     private UserService userService;
@@ -56,8 +60,8 @@ public class UsersUnitTest {
         user.setTelephone(123456789);
         user.setPassword("securePassword");
         user.setDni("12345678A");
-        user.setRole("ROLE_USER");
-        user.setPlan(Plan.PREMIUM);
+        user.setRole("ROLE_SUPPLIER");
+        user.setPlan(Plan.BASIC);
         user.setPaymentPlanDate(LocalDate.now());
         user.setExpirePlanDate(LocalDate.now().plusMonths(1));
         user.setReceivesEmails(true);
@@ -70,7 +74,7 @@ public class UsersUnitTest {
     void shouldReturnCorrectAuthorities() {
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
         assertEquals(1, authorities.size());
-        assertEquals("ROLE_USER", authorities.iterator().next().getAuthority());
+        assertEquals("ROLE_SUPPLIER", authorities.iterator().next().getAuthority());
     }
 
     @Test
@@ -82,8 +86,8 @@ public class UsersUnitTest {
         assertEquals(123456789, user.getTelephone());
         assertEquals("securePassword", user.getPassword());
         assertEquals("12345678A", user.getDni());
-        assertEquals("ROLE_USER", user.getRole());
-        assertEquals(Plan.PREMIUM, user.getPlan());
+        assertEquals("ROLE_SUPPLIER", user.getRole());
+        assertEquals(Plan.BASIC, user.getPlan());
         assertEquals("https://example.com/pic.jpg", user.getProfilePicture());
         assertTrue(user.getReceivesEmails());
     }
