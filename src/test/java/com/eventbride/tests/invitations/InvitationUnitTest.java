@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -94,46 +95,29 @@ public class InvitationUnitTest {
         assertEquals("El evento no te pertenece", exception.getMessage());
     }
 
-    // @Test
-    // void shouldGetInvitationIfUserOwnsEvent() {
-    //     Invitation invitation = new Invitation();
-    //     invitation.setId(1);
-    //     invitation.setEvent(event);
+    @Test
+    void shouldGetInvitationWithoutUserCheck() {
+        Invitation invitation = new Invitation();
+        invitation.setId(1);
+        invitation.setEvent(event);
 
-    //     when(invitationRepository.findById(1)).thenReturn(Optional.of(invitation));
+        when(invitationRepository.findById(1)).thenReturn(Optional.of(invitation));
 
-    //     Invitation found = invitationService.getInvitationById(1, owner);
+        Invitation found = invitationService.getInvitationById(1);
 
-    //     assertEquals(1, found.getId());
-    //     assertEquals(event, found.getEvent());
-    // }
+        assertEquals(1, found.getId());
+        assertEquals(event, found.getEvent());
+    }
 
-    // @Test
-    // void shouldThrowWhenUserTriesToAccessOtherUsersInvitation() {
-    //     User stranger = new User();
-    //     stranger.setId(999);
+    @Test
+    void shouldThrowWhenInvitationNotFound() {
+        when(invitationRepository.findById(404)).thenReturn(Optional.empty());
 
-    //     Invitation invitation = new Invitation();
-    //     invitation.setId(2);
-    //     invitation.setEvent(event);
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                invitationService.getInvitationById(404)
+        );
 
-    //     when(invitationRepository.findById(2)).thenReturn(Optional.of(invitation));
+        assertEquals("La invitación no existe", exception.getMessage());
+    }
 
-    //     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-    //             invitationService.getInvitationById(2, stranger)
-    //     );
-
-    //     assertEquals("La invitación no te pertenece", exception.getMessage());
-    // }
-
-    // @Test
-    // void shouldThrowWhenInvitationNotFound() {
-    //     when(invitationRepository.findById(404)).thenReturn(Optional.empty());
-
-    //     Exception exception = assertThrows(IllegalArgumentException.class, () ->
-    //             invitationService.getInvitationById(404, owner)
-    //     );
-
-    //     assertEquals("La invitación no existe", exception.getMessage());
-    // }
 }
