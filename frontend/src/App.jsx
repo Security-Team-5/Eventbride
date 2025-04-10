@@ -35,6 +35,7 @@ import FAQ from "./pages/no-authenticated/faqs.jsx"
 import ProviderDashboard from "./pages/provider/ProviderDashboard.jsx"
 import Support from "./pages/authenticated/Support.jsx"
 import VentasProveedor from "./pages/provider/HistorialVentas"
+import { AlertProvider } from "./context/AlertContext.jsx"
 
 function App() {
   const { currentUser, loading, setCurrentUser } = useCurrentUser(null)
@@ -44,70 +45,72 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="app-container">
-        <NavBar user={currentUser} />
-        <div className="content">
-          <Routes>
-            {/*Rutas de Client*/}
-            {currentUser && currentUser.role === "CLIENT" && (
-              <>
-                <Route path="/other-services" element={<OtherServiceScreen />} />
-                <Route path="/venues" element={<VenuesScreen />} />
-                <Route path="/events" element={<MyEvents />} />
-                <Route path="/create-events" element={<CreateEvents />} />
-                <Route path="/event/:id" element={<EventDetails />} />
-                <Route path="/payment/:id" element={<Payment />} />
-                <Route path="/invitaciones" element={<Invitations />} />
-                <Route path="/invitaciones/:currentEventId" element={<EventInvitations />} />
-                <Route path="/notifications" element={<Notifications />} />
-              </>
-            )}
-            {/*Rutas de Supplier*/}
-            {currentUser && currentUser.role === "SUPPLIER" && (
-              <>
-                <Route path="/solicitudes" element={<RequestService />} />
-                <Route path="/misservicios" element={<Servicios />} />
-                <Route path="/misservicios/registrar" element={<RegistrarServicio />} />
-                <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio />} />
-                <Route path="/profile/plan" element={<EditPlanProfile />} />
-                <Route path="/notifications" element={<Notifications />} />
-                <Route path="/dashboard" element={<ProviderDashboard />} />
-                <Route path="/misVentas" element={<VentasProveedor />} />
-              </>
-            )}
-            {/*Rutas de Admin*/}
-            {currentUser && currentUser.role === "ADMIN" && (
-              <>
-                <Route path="/admin-events" element={<AdminEvents />} />
-                <Route path="/admin-users" element={<AdminUsers />} />
-                <Route path="/admin-services" element={<AdminServices />} />
-                <Route path="/admin/event/:eventId/event-prop/:eventPropId" element={<AdminEventProps />} />
-              </>
-            )}
-            {/*Rutas de cualquier usuario autenticado*/}
-            {currentUser && (
-              <>
-                <Route path="/chat/:id" element={<PrivateChat />} />
-                <Route path="/chats" element={<ChatList />} />
-                <Route path="/profile" element={<EditProfile />} />
-                <Route path="/support" element={<Support />} />
-              </>
-            )}
-            {/*Rutas públicas*/}
-            <Route path="/" element={currentUser ? <Home user={currentUser} /> : <Navigate to="/login" />} />
-            <Route path="/login" element={<Login setUser={setCurrentUser} />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/terminos-y-condiciones" element={<Terms />} />
-            <Route path="/faqs" element={<FAQ />} />
-            <Route path="/invitaciones/registro/:invitationId" element={<RegisterInvitation />} />
-            <Route path="/invitaciones/confirmar/:invitationId" element={<ConfirmEmailInvitation />} />
-          </Routes>
-          <FloatingChatButton />
+    <AlertProvider>
+      <Router>
+        <div className="app-container">
+          <NavBar user={currentUser} />
+          <div className="content">
+            <Routes>
+              {/*Rutas de Client*/}
+              {currentUser && currentUser.role === "CLIENT" && (
+                <>
+                  <Route path="/other-services" element={<OtherServiceScreen />} />
+                  <Route path="/venues" element={<VenuesScreen />} />
+                  <Route path="/events" element={<MyEvents />} />
+                  <Route path="/create-events" element={<CreateEvents />} />
+                  <Route path="/event/:id" element={<EventDetails />} />
+                  <Route path="/payment/:id" element={<Payment />} />
+                  <Route path="/invitaciones" element={<Invitations />} />
+                  <Route path="/invitaciones/:currentEventId" element={<EventInvitations />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                </>
+              )}
+              {/*Rutas de Supplier*/}
+              {currentUser && currentUser.role === "SUPPLIER" && (
+                <>
+                  <Route path="/solicitudes" element={<RequestService />} />
+                  <Route path="/misservicios" element={<Servicios />} />
+                  <Route path="/misservicios/registrar" element={<RegistrarServicio />} />
+                  <Route path="/misservicios/editar/:serviceType/:id" element={<EditarServicio />} />
+                  <Route path="/profile/plan" element={<EditPlanProfile />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route path="/dashboard" element={<ProviderDashboard />} />
+                  <Route path="/misVentas" element={<VentasProveedor />} />
+                </>
+              )}
+              {/*Rutas de Admin*/}
+              {currentUser && currentUser.role === "ADMIN" && (
+                <>
+                  <Route path="/admin-events" element={<AdminEvents />} />
+                  <Route path="/admin-users" element={<AdminUsers />} />
+                  <Route path="/admin-services" element={<AdminServices />} />
+                  <Route path="/admin/event/:eventId/event-prop/:eventPropId" element={<AdminEventProps />} />
+                </>
+              )}
+              {/*Rutas de cualquier usuario autenticado*/}
+              {currentUser && (
+                <>
+                  <Route path="/chat/:id" element={<PrivateChat />} />
+                  <Route path="/chats" element={<ChatList />} />
+                  <Route path="/profile" element={<EditProfile />} />
+                  <Route path="/support" element={<Support />} />
+                </>
+              )}
+              {/*Rutas públicas*/}
+              <Route path="/" element={currentUser ? <Home user={currentUser} /> : <Navigate to="/login" />} />
+              <Route path="/login" element={<Login setUser={setCurrentUser} />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/terminos-y-condiciones" element={<Terms />} />
+              <Route path="/faqs" element={<FAQ />} />
+              <Route path="/invitaciones/registro/:invitationId" element={<RegisterInvitation />} />
+              <Route path="/invitaciones/confirmar/:invitationId" element={<ConfirmEmailInvitation />} />
+            </Routes>
+            <FloatingChatButton />
+          </div>
+          <Footer user={currentUser} />
         </div>
-        <Footer user={currentUser} />
-      </div>
-    </Router>
+      </Router>
+    </AlertProvider>
   )
 }
 

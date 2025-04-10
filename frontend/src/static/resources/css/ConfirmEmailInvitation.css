@@ -1,7 +1,43 @@
 .confirm-container {
-    margin: 6em;
-}
-
-.confirm-container h2 {
-    color:white;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f2f2f2;
+  }
+  
+  .confirmation-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    width: 100%;
+    margin: 1rem;
+  }
+  
+  .confirmation-title {
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .confirmation-text {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .confirmation-button {
+    display: inline-block;
+    background-color: #d9be75;
+    border: none;
+    padding: 0.8rem 1.6rem;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }

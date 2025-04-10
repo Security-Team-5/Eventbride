@@ -164,13 +164,13 @@
     cursor: pointer;
     transition: all 0.2s ease;
     margin-right: auto;
-  }
-  
-  .delete-button:hover {
+}
+
+.delete-button:hover {
     background-color: #c0392b;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(231, 76, 60, 0.2);
-  }
+}
 
 .create-service-container {
     display: flex;
@@ -237,6 +237,7 @@
         grid-template-columns: 1fr;
     }
 }
+
 .warning-message {
     background-color: #fff3cd;
     color: #856404;
@@ -266,10 +267,16 @@
     margin-right: 3%;
 }
 
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
 .service-item.over-limit {
     border: 2px solid #f87171;
     box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
 }
+
 .disable-red {
     background-color: #f87171;
     color: white;
@@ -294,4 +301,46 @@
 
 .enable-green:hover {
     background-color: #52ba84ca;
+}
+
+/* Estilos para el spinner */
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Clase para ocultar el texto original del botón cuando está cargando */
+.loading-button.is-loading .button-text {
+    display: none;
+}
+
+/* Clase para mostrar el texto de carga solo cuando está cargando */
+.loading-button .loading-text {
+    display: none;
+}
+
+.loading-button.is-loading .loading-text {
+    display: inline;
+}
+
+/* Clase para mostrar el spinner solo cuando está cargando */
+.loading-button .spinner {
+    display: none;
+}
+
+.loading-button.is-loading .spinner {
+    display: inline-block;
 }

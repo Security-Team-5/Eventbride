@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../../static/resources/css/Invitations.css";
 import { useParams } from "react-router-dom";
 import {Copy, Trash2} from "lucide-react";
+import { useAlert } from "../../context/AlertContext.jsx";
 
 function EventInvitations() {
   const [invitaciones, setInvitaciones] = useState([]);
@@ -11,6 +12,7 @@ function EventInvitations() {
   const [eventData, setEventData] = useState(null); // Para guardar info del evento
   const [jwtToken] = useState(localStorage.getItem("jwt"));
 
+  const { showAlert } = useAlert();
 
   // Obtener la lista de invitaciones
   function getInvitations() {
@@ -57,7 +59,7 @@ function EventInvitations() {
     navigator.clipboard
       .writeText(link)
       .then(() => {
-        alert("Link copiado: " + link);
+        showAlert("Link copiado: " + link);
       })
       .catch((err) => {
         console.error("Error al copiar: ", err);
@@ -73,7 +75,7 @@ function EventInvitations() {
   const handleModalSubmit = () => {
     const max = parseInt(maxGuests, 10);
     if (isNaN(max) || max <= 0) {
-      alert("Por favor, ingresa un número válido mayor a 0.");
+      showAlert("Por favor, ingresa un número válido mayor a 0.");
       return;
     }
 
@@ -90,7 +92,7 @@ function EventInvitations() {
         if (!data.error) {
           const id = data.id;
           copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${id}`);
-          alert("Link a la invitación copiado al portapapeles");
+          showAlert("Link a la invitación copiado al portapapeles");
           setInvitaciones(prev => [...prev, data])
         }
       })
@@ -119,7 +121,7 @@ function EventInvitations() {
           const newInvitations = invitaciones.filter(i => i.id!==id)
           setInvitaciones(newInvitations)
         } else {
-          alert(data.error)
+          showAlert(data.error)
         }
       })
       .catch((error) =>
@@ -135,11 +137,11 @@ function EventInvitations() {
 
   return (
     <div className="event-invitations-container">
-      <h2>Invitaciones estimadas { eventData && (<>del {eventData.name}</>)}</h2>
+      <h2>Invitaciones estimadas { eventData && (<>del evento: {eventData.name}</>)}</h2>
       <div className="total-invitations">
         {eventData && (
           <div>
-            <p style={{ fontSize: "130%" }}>Invitados estimados: {eventData.guests}</p>
+            <p style={{ fontSize: "130%", marginBottom:'-10vh' }}>Invitados estimados: {eventData.guests}</p>
           </div>
         )}
         <h2>Total de invitados: {totalInvitados}</h2>

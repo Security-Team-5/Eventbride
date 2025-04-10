@@ -52,7 +52,7 @@ public class EventService {
 
     @Transactional
     public Event save(Event event) throws DataAccessException {
-        notificationService.createNotification(Notification.NotificationType.EVENT_CREATED, event.getUser(), event, null);
+        notificationService.createNotification(Notification.NotificationType.EVENT_CREATED, event.getUser(), event, null,null);
         return eventRepository.save(event);
     }
 
@@ -67,6 +67,7 @@ public class EventService {
 	public void deleteEvent(int id) throws DataAccessException {
 		Event toDelete = findById(id);
 		eventRepository.delete(toDelete);
+        notificationService.createNotification(Notification.NotificationType.EVENT_DELETED, toDelete.getUser(), toDelete, null, null);
 	}
 
     @Transactional

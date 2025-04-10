@@ -283,6 +283,11 @@ export default function SupplierDashboard() {
                 textColor = "text-red-800"
                 statusText = "Rechazada"
                 break
+            case "completed":
+                bgColor = "bg-red-100"
+                textColor = "text-red-800"
+                statusText = "Completada"
+                break
             default:
                 bgColor = "bg-gray-100"
                 textColor = "text-gray-800"
@@ -381,7 +386,7 @@ export default function SupplierDashboard() {
                                     <X size={24} />
                                 </div>
                                 <div className="stat-content">
-                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "rejected").length}</h3>
+                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "cancelled").length}</h3>
                                     <p className="stat-label">Rechazadas</p>
                                 </div>
                             </div>
@@ -427,8 +432,8 @@ export default function SupplierDashboard() {
                                     Aceptadas
                                 </button>
                                 <button
-                                    className={`filter-button ${filterStatus === "rejected" ? "active" : ""}`}
-                                    onClick={() => setFilterStatus("rejected")}
+                                    className={`filter-button ${filterStatus === "cancelled" ? "active" : ""}`}
+                                    onClick={() => setFilterStatus("cancelled")}
                                 >
                                     Rechazadas
                                 </button>
