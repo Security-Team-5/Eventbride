@@ -14,6 +14,8 @@ import {
     ArrowUpDown,
     CalendarDays,
     List,
+    Handshake,
+    DollarSign
 } from "lucide-react"
 import logo from "../../static/resources/images/logo-eventbride.png"
 import "../../static/resources/css/ProviderDashboard.css"
@@ -278,15 +280,15 @@ export default function SupplierDashboard() {
                 textColor = "text-green-800"
                 statusText = "Reserva pagada"
                 break
+            case "completed":
+                bgColor = "bg-green-100"
+                textColor = "text-green-800"
+                statusText = "Pago completado"
+                break
             case "cancelled":
                 bgColor = "bg-red-100"
                 textColor = "text-red-800"
                 statusText = "Rechazada"
-                break
-            case "completed":
-                bgColor = "bg-red-100"
-                textColor = "text-red-800"
-                statusText = "Completada"
                 break
             default:
                 bgColor = "bg-gray-100"
@@ -382,21 +384,21 @@ export default function SupplierDashboard() {
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon rejected">
-                                    <X size={24} />
+                                <div className="stat-icon accepted">
+                                    <Handshake size={24} />
                                 </div>
                                 <div className="stat-content">
-                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "cancelled").length}</h3>
-                                    <p className="stat-label">Rechazadas</p>
+                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "deposit_paid").length}</h3>
+                                    <p className="stat-label">Reserva pagada</p>
                                 </div>
                             </div>
                             <div className="stat-card">
-                                <div className="stat-icon total">
-                                    <FileText size={24} />
+                                <div className="stat-icon accepted">
+                                    <DollarSign size={24} />
                                 </div>
                                 <div className="stat-content">
-                                    <h3 className="stat-value">{serviceRequests.length}</h3>
-                                    <p className="stat-label">Total</p>
+                                    <h3 className="stat-value">{serviceRequests.filter((r) => r.status === "completed").length}</h3>
+                                    <p className="stat-label">Pago completado</p>
                                 </div>
                             </div>
                         </div>
@@ -430,6 +432,18 @@ export default function SupplierDashboard() {
                                     onClick={() => setFilterStatus("approved")}
                                 >
                                     Aceptadas
+                                </button>
+                                <button
+                                    className={`filter-button ${filterStatus === "deposit_paid" ? "active" : ""}`}
+                                    onClick={() => setFilterStatus("deposit_paid")}
+                                >
+                                    Reservado
+                                </button>
+                                <button
+                                    className={`filter-button ${filterStatus === "completed" ? "active" : ""}`}
+                                    onClick={() => setFilterStatus("completed")}
+                                >
+                                    Pagado
                                 </button>
                                 <button
                                     className={`filter-button ${filterStatus === "cancelled" ? "active" : ""}`}

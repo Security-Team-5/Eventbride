@@ -134,7 +134,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
-    padding: 1.5rem 2rem;
+    padding: 1.5rem 4rem;
     border-bottom: 1px solid #eee;
 }
 
