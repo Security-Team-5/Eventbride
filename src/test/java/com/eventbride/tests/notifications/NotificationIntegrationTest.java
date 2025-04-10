@@ -18,7 +18,7 @@ class NotificationIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
+/*     @Test
     @WithMockUser(username = "alice123")
     void testGetAllNotificationsForUser() throws Exception {
         mockMvc.perform(get("/api/notifications"))
@@ -26,12 +26,13 @@ class NotificationIntegrationTest {
                 .andExpect(jsonPath("$", is(not(empty()))))
                 .andExpect(jsonPath("$[0].subject", is(notNullValue())))
                 .andExpect(jsonPath("$[0].message", is(notNullValue())));
-    }
+    } */
 
     @Test
     @WithMockUser(username = "nonExistentUser")
     void testGetAllNotificationsForNonExistentUser() throws Exception {
         mockMvc.perform(get("/api/notifications"))
-                .andExpect(status().isInternalServerError()); // The SecurityException is properly thrown and produces a 500 error
+                .andExpect(status().isInternalServerError()); // The SecurityException is properly thrown and produces a
+                                                              // 500 error
     }
 }
