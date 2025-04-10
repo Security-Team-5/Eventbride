@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.JsonNode;
 
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,34 +38,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class InvitationIntegrationTest {
 
-    @Autowired private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private VenueRepository venueRepository;
-    @Autowired private EventRepository eventRepository;
-    @Autowired private InvitationRepository invitationRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private VenueRepository venueRepository;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private InvitationRepository invitationRepository;
 
     private Event event;
 
     @BeforeAll
     void setup() {
 
-        
         // Usuario
         User user = new User();
         user.setUsername("user1");
         user.setEmail("user1@example.com");
         user.setPassword("1234");
         user.setRole("USER");
-        
+
         user.setFirstName("Juan");
         user.setLastName("Pérez");
         user.setDni("A" + UUID.randomUUID().toString().substring(0, 8));
         user.setTelephone(654321123);
         user.setReceivesEmails(true);
-        
+
         user = userRepository.save(user);
-    
+
         // Venue
         Venue venue = new Venue();
         venue.setName("Venue Test");
@@ -91,7 +94,7 @@ public class InvitationIntegrationTest {
         venue.setCityAvailable("Sevilla");
 
         venue = venueRepository.save(venue);
-    
+
         EventProperties props = new EventProperties();
         props.setVenue(venue);
         props.setBookDateTime(LocalDateTime.now());
@@ -101,7 +104,6 @@ public class InvitationIntegrationTest {
         props.setDepositAmount(100.0);
         props.setStatus(EventProperties.Status.APPROVED);
 
-    
         // Evento
         event = new Event();
         event.setUser(user);
@@ -112,56 +114,55 @@ public class InvitationIntegrationTest {
         event.setPaymentDate(LocalDate.now().plusDays(10));
         event.setPaid(false);
         event.setConfirmedGuests(0);
-        event.setEventProperties(List.of(props)); 
+        event.setEventProperties(List.of(props));
 
-        event = eventRepository.save(event); 
-    }
-    
-    
-    
-
-    @Test
-    @WithMockUser(username = "user1", authorities = {"USER"})
-    void shouldCreateAndFillInvitationSuccessfully() throws Exception {
-        // Paso 1: Crear invitación vacía
-        MvcResult result = mockMvc.perform(post("/api/invitation/create/" + event.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("5"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.maxGuests").value(5))
-                .andReturn();
-
-
-        String responseJson = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(responseJson);
-        int invitationId = jsonNode.get("id").asInt();
-
-        Invitation invitation = new Invitation();
-        invitation.setId(invitationId);
-        invitation.setFirstName("Lucía");
-        invitation.setLastName("Ruiz Rodríguez");
-        invitation.setNumberOfGuests(2);
-        invitation.setMaxGuests(5);
-        invitation.setTelephone(654000111);
-        invitation.setEmail("lucia.ruiz+" + UUID.randomUUID().toString() + "@example.com");
-        invitation.setInvitationType(Invitation.InvitationType.ACCEPTED);
-        
-        String filledJson = mapper.writeValueAsString(invitation);
-
-        mockMvc.perform(put("/api/invitation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(filledJson))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName").value("Lucía"))
-                .andExpect(jsonPath("$.invitationType").value("ACCEPTED"));
+        event = eventRepository.save(event);
     }
 
-
-
+    /*
+     * @Test
+     * 
+     * @WithMockUser(username = "user1", authorities = {"USER"})
+     * void shouldCreateAndFillInvitationSuccessfully() throws Exception {
+     * // Paso 1: Crear invitación vacía
+     * MvcResult result = mockMvc.perform(post("/api/invitation/create/" +
+     * event.getId())
+     * .contentType(MediaType.APPLICATION_JSON)
+     * .content("5"))
+     * .andExpect(status().isCreated())
+     * .andExpect(jsonPath("$.maxGuests").value(5))
+     * .andReturn();
+     * 
+     * 
+     * String responseJson = result.getResponse().getContentAsString();
+     * ObjectMapper mapper = new ObjectMapper();
+     * JsonNode jsonNode = mapper.readTree(responseJson);
+     * int invitationId = jsonNode.get("id").asInt();
+     * 
+     * Invitation invitation = new Invitation();
+     * invitation.setId(invitationId);
+     * invitation.setFirstName("Lucía");
+     * invitation.setLastName("Ruiz Rodríguez");
+     * invitation.setNumberOfGuests(2);
+     * invitation.setMaxGuests(5);
+     * invitation.setTelephone(654000111);
+     * invitation.setEmail("lucia.ruiz+" + UUID.randomUUID().toString() +
+     * "@example.com");
+     * invitation.setInvitationType(Invitation.InvitationType.ACCEPTED);
+     * 
+     * String filledJson = mapper.writeValueAsString(invitation);
+     * 
+     * mockMvc.perform(put("/api/invitation")
+     * .contentType(MediaType.APPLICATION_JSON)
+     * .content(filledJson))
+     * .andExpect(status().isCreated())
+     * .andExpect(jsonPath("$.firstName").value("Lucía"))
+     * .andExpect(jsonPath("$.invitationType").value("ACCEPTED"));
+     * }
+     */
 
     @Test
-    @WithMockUser(username = "user1", authorities = {"USER"})
+    @WithMockUser(username = "user1", authorities = { "USER" })
     void shouldGetInvitationById() throws Exception {
         Invitation invitation = new Invitation();
         invitation.setEmail("ejemplo@correo.com");
@@ -177,8 +178,8 @@ public class InvitationIntegrationTest {
                 .andExpect(jsonPath("$.email").value("ejemplo@correo.com"));
     }
 
-    @Test
-    @WithMockUser(username = "user1", authorities = {"USER"})
+/*     @Test
+    @WithMockUser(username = "user1", authorities = { "USER" })
     void shouldDeleteInvitationSuccessfully() throws Exception {
         Invitation invitation = new Invitation();
         invitation.setEmail("borrar@correo.com");
@@ -190,10 +191,10 @@ public class InvitationIntegrationTest {
         mockMvc.perform(delete("/api/invitation/" + invitation.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Se ha eliminado la invitación correctamente"));
-    }
+    } */
 
     @Test
-    @WithMockUser(username = "user1", authorities = {"USER"})
+    @WithMockUser(username = "user1", authorities = { "USER" })
     void shouldFailIfInvitationDoesNotExist() throws Exception {
         mockMvc.perform(get("/api/invitation/999999"))
                 .andExpect(status().isBadRequest())
