@@ -94,3 +94,7 @@ Puede ver la licencia de nuestro proyecto en el siguiente enlace: [Licencia](./d
 - Email: eventbride6@gmail.com   
 
 - [Instagram](https://www.instagram.com/eventbride_svq/)
+
+- [LinkedIn](https://www.linkedin.com/company/eventbride/)
+
+- [TikTok](https://www.tiktok.com/@eventbride)
