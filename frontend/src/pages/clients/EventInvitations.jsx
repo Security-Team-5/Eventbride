@@ -137,11 +137,11 @@ function EventInvitations() {
 
   return (
     <div className="event-invitations-container">
-      <h2>Invitaciones estimadas { eventData && (<>del {eventData.name}</>)}</h2>
+      <h2>Invitaciones estimadas { eventData && (<>del evento: {eventData.name}</>)}</h2>
       <div className="total-invitations">
         {eventData && (
           <div>
-            <p style={{ fontSize: "130%" }}>Invitados estimados: {eventData.guests}</p>
+            <p style={{ fontSize: "130%", marginBottom:'-10vh' }}>Invitados estimados: {eventData.guests}</p>
           </div>
         )}
         <h2>Total de invitados: {totalInvitados}</h2>
