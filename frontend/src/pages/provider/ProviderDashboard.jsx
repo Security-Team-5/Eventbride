@@ -283,6 +283,11 @@ export default function SupplierDashboard() {
                 textColor = "text-red-800"
                 statusText = "Rechazada"
                 break
+            case "completed":
+                bgColor = "bg-red-100"
+                textColor = "text-red-800"
+                statusText = "Completada"
+                break
             default:
                 bgColor = "bg-gray-100"
                 textColor = "text-gray-800"
