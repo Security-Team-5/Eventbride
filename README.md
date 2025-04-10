@@ -91,7 +91,8 @@ Puede ver la licencia de nuestro proyecto en el siguiente enlace: [Licencia](./d
 
 ## Contacto
 
-- Email: eventbride6@gmail.com   
+- Email corporativo: eventbride6@gmail.com
+- Email soporte: soporte@eventbride.fun
 
 - [Instagram](https://www.instagram.com/eventbride_svq/)
 
