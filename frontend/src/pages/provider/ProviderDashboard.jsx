@@ -315,23 +315,6 @@ export default function SupplierDashboard() {
 
     return (
         <div className="supplier-dashboard">
-            {/* Header */}
-            <header className="dashboard-header">
-                <div className="container">
-                    <div className="header-content">
-                        <div className="logo-container">
-                            <img src={logo || "/placeholder.svg"} alt="Eventbride Logo" className="dashboard-logo" />
-                        </div>
-                        <h1 className="header-title">Panel de Proveedor</h1>
-                        <div className="user-menu">
-                            <span className="user-name">Mi Empresa</span>
-                            <div className="user-avatar">
-                                <User size={20} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
 
             {/* Main Content */}
             <main className="dashboard-main">

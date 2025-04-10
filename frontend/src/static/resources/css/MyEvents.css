@@ -132,12 +132,11 @@
 }
 
 .event-title {
-  font-size: 1.5rem;
+  font-size: 0.5rem;
   color: #333;
   margin: 0 0 1rem 0;
-  font-family: "Playfair Display", serif;
   text-align: center;
-  height: 11rem;
+  height: 7rem;
 }
 
 .event-details {

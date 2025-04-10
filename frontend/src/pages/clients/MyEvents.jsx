@@ -109,7 +109,7 @@ function MyEvents() {
     return (
       <div className="error-container">
         <p>{error}</p>
-        <button style={{width:"25%"}} className="retry-button" onClick={getEvents}>
+        <button style={{ width: "25%" }} className="retry-button" onClick={getEvents}>
           Reintentar
         </button>
       </div>
@@ -156,7 +156,7 @@ function MyEvents() {
                     className="event-image"
                     style={{ cursor: "pointer" }}
                   />
-                  <div className="event-type-badge" style= {{color: "#dab247", backgroundColor:"#12110e65", fontSize:"1.2rem"}}>
+                  <div className="event-type-badge" style={{ color: "black", backgroundColor: "#FFFFFF85", fontSize: "1.2rem" }}>
                     {tipoDeEvento(evento.eventType)}
                   </div>
                   {diasRestantes > 0 && (
@@ -168,7 +168,7 @@ function MyEvents() {
                 </div>
 
                 <div className="event-content">
-                  <h2 className="event-title">{evento.name}</h2>
+                  <p className="event-title" style={{ fontSize: "1.5rem" }}>{evento.name}</p>
 
                   <div className="event-details">
                     <div className="detail-item">
@@ -196,7 +196,7 @@ function MyEvents() {
                       Ver detalles
                     </button>
                     <span className="view-details"
-                          onClick={() => navigate(`/invitaciones/${evento.id}`)}
+                      onClick={() => navigate(`/invitaciones/${evento.id}`)}
                     >
                       Ver Invitaciones
                     </span>

@@ -218,10 +218,11 @@ function Navbar({ user }) {
                       {currentUser.plan}
                     </li>
                   )}
-
-                  <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
-                    Cerrar sesión
-                  </button>
+                  <li className="navbar-brand">
+                    <button className="logout-button" onClick={handleLogout} style={{ marginBottom: "3%" }}>
+                      Cerrar sesión
+                    </button>
+                  </li>
                 </div>
               )}
             </div>

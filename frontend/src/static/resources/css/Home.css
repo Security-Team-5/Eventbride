@@ -906,7 +906,7 @@ body {
 /* CTA Section */
 .cta-section {
     padding: 5rem 0;
-    
+    background-color: rgba(247, 217, 227, 0.96);
     color: #333;
     text-align: center;
     position: relative;

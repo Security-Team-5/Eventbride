@@ -54,9 +54,6 @@ function Footer({ user }) {
                                 <MapPin size={16} /> Escuela Superior de Ingeniería Informática, Sevilla
                             </li>
                             <li>
-                                <Phone size={16} /> +34 123 456 789
-                            </li>
-                            <li>
                                 <Mail size={16} /> eventbride6@gmail.com
                             </li>
                             <li>
