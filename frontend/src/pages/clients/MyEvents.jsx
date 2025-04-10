@@ -197,7 +197,7 @@ function MyEvents() {
                     </button>
                     <span className="view-details"
                       onClick={() => navigate(`/invitaciones/${evento.id}`)}
-                    >
+                      style={{ cursor: "pointer"}}>
                       Ver Invitaciones
                     </span>
                   </div>
