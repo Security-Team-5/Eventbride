@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../static/resources/css/Invitations.css";
 import { useParams } from "react-router-dom";
-import {Copy, Trash2} from "lucide-react";
+import { Copy, Trash2 } from "lucide-react";
 import { useAlert } from "../../context/AlertContext.jsx";
 
 function EventInvitations() {
@@ -52,6 +52,7 @@ function EventInvitations() {
   // Cargar invitaciones al montar el componente
   useEffect(() => {
     getEventData();
+    console.log(window.location.origin)
     getInvitations();
   }, []);
 
@@ -91,7 +92,7 @@ function EventInvitations() {
       .then((data) => {
         if (!data.error) {
           const id = data.id;
-          copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${id}`);
+          copyLink(`${window.location.origin}/invitaciones/registro/${id}`);
           showAlert("Link a la invitación copiado al portapapeles");
           setInvitaciones(prev => [...prev, data])
         }
@@ -106,7 +107,7 @@ function EventInvitations() {
 
   const handleRemove = (id) => {
     const isRemoving = confirm("¿Deseas eliminar la invitación?")
-    if(!isRemoving) {return}
+    if (!isRemoving) { return }
 
     fetch(`/api/invitation/${id}`, {
       headers: {
@@ -118,7 +119,7 @@ function EventInvitations() {
       .then((response) => response.json())
       .then((data) => {
         if (!data.error) {
-          const newInvitations = invitaciones.filter(i => i.id!==id)
+          const newInvitations = invitaciones.filter(i => i.id !== id)
           setInvitaciones(newInvitations)
         } else {
           showAlert(data.error)
@@ -137,11 +138,11 @@ function EventInvitations() {
 
   return (
     <div className="event-invitations-container">
-      <h2>Invitaciones estimadas { eventData && (<>del evento: {eventData.name}</>)}</h2>
+      <h2>Invitaciones estimadas {eventData && (<>del evento: {eventData.name}</>)}</h2>
       <div className="total-invitations">
         {eventData && (
           <div>
-            <p style={{ fontSize: "130%", marginBottom:'-10vh' }}>Invitados estimados: {eventData.guests}</p>
+            <p style={{ fontSize: "130%", marginBottom: '-10vh' }}>Invitados estimados: {eventData.guests}</p>
           </div>
         )}
         <h2>Total de invitados: {totalInvitados}</h2>
@@ -169,26 +170,26 @@ function EventInvitations() {
             <div key={index} className="event-container-i">
               <div>
                 {
-                  invitacion.invitationType==="ACCEPTED" ? (
-                  <div className="event-info-i">
-                    <div className="left-event">
-                      <p className="invitation-name">
-                        Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
-                      </p>
-                      <p className="invitation-name">
-                        Invitados de su parte: {invitacion.numberOfGuests}
-                      </p>
+                  invitacion.invitationType === "ACCEPTED" ? (
+                    <div className="event-info-i">
+                      <div className="left-event">
+                        <p className="invitation-name">
+                          Nombre del invitado: {invitacion.firstName + " " + invitacion.lastName}
+                        </p>
+                        <p className="invitation-name">
+                          Invitados de su parte: {invitacion.numberOfGuests}
+                        </p>
+                      </div>
+                      <div className="right-event">
+                        <button
+                          onClick={() => { handleRemove(invitacion.id) }}
+                          title="Copiar enlace"
+                          className="trash"
+                        >
+                          <Trash2 size={20} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="right-event">
-                      <button
-                        onClick={() => {handleRemove(invitacion.id)}}
-                        title="Copiar enlace"
-                        className="trash"
-                      >
-                        <Trash2 size={20} />
-                      </button>
-                    </div>
-                  </div>
                   ) : (
                     <div className="event-info-i">
                       <div className="left-event">
@@ -201,13 +202,13 @@ function EventInvitations() {
                       </div>
                       <div className="right-event">
                         <button
-                          onClick={() => {copyLink(`https://ispp-2425-03.ew.r.appspot.com/invitaciones/registro/${invitacion.id}`)}}
+                          onClick={() => { copyLink(`${window.location.origin}/invitaciones/registro/${invitacion.id}`) }}
                           title="Copiar enlace"
                         >
                           <Copy size={20} />
                         </button>
                         <button
-                          onClick={() => {handleRemove(invitacion.id)}}
+                          onClick={() => { handleRemove(invitacion.id) }}
                           title="Copiar enlace"
                           className="trash"
                         >
@@ -215,7 +216,7 @@ function EventInvitations() {
                         </button>
                       </div>
                     </div>
-                )}
+                  )}
               </div>
             </div>
           ))}
