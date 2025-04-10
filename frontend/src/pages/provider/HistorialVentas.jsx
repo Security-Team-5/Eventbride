@@ -85,10 +85,10 @@ const HistorialVentas = ({ userId }) => {
     }, [userId]);
 
     const statusMap = {
-        COMMISSION: 'comisión',
-        DEPOSIT: 'reserva',
-        PLAN: 'plan',
-        REMAINING: 'restante'
+        COMMISSION: 'Comisión',
+        DEPOSIT: 'Pago reserva',
+        PLAN: 'Plan',
+        REMAINING: 'Pago restante'
       };
       
       function parseStatus(status) {

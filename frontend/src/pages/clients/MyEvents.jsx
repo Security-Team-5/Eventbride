@@ -154,6 +154,7 @@ function MyEvents() {
                     onClick={() => navigate(`/event/${evento.id}`)}
                     alt={tipoDeEvento(evento.eventType)}
                     className="event-image"
+                    style={{ cursor: "pointer" }}
                   />
                   <div className="event-type-badge" style= {{color: "#dab247", backgroundColor:"#12110e65", fontSize:"1.2rem"}}>
                     {tipoDeEvento(evento.eventType)}

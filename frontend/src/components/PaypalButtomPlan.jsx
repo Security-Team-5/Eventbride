@@ -2,9 +2,12 @@
 import { useEffect, useRef } from "react";
 import "../static/resources/css/Paypal.css";
 import apiClient from "../apiClient";
+import { useAlert } from "../context/AlertContext";
 
 function PaypalButtonPlan({ amount, fechaFin }) {
   const paypalRef = useRef(null);
+
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     if (!paypalRef.current || !window.paypal) return;
@@ -34,12 +37,12 @@ function PaypalButtonPlan({ amount, fechaFin }) {
               const userId = currentUser?.id;
 
               if (!userId) {
-                alert("No se pudo obtener el ID del usuario.");
+                showAlert("No se pudo obtener el ID del usuario.");
                 return;
               }
 
               if (!fechaFin) {
-                alert("No se ha definido la fecha de expiración del plan PREMIUM.");
+                showAlert("No se ha definido la fecha de expiración del plan PREMIUM.");
                 return;
               }
 
@@ -84,9 +87,9 @@ function PaypalButtonPlan({ amount, fechaFin }) {
   }, [amount, fechaFin]);
 
   return (
-    <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center" }}>
-      <div ref={paypalRef} />
-    </div>
+      <div style={{ maxWidth: "100%", display: "flex", justifyContent: "center" }}>
+        <div ref={paypalRef} />
+      </div>
   );
 }
 

@@ -9,6 +9,8 @@ import { CheckCircle, MapPin, DollarSign, Users, Clock, Plus, Edit, Package, Inf
 
 import "../../static/resources/css/Servicios.css"
 
+import { useAlert } from "../../context/AlertContext.jsx"
+
 const Servicios = () => {
     const [services, setServices] = useState([])
     const [loading, setLoading] = useState(true)
@@ -17,6 +19,8 @@ const Servicios = () => {
     const currentUser = JSON.parse(localStorage.getItem("user"))
     const [jwtToken] = useState(localStorage.getItem("jwt"));
 
+    const { showAlert } = useAlert()
+    
     const [spinner, setSpinner] = useState(null)
 
     const fetchServices = useCallback(async () => {
@@ -103,7 +107,7 @@ const Servicios = () => {
             );
         } catch (error) {
             console.error("Error al cambiar disponibilidad del servicio:", error);
-            alert(error.message);
+            showAlert(error.message);
         } finally {
             setSpinner(null)
         }
@@ -134,7 +138,7 @@ const Servicios = () => {
             );
         } catch (error) {
             console.error("Error al cambiar disponibilidad del servicio:", error);
-            alert(error.message);
+            showAlert(error.message);
         } finally {
             setSpinner(null)
         }
@@ -338,8 +342,6 @@ const Servicios = () => {
                     </div>
                 )
             )}
-
-
         </div>
     )
 }

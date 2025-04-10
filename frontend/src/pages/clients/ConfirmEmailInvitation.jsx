@@ -1,24 +1,25 @@
 /* eslint-disable no-unused-vars */
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
-import apiClient from "../../apiClient";
-import "../../static/resources/css/ConfirmEmailInvitation.css";
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import '../../static/resources/css/ConfirmEmailInvitation.css';
 
 const Register = () => {
-
   const { invitationId } = useParams();
 
-    useEffect(() => {
-    }, []);
+  useEffect(() => {
+    // Aquí podrías realizar alguna lógica adicional relacionada con la invitación, si fuese necesario.
+  }, [invitationId]);
 
   return (
     <div className="confirm-container">
-        {
-                <h2 style={{color:"black"}}>
-                    ¡¡Invitación confirmada correctamente!!
-                </h2>
-            
-        }
+      <div className="confirmation-card">
+        <h2 className="confirmation-title" style={{marginBottom: "6vh"}}>
+          ¡¡Invitación confirmada correctamente!!
+        </h2>
+        <p className="confirmation-button">
+        Puede cerrar la ventana
+        </p>
+      </div>
     </div>
   );
 };

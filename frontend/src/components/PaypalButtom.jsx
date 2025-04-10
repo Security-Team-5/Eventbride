@@ -3,10 +3,13 @@ import { useEffect, useState } from "react";
 import "../static/resources/css/Paypal.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAlert } from "../context/AlertContext";
 
 function PaypalButton({ amount, paymentType, eventProp }) {
   const navigate = useNavigate();
   const [jwtToken] = useState(localStorage.getItem("jwt"));
+
+  const { showAlert } = useAlert();
 
   useEffect(() => {
 
@@ -17,7 +20,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
           await axios.post(`/api/payment/${eventProp.id}/pay-deposit/${currentUser.id}`);
 
         } catch (error) {
-          alert('Error al pagar');
+          showAlert('Error al pagar');
           console.error(error);
         }
       } else {
@@ -26,7 +29,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
           const currentUser = JSON.parse(localStorage.getItem("user"))
           await axios.post(`/api/payment/${eventProp.id}/pay-remaining/${currentUser.id}`);
         } catch (error) {
-          alert('Error al pagar');
+          showAlert('Error al pagar');
           console.error(error);
         }
       }
@@ -35,7 +38,7 @@ function PaypalButton({ amount, paymentType, eventProp }) {
     async function cancelEventAfterPayment() {
       try {
         await fetch(`/api/event-properties/cancel/${eventProp.id}`, {
-          method: "PUT", 
+          method: "PUT",
           headers: {
             "Authorization": `Bearer ${jwtToken}`,
           },
@@ -64,8 +67,8 @@ function PaypalButton({ amount, paymentType, eventProp }) {
               return actions.order.capture().then(async (details) => {
                 await payPrice();
                 await cancelEventAfterPayment();
+                showAlert(`Pago completado por ${details.payer.name.given_name}`);
                 navigate('/events')
-                alert(`Pago completado por ${details.payer.name.given_name}`);
               });
             },
           })
@@ -76,7 +79,9 @@ function PaypalButton({ amount, paymentType, eventProp }) {
     }
   }, [amount, paymentType, eventProp]);
 
-  return <div style={{ maxWidth: "100%" }} id="paypal-button-container"></div>;
+  return (
+      <div style={{ maxWidth: "100%" }} id="paypal-button-container"></div>
+  );
 }
 
 export default PaypalButton;

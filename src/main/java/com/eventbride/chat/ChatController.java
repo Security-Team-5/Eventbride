@@ -49,7 +49,7 @@ public class ChatController {
 		repository.save(messageToSave);
 		List<Notification> recentNotifications = notificationRepository.findRecentNewMessageNotificationsByUserId(receiver.get().getId(), LocalDateTime.now().minusMinutes(1));
 		if(recentNotifications.isEmpty()) {
-			notificationService.createNotification(Notification.NotificationType.NEW_MESSAGE, receiver.get(), null, null);
+			notificationService.createNotification(Notification.NotificationType.NEW_MESSAGE, receiver.get(), null, null, null);
 		}
 /*
 		// Enviar al receptor a su canal personal

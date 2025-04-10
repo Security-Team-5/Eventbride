@@ -19,6 +19,8 @@ import {
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import "../../static/resources/css/OtherService.css"
+import "../../static/resources/css/Alert.css"
+import { useAlert } from "../../context/AlertContext"
 
 const OtherServiceScreen = () => {
   const [otherServices, setOtherServices] = useState([])
@@ -40,6 +42,8 @@ const OtherServiceScreen = () => {
 
   const currentUser = JSON.parse(localStorage.getItem("user"))
   const [jwtToken] = useState(localStorage.getItem("jwt"));
+
+  const { showAlert } = useAlert()
 
   const getFilteredOtherServices = async () => {
     try {
@@ -190,20 +194,20 @@ const OtherServiceScreen = () => {
   const handleConfirmService = async (eventObj, selectedOtherServiceId) => {
     const times = venueTimes[eventObj.id] || {}
     if (!times.startTime || !times.endTime) {
-      alert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.")
+      showAlert("Por favor, ingresa la hora de inicio y la hora de fin para este servicio.")
       return
     }
-  
+
     const startDate = combineDateAndTime(eventObj.eventDate, times.startTime)
     const endDate = combineDateAndTime(eventObj.eventDate, times.endTime)
-  
+
     setIsConfirming(true) // Bloquea clics múltiples
     try {
       await axios.put(`/api/event-properties/${eventObj.id}/add-otherservice/${selectedOtherServiceId}`, null, {
         params: { startDate, endDate },
         headers: { Authorization: `Bearer ${jwtToken}` }
       })
-      alert("¡Operación realizada con éxito!")
+      showAlert("¡Operación realizada con éxito!")
       setModalVisible(false)
     } catch (error) {
       console.error("Error al añadir el servicio:", error)
@@ -439,7 +443,7 @@ const OtherServiceScreen = () => {
                         className="primary-button"
                         style={{ flex: "1" }}
                         onClick={() => handleConfirmService(eventObj, selectedOtherServiceId)}
-                        disabled={isConfirming} 
+                        disabled={isConfirming}
                       >
                         <CheckCircle size={16} />
                         Confirmar

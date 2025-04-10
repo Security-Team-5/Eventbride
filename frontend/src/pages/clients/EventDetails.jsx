@@ -7,6 +7,7 @@ import PaypalButtonTotal from "../../components/PaypalButtomTotal";
 import "../../static/resources/css/OtherService.css"
 import { Link } from "react-router-dom"
 import { AlertCircle } from "lucide-react";
+import { useAlert } from "../../context/AlertContext.jsx"
 
 
 function EventDetails() {
@@ -23,6 +24,7 @@ function EventDetails() {
   const [jwtToken] = useState(localStorage.getItem("jwt"));
   const [payments, setPayments] = useState([]);
 
+  const { showAlert } = useAlert()
 
   // Función para obtener los datos del evento
   function getEvents() {
@@ -78,6 +80,7 @@ function EventDetails() {
           navigate("/")
         } else {
           console.error("Error al eliminar el evento")
+          showAlert("Error al eliminar el evento. No puedes eliminar un evento con algún servicio pagado.")
         }
       })
       .catch((error) => console.error("Error eliminando evento:", error))
@@ -142,7 +145,7 @@ function EventDetails() {
       })
       .catch((error) => {
         console.error("Error eliminando el servicio:", error)
-        alert("Error al eliminar el servicio. Por favor, inténtelo de nuevo.")
+        showAlert("Error al eliminar el servicio. Por favor, inténtelo de nuevo.")
       })
       .finally(() => {
         setIsLoading(false)
