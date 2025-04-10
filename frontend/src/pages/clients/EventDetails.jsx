@@ -80,6 +80,7 @@ function EventDetails() {
           navigate("/")
         } else {
           console.error("Error al eliminar el evento")
+          showAlert("Error al eliminar el evento. No puedes eliminar un evento con algún servicio pagado.")
         }
       })
       .catch((error) => console.error("Error eliminando evento:", error))
