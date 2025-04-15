@@ -12,7 +12,7 @@
   "dependencies": {
     "@paypal/react-paypal-js": "^8.8.2",
     "@stomp/stompjs": "^7.1.0",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.483.0",
     "react": "^19.0.0",
