@@ -1,0 +1,49 @@
+name: DefectDojo Upload
+
+on:
+  workflow_run:
+    workflows: ["Trivy Security Scan"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  upload-results:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Download Trivy SARIF Artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+            });
+            const matchArtifact = artifacts.data.artifacts.find(artifact => artifact.name === "trivy-results");
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: matchArtifact.id,
+              archive_format: 'zip',
+            });
+            const fs = require('fs');
+            fs.writeFileSync('trivy-results.zip', Buffer.from(download.data));
+
+      - name: Unzip Artifact
+        run: unzip trivy-results.zip
+
+      - name: Upload Trivy Results to DefectDojo
+        env:
+          DEFECTDOJO_URL: ${{ secrets.DEFECTDOJO_URL }}
+          DEFECTDOJO_API_KEY: ${{ secrets.DEFECTDOJO_API_KEY }}
+          DEFECTDOJO_ENGAGEMENT_ID: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
+        run: |
+          curl -X POST "$DEFECTDOJO_URL/api/v2/import-scan/" \
+            -H "Authorization: Token $DEFECTDOJO_API_KEY" \
+            -F "engagement=$DEFECTDOJO_ENGAGEMENT_ID" \
+            -F "scan_type=Trivy Scan" \
+            -F "file=@trivy-results.sarif"
