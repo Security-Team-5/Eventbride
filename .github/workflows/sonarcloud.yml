@@ -39,17 +39,16 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.projectKey=Security-Team-5_Eventbride
 
-      - name: Convertir issues SonarCloud con soprasteria
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Instalar dependencias y clonar conversor
         run: |
-          docker run --rm -v ${{ github.workspace }}:/app ghcr.io/sergeim/sonarqube-to-defectdojo:latest \
+          python3 -m pip install requests
+          git clone https://github.com/DefectDojo/sonarqube-to-defectdojo.git
+          cd sonarqube-to-defectdojo
+          python3 sonarqube_to_defectdojo.py \
             -u "https://sonarcloud.io" \
-            -k "$SONAR_TOKEN" \
+            -k "${{ secrets.SONAR_TOKEN }}" \
             -p "Security-Team-5_Eventbride" \
-            --output-file "/app/converted-sonar-results.json"
-
-
+            --output-file "../converted-sonar-results.json"
 
       - name: Subir resultados convertidos a DefectDojo
         env:
@@ -67,4 +66,5 @@ jobs:
           else
             echo "No se encontró el archivo converted-sonar-results.json"
           fi
+
 
