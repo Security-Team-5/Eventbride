@@ -53,7 +53,7 @@ jobs:
             --release="1.0.0" \
             --branch="master" \
             --save-report-json \
-            --output="sonar-report.json"
+            --output="sonar-report"
 
       - name: Subir reporte a DefectDojo (Soprasteria Scan)
         env:
