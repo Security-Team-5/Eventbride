@@ -41,7 +41,7 @@ jobs:
 
       - name: Descargar issues desde SonarCloud
         run: |
-          curl -s -u $SONAR_TOKEN: "https://sonarcloud.io/api/issues/search?componentKeys=${Security-Team-5_Eventbride}&types=BUG,VULNERABILITY,CODE_SMELL&ps=500" \
+          curl -s -u $SONAR_TOKEN: "https://sonarcloud.io/api/issues/search?componentKeys=Security-Team-5_Eventbride&types=BUG,VULNERABILITY,CODE_SMELL&ps=500" \
           -o sonarcloud-results.json
 
       - name: Subir resultados a DefectDojo
