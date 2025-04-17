@@ -39,32 +39,31 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.projectKey=Security-Team-5_Eventbride
 
-      - name: Descargar issues desde SonarCloud
+      - name: Convertir issues SonarCloud con soprasteria
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          curl -s -u $SONAR_TOKEN: "https://sonarcloud.io/api/issues/search?componentKeys=Security-Team-5_Eventbride&types=BUG,VULNERABILITY,CODE_SMELL&ps=500" \
-          -o sonarcloud-results.json
+          docker run --rm -v ${{ github.workspace }}:/app ghcr.io/defectdojo/sonarqube-to-defectdojo:latest \
+            -u "https://sonarcloud.io" \
+            -k "$SONAR_TOKEN" \
+            -p "Security-Team-5_Eventbride" \
+            --output-file "/app/converted-sonar-results.json"
 
 
-      - name: Ver contenido del archivo JSON
-        run: |
-          echo "Contenido del archivo sonarcloud-results.json:"
-          cat sonarcloud-results.json
-
-      - name: Subir resultados a DefectDojo
+      - name: Subir resultados convertidos a DefectDojo
         env:
           DEFECTDOJO_URL: ${{ secrets.DEFECTDOJO_URL }}
           DEFECTDOJO_API_KEY: ${{ secrets.DEFECTDOJO_API_KEY }}
           DEFECTDOJO_ENGAGEMENT_ID: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
         run: |
-          if [ -f sonarcloud-results.json ]; then
-            echo "Subiendo reporte a DefectDojo..."
+          if [ -f converted-sonar-results.json ]; then
+            echo "Subiendo reporte convertido a DefectDojo..."
             curl -X POST "$DEFECTDOJO_URL/api/v2/import-scan/" \
               -H "Authorization: Token $DEFECTDOJO_API_KEY" \
               -F "engagement=$DEFECTDOJO_ENGAGEMENT_ID" \
               -F "scan_type=SonarQube Scan" \
-              -F "file=@sonarcloud-results.json"
+              -F "file=@converted-sonar-results.json"
           else
-            echo "No se encontró el archivo sonarcloud-results.json"
+            echo "No se encontró el archivo converted-sonar-results.json"
           fi
+
