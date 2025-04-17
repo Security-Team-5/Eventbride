@@ -41,10 +41,9 @@ jobs:
 
       - name: Instalar dependencias y convertir issues con dkade/sonarqube_exporter
         run: |
-          python3 -m pip install requests
-          python3 -m pip install sonarqube
           git clone https://github.com/dkade/sonarqube_exporter.git
           cd sonarqube_exporter
+          python3 -m pip install -r requirements.txt
           python3 sonarcloud_json.py Security-Team-5_Eventbride \
             --severities INFO,MINOR,MAJOR,CRITICAL,BLOCKER \
             --types CODE_SMELL,VULNERABILITY,BUG \
