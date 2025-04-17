@@ -39,32 +39,30 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.projectKey=Security-Team-5_Eventbride
 
-      - name: Instalar dependencias y convertir issues con dkade/sonarqube_exporter
-        run: |
-          git clone https://github.com/dkade/sonarqube_exporter.git
-          cd sonarqube_exporter
-          python3 -m pip install -r requirements.txt
-          python3 sonarcloud_json.py Security-Team-5_Eventbride \
-            --severities INFO,MINOR,MAJOR,CRITICAL,BLOCKER \
-            --types CODE_SMELL,VULNERABILITY,BUG \
-            --url https://sonarcloud.io \
-            --filename ../converted-sonar-results.json
+      - name: Instalar sonar-report CLI
+        run: npm install -g sonar-report
 
-      - name: Subir resultados convertidos a DefectDojo
+      - name: Generar reporte JSON desde SonarCloud
+        run: |
+          sonar-report \
+            --sonarurl="https://sonarcloud.io" \
+            --sonarcomponent="Security-Team-5_Eventbride" \
+            --sonarorganization="security-team-5" \
+            --project="EventBride" \
+            --application="eventbride" \
+            --release="1.0.0" \
+            --branch="master" \
+            --save-report-json \
+            --output="sonar-report.json"
+
+      - name: Subir reporte a DefectDojo (Soprasteria Scan)
         env:
           DEFECTDOJO_URL: ${{ secrets.DEFECTDOJO_URL }}
           DEFECTDOJO_API_KEY: ${{ secrets.DEFECTDOJO_API_KEY }}
           DEFECTDOJO_ENGAGEMENT_ID: ${{ secrets.DEFECTDOJO_ENGAGEMENT_ID }}
         run: |
-          if [ -f converted-sonar-results.json ]; then
-            echo "Subiendo reporte convertido a DefectDojo..."
-            curl -X POST "$DEFECTDOJO_URL/api/v2/import-scan/" \
-              -H "Authorization: Token $DEFECTDOJO_API_KEY" \
-              -F "engagement=$DEFECTDOJO_ENGAGEMENT_ID" \
-              -F "scan_type=SonarQube Scan" \
-              -F "file=@converted-sonar-results.json"
-          else
-            echo "No se encontró el archivo converted-sonar-results.json"
-          fi
-
-
+          curl -X POST "$DEFECTDOJO_URL/api/v2/import-scan/" \
+            -H "Authorization: Token $DEFECTDOJO_API_KEY" \
+            -F "engagement=$DEFECTDOJO_ENGAGEMENT_ID" \
+            -F "scan_type=Soprasteria SonarQube Scan" \
+            -F "file=@sonar-report.json"
