@@ -40,6 +40,8 @@ jobs:
             -Dsonar.projectKey=Security-Team-5_Eventbride
 
       - name: Descargar issues desde SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           curl -s -u $SONAR_TOKEN: "https://sonarcloud.io/api/issues/search?componentKeys=Security-Team-5_Eventbride&types=BUG,VULNERABILITY,CODE_SMELL&ps=500" \
           -o sonarcloud-results.json
