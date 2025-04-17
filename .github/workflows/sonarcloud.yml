@@ -39,16 +39,16 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.projectKey=Security-Team-5_Eventbride
 
-      - name: Instalar dependencias y clonar conversor
+      - name: Instalar dependencias y convertir issues con dkade/sonarqube_exporter
         run: |
           python3 -m pip install requests
-          git clone https://github.com/sergeim/sonarqube-to-defectdojo.git
-          cd sonarqube-to-defectdojo
-          python3 sonarqube_to_defectdojo.py \
-            -u "https://sonarcloud.io" \
-            -k "${{ secrets.SONAR_TOKEN }}" \
-            -p "Security-Team-5_Eventbride" \
-            --output-file "../converted-sonar-results.json"
+          git clone https://github.com/dkade/sonarqube_exporter.git
+          cd sonarqube_exporter
+          python3 sonar_exporter.py \
+            --sonar-url "https://sonarcloud.io" \
+            --sonar-token "${{ secrets.SONAR_TOKEN }}" \
+            --sonar-project "Security-Team-5_Eventbride" \
+            --output "../converted-sonar-results.json"
 
       - name: Subir resultados convertidos a DefectDojo
         env:
