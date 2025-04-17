@@ -44,6 +44,12 @@ jobs:
           curl -s -u $SONAR_TOKEN: "https://sonarcloud.io/api/issues/search?componentKeys=Security-Team-5_Eventbride&types=BUG,VULNERABILITY,CODE_SMELL&ps=500" \
           -o sonarcloud-results.json
 
+
+      - name: Ver contenido del archivo JSON
+        run: |
+          echo "Contenido del archivo sonarcloud-results.json:"
+          cat sonarcloud-results.json
+
       - name: Subir resultados a DefectDojo
         env:
           DEFECTDOJO_URL: ${{ secrets.DEFECTDOJO_URL }}
