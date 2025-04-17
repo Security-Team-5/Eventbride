@@ -67,5 +67,5 @@ jobs:
           curl -X POST "$DEFECTDOJO_URL/api/v2/import-scan/" \
             -H "Authorization: Token $DEFECTDOJO_API_KEY" \
             -F "engagement=$DEFECTDOJO_ENGAGEMENT_ID" \
-            -F "scan_type=Soprasteria SonarQube Scan" \
+            -F "scan_type=SonarQube Scan" \
             -F "file=@sonar-report.json"
