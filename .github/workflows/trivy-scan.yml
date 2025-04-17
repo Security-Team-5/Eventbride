@@ -22,7 +22,7 @@ jobs:
         with:
           scan-type: fs
           severity: HIGH,CRITICAL
-          format: sarif
+          format: json
           output: trivy-results.sarif
 
       - name: Upload results to DefectDojo
