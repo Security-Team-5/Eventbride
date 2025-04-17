@@ -44,11 +44,12 @@ jobs:
           python3 -m pip install requests
           git clone https://github.com/dkade/sonarqube_exporter.git
           cd sonarqube_exporter
-          python3 sonar_exporter.py \
-            --sonar-url "https://sonarcloud.io" \
-            --sonar-token "${{ secrets.SONAR_TOKEN }}" \
-            --sonar-project "Security-Team-5_Eventbride" \
-            --output "../converted-sonar-results.json"
+          python3 sonarcloud_json.py Security-Team-5_Eventbride \
+            --severities INFO,MINOR,MAJOR,CRITICAL,BLOCKER \
+            --types CODE_SMELL,VULNERABILITY,BUG \
+            --url https://sonarcloud.io \
+            --filename ../converted-sonar-results.json
+
 
       - name: Subir resultados convertidos a DefectDojo
         env:
