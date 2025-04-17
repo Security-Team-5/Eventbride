@@ -42,7 +42,7 @@ jobs:
       - name: Instalar dependencias y clonar conversor
         run: |
           python3 -m pip install requests
-          git clone https://github.com/DefectDojo/sonarqube-to-defectdojo.git
+          git clone https://github.com/sergeim/sonarqube-to-defectdojo.git
           cd sonarqube-to-defectdojo
           python3 sonarqube_to_defectdojo.py \
             -u "https://sonarcloud.io" \
