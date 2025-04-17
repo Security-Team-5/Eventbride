@@ -43,11 +43,12 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          docker run --rm -v ${{ github.workspace }}:/app ghcr.io/defectdojo/sonarqube-to-defectdojo:latest \
+          docker run --rm -v ${{ github.workspace }}:/app ghcr.io/sergeim/sonarqube-to-defectdojo:latest \
             -u "https://sonarcloud.io" \
             -k "$SONAR_TOKEN" \
             -p "Security-Team-5_Eventbride" \
             --output-file "/app/converted-sonar-results.json"
+
 
 
       - name: Subir resultados convertidos a DefectDojo
